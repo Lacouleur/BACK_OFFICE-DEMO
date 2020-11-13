@@ -43,6 +43,7 @@ export const Box = styled.div`
   display: flex;
   align-items: flex-start;
   flex-direction: column;
+  justify-content: center;
   border-radius: 4px;
   box-shadow: 0px 11px 15px ${colors.shadow};
   ${media.mobile`
@@ -63,20 +64,22 @@ export const FormTitle = styled.h2`
 export const FieldContainer = styled.div`
   width: 100%;
   height: 52px;
-  margin-top: 16px;
+  margin: 16px 0 16px 0;
   position: relative;
 `;
 
-export const Field = styled.input`
+export const FieldStyle = styled.input`
   width: 100%;
   height: 100%;
   background-color: ${colors.darkGrey};
   border: none;
   padding-left: 52px;
-  color: ${colors.white};
+  border-bottom: ${(props) => props.border};
+  color: ${(props) => props.color};
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 24px;
 
   &:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 1000px ${colors.darkGrey} inset;
@@ -84,9 +87,26 @@ export const Field = styled.input`
   // Font styles
   &:-webkit-autofill::first-line {
     font-family: Arial;
-    color: ${colors.white};
+    color: ${colors.lightGrey};
     font-size: 14px;
   }
+`;
+
+export const FieldErrorBox = styled.div`
+  width: 100%;
+  display: flex;
+  margin-top: 3px;
+`;
+export const FieldError = styled.div`
+  color: ${colors.paleViolet};
+  font-size: 12px;
+  line-height: 14px;
+  margin-left: 8px;
+`;
+
+export const ErrorIcon = styled.img`
+  width: 12px;
+  margin-left: 17px;
 `;
 
 export const FieldIcon = styled.img`
@@ -101,7 +121,8 @@ export const FieldIcon = styled.img`
 `;
 
 export const ValidateButton = styled.button`
-  background-color: ${colors.paleViolet};
+  background-color: ${(props) => props.style.background};
+  color: ${(props) => props.style.fontColor};
   border: none;
   border-radius: 5px;
   width: 72px;

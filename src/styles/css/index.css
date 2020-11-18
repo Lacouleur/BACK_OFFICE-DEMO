@@ -1,0 +1,13 @@
+@import './_reset.css';
+
+* {
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Ubuntu', sans-serif;
+  background: #2F3640;
+  color: #2F3640;
+  scroll-behavior: smooth;
+}

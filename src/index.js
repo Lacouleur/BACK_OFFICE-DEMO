@@ -1,17 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import "./css/index.css";
+import "./styles/css/index.css";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
+import Auth from "./pages/Auth";
+import { PageContainer } from "./styles/styledComponents/Global/PageContainer";
 
 const rootComponent = (
-  <Router>
-    <Switch>
-      <Route exact path="/login" component={Login} />
-      <Route exact path="/dashBoard" component={Home} />
-    </Switch>
-  </Router>
+  <PageContainer>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Auth} />
+        <Route exact path="/dashBoard" component={Home} />
+      </Switch>
+    </Router>
+  </PageContainer>
 );
 
 ReactDOM.render(rootComponent, document.getElementById("root"));

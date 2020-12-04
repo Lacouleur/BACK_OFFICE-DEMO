@@ -1,22 +1,23 @@
-import React from "react";
-import eyeIcon from "../styles/assets/icons/eye.svg";
+import React, { useState } from "react";
 import idIcon from "../styles/assets/icons/id.svg";
 import lockIcon from "../styles/assets/icons/lock.svg";
+import colors from "../styles/core/colors";
+import Field from "../components/Fields";
 import {
   Box,
   FormTitle,
   MainTitleBox,
   MainTitle,
   MainSubTitle,
-  Field,
-  FieldIcon,
-  FieldContainer,
   ValidateButton,
 } from "../styles/styledComponents/Auth/Auth";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 const Auth = () => {
+  const [mail, setMail] = useState("");
+  const [pass, setPass] = useState("");
+
   return (
     <>
       <Header />
@@ -26,17 +27,37 @@ const Auth = () => {
       </MainTitleBox>
       <Box>
         <FormTitle>Log in</FormTitle>
-        <FieldContainer>
-          <FieldIcon src={idIcon} info="idIcon" />
-          <FieldIcon src={eyeIcon} info="eyeIcon" />
-          <Field type="text" name="ID" placeholder="ID" />
-        </FieldContainer>
-        <FieldContainer>
-          <FieldIcon src={lockIcon} info="lockIcon" />
-          <FieldIcon src={eyeIcon} info="eyeIcon" />
-          <Field type="password" name="pwd" placeholder="Password" />
-        </FieldContainer>
-        <ValidateButton>Login</ValidateButton>
+        <Field
+          settings={{
+            icon: idIcon,
+            eye: false,
+            type: "mail",
+            name: "ID",
+            placeholder: "ID",
+            setter: setMail,
+            status: mail,
+          }}
+        />
+        <Field
+          settings={{
+            icon: lockIcon,
+            eye: true,
+            type: "password",
+            name: "pwd",
+            placeholder: "password",
+            setter: setPass,
+            status: pass,
+          }}
+        />
+        <ValidateButton
+          style={
+            mail === "valid" && pass === "valid"
+              ? { fontColor: colors.black, background: colors.paleViolet }
+              : { fontColor: colors.mediumGrey, background: colors.darkGrey }
+          }
+        >
+          Login
+        </ValidateButton>
       </Box>
       <Footer />
     </>

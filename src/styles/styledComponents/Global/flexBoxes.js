@@ -8,7 +8,9 @@ const Flex = styled.div`
   align-items: ${(props) => props.style.alignItems || "flex-start"};
   background-color: ${(props) => props.style.backgroundColor || "transparent"};
   width: ${(props) => props.style.width || "auto"};
-  height: ${(props) => props.style.width || "100%"};
+  height: ${(props) => props.style.height || "100%"};
+  min-height: ${(props) => props.style.minHeight || "none"};
+  max-height: ${(props) => props.style.maxHeight || "none"};
   margin-top: ${(props) => props.style.marginTop || "0"};
   margin-right: ${(props) => props.style.marginRight || "0"};
   margin-left: ${(props) => props.style.marginLeft || "0"};
@@ -16,6 +18,9 @@ const Flex = styled.div`
   margin: ${(props) => props.style.margin || "0"};
   padding: ${(props) => props.style.padding || "none"};
   color: ${(props) => props.style.margin || colors.white};
+  justify-self: ${(props) => props.style.justifySelf || "felx-start"};
+  align-self: ${(props) => props.style.alignSelf || "felx-start"};
+  overflow: ${(props) => props.style.overflow || "hidden"};
 `;
 
 export default Flex;

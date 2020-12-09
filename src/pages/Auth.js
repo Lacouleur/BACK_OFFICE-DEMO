@@ -18,7 +18,7 @@ import Footer from "../components/Footer";
 import { H1, H2 } from "../styles/styledComponents/global/titles";
 import Button from "../styles/styledComponents/global/buttons";
 import { loginButton } from "../styles/styledComponents/global/customs/customButtons";
-import PageContainer from "../styles/styledComponents/global/pageContainer";
+import PageContainer from "../styles/styledComponents/global/PageContainer";
 
 const Auth = () => {
   const [mail, setMail] = useState("");

@@ -1,17 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch } from "react-router-dom";
 import "./styles/css/index.css";
 import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import { PageContainer } from "./styles/styledComponents/Global/PageContainer";
+import PrivateRoute from "./services/routes/PrivatesRoutes";
+import PublicRoute from "./services/routes/PublicRoutes";
 
 const rootComponent = (
   <PageContainer>
     <Router>
       <Switch>
-        <Route exact path="/" component={Auth} />
-        <Route exact path="/dashBoard" component={Home} />
+        <PublicRoute restricted path="/" exact component={Auth} />
+        <PrivateRoute path="/dashBoard" exact component={Home} />
       </Switch>
     </Router>
   </PageContainer>

@@ -35,7 +35,7 @@ export const MainSubTitle = styled.p`
   line-height: 30px;
 `;
 
-export const Box = styled.div`
+export const Form = styled.form`
   width: 392px;
   height: 343px;
   padding: 24px;
@@ -81,15 +81,40 @@ export const FieldStyle = styled.input`
   font-size: 16px;
   line-height: 24px;
 
+  // customing the native CSS for autocomplet.
   &:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 1000px ${colors.darkGrey} inset;
   }
-  // Font styles
   &:-webkit-autofill::first-line {
     font-family: Arial;
     color: ${colors.lightGrey};
     font-size: 14px;
   }
+`;
+
+export const ErrorNotification = styled.div`
+  width: 392px;
+  border: solid 2px ${colors.paleViolet};
+  margin-top: 36px;
+  padding: 15px 27px 15px 27px;
+  display: flex;
+  ${media.mobile`
+  width: 288px;
+  `};
+`;
+
+export const ErrorNotificationIcon = styled.img`
+  width: 20px;
+  align-self: flex-start;
+  margin-top: 3px;
+`;
+
+export const ErrorNotificationText = styled.p`
+  font-size: 16px;
+  line-height: 24px;
+  margin-left: 12px;
+  width: 100%;
+  color: ${colors.white};
 `;
 
 export const FieldErrorBox = styled.div`
@@ -123,6 +148,7 @@ export const FieldIcon = styled.img`
 export const ValidateButton = styled.button`
   background-color: ${(props) => props.style.background};
   color: ${(props) => props.style.fontColor};
+  cursor: ${(props) => props.style.cursor};
   border: none;
   border-radius: 5px;
   width: 72px;

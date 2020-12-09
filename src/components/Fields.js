@@ -1,9 +1,7 @@
-/* eslint-disable react/prop-types */
 import React, { useState } from "react";
-// eslint-disable-next-line no-unused-vars
 import PropTypes from "prop-types";
 import colors from "../styles/core/colors";
-import excalamtionIcon from "../styles/assets/icons/exclamation.svg";
+import exclamationIcon from "../styles/assets/icons/exclamation.svg";
 import eyeIcon from "../styles/assets/icons/eye.svg";
 import {
   FieldStyle,
@@ -16,8 +14,9 @@ import {
 import verifyField from "../helper/auth/verifyFields";
 
 const Field = ({ settings }) => {
-  const { icon, eye, type, name, placeholder, setter, status } = settings;
+  const { icon, eye, type, placeholder, setter, status } = settings;
   const [passwordShown, setPasswordShown] = useState(false);
+  const [focused, setFocused] = useState(false);
 
   const togglePasswordVisiblity = () => {
     setPasswordShown(!passwordShown);
@@ -34,28 +33,26 @@ const Field = ({ settings }) => {
             onClick={togglePasswordVisiblity}
           />
         )}
+
         <FieldStyle
-          autoComplete="off"
-          name={name}
-          type={
-            name === "pwd" && passwordShown === false ? "password" : { type }
-          }
+          type={type === "password" && passwordShown === true ? "text" : type}
           placeholder={placeholder}
-          color={
-            name === "ID" && status === "unvalid"
-              ? colors.paleViolet
-              : colors.lightGrey
-          }
+          color={status === "unvalid" ? colors.paleViolet : colors.white}
           border={
-            name === "ID" && status === "unvalid"
+            focused || status === "unvalid"
               ? `2px solid ${colors.paleViolet}`
-              : `none`
+              : `2px solid ${colors.lightGrey}`
           }
-          onChange={(e) => verifyField(name, e.target.value, setter)}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          onChange={(e) => {
+            verifyField(placeholder, e.target.value, setter);
+          }}
         />
-        {status === "unvalid" && name === "ID" && (
+
+        {status === "unvalid" && placeholder === "ID" && (
           <FieldErrorBox>
-            <ErrorIcon src={excalamtionIcon} />
+            <ErrorIcon src={exclamationIcon} />
             <FieldError> Enter a valid mail adress </FieldError>
           </FieldErrorBox>
         )}
@@ -69,7 +66,7 @@ Field.propTypes = {
     icon: PropTypes.string,
     eye: PropTypes.bool,
     type: PropTypes.string,
-    name: PropTypes.string,
+    placeholder: PropTypes.string,
     setter: PropTypes.func,
     status: PropTypes.string,
   }).isRequired,

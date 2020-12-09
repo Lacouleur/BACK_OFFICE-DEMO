@@ -1,10 +1,4 @@
-/* eslint-disable no-unused-expressions */
 import { css } from "styled-components";
-
-/* to sse it in styled component 
-  ${media.mobile`
-  background-color: green`};
-*/
 
 const breakpoints = {
   mobile: "425px",

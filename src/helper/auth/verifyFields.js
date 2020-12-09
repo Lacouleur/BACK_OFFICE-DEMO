@@ -1,6 +1,6 @@
-const verifyField = (id, value, setter) => {
+function verifyField(id, value, setter) {
   if (id === "ID") {
-    if (value.length === 0) {
+    if (value.length < 8) {
       setter("");
       return;
     }
@@ -12,21 +12,18 @@ const verifyField = (id, value, setter) => {
     const isMail = mailRegex.exec(value);
 
     if (isMail) {
-      setter("valid");
+      setter(value);
       return;
     }
-
-    if (!isMail) {
-      setter("unvalid");
-      return;
-    }
-  }
-
-  if (id === "pwd" && value.length > 6) {
-    setter("valid");
+    setter("unvalid");
     return;
   }
-  setter("false");
-};
+
+  if (id === "password" && value.length > 4) {
+    setter(value);
+    return;
+  }
+  setter("");
+}
 
 export default verifyField;

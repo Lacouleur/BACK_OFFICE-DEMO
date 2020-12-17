@@ -16,7 +16,7 @@ import colors from "../../styles/core/colors";
 const Pagination = ({ pagination, setPagination, setContents }) => {
   const { currentPage, lastPage } = pagination;
   const pageArr = [];
-  const maxDisplayedPages = 5;
+  const maxDisplayedPages = lastPage < 5 ? lastPage : 5;
 
   const changePage = (pageNumber) => {
     if (pageNumber)

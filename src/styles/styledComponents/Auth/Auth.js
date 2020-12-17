@@ -24,17 +24,6 @@ export const MainTitleBox = styled.div`
   `};
 `;
 
-export const MainTitle = styled.h1`
-  text-transform: uppercase;
-  font-size: 24px;
-  line-height: 30px;
-`;
-
-export const MainSubTitle = styled.p`
-  font-size: 16px;
-  line-height: 30px;
-`;
-
 export const Form = styled.form`
   width: 392px;
   height: 343px;

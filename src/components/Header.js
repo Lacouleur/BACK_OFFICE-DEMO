@@ -5,10 +5,10 @@ import {
   DisconectButton,
   HeaderContainer,
   MainLogo,
-} from "../styles/styledComponents/Navigation/Header";
+} from "../styles/styledComponents/navigation/header";
 import phoenixLogo from "../styles/assets/logos/phoenix-logo.svg";
 import burger from "../styles/assets/icons/burger.svg";
-import { getToken, deleteToken } from "../services/client/authclient";
+import { getToken, deleteToken } from "../services/client/authClient";
 
 const Header = () => {
   const [isConnected] = useState(!!getToken());

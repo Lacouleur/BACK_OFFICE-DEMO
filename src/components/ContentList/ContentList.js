@@ -1,14 +1,14 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from "react";
-import { H1 } from "../../styles/styledComponents/global/titles";
-import Flex from "../../styles/styledComponents/global/flexBoxes";
-import Button from "../../styles/styledComponents/global/buttons";
+import { H1 } from "../../styles/styledComponents/global/Titles.sc";
+import Flex from "../../styles/styledComponents/global/FlexBoxes.sc";
+import Button from "../../styles/styledComponents/global/Buttons.sc";
 import Content from "./Content";
 import plus from "../../styles/assets/icons/plus.svg";
-import { IconCreat } from "../../styles/styledComponents/contentList/content";
+import { IconCreat } from "../../styles/styledComponents/contentList/Content.sc";
 import { getContentList } from "../../services/client/contentClient";
-import { contentList } from "../../styles/styledComponents/global/customs/customFlexBoxes";
-import { createNewContent } from "../../styles/styledComponents/global/customs/customButtons";
+import { contentList } from "../../styles/styledComponents/global/customs/CustomFlexBoxes.sc";
+import { createNewContent } from "../../styles/styledComponents/global/customs/CustomButtons.sc";
 import Pagination from "./Pagination";
 
 const ContentList = () => {

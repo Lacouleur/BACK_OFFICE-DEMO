@@ -10,7 +10,7 @@ import {
   FieldIcon,
   ErrorIcon,
   FieldErrorBox,
-} from "../styles/styledComponents/auth/auth";
+} from "../styles/styledComponents/auth/Auth.sc";
 import verifyField from "../helper/auth/verifyFields";
 
 const Field = ({ settings }) => {

@@ -4,11 +4,11 @@ import {
   PageListLi,
   PageListUl,
   PageListArrow,
-} from "../../styles/styledComponents/contentList/pagination";
+} from "../../styles/styledComponents/contentList/Pagination.sc";
 import arrowLeft from "../../styles/assets/icons/arrow-left.svg";
 import arrowRight from "../../styles/assets/icons/arrow-right.svg";
-import Flex from "../../styles/styledComponents/global/flexBoxes";
-import { contentList } from "../../styles/styledComponents/global/customs/customFlexBoxes";
+import Flex from "../../styles/styledComponents/global/FlexBoxes.sc";
+import { contentList } from "../../styles/styledComponents/global/customs/CustomFlexBoxes.sc";
 import keyGenerator from "../../helper/KeyGenerator";
 import { getContentList } from "../../services/client/contentClient";
 import colors from "../../styles/core/colors";

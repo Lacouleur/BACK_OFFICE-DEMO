@@ -1,30 +1,31 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { sendAuth, setToken, getToken } from "../services/client/authclient";
+import { sendAuth, setToken, getToken } from "../services/client/authClient";
 import idIcon from "../styles/assets/icons/id.svg";
 import lockIcon from "../styles/assets/icons/lock.svg";
 import errorIcon from "../styles/assets/icons/exclamation.svg";
-import colors from "../styles/core/colors";
 import Field from "../components/Fields";
 import {
   Form,
   FormTitle,
   MainTitleBox,
-  MainTitle,
-  MainSubTitle,
-  ValidateButton,
   ErrorNotification,
   ErrorNotificationText,
   ErrorNotificationIcon,
-} from "../styles/styledComponents/Auth/Auth";
+} from "../styles/styledComponents/auth/auth";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { H1, H2 } from "../styles/styledComponents/global/titles";
+import Button from "../styles/styledComponents/global/buttons";
+import { loginButton } from "../styles/styledComponents/global/customs/customButtons";
+import PageContainer from "../styles/styledComponents/global/pageContainer";
 
 const Auth = () => {
   const [mail, setMail] = useState("");
   const [pass, setPass] = useState("");
   const [error, setError] = useState();
   const history = useHistory();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
@@ -47,7 +48,7 @@ const Auth = () => {
   };
 
   return (
-    <>
+    <PageContainer height="100%">
       <Header />
       {error && (
         <ErrorNotification>
@@ -59,8 +60,8 @@ const Auth = () => {
       )}
 
       <MainTitleBox>
-        <MainTitle>PHOENIX&apos;S BACK OFFICE</MainTitle>
-        <MainSubTitle>Welcome to Phoenix Media&apos;s Backoffice</MainSubTitle>
+        <H1>PHOENIX&apos;S BACK OFFICE</H1>
+        <H2>Welcome to Phoenix Media&apos;s Backoffice</H2>
       </MainTitleBox>
 
       <Form onSubmit={(e) => handleSubmit(e)} autocomplete="on">
@@ -87,29 +88,21 @@ const Auth = () => {
           }}
         />
 
-        <ValidateButton
+        <Button
           style={
             mail !== "" && pass !== "" && mail !== "unvalid"
-              ? {
-                  fontColor: colors.black,
-                  background: colors.paleViolet,
-                  cursor: "pointer",
-                }
-              : {
-                  fontColor: colors.mediumGrey,
-                  background: colors.darkGrey,
-                  cursor: "not-allowed",
-                }
+              ? loginButton.clickable
+              : loginButton.unClickable
           }
           type={
             mail !== "" && pass !== "" && mail !== "unvalid" ? "submit" : "text"
           }
         >
           Login
-        </ValidateButton>
+        </Button>
       </Form>
       <Footer />
-    </>
+    </PageContainer>
   );
 };
 

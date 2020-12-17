@@ -1,17 +1,16 @@
-/* eslint-disable react/jsx-one-expression-per-line */
-import React, { useState } from "react";
+import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { parseJwt, getToken } from "../services/client/authclient";
+import ContentList from "../components/ContentList/ContentList";
+import PageContainer from "../styles/styledComponents/global/pageContainer";
 
 const Home = () => {
-  const [user] = useState(parseJwt(getToken()));
   return (
-    <>
+    <PageContainer>
       <Header />
-      <p>bonjour {user.name}</p>
+      <ContentList />
       <Footer />
-    </>
+    </PageContainer>
   );
 };
 

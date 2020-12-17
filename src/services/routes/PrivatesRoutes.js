@@ -4,7 +4,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Route, Redirect } from "react-router-dom";
-import { getToken } from "../client/authclient";
+import { getToken } from "../client/authClient";
 
 const PrivateRoute = ({ component: Component, location, ...otherProps }) => {
   return (

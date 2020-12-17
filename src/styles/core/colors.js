@@ -3,8 +3,11 @@ const colors = {
   darkGrey: "#292929",
   mediumGrey: "#383838",
   lightGrey: "#acacac",
+  fadedGrey: "474747",
+  transpGrey: "#ffffff1f",
   white: "#FFFFFF",
   paleViolet: "#bb86fc",
+  paleVioletTransp: "#bb86fc48",
   red: "#FE3E3E",
   shadow: "#121212",
 };

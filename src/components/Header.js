@@ -5,7 +5,7 @@ import {
   DisconectButton,
   HeaderContainer,
   MainLogo,
-} from "../styles/styledComponents/navigation/Header.sc";
+} from "../styles/styledComponents/nav/Header.sc";
 import phoenixLogo from "../styles/assets/logos/phoenix-logo.svg";
 import burger from "../styles/assets/icons/burger.svg";
 import { getToken, deleteToken } from "../services/client/authClient";

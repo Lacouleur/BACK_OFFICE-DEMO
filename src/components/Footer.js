@@ -1,5 +1,5 @@
 import React from "react";
-import FooterContainer from "../styles/styledComponents/navigation/Footer.sc";
+import FooterContainer from "../styles/styledComponents/nav/Footer.sc";
 
 const Footer = () => {
   return <FooterContainer />;

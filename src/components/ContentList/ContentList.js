@@ -1,23 +1,36 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from "react";
-import { H1 } from "../../styles/styledComponents/global/titles";
-import Flex from "../../styles/styledComponents/global/flexBoxes";
-import Button from "../../styles/styledComponents/global/buttons";
+import { H1 } from "../../styles/styledComponents/global/Titles.sc";
+import Flex from "../../styles/styledComponents/global/FlexBoxes.sc";
+import Button from "../../styles/styledComponents/global/Buttons.sc";
 import Content from "./Content";
 import plus from "../../styles/assets/icons/plus.svg";
-import { IconCreat } from "../../styles/styledComponents/contentList/content";
+import { IconCreat } from "../../styles/styledComponents/contentList/Content.sc";
 import { getContentList } from "../../services/client/contentClient";
-import { contentList } from "../../styles/styledComponents/global/customs/customFlexBoxes";
-import { createNewContent } from "../../styles/styledComponents/global/customs/customButtons";
+import { contentList } from "../../styles/styledComponents/global/customs/CustomFlexBoxes.sc";
+import { createNewContent } from "../../styles/styledComponents/global/customs/CustomButtons.sc";
 import Pagination from "./Pagination";
 
 const ContentList = () => {
   const [contents, setContents] = useState();
+  const [pagination, setPagination] = useState();
 
-  useEffect(() => {
-    return getContentList().then((res) => {
-      setContents(res.data.contents);
-    });
+  function paginationBuilder(data) {
+    const isNextPage = data.nextPage || 1;
+    const isPreviousPage = data.previousPage || 1;
+    const paginate = {
+      currentPage: data.currentPage,
+      nextPage: isNextPage,
+      previousPage: isPreviousPage,
+      lastPage: data.lastPage,
+    };
+    return paginate;
+  }
+
+  useEffect(async () => {
+    const res = await getContentList();
+    setPagination(paginationBuilder(res.data));
+    setContents(res.data.contents);
   }, []);
 
   return (
@@ -34,8 +47,14 @@ const ContentList = () => {
           contents.map((content, index) => (
             <Content number={index} content={content} key={content._id} />
           ))}
+        {pagination && (
+          <Pagination
+            pagination={pagination}
+            setPagination={setPagination}
+            setContents={setContents}
+          />
+        )}
       </Flex>
-      <Pagination />
     </Flex>
   );
 };

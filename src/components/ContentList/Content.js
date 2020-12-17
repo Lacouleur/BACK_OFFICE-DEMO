@@ -1,35 +1,35 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Flex from "../../styles/styledComponents/global/flexBoxes";
+import Flex from "../../styles/styledComponents/global/FlexBoxes.sc";
 import {
   CategoryName,
   Title,
   Status,
   Action,
   IconAction,
-} from "../../styles/styledComponents/contentList/content";
+  StatusText,
+} from "../../styles/styledComponents/contentList/Content.sc";
 import isEven from "../../helper/isEven";
 import colors from "../../styles/core/colors";
 import pen from "../../styles/assets/icons/pen.svg";
 import trash from "../../styles/assets/icons/trash.svg";
-import { contentList } from "../../styles/styledComponents/global/customs/customFlexBoxes";
+import { contentList } from "../../styles/styledComponents/global/customs/CustomFlexBoxes.sc";
 
 const Content = ({ number, content }) => {
   const even = isEven(number);
-  const isDraft = content.isDraft ? "Unactive" : "Active";
 
   return (
     <Flex
       style={{
-        ...contentList.LineContentBox,
+        ...contentList.lineContentBox,
         backgroundColor: `${even ? colors.darkGrey : colors.mediumGrey}`,
       }}
     >
-      <CategoryName>{content.category}</CategoryName>
+      <CategoryName>{content.category.label}</CategoryName>
       <Title>{content.title}</Title>
       <Status
         style={
-          isDraft === "Unactive"
+          content.state !== "PUBLISHED"
             ? {
                 border: `solid 2px ${colors.transpGrey}`,
                 color: `${colors.white}`,
@@ -39,7 +39,7 @@ const Content = ({ number, content }) => {
             : {}
         }
       >
-        {isDraft}
+        <StatusText>{content.state}</StatusText>
       </Status>
 
       <Action>
@@ -60,7 +60,13 @@ Content.propTypes = {
     _id: PropTypes.string,
     title: PropTypes.string,
     url: PropTypes.string,
-    category: PropTypes.string,
+    category: PropTypes.PropTypes.shape({
+      createdAt: PropTypes.string,
+      label: PropTypes.string,
+      updatedAt: PropTypes.string,
+      url: PropTypes.string,
+      _id: PropTypes.string,
+    }),
     components: PropTypes.arrayOf(
       PropTypes.shape({
         description: PropTypes.string,
@@ -74,7 +80,7 @@ Content.propTypes = {
         type: PropTypes.string,
       })
     ),
-    status: PropTypes.string,
+    state: PropTypes.string,
     createdAt: PropTypes.string,
     firstPublishedAt: PropTypes.string,
     publishedAt: PropTypes.string,

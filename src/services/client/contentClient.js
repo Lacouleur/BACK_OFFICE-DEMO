@@ -3,14 +3,16 @@ import axios from "axios";
 import { baseUrl, hostUrl } from "../config/clientConfig";
 import { getToken, deleteToken } from "./authClient";
 
-export const getContentList = () =>
+export const getContentList = (page = 1, limit = 20) =>
   axios
-    .get(`${baseUrl}/contents`, {
+    .get(`${baseUrl}/contents?limit=${limit}&page=${page}`, {
       headers: {
         Authorization: `Bearer ${getToken()}`,
       },
     })
-    .then((res) => ({ data: res.data }))
+    .then((res) => {
+      return { data: res.data };
+    })
     .catch(() => {
       deleteToken();
       window.location.assign(`${hostUrl}/`);

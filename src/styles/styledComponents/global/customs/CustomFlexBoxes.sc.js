@@ -4,25 +4,35 @@ import colors from "../../../core/colors";
 export const contentList = {
   ContentsPageContainer: {
     width: "80%",
-    minWidth: "853px",
+    height: "100%",
     flexDirection: "column",
   },
   titleBox: {
     marginTop: "50px",
     marginBottom: "20px",
+    height: "36px",
   },
   listContainer: {
     flexDirection: "column",
-    height: "100%",
+    height: "90%",
     width: "100%",
     padding: "30px",
     backgroundColor: colors.mediumGrey,
+    overflow: "scroll",
   },
-  LineContentBox: {
+  lineContentBox: {
     width: "100%",
-    height: "59px",
+    minHeight: "59px",
+    maxHeight: "59px",
     alignItems: "center",
-    margin: "auto auto",
+    margin: "0 0",
     justifyContent: "space-between",
+  },
+  paginationBox: {
+    alignSelf: "flex-end",
+    alignItems: "center",
+    marginTop: "auto",
+    minHeight: "60px",
+    maxHeight: "60px",
   },
 };

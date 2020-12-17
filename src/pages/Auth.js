@@ -12,13 +12,13 @@ import {
   ErrorNotification,
   ErrorNotificationText,
   ErrorNotificationIcon,
-} from "../styles/styledComponents/auth/auth";
+} from "../styles/styledComponents/auth/Auth.sc";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { H1, H2 } from "../styles/styledComponents/global/titles";
-import Button from "../styles/styledComponents/global/buttons";
-import { loginButton } from "../styles/styledComponents/global/customs/customButtons";
-import PageContainer from "../styles/styledComponents/global/pageContainer";
+import { H1, H2 } from "../styles/styledComponents/global/Titles.sc";
+import Button from "../styles/styledComponents/global/Buttons.sc";
+import { loginButton } from "../styles/styledComponents/global/customs/CustomButtons.sc";
+import PageContainer from "../styles/styledComponents/global/PageContainer.sc";
 
 const Auth = () => {
   const [mail, setMail] = useState("");

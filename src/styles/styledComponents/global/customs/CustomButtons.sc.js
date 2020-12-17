@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import colors from "../../../core/colors";
 
 export const createNewContent = {

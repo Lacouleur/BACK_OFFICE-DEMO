@@ -36,6 +36,10 @@ export const Status = styled.div`
     props.style.shadow || `0px 0px 10px 1px ${colors.paleVioletTransp}`};
 `;
 
+export const StatusText = styled.p`
+  text-transform: lowercase;
+`;
+
 export const Action = styled.div`
   margin: 0 20px;
   text-decoration: underline;

@@ -13,11 +13,24 @@ import Pagination from "./Pagination";
 
 const ContentList = () => {
   const [contents, setContents] = useState();
+  const [pagination, setPagination] = useState();
 
-  useEffect(() => {
-    return getContentList().then((res) => {
-      setContents(res.data.contents);
-    });
+  function paginationBuilder(data) {
+    const isNextPage = data.nextPage || 1;
+    const isPreviousPage = data.previousPage || 1;
+    const paginate = {
+      currentPage: data.currentPage,
+      nextPage: isNextPage,
+      previousPage: isPreviousPage,
+      lastPage: data.lastPage,
+    };
+    return paginate;
+  }
+
+  useEffect(async () => {
+    const res = await getContentList();
+    setPagination(paginationBuilder(res.data));
+    setContents(res.data.contents);
   }, []);
 
   return (
@@ -34,8 +47,14 @@ const ContentList = () => {
           contents.map((content, index) => (
             <Content number={index} content={content} key={content._id} />
           ))}
+        {pagination && (
+          <Pagination
+            pagination={pagination}
+            setPagination={setPagination}
+            setContents={setContents}
+          />
+        )}
       </Flex>
-      <Pagination />
     </Flex>
   );
 };

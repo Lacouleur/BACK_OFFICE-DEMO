@@ -4,7 +4,7 @@ import { baseUrl } from "../config/clientConfig";
 export const sendAuth = (data) =>
   axios({
     method: "post",
-    url: `${baseUrl}/api/auth/login`,
+    url: `${baseUrl}/auth/login`,
     data,
   })
     .then((token) => {

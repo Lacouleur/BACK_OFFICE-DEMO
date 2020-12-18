@@ -57,5 +57,3 @@ export const IconAction = styled.img`
 export const IconCreat = styled.img`
   width: 12px;
 `;
-
-export const ContentBox = styled.div;

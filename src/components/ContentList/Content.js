@@ -27,15 +27,7 @@ const Content = ({ number, content }) => {
     >
       <CategoryName>{content.category.label}</CategoryName>
       <Title>{content.title}</Title>
-      <Flex
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-          flexGrow: "1",
-          maxWidth: "5%",
-          minWidth: "125px",
-        }}
-      >
+      <Flex style={contentList.statusBox}>
         <Status
           style={
             content.state !== "PUBLISHED"
@@ -51,15 +43,7 @@ const Content = ({ number, content }) => {
           <StatusText>{content.state}</StatusText>
         </Status>
       </Flex>
-      <Flex
-        style={{
-          alignItems: "center",
-          justifyContent: "space-between",
-          maxWidth: "10%",
-          minWidth: "205px",
-          marginRight: "20px",
-        }}
-      >
+      <Flex style={contentList.actionsBox}>
         <Action>
           Modify
           <IconAction src={pen} />

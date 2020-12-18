@@ -37,4 +37,18 @@ export const contentList = {
     minHeight: "60px",
     maxHeight: "60px",
   },
+  statusBox: {
+    alignItems: "center",
+    justifyContent: "center",
+    flexGrow: "1",
+    maxWidth: "5%",
+    minWidth: "125px",
+  },
+  actionsBox: {
+    alignItems: "center",
+    justifyContent: "space-between",
+    maxWidth: "10%",
+    minWidth: "205px",
+    marginRight: "20px",
+  },
 };

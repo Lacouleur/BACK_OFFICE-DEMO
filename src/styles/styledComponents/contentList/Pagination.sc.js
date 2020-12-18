@@ -24,6 +24,7 @@ export const PageListArrow = styled.img`
   visibility: ${(props) => props.hide};
   width: 14px;
   margin: 0 30px;
+  padding-top: 5px;
   align-self: center;
   cursor: pointer;
 `;

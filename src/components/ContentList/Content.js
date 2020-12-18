@@ -27,29 +27,48 @@ const Content = ({ number, content }) => {
     >
       <CategoryName>{content.category.label}</CategoryName>
       <Title>{content.title}</Title>
-      <Status
-        style={
-          content.state !== "PUBLISHED"
-            ? {
-                border: `solid 2px ${colors.transpGrey}`,
-                color: `${colors.white}`,
-                background: `${colors.darkGrey}`,
-                shadow: "none",
-              }
-            : {}
-        }
+      <Flex
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          flexGrow: "1",
+          maxWidth: "5%",
+          minWidth: "125px",
+        }}
       >
-        <StatusText>{content.state}</StatusText>
-      </Status>
-
-      <Action>
-        Modify
-        <IconAction src={pen} />
-      </Action>
-      <Action>
-        Archive
-        <IconAction src={trash} />
-      </Action>
+        <Status
+          style={
+            content.state !== "PUBLISHED"
+              ? {
+                  border: `solid 2px ${colors.transpGrey}`,
+                  color: `${colors.white}`,
+                  background: `${colors.darkGrey}`,
+                  shadow: "none",
+                }
+              : {}
+          }
+        >
+          <StatusText>{content.state}</StatusText>
+        </Status>
+      </Flex>
+      <Flex
+        style={{
+          alignItems: "center",
+          justifyContent: "space-between",
+          maxWidth: "10%",
+          minWidth: "205px",
+          marginRight: "20px",
+        }}
+      >
+        <Action>
+          Modify
+          <IconAction src={pen} />
+        </Action>
+        <Action>
+          Archive
+          <IconAction src={trash} />
+        </Action>
+      </Flex>
     </Flex>
   );
 };

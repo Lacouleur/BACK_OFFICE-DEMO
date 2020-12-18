@@ -21,6 +21,7 @@ const Flex = styled.div`
   justify-self: ${(props) => props.style.justifySelf || "felx-start"};
   align-self: ${(props) => props.style.alignSelf || "felx-start"};
   overflow: ${(props) => props.style.overflow || "hidden"};
+  flex-grow: ${(props) => props.style.flexGrow || "none"};
 `;
 
 export default Flex;

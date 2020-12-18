@@ -20,7 +20,7 @@ export const Title = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  margin: 0 20px 0 0;
+  justify-self: flex-end;
 `;
 export const Status = styled.div`
   height: 32px;

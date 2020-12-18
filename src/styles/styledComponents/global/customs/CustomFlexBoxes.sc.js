@@ -6,11 +6,13 @@ export const contentList = {
     width: "80%",
     height: "100%",
     flexDirection: "column",
+    minWidth: "740px",
   },
   titleBox: {
     marginTop: "50px",
     marginBottom: "20px",
     height: "36px",
+    flexGrow: 1,
   },
   listContainer: {
     flexDirection: "column",
@@ -25,8 +27,8 @@ export const contentList = {
     minHeight: "59px",
     maxHeight: "59px",
     alignItems: "center",
-    margin: "0 0",
     justifyContent: "space-between",
+    margin: "0 0",
   },
   paginationBox: {
     alignSelf: "flex-end",

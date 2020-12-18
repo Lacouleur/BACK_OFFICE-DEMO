@@ -5,6 +5,8 @@ export const CategoryName = styled.div`
   text-transform: uppercase;
   line-height: 100%;
   font-size: 14px;
+  min-width: 120px;
+  max-width: 120px;
   margin-right: 20px;
   margin: 0 20px;
 `;
@@ -18,7 +20,7 @@ export const Title = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  margin: 0 20px;
+  margin: 0 20px 0 0;
 `;
 export const Status = styled.div`
   height: 32px;

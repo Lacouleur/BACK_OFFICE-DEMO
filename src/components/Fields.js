@@ -6,6 +6,8 @@ import eyeIcon from "../styles/assets/icons/eye.svg";
 import {
   FieldStyle,
   FieldContainer,
+} from "../styles/styledComponents/global/Field.sc";
+import {
   FieldError,
   FieldIcon,
   ErrorIcon,
@@ -37,12 +39,14 @@ const Field = ({ settings }) => {
         <FieldStyle
           type={type === "password" && passwordShown === true ? "text" : type}
           placeholder={placeholder}
-          color={status === "unvalid" ? colors.paleViolet : colors.white}
-          border={
-            focused || status === "unvalid"
-              ? `2px solid ${colors.paleViolet}`
-              : `2px solid ${colors.lightGrey}`
-          }
+          style={{
+            color: `${status === "unvalid" ? colors.paleViolet : colors.white}`,
+            border: `${
+              focused || status === "unvalid"
+                ? `2px solid ${colors.paleViolet}`
+                : `none`
+            }`,
+          }}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           onChange={(e) => {

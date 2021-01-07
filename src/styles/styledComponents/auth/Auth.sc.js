@@ -13,17 +13,6 @@ export const Container = styled.div`
   flex-direction: column;
 `;
 
-export const MainTitleBox = styled.div`
-  width: 392px;
-  height: 90px;
-  margin-top: 42px;
-  margin-bottom: 19px;
-  color: ${colors.white};
-  ${media.mobile`
-  width: 288px;
-  `};
-`;
-
 export const Form = styled.form`
   width: 392px;
   height: 343px;
@@ -38,16 +27,6 @@ export const Form = styled.form`
   ${media.mobile`
   width: 288px;
   `};
-`;
-
-export const FormTitle = styled.h2`
-  font-size: 22px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 24px;
-  text-align: left;
-  margin-bottom: 16px;
-  color: ${colors.white};
 `;
 
 export const FieldContainer = styled.div`
@@ -110,17 +89,6 @@ export const FieldErrorBox = styled.div`
   width: 100%;
   display: flex;
   margin-top: 3px;
-`;
-export const FieldError = styled.div`
-  color: ${colors.paleViolet};
-  font-size: 12px;
-  line-height: 14px;
-  margin-left: 8px;
-`;
-
-export const ErrorIcon = styled.img`
-  width: 12px;
-  margin-left: 17px;
 `;
 
 export const FieldIcon = styled.img`

@@ -8,12 +8,24 @@ export const FieldContainer = styled.div`
   position: relative;
 `;
 
+export const FieldError = styled.div`
+  color: ${(props) => props.color || colors.lightGrey};
+  font-size: 12px;
+  line-height: 14px;
+  margin-left: 8px;
+`;
+
+export const ErrorIcon = styled.img`
+  width: 12px;
+  margin-left: 17px;
+`;
+
 export const FieldStyle = styled.input`
   width: ${(props) => props.style.width || "100%"};
   height: ${(props) => props.style.height || "100%"};
   background-color: ${colors.darkGrey};
   border: ${(props) => props.style.border || "none"};
-  padding-left: 52px;
+  padding-left: ${(props) => props.style.paddingLeft || "20px"};
   color: ${(props) => props.style.color};
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;

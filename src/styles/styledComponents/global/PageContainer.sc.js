@@ -3,9 +3,10 @@ import colors from "../../core/colors";
 
 const PageContainer = styled.div`
   padding: 0;
-  position: absolute;
+  position: ${(props) => props.position || "absolute"};
   height: ${(props) => props.height || "100%"};
   width: 100%;
+  min-width: 750px;
   background-color: ${colors.darkGrey};
   display: flex;
   align-items: center;

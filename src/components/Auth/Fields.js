@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import colors from "../styles/core/colors";
-import exclamationIcon from "../styles/assets/icons/exclamation.svg";
-import eyeIcon from "../styles/assets/icons/eye.svg";
+import colors from "../../styles/core/colors";
+import exclamationIcon from "../../styles/assets/icons/exclamation.svg";
+import eyeIcon from "../../styles/assets/icons/eye.svg";
 import {
   FieldStyle,
   FieldContainer,
-} from "../styles/styledComponents/global/Field.sc";
-import {
   FieldError,
-  FieldIcon,
   ErrorIcon,
+} from "../../styles/styledComponents/global/Field.sc";
+import {
+  FieldIcon,
   FieldErrorBox,
-} from "../styles/styledComponents/auth/Auth.sc";
-import verifyField from "../helper/auth/verifyFields";
+} from "../../styles/styledComponents/auth/Auth.sc";
+import verifyField from "../../helper/auth/verifyFields";
 
 const Field = ({ settings }) => {
   const { icon, eye, type, placeholder, setter, status } = settings;
@@ -40,6 +40,7 @@ const Field = ({ settings }) => {
           type={type === "password" && passwordShown === true ? "text" : type}
           placeholder={placeholder}
           style={{
+            paddingLeft: "56px",
             color: `${status === "unvalid" ? colors.paleViolet : colors.white}`,
             border: `${
               focused || status === "unvalid"
@@ -57,7 +58,9 @@ const Field = ({ settings }) => {
         {status === "unvalid" && placeholder === "ID" && (
           <FieldErrorBox>
             <ErrorIcon src={exclamationIcon} />
-            <FieldError> Enter a valid mail adress </FieldError>
+            <FieldError color={colors.paleViolet}>
+              Enter a valid mail adress
+            </FieldError>
           </FieldErrorBox>
         )}
       </FieldContainer>

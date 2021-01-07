@@ -7,7 +7,7 @@ import Content from "./Content";
 import plus from "../../styles/assets/icons/plus.svg";
 import { IconCreat } from "../../styles/styledComponents/contentList/Content.sc";
 import { getContentList } from "../../services/client/contentClient";
-import { contentList } from "../../styles/styledComponents/global/customs/CustomFlexBoxes.sc";
+import contentList from "../../styles/styledComponents/contentList/ContentListCustomBoxes.sc";
 import { createNewContent } from "../../styles/styledComponents/global/customs/CustomButtons.sc";
 import Pagination from "./Pagination";
 

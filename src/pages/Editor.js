@@ -1,32 +1,32 @@
 import React from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import { FieldStyle } from "../styles/styledComponents/global/Field.sc";
-import Flex from "../styles/styledComponents/global/FlexBoxes.sc";
 import PageContainer from "../styles/styledComponents/global/PageContainer.sc";
-import colors from "../styles/core/colors";
+import HomeScreen from "../components/Editor/Sections/HomeScreen";
+import PageTitle from "../components/PageTitle";
+import Seo from "../components/Editor/Sections/Seo";
+import Button from "../styles/styledComponents/global/Buttons.sc";
+import plus from "../styles/assets/icons/plus.svg";
+import { createNewContent } from "../styles/styledComponents/global/customs/CustomButtons.sc";
+import { IconCreat } from "../styles/styledComponents/contentList/Content.sc";
 
 const Editor = () => {
   return (
-    <PageContainer>
+    <PageContainer position="relative">
       <Header />
-      <Flex
+      <PageTitle />
+      <HomeScreen />
+      <Seo />
+      <Button
         style={{
-          backgroundColor: `${colors.mediumGrey}`,
-          width: "90%",
-          height: "100%",
+          ...createNewContent,
+          alignSelf: "flex-end",
+          marginRight: "5%",
         }}
       >
-        <FieldStyle
-          type="text"
-          placeholder="Title"
-          style={{
-            width: "60%",
-            height: "56px",
-            color: `${colors.white}`,
-          }}
-        />
-      </Flex>
+        <IconCreat src={plus} />
+        CREAT NEW CONTENT
+      </Button>
       <Footer />
     </PageContainer>
   );

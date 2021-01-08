@@ -31,10 +31,14 @@ export const TitleArrow = styled.img`
   visibility: ${(props) => props.hide};
   width: 14px;
   margin: 0 30px 0 0;
-  padding-top: 5px;
   align-self: center;
   cursor: pointer;
   display: inline;
+  transition: 0.3s;
+
+  &:hover {
+    transform: scale(1.5);
+  }
 `;
 
 export const FormTitle = styled.h2`

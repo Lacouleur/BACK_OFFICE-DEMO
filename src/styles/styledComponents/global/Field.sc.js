@@ -42,3 +42,17 @@ export const FieldStyle = styled.input`
     font-size: 14px;
   }
 `;
+
+export const FieldErrorBox = styled.div`
+  width: 100%;
+  display: flex;
+  margin-top: 3px;
+`;
+
+export const FieldIcon = styled.img`
+  position: absolute;
+  left: ${(props) => (props.info === "eyeIcon" ? "90%" : "0")};
+  margin: ${(props) => (props.info === "eyeIcon" ? "0" : "0 0 0 13px")};
+  top: 50%;
+  transform: translateY(-50%);
+`;

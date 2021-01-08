@@ -23,6 +23,17 @@ const Button = styled.button`
   margin-right: ${(props) => props.style.marginRight || "0"};
   margin-left: ${(props) => props.style.marginLeft || "0"};
   margin-bottom: ${(props) => props.style.marginBottom || "0"};
+  transition: 0.3s;
+  opacity: 0.8;
+  pointer-events: ${(props) => props.style.pointerEvents || "auto"};
+
+  &:active {
+    background-color: ${colors.paleVioletTransp};
+  }
+  &:hover {
+    opacity: 1;
+    box-shadow: 0px 0px 10px 1px ${colors.paleVioletTransp};
+  }
 `;
 
 export default Button;

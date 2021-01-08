@@ -4,7 +4,6 @@ import Header from "../components/Header";
 import PageContainer from "../styles/styledComponents/global/PageContainer.sc";
 import HomeScreen from "../components/Editor/Sections/HomeScreen";
 import PageTitle from "../components/PageTitle";
-import Seo from "../components/Editor/Sections/Seo";
 import Button from "../styles/styledComponents/global/Buttons.sc";
 import plus from "../styles/assets/icons/plus.svg";
 import { createNewContent } from "../styles/styledComponents/global/customs/CustomButtons.sc";
@@ -16,7 +15,6 @@ const Editor = () => {
       <Header />
       <PageTitle />
       <HomeScreen />
-      <Seo />
       <Button
         style={{
           ...createNewContent,
@@ -25,7 +23,7 @@ const Editor = () => {
         }}
       >
         <IconCreat src={plus} />
-        CREAT NEW CONTENT
+        ADD A NEW BLOCK
       </Button>
       <Footer />
     </PageContainer>

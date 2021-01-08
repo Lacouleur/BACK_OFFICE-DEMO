@@ -20,5 +20,6 @@ export const loginButton = {
     background: colors.darkGrey,
     cursor: "not-allowed",
     marginTop: "auto",
+    pointerEvents: "none",
   },
 };

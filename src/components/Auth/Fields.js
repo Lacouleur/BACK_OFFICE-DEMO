@@ -8,11 +8,10 @@ import {
   FieldContainer,
   FieldError,
   ErrorIcon,
-} from "../../styles/styledComponents/global/Field.sc";
-import {
   FieldIcon,
   FieldErrorBox,
-} from "../../styles/styledComponents/auth/Auth.sc";
+} from "../../styles/styledComponents/global/Field.sc";
+import {} from "../../styles/styledComponents/auth/Auth.sc";
 import verifyField from "../../helper/auth/verifyFields";
 
 const Field = ({ settings }) => {

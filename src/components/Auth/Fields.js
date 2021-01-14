@@ -12,7 +12,7 @@ import {
   FieldErrorBox,
 } from "../../styles/styledComponents/global/Field.sc";
 import {} from "../../styles/styledComponents/auth/Auth.sc";
-import verifyField from "../../helper/auth/verifyFields";
+import { verifyField } from "../../helper/auth/verifyFields";
 
 const Field = ({ settings }) => {
   const { icon, eye, type, placeholder, setter, status } = settings;
@@ -25,7 +25,7 @@ const Field = ({ settings }) => {
 
   return (
     <>
-      <FieldContainer>
+      <FieldContainer styles={{ width: "100%" }}>
         <FieldIcon src={icon} info="fieldIcon" />
         {eye && (
           <FieldIcon
@@ -38,9 +38,10 @@ const Field = ({ settings }) => {
         <FieldStyle
           type={type === "password" && passwordShown === true ? "text" : type}
           placeholder={placeholder}
-          style={{
+          styles={{
             paddingLeft: "56px",
             color: `${status === "unvalid" ? colors.paleViolet : colors.white}`,
+            height: "56px",
             border: `${
               focused || status === "unvalid"
                 ? `2px solid ${colors.paleViolet}`

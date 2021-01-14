@@ -2,8 +2,9 @@ import styled from "styled-components";
 import colors from "../../core/colors";
 
 export const FieldContainer = styled.div`
-  width: 100%;
-  height: 52px;
+  width: ${(props) => props.styles?.width || "50%"};
+  flex-direction: column;
+  margin-bottom: 30px;
   margin: 16px 0 16px 0;
   position: relative;
 `;
@@ -21,12 +22,12 @@ export const ErrorIcon = styled.img`
 `;
 
 export const FieldStyle = styled.input`
-  width: ${(props) => props.style.width || "100%"};
-  height: ${(props) => props.style.height || "100%"};
+  width: ${(props) => props.styles.width || "100%"};
+  height: ${(props) => props.styles.height || "100%"};
   background-color: ${colors.darkGrey};
-  border: ${(props) => props.style.border || "none"};
-  padding-left: ${(props) => props.style.paddingLeft || "20px"};
-  color: ${(props) => props.style.color};
+  border: ${(props) => props.styles.border || "none"};
+  padding-left: ${(props) => props.styles.paddingLeft || "20px"};
+  color: ${(props) => props.styles.color};
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
   font-size: 16px;
@@ -43,10 +44,32 @@ export const FieldStyle = styled.input`
   }
 `;
 
+export const Select = styled.select`
+  -webkit-appearance: none;
+  width: 100%;
+  height: 56px;
+  background-color: ${colors.darkGrey};
+  border: none;
+  padding: 0 20px;
+  color: ${(props) => props.color};
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  font-size: 16px;
+  line-height: 24px;
+  option {
+    color: ${(props) => props.color || colors.white};
+  }
+`;
+
 export const FieldErrorBox = styled.div`
   width: 100%;
   display: flex;
   margin-top: 3px;
+`;
+
+export const FieldInfosBox = styled.div`
+  display: flex;
+  margin-top: 8px;
 `;
 
 export const FieldIcon = styled.img`

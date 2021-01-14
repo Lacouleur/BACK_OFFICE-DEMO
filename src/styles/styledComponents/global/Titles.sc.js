@@ -18,7 +18,6 @@ export const H2 = styled.h2`
 export const MainTitleBox = styled.div`
   width: 392px;
   height: 90px;
-  margin-top: 42px;
   margin-bottom: 19px;
   color: ${colors.white};
   white-space: nowrap;
@@ -47,7 +46,6 @@ export const FormTitle = styled.h2`
   font-weight: 700;
   line-height: 24px;
   text-align: left;
-  margin-bottom: 16px;
   color: ${colors.white};
   text-transform: uppercase;
 `;
@@ -66,4 +64,11 @@ export const FieldTitle = styled.h3`
 export const TitleIcon = styled.img`
   width: 20px;
   margin-right: 20px;
+`;
+
+export const PageTitleBox = styled.div`
+  display: flex;
+  width: 90%;
+  height: 36px;
+  margin: 150px 0 24px 0;
 `;

@@ -2,17 +2,17 @@ import styled from "styled-components";
 import colors from "../../core/colors";
 
 export const ErrorNotification = styled.div`
-  width: ${(props) => props.style.width || "392px"};
-  border: solid 2px ${colors.paleViolet};
-  margin: ${(props) => props.style.margin || "0 0 36px 0"};
+  width: ${(props) => props.styles.width || "392px"};
+  border: solid 2px ${(props) => props.styles.borderColor || colors.paleViolet};
+  margin: ${(props) => props.styles.margin || "0 0 36px 0"};
   padding: 15px 27px 15px 27px;
   display: flex;
+  transition: all ease 0.3;
 `;
 
 export const ErrorNotificationIcon = styled.img`
   width: 20px;
   align-self: flex-start;
-  margin-top: 3px;
 `;
 
 export const ErrorNotificationText = styled.p`

@@ -1,4 +1,13 @@
-function verifyField(id, value, setter) {
+export function verifySlug(value) {
+  const slugRegex = new RegExp(/^[a-z0-9-]+(?:[a-z0-9]+)*$/);
+  const isSlug = slugRegex.exec(value);
+  if (isSlug) {
+    return true;
+  }
+  return false;
+}
+
+export function verifyField(id, value, setter) {
   if (id === "ID") {
     if (value.length < 8) {
       setter("");

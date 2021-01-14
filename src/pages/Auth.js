@@ -4,7 +4,7 @@ import { sendAuth, setToken, getToken } from "../services/client/authClient";
 import idIcon from "../styles/assets/icons/id.svg";
 import lockIcon from "../styles/assets/icons/lock.svg";
 import Field from "../components/Auth/Fields";
-import { Form } from "../styles/styledComponents/auth/Auth.sc";
+import { Form, AuthBox } from "../styles/styledComponents/auth/Auth.sc";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import {
@@ -13,8 +13,8 @@ import {
   H2,
   MainTitleBox,
 } from "../styles/styledComponents/global/Titles.sc";
-import Button from "../styles/styledComponents/global/Buttons.sc";
-import { loginButton } from "../styles/styledComponents/global/customs/CustomButtons.sc";
+import Button from "../styles/styledComponents/global/Buttons/Buttons.sc";
+import { loginButton } from "../styles/styledComponents/global/Buttons/CustomButtons.sc";
 import PageContainer from "../styles/styledComponents/global/PageContainer.sc";
 import Error from "../components/Notifications/Error";
 
@@ -46,59 +46,63 @@ const Auth = () => {
   };
 
   return (
-    <PageContainer height="100%">
+    <PageContainer position="absolute">
       <Header />
-      {error && (
-        <Error
-          text="Incorrect username and/or password. Please check and try again."
-          style={{
-            margin: "36px 0 0 0",
-          }}
-        />
-      )}
-      <MainTitleBox>
-        <H1>PHOENIX&apos;S BACK OFFICE</H1>
-        <H2>Welcome to Phoenix Media&apos;s Backoffice</H2>
-      </MainTitleBox>
+      <AuthBox>
+        {error && (
+          <Error
+            text="Incorrect username and/or password. Please check and try again."
+            styles={{
+              margin: "36px 0 0 0",
+            }}
+          />
+        )}
+        <MainTitleBox>
+          <H1>PHOENIX&apos;S BACK OFFICE</H1>
+          <H2>Welcome to Phoenix Media&apos;s Backoffice</H2>
+        </MainTitleBox>
 
-      <Form onSubmit={(e) => handleSubmit(e)} autocomplete="on">
-        <FormTitle>Log in</FormTitle>
-        <Field
-          settings={{
-            icon: idIcon,
-            eye: false,
-            type: "mail",
-            placeholder: "ID",
-            setter: setMail,
-            status: mail,
-          }}
-        />
+        <Form onSubmit={(e) => handleSubmit(e)} autocomplete="on">
+          <FormTitle>Log in</FormTitle>
+          <Field
+            settings={{
+              icon: idIcon,
+              eye: false,
+              type: "mail",
+              placeholder: "ID",
+              setter: setMail,
+              status: mail,
+            }}
+          />
 
-        <Field
-          settings={{
-            icon: lockIcon,
-            eye: true,
-            type: "password",
-            placeholder: "password",
-            setter: setPass,
-            status: pass,
-          }}
-        />
+          <Field
+            settings={{
+              icon: lockIcon,
+              eye: true,
+              type: "password",
+              placeholder: "password",
+              setter: setPass,
+              status: pass,
+            }}
+          />
 
-        <Button
-          style={
-            mail !== "" && pass !== "" && mail !== "unvalid"
-              ? loginButton.clickable
-              : loginButton.unClickable
-          }
-          type={
-            mail !== "" && pass !== "" && mail !== "unvalid" ? "submit" : "text"
-          }
-        >
-          Login
-        </Button>
-      </Form>
-      <Footer />
+          <Button
+            styles={
+              mail !== "" && pass !== "" && mail !== "unvalid"
+                ? loginButton.clickable
+                : loginButton.unClickable
+            }
+            type={
+              mail !== "" && pass !== "" && mail !== "unvalid"
+                ? "submit"
+                : "text"
+            }
+          >
+            Login
+          </Button>
+        </Form>
+        <Footer />
+      </AuthBox>
     </PageContainer>
   );
 };

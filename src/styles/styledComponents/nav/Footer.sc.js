@@ -7,6 +7,8 @@ const FooterContainer = styled.div`
   background-color: ${colors.black};
   position: absolute;
   bottom: 0;
+  left: 0;
+  right: 0;
 `;
 
 export default FooterContainer;

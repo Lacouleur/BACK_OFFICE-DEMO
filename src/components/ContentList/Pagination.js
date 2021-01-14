@@ -4,11 +4,10 @@ import {
   PageListLi,
   PageListUl,
   PageListArrow,
+  PaginationBox,
 } from "../../styles/styledComponents/contentList/Pagination.sc";
 import arrowLeft from "../../styles/assets/icons/arrow-left.svg";
 import arrowRight from "../../styles/assets/icons/arrow-right.svg";
-import Flex from "../../styles/styledComponents/global/FlexBoxes.sc";
-import contentList from "../../styles/styledComponents/contentList/ContentListCustomBoxes.sc";
 import keyGenerator from "../../helper/KeyGenerator";
 import { getContentList } from "../../services/client/contentClient";
 import colors from "../../styles/core/colors";
@@ -31,7 +30,7 @@ const Pagination = ({ pagination, setPagination, setContents }) => {
     pageArr.push(
       <PageListLi
         key={keyGenerator(page)}
-        style={
+        styles={
           page === currentPage
             ? { border: `1px solid ${colors.white}`, padding: "5px 8px" }
             : { border: "none" }
@@ -46,7 +45,7 @@ const Pagination = ({ pagination, setPagination, setContents }) => {
   }
 
   return (
-    <Flex style={contentList.paginationBox}>
+    <PaginationBox>
       <PageListArrow
         src={arrowLeft}
         onClick={() => {
@@ -62,7 +61,7 @@ const Pagination = ({ pagination, setPagination, setContents }) => {
         }}
         hide={currentPage + 1 > maxDisplayedPages ? "hidden" : "visible"}
       />
-    </Flex>
+    </PaginationBox>
   );
 };
 

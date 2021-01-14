@@ -8,7 +8,7 @@ import {
 import arrowLeft from "../../styles/assets/icons/arrow-left.svg";
 import arrowRight from "../../styles/assets/icons/arrow-right.svg";
 import Flex from "../../styles/styledComponents/global/FlexBoxes.sc";
-import { contentList } from "../../styles/styledComponents/global/customs/CustomFlexBoxes.sc";
+import contentList from "../../styles/styledComponents/contentList/ContentListCustomBoxes.sc";
 import keyGenerator from "../../helper/KeyGenerator";
 import { getContentList } from "../../services/client/contentClient";
 import colors from "../../styles/core/colors";

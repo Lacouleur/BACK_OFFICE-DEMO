@@ -13,17 +13,6 @@ export const Container = styled.div`
   flex-direction: column;
 `;
 
-export const MainTitleBox = styled.div`
-  width: 392px;
-  height: 90px;
-  margin-top: 42px;
-  margin-bottom: 19px;
-  color: ${colors.white};
-  ${media.mobile`
-  width: 288px;
-  `};
-`;
-
 export const Form = styled.form`
   width: 392px;
   height: 343px;
@@ -37,100 +26,6 @@ export const Form = styled.form`
   box-shadow: 0px 11px 15px ${colors.shadow};
   ${media.mobile`
   width: 288px;
-  `};
-`;
-
-export const FormTitle = styled.h2`
-  font-size: 22px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 24px;
-  text-align: left;
-  margin-bottom: 16px;
-  color: ${colors.white};
-`;
-
-export const FieldContainer = styled.div`
-  width: 100%;
-  height: 52px;
-  margin: 16px 0 16px 0;
-  position: relative;
-`;
-
-export const FieldStyle = styled.input`
-  width: 100%;
-  height: 100%;
-  background-color: ${colors.darkGrey};
-  border: none;
-  padding-left: 52px;
-  border-bottom: ${(props) => props.border};
-  color: ${(props) => props.color};
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
-  font-size: 16px;
-  line-height: 24px;
-
-  // customing the native CSS for autocomplet.
-  &:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 1000px ${colors.darkGrey} inset;
-  }
-  &:-webkit-autofill::first-line {
-    font-family: Arial;
-    color: ${colors.lightGrey};
-    font-size: 14px;
-  }
-`;
-
-export const ErrorNotification = styled.div`
-  width: 392px;
-  border: solid 2px ${colors.paleViolet};
-  margin-top: 36px;
-  padding: 15px 27px 15px 27px;
-  display: flex;
-  ${media.mobile`
-  width: 288px;
-  `};
-`;
-
-export const ErrorNotificationIcon = styled.img`
-  width: 20px;
-  align-self: flex-start;
-  margin-top: 3px;
-`;
-
-export const ErrorNotificationText = styled.p`
-  font-size: 16px;
-  line-height: 24px;
-  margin-left: 12px;
-  width: 100%;
-  color: ${colors.white};
-`;
-
-export const FieldErrorBox = styled.div`
-  width: 100%;
-  display: flex;
-  margin-top: 3px;
-`;
-export const FieldError = styled.div`
-  color: ${colors.paleViolet};
-  font-size: 12px;
-  line-height: 14px;
-  margin-left: 8px;
-`;
-
-export const ErrorIcon = styled.img`
-  width: 12px;
-  margin-left: 17px;
-`;
-
-export const FieldIcon = styled.img`
-  position: absolute;
-  left: ${(props) => (props.info === "eyeIcon" ? "90%" : "0")};
-  margin: ${(props) => (props.info === "eyeIcon" ? "0" : "0 0 0 13px")};
-  top: 50%;
-  transform: translateY(-50%);
-  ${media.mobile`
-  left: ${(props) => (props.info === "eyeIcon" ? "85%" : "0")};
   `};
 `;
 

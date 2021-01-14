@@ -1,7 +1,6 @@
-/* eslint-disable import/prefer-default-export */
-import colors from "../../../core/colors";
+import colors from "../../core/colors";
 
-export const contentList = {
+const contentList = {
   ContentsPageContainer: {
     width: "80%",
     height: "100%",
@@ -52,3 +51,5 @@ export const contentList = {
     marginRight: "20px",
   },
 };
+
+export default contentList;

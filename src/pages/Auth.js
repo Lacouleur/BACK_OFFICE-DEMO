@@ -3,22 +3,20 @@ import { useHistory } from "react-router-dom";
 import { sendAuth, setToken, getToken } from "../services/client/authClient";
 import idIcon from "../styles/assets/icons/id.svg";
 import lockIcon from "../styles/assets/icons/lock.svg";
-import errorIcon from "../styles/assets/icons/exclamation.svg";
-import Field from "../components/Fields";
-import {
-  Form,
-  FormTitle,
-  MainTitleBox,
-  ErrorNotification,
-  ErrorNotificationText,
-  ErrorNotificationIcon,
-} from "../styles/styledComponents/auth/Auth.sc";
+import Field from "../components/Auth/Fields";
+import { Form } from "../styles/styledComponents/auth/Auth.sc";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { H1, H2 } from "../styles/styledComponents/global/Titles.sc";
+import {
+  FormTitle,
+  H1,
+  H2,
+  MainTitleBox,
+} from "../styles/styledComponents/global/Titles.sc";
 import Button from "../styles/styledComponents/global/Buttons.sc";
 import { loginButton } from "../styles/styledComponents/global/customs/CustomButtons.sc";
 import PageContainer from "../styles/styledComponents/global/PageContainer.sc";
+import Error from "../components/Notifications/Error";
 
 const Auth = () => {
   const [mail, setMail] = useState("");
@@ -51,14 +49,13 @@ const Auth = () => {
     <PageContainer height="100%">
       <Header />
       {error && (
-        <ErrorNotification>
-          <ErrorNotificationIcon src={errorIcon} />
-          <ErrorNotificationText>
-            Incorrect username and/or password. Please check and try again.
-          </ErrorNotificationText>
-        </ErrorNotification>
+        <Error
+          text="Incorrect username and/or password. Please check and try again."
+          style={{
+            margin: "36px 0 0 0",
+          }}
+        />
       )}
-
       <MainTitleBox>
         <H1>PHOENIX&apos;S BACK OFFICE</H1>
         <H2>Welcome to Phoenix Media&apos;s Backoffice</H2>

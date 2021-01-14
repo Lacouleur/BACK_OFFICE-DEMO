@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import colors from "../styles/core/colors";
-import exclamationIcon from "../styles/assets/icons/exclamation.svg";
-import eyeIcon from "../styles/assets/icons/eye.svg";
+import colors from "../../styles/core/colors";
+import exclamationIcon from "../../styles/assets/icons/exclamation.svg";
+import eyeIcon from "../../styles/assets/icons/eye.svg";
 import {
   FieldStyle,
   FieldContainer,
   FieldError,
-  FieldIcon,
   ErrorIcon,
+  FieldIcon,
   FieldErrorBox,
-} from "../styles/styledComponents/auth/Auth.sc";
-import verifyField from "../helper/auth/verifyFields";
+} from "../../styles/styledComponents/global/Field.sc";
+import {} from "../../styles/styledComponents/auth/Auth.sc";
+import verifyField from "../../helper/auth/verifyFields";
 
 const Field = ({ settings }) => {
   const { icon, eye, type, placeholder, setter, status } = settings;
@@ -37,12 +38,15 @@ const Field = ({ settings }) => {
         <FieldStyle
           type={type === "password" && passwordShown === true ? "text" : type}
           placeholder={placeholder}
-          color={status === "unvalid" ? colors.paleViolet : colors.white}
-          border={
-            focused || status === "unvalid"
-              ? `2px solid ${colors.paleViolet}`
-              : `2px solid ${colors.lightGrey}`
-          }
+          style={{
+            paddingLeft: "56px",
+            color: `${status === "unvalid" ? colors.paleViolet : colors.white}`,
+            border: `${
+              focused || status === "unvalid"
+                ? `2px solid ${colors.paleViolet}`
+                : `none`
+            }`,
+          }}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           onChange={(e) => {
@@ -53,7 +57,9 @@ const Field = ({ settings }) => {
         {status === "unvalid" && placeholder === "ID" && (
           <FieldErrorBox>
             <ErrorIcon src={exclamationIcon} />
-            <FieldError> Enter a valid mail adress </FieldError>
+            <FieldError color={colors.paleViolet}>
+              Enter a valid mail adress
+            </FieldError>
           </FieldErrorBox>
         )}
       </FieldContainer>

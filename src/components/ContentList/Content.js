@@ -13,7 +13,7 @@ import isEven from "../../helper/isEven";
 import colors from "../../styles/core/colors";
 import pen from "../../styles/assets/icons/pen.svg";
 import trash from "../../styles/assets/icons/trash.svg";
-import { contentList } from "../../styles/styledComponents/global/customs/CustomFlexBoxes.sc";
+import contentList from "../../styles/styledComponents/contentList/ContentListCustomBoxes.sc";
 
 const Content = ({ number, content }) => {
   const even = isEven(number);

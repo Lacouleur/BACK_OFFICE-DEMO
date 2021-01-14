@@ -7,9 +7,10 @@ import Content from "./Content";
 import plus from "../../styles/assets/icons/plus.svg";
 import { IconCreat } from "../../styles/styledComponents/contentList/Content.sc";
 import { getContentList } from "../../services/client/contentClient";
-import { contentList } from "../../styles/styledComponents/global/customs/CustomFlexBoxes.sc";
+import contentList from "../../styles/styledComponents/contentList/ContentListCustomBoxes.sc";
 import { createNewContent } from "../../styles/styledComponents/global/customs/CustomButtons.sc";
 import Pagination from "./Pagination";
+import { hostUrl } from "../../services/config/clientConfig";
 
 const ContentList = () => {
   const [contents, setContents] = useState();
@@ -37,7 +38,10 @@ const ContentList = () => {
     <Flex style={contentList.ContentsPageContainer}>
       <Flex style={contentList.titleBox}>
         <H1> CONTENT LIST</H1>
-        <Button style={createNewContent}>
+        <Button
+          style={createNewContent}
+          onClick={() => window.location.assign(`${hostUrl}/editor`)}
+        >
           <IconCreat src={plus} />
           CREAT NEW CONTENT
         </Button>

@@ -1,5 +1,17 @@
 import styled from "styled-components";
 
+export const PaginationBox = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: auto;
+  height: 60px;
+  width: 20%;
+  max-width: 200px;
+  margin-left: auto;
+  margin-right: 0;
+`;
+
 export const PageListUl = styled.ul`
   list-style-type: none;
   padding: 0;
@@ -13,10 +25,10 @@ export const PageListUl = styled.ul`
 `;
 
 export const PageListLi = styled.li`
-  border: ${(props) => props.style.border};
+  border: ${(props) => props.styles.border};
   border-radius: 2px;
   margin: 0 12px;
-  padding: ${(props) => props.style.padding || 0};
+  padding: ${(props) => props.styles.padding || 0};
   cursor: pointer;
 `;
 

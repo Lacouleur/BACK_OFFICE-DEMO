@@ -13,24 +13,20 @@ import exampleSeoImg from "../../../styles/assets/icons/exampleSeo.svg";
 
 const Seo = () => {
   return (
-    <Flex style={editorBox.contentBox}>
-      <Flex style={{}}>
+    <Flex styles={editorBox.contentBox}>
+      <Flex styles={{}}>
         <TitleIcon src={seoIcon} />
         <FormTitle>SEO</FormTitle>
       </Flex>
       <FieldTitle>Text and category</FieldTitle>
+      <Field properties={{ placeholder: "Title" }} />
       <Field
-        boxStyle={editorBox.fieldBox}
-        properties={{ placeholder: "Title" }}
-      />
-      <Field
-        boxStyle={editorBox.fieldBox}
         properties={{ placeholder: "Description" }}
         maxlength="155"
         infos="Maximum 155 characters"
       />
       <Flex
-        style={{
+        styles={{
           position: "absolute",
           left: "60%",
           top: "66px",

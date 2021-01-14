@@ -5,6 +5,7 @@ const colors = {
   lightGrey: "#acacac",
   fadedGrey: "474747",
   transpGrey: "#ffffff1f",
+  placeholderGrey: "#7f7f7f",
   white: "#FFFFFF",
   paleViolet: "#bb86fc",
   paleVioletTransp: "#bb86fc48",

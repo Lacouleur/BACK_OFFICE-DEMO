@@ -6,11 +6,15 @@ import {
   ErrorNotificationIcon,
 } from "../../styles/styledComponents/global/Errors.sc";
 import errorIcon from "../../styles/assets/icons/exclamation.svg";
+import validIcon from "../../styles/assets/icons/validIcon.svg";
 
-const Error = ({ text, style }) => {
+const Error = ({ text, style, type }) => {
+  const icon = type === "error" ? errorIcon : validIcon;
+  const styled = type === "error" ? style : { ...style, borderColor: "green" };
+
   return (
-    <ErrorNotification style={style}>
-      <ErrorNotificationIcon src={errorIcon} />
+    <ErrorNotification styles={styled}>
+      <ErrorNotificationIcon src={icon} />
       <ErrorNotificationText>{text}</ErrorNotificationText>
     </ErrorNotification>
   );
@@ -18,11 +22,13 @@ const Error = ({ text, style }) => {
 
 Error.defaultProps = {
   style: {},
+  type: "error",
 };
 
 Error.propTypes = {
   text: PropTypes.string.isRequired,
   style: PropTypes.shape({}),
+  type: PropTypes.string,
 };
 
 export default Error;

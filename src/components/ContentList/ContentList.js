@@ -1,14 +1,17 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from "react";
 import { H1 } from "../../styles/styledComponents/global/Titles.sc";
-import Flex from "../../styles/styledComponents/global/FlexBoxes.sc";
-import Button from "../../styles/styledComponents/global/Buttons.sc";
+import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import Content from "./Content";
 import plus from "../../styles/assets/icons/plus.svg";
-import { IconCreat } from "../../styles/styledComponents/contentList/Content.sc";
+import {
+  IconCreat,
+  ContentSectionBox,
+  TitleBox,
+  ListBox,
+} from "../../styles/styledComponents/contentList/ContentList.sc";
 import { getContentList } from "../../services/client/contentClient";
-import contentList from "../../styles/styledComponents/contentList/ContentListCustomBoxes.sc";
-import { createNewContent } from "../../styles/styledComponents/global/customs/CustomButtons.sc";
+import { createNewContent } from "../../styles/styledComponents/global/Buttons/CustomButtons.sc";
 import Pagination from "./Pagination";
 import { hostUrl } from "../../services/config/clientConfig";
 
@@ -35,18 +38,18 @@ const ContentList = () => {
   }, []);
 
   return (
-    <Flex style={contentList.ContentsPageContainer}>
-      <Flex style={contentList.titleBox}>
+    <ContentSectionBox>
+      <TitleBox>
         <H1> CONTENT LIST</H1>
         <Button
-          style={createNewContent}
+          styles={createNewContent}
           onClick={() => window.location.assign(`${hostUrl}/editor`)}
         >
           <IconCreat src={plus} />
           CREAT NEW CONTENT
         </Button>
-      </Flex>
-      <Flex style={contentList.listContainer}>
+      </TitleBox>
+      <ListBox>
         {contents &&
           contents.map((content, index) => (
             <Content number={index} content={content} key={content._id} />
@@ -58,8 +61,8 @@ const ContentList = () => {
             setContents={setContents}
           />
         )}
-      </Flex>
-    </Flex>
+      </ListBox>
+    </ContentSectionBox>
   );
 };
 

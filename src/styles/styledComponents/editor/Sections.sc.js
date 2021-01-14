@@ -1,6 +1,22 @@
-/* eslint-disable import/prefer-default-export */
 import styled from "styled-components";
+import colors from "../../core/colors";
+
+export const SectionTitle = styled.div`
+  display: flex;
+`;
 
 export const ExampleSeo = styled.img`
   width: 100%;
+`;
+
+export const ContentForm = styled.form`
+  position: relative;
+  background-color: ${colors.mediumGrey};
+  width: 90%;
+  min-width: 800px;
+  height: auto;
+  margin-bottom: 20px;
+  flex-direction: column;
+  padding: 30px;
+  display: flex;
 `;

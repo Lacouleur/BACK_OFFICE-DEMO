@@ -1,13 +1,13 @@
-function checkFields(values) {
-  const arr = [];
-
-  if (!values.title) {
-    arr.push("title");
-  }
+export function checkSlug(values) {
   if (!values.slug) {
-    arr.push("slug URL");
+    return true;
   }
-  return arr;
+  return false;
 }
 
-export default checkFields;
+export function checkTitle(values) {
+  if (!values.title) {
+    return true;
+  }
+  return false;
+}

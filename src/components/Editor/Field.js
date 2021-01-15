@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable array-callback-return */
 import React, { useState, useEffect } from "react";
@@ -17,7 +16,6 @@ import exclamationVioletIcon from "../../styles/assets/icons/exclamation.svg";
 import { getCategories } from "../../services/client/contentClient";
 import keyGenerator from "../../helper/KeyGenerator";
 import { verifySlug } from "../../helper/auth/verifyFields";
-/* import resetField from "../../helper/Editor/resetField"; */
 
 const Field = ({
   fieldStyle,
@@ -92,7 +90,10 @@ const Field = ({
           placeholder={placeholder}
           maxLength={maxlength}
           onChange={(e) => {
-            if (e.target.value.length > 0) {
+            if (
+              (name === "title" || name === "slug") &&
+              e.target.value.length > 0
+            ) {
               setError(false);
             }
             if (name === "slug") {
@@ -108,8 +109,17 @@ const Field = ({
               ) {
                 setSpecialError(true);
               } else {
+                setter({
+                  ...values,
+                  [name]: e.target.value,
+                });
                 setSpecialError(false);
               }
+            } else if (name === "htag") {
+              setter({
+                ...values,
+                header: { [name]: e.target.value },
+              });
             } else {
               setter({
                 ...values,

@@ -22,7 +22,8 @@ export const postContent = (
   setValues,
   form,
   setPosted,
-  setSpecialError
+  setSpecialError,
+  setPostingError
 ) =>
   axios({
     method: "post",
@@ -38,10 +39,18 @@ export const postContent = (
       setSpecialError(false);
       setPosted(true);
     })
-    .catch(() => {
-      setPosted(false);
-      deleteToken();
-      window.location.assign(`${hostUrl}/`);
+    .catch((e) => {
+      if (e.response.status === 409) {
+        setPostingError({
+          isError: true,
+          name: "409",
+          text: e.response.data,
+        });
+        setPosted(false);
+      } else {
+        deleteToken();
+        window.location.assign(`${hostUrl}/`);
+      }
     });
 
 export const getCategories = () =>

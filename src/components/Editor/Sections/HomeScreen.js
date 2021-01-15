@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   TitleIcon,
   FormTitle,
@@ -8,13 +8,12 @@ import homeIcon from "../../../styles/assets/icons/home.svg";
 import Field from "../Field";
 import Button from "../../../styles/styledComponents/global/Buttons/Buttons.sc";
 import { checkTitle, checkSlug } from "../../../helper/Editor/checkFields";
-import Error from "../../Notifications/Error";
 import {
   ContentForm,
   SectionTitle,
 } from "../../../styles/styledComponents/editor/Sections.sc";
-import keyGenerator from "../../../helper/KeyGenerator";
 import { postContent } from "../../../services/client/contentClient";
+import EditorErrors from "../EditorErrors";
 
 const HomeScreen = () => {
   const [titleError, setTitleError] = useState(false);
@@ -22,6 +21,11 @@ const HomeScreen = () => {
   const [posted, setPosted] = useState(false);
   const [values, setValues] = useState({});
   const [specialError, setSpecialError] = useState(false);
+  const [postingError, setPostingError] = useState({
+    isError: false,
+    name: "",
+    text: "",
+  });
 
   function checkAndSend(e) {
     e.preventDefault();
@@ -31,46 +35,29 @@ const HomeScreen = () => {
     setTitleError(title);
     setSlugError(slug);
     if (!title && !slug) {
-      console.log(values);
       const form = e.target;
-      postContent(values, setValues, form, setPosted, setSpecialError);
+      postContent(
+        values,
+        setValues,
+        form,
+        setPosted,
+        setSpecialError,
+        setPostingError
+      );
     }
   }
 
-  useEffect(() => {
-    if (posted) {
-      setTimeout(() => {
-        setPosted(false);
-      }, 3000);
-    }
-  }, [posted]);
-
   return (
     <>
-      {posted && (
-        <Error
-          key={keyGenerator()}
-          text="The content has been saved"
-          styles={{ width: "90%" }}
-          type="valid"
-        />
-      )}
-      {titleError && (
-        <Error
-          key={keyGenerator()}
-          text="Content need a title."
-          styles={{ width: "90%" }}
-        />
-      )}
-      {slugError && (
-        <Error
-          key={keyGenerator()}
-          text={`Content need a ${
-            specialError ? "valid " : ""
-          } valid slug URL.`}
-          styles={{ width: "90%" }}
-        />
-      )}
+      <EditorErrors
+        postingError={postingError}
+        setPostingError={setPostingError}
+        specialError={specialError}
+        posted={posted}
+        setPosted={setPosted}
+        titleError={titleError}
+        slugError={slugError}
+      />
       <ContentForm onSubmit={checkAndSend}>
         <SectionTitle>
           <TitleIcon src={homeIcon} />
@@ -92,7 +79,7 @@ const HomeScreen = () => {
           placeholder="slug URL"
           infos={`${
             specialError ? "INVALID ! " : ""
-          }Only characters, numbers and hyphens.`}
+          }"Only characters, numbers and hyphens.`}
           setter={setValues}
           values={values}
           name="slug"
@@ -110,13 +97,13 @@ const HomeScreen = () => {
           fieldType="select"
           post={posted}
         />
-        <Field
+        {/*         <Field
           placeholder="Tag"
           maxlength="25"
           infos="Maximum 25 characters"
           setter={setValues}
           values={values}
-          name="tag"
+          name="htag"
           post={posted}
         />
         <FieldTitle>Background</FieldTitle>
@@ -126,7 +113,7 @@ const HomeScreen = () => {
           values={values}
           name="image"
           post={posted}
-        />
+        /> */}
         <Button
           styles={{
             alignSelf: "flex-end",

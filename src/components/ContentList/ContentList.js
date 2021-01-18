@@ -46,7 +46,7 @@ const ContentList = () => {
           onClick={() => window.location.assign(`${hostUrl}/editor`)}
         >
           <IconCreat src={plus} />
-          CREAT NEW CONTENT
+          CREATE NEW CONTENT
         </Button>
       </TitleBox>
       <ListBox>

@@ -3,19 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-paginate": "^6.5.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
+    "react-textarea-autosize": "^8.3.0",
     "styled-components": "^5.2.1",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint . "
@@ -52,6 +53,7 @@
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
     "prettier": "^2.1.2",
+    "react-app-rewired": "^2.1.8",
     "webpack": "^4.44.2",
     "webpack-cli": "^4.2.0"
   },

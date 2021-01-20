@@ -1,10 +1,10 @@
+/* eslint-disable no-unused-vars */
 import axios from "axios";
-import { baseUrl, hostUrl } from "../config/clientConfig";
 import { getToken, deleteToken } from "./authClient";
 
 export const getContentList = (page = 1, limit = 20) =>
   axios
-    .get(`${baseUrl}/contents?limit=${limit}&page=${page}`, {
+    .get(`${BASE_URL}/contents?limit=${limit}&page=${page}`, {
       headers: {
         Authorization: `Bearer ${getToken()}`,
       },
@@ -14,7 +14,7 @@ export const getContentList = (page = 1, limit = 20) =>
     })
     .catch(() => {
       deleteToken();
-      window.location.assign(`${hostUrl}/`);
+      window.location.assign(`${HOST_URL}/`);
     });
 
 export const postContent = (
@@ -27,7 +27,7 @@ export const postContent = (
 ) =>
   axios({
     method: "post",
-    url: `${baseUrl}/contents`,
+    url: `${BASE_URL}/contents`,
     data: values,
     headers: {
       Authorization: `Bearer ${getToken()}`,
@@ -43,19 +43,18 @@ export const postContent = (
       if (e.response.status === 409) {
         setPostingError({
           isError: true,
-          name: "409",
           text: e.response.data,
         });
         setPosted(false);
       } else {
         deleteToken();
-        window.location.assign(`${hostUrl}/`);
+        window.location.assign(`${HOST_URL}/`);
       }
     });
 
 export const getCategories = () =>
   axios
-    .get(`${baseUrl}/categories`, {
+    .get(`${BASE_URL}/categories`, {
       headers: {
         Authorization: `Bearer ${getToken()}`,
       },
@@ -65,5 +64,5 @@ export const getCategories = () =>
     })
     .catch(() => {
       deleteToken();
-      window.location.assign(`${hostUrl}/`);
+      window.location.assign(`${HOST_URL}/`);
     });

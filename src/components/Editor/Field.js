@@ -9,6 +9,7 @@ import {
   ErrorIcon,
   FieldContainer,
   FieldInfosBox,
+  TextArea,
 } from "../../styles/styledComponents/global/Field.sc";
 import colors from "../../styles/core/colors";
 import exclamationIcon from "../../styles/assets/icons/exclamationGrey.svg";
@@ -31,6 +32,9 @@ const Field = ({
   fieldType,
   specialError,
   setSpecialError,
+  section,
+  setPostingError,
+  postingError,
 }) => {
   const [selectedValue, setSelectedValue] = useState("");
   const [options, setOptions] = useState([]);
@@ -53,6 +57,64 @@ const Field = ({
     );
     setOptions(opts);
   }, []);
+
+  function textFieldDispatcher(e) {
+    switch (section) {
+      case "seo":
+        if (name === "title") {
+          setter({
+            ...values,
+            seo: {
+              ...values.seo,
+              [name]: e.target.value,
+            },
+          });
+        }
+        break;
+      case "main":
+        if (
+          (name === "title" || name === "slug") &&
+          e.target.value.length > 0
+        ) {
+          setError(false);
+        }
+        if (name === "slug") {
+          if (e.target.value.length > 0) {
+            setPostingError({
+              isError: false,
+              text: "",
+            });
+          }
+          if (verifySlug(e.target.value)) {
+            setSpecialError(false);
+            setter({
+              ...values,
+              [name]: e.target.value,
+            });
+          } else if (e.target.value.length > 0 && !verifySlug(e.target.value)) {
+            setSpecialError(true);
+          } else {
+            setter({
+              ...values,
+              [name]: e.target.value,
+            });
+            setSpecialError(false);
+          }
+        } else if (name === "htag") {
+          setter({
+            ...values,
+            header: { [name]: e.target.value },
+          });
+        } else {
+          setter({
+            ...values,
+            [name]: e.target.value,
+          });
+        }
+        break;
+      default:
+    }
+  }
 
   return (
     <FieldContainer>
@@ -84,56 +146,40 @@ const Field = ({
           {options.map((option) => option)}
         </Select>
       )}
+      {fieldType && fieldType === "textarea" && (
+        <TextArea
+          placeholder={placeholder}
+          maxLength={maxlength}
+          onChange={(e) => {
+            if (section === "seo") {
+              setter({
+                ...values,
+                seo: {
+                  ...values.seo,
+                  [name]: e.target.value,
+                },
+              });
+            }
+          }}
+        />
+      )}
       {!fieldType && (
         <FieldStyle
           type={type}
           placeholder={placeholder}
           maxLength={maxlength}
-          onChange={(e) => {
-            if (
-              (name === "title" || name === "slug") &&
-              e.target.value.length > 0
-            ) {
-              setError(false);
-            }
-            if (name === "slug") {
-              if (verifySlug(e.target.value)) {
-                setSpecialError(false);
-                setter({
-                  ...values,
-                  [name]: e.target.value,
-                });
-              } else if (
-                e.target.value.length > 0 &&
-                !verifySlug(e.target.value)
-              ) {
-                setSpecialError(true);
-              } else {
-                setter({
-                  ...values,
-                  [name]: e.target.value,
-                });
-                setSpecialError(false);
-              }
-            } else if (name === "htag") {
-              setter({
-                ...values,
-                header: { [name]: e.target.value },
-              });
-            } else {
-              setter({
-                ...values,
-                [name]: e.target.value,
-              });
-            }
-          }}
+          onChange={(e) => textFieldDispatcher(e)}
           styles={{
             ...fieldStyle,
             color: `${
-              error || specialError ? colors.paleViolet : colors.white
+              error || specialError || postingError?.isError
+                ? colors.paleViolet
+                : colors.white
             }`,
             border: `${
-              error || specialError ? `2px solid ${colors.paleViolet}` : `none`
+              error || specialError || postingError?.isError
+                ? `2px solid ${colors.paleViolet}`
+                : `none`
             }`,
             height: "56px",
           }}
@@ -147,11 +193,17 @@ const Field = ({
         >
           <ErrorIcon
             src={
-              error || specialError ? exclamationVioletIcon : exclamationIcon
+              error || specialError || postingError?.isError
+                ? exclamationVioletIcon
+                : exclamationIcon
             }
           />
           <FieldError
-            color={error || specialError ? colors.paleViolet : colors.lightGrey}
+            color={
+              error || specialError || postingError?.isError
+                ? colors.paleViolet
+                : colors.lightGrey
+            }
           >
             {infos}
           </FieldError>
@@ -172,6 +224,10 @@ Field.defaultProps = {
   fieldType: undefined,
   specialError: undefined,
   setSpecialError: undefined,
+  section: undefined,
+  values: PropTypes.shape({}),
+  setPostingError: undefined,
+  postingError: undefined,
 };
 
 Field.propTypes = {
@@ -181,13 +237,20 @@ Field.propTypes = {
   maxlength: PropTypes.string,
   infos: PropTypes.string,
   setter: PropTypes.func.isRequired,
-  values: PropTypes.shape({}).isRequired,
+  values: PropTypes.shape({
+    seo: PropTypes.shape({}),
+  }),
   name: PropTypes.string.isRequired,
   error: PropTypes.bool,
   setError: PropTypes.func,
   fieldType: PropTypes.string,
   specialError: PropTypes.bool,
   setSpecialError: PropTypes.func,
+  section: PropTypes.string,
+  setPostingError: PropTypes.func,
+  postingError: PropTypes.shape({
+    isError: PropTypes.bool,
+  }),
 };
 
 export default Field;

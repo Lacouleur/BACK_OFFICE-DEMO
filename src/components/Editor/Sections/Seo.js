@@ -1,44 +1,56 @@
 import React from "react";
-import Flex from "../../../styles/styledComponents/global/FlexBoxes.sc";
+import PropTypes from "prop-types";
 import {
   TitleIcon,
   FormTitle,
   FieldTitle,
 } from "../../../styles/styledComponents/global/Titles.sc";
-import editorBox from "../../../styles/styledComponents/editor/EditorCustomBoxes.sc";
 import seoIcon from "../../../styles/assets/icons/seo.svg";
 import Field from "../Field";
-import { ExampleSeo } from "../../../styles/styledComponents/editor/Sections.sc";
+import {
+  SectionBox,
+  ExampleSeo,
+  SectionTitle,
+} from "../../../styles/styledComponents/editor/Sections.sc";
 import exampleSeoImg from "../../../styles/assets/icons/exampleSeo.svg";
+import { ExampleBox } from "../../../styles/styledComponents/editor/Seo.sc";
 
-const Seo = () => {
+const Seo = ({ values, setValues }) => {
   return (
-    <Flex styles={editorBox.contentBox}>
-      <Flex styles={{}}>
+    <SectionBox>
+      <SectionTitle>
         <TitleIcon src={seoIcon} />
         <FormTitle>SEO</FormTitle>
-      </Flex>
+      </SectionTitle>
       <FieldTitle>Text and category</FieldTitle>
-      <Field properties={{ placeholder: "Title" }} />
       <Field
-        properties={{ placeholder: "Description" }}
-        maxlength="155"
-        infos="Maximum 155 characters"
+        placeholder="Title"
+        name="title"
+        section="seo"
+        setter={setValues}
+        values={values}
       />
-      <Flex
-        styles={{
-          position: "absolute",
-          left: "60%",
-          top: "66px",
-          marginRight: "24px",
-          flexDirection: "column",
-        }}
-      >
+      <Field
+        placeholder="Description"
+        fieldType="textarea"
+        name="description"
+        section="seo"
+        maxlength="155"
+        infos="Maximum 155 characters & avoid tab or carrige return"
+        setter={setValues}
+        values={values}
+      />
+      <ExampleBox>
         <FieldTitle>Example</FieldTitle>
         <ExampleSeo src={exampleSeoImg} />
-      </Flex>
-    </Flex>
+      </ExampleBox>
+    </SectionBox>
   );
+};
+
+Seo.propTypes = {
+  values: PropTypes.shape({}).isRequired,
+  setValues: PropTypes.func.isRequired,
 };
 
 export default Seo;

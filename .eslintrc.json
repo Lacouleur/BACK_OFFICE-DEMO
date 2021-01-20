@@ -25,5 +25,9 @@
               "endOfLine": "auto"
             }
           ]
+        },
+    "globals": {
+        "BASE_URL": true,
+        "HOST_URL": true
     }
 }

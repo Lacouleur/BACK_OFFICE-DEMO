@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import TextareaAutosize from "react-textarea-autosize";
 import colors from "../../core/colors";
 
 export const FieldContainer = styled.div`
@@ -27,7 +28,7 @@ export const FieldStyle = styled.input`
   background-color: ${colors.darkGrey};
   border: ${(props) => props.styles.border || "none"};
   padding-left: ${(props) => props.styles.paddingLeft || "20px"};
-  color: ${(props) => props.styles.color};
+  color: ${(props) => props.styles.color || colors.white};
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
   font-size: 16px;
@@ -58,6 +59,52 @@ export const Select = styled.select`
   line-height: 24px;
   option {
     color: ${(props) => props.color || colors.white};
+  }
+`;
+
+export const TextArea = styled(TextareaAutosize)`
+  -webkit-appearance: none;
+  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+  height: auto;
+  min-height: 56px;
+  font-size: 16px;
+  line-height: 24px;
+  background-color: ${colors.darkGrey};
+  border: none;
+  padding: 0 20px;
+  color: ${(props) => props.color};
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  font-size: 16px;
+  line-height: 24px;
+  color: ${colors.white};
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 16px;
+`;
+
+export const TextAreaStyles = styled.div`
+  &.textArea {
+    -webkit-appearance: none;
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    height: auto;
+    min-height: 56px;
+    font-size: 16px;
+    line-height: 24px;
+    background-color: ${colors.darkGrey};
+    border: none;
+    padding: 0 20px;
+    color: ${(props) => props.color};
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    font-size: 16px;
+    line-height: 24px;
+    color: ${colors.white};
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 16px;
   }
 `;
 

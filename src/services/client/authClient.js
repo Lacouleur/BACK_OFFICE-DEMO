@@ -1,10 +1,9 @@
 import axios from "axios";
-import { baseUrl } from "../config/clientConfig";
 
 export const sendAuth = (data) =>
   axios({
     method: "post",
-    url: `${baseUrl}/auth/login`,
+    url: `${BASE_URL}/auth/login`,
     data,
   })
     .then((token) => {

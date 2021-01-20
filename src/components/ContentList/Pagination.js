@@ -8,7 +8,7 @@ import {
 } from "../../styles/styledComponents/contentList/Pagination.sc";
 import arrowLeft from "../../styles/assets/icons/arrow-left.svg";
 import arrowRight from "../../styles/assets/icons/arrow-right.svg";
-import keyGenerator from "../../helper/KeyGenerator";
+import keyGenerator from "../../helper/keyGenerator";
 import { getContentList } from "../../services/client/contentClient";
 import colors from "../../styles/core/colors";
 

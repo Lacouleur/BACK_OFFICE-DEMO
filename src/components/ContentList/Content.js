@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import PropTypes from "prop-types";
 import {
@@ -15,20 +16,19 @@ import isEven from "../../helper/isEven";
 import colors from "../../styles/core/colors";
 import pen from "../../styles/assets/icons/pen.svg";
 import trash from "../../styles/assets/icons/trash.svg";
+import { setArticleToEdit } from "../../services/client/localStorage";
+import { hostUrl } from "../../services/config/clientConfig";
 
-const Content = ({ number, content }) => {
+const Content = ({ number, id, status, categoryLabel, title }) => {
   const even = isEven(number);
-  const label = content?.category?.label || "undefined";
-  const status = content.state || "offline";
-
   return (
     <LineContentBox
       styles={{
         backgroundColor: `${even ? colors.darkGrey : colors.mediumGrey}`,
       }}
     >
-      <CategoryName>{label}</CategoryName>
-      <Title>{content.title}</Title>
+      <CategoryName>{categoryLabel}</CategoryName>
+      <Title>{title}</Title>
       <StatusBox>
         <Status
           styles={
@@ -46,7 +46,12 @@ const Content = ({ number, content }) => {
         </Status>
       </StatusBox>
       <ActionBox>
-        <Action>
+        <Action
+          onClick={() => {
+            setArticleToEdit(id);
+            window.location.assign(`${hostUrl}/editor`);
+          }}
+        >
           Modify
           <IconAction src={pen} />
         </Action>
@@ -59,39 +64,16 @@ const Content = ({ number, content }) => {
   );
 };
 
+Content.defaultProps = {
+  categoryLabel: "",
+};
+
 Content.propTypes = {
   number: PropTypes.number.isRequired,
-  content: PropTypes.shape({
-    _id: PropTypes.string,
-    title: PropTypes.string,
-    url: PropTypes.string,
-    category: PropTypes.PropTypes.shape({
-      createdAt: PropTypes.string,
-      label: PropTypes.string,
-      updatedAt: PropTypes.string,
-      url: PropTypes.string,
-      _id: PropTypes.string,
-    }),
-    components: PropTypes.arrayOf(
-      PropTypes.shape({
-        description: PropTypes.string,
-        image: PropTypes.shape({
-          digest: PropTypes.string,
-          source: PropTypes.string,
-          uuid: PropTypes.string,
-          _id: PropTypes.string,
-        }),
-        text: PropTypes.string,
-        type: PropTypes.string,
-      })
-    ),
-    state: PropTypes.string,
-    createdAt: PropTypes.string,
-    firstPublishedAt: PropTypes.string,
-    publishedAt: PropTypes.string,
-    updatedAt: PropTypes.string,
-    isDraft: PropTypes.bool,
-  }).isRequired,
+  id: PropTypes.string.isRequired,
+  categoryLabel: PropTypes.string,
+  status: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default Content;

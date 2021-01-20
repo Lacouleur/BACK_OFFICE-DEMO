@@ -15,7 +15,7 @@ import colors from "../../styles/core/colors";
 import exclamationIcon from "../../styles/assets/icons/exclamationGrey.svg";
 import exclamationVioletIcon from "../../styles/assets/icons/exclamation.svg";
 import { getCategories } from "../../services/client/contentClient";
-import keyGenerator from "../../helper/KeyGenerator";
+import keyGenerator from "../../helper/keyGenerator";
 import { verifySlug } from "../../helper/auth/verifyFields";
 
 const Field = ({

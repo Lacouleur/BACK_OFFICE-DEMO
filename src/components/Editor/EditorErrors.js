@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import keyGenerator from "../../helper/KeyGenerator";
+import keyGenerator from "../../helper/keyGenerator";
 import Error from "../Notifications/Error";
 
 const EditorErrors = ({

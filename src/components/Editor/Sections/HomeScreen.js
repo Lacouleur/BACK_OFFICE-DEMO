@@ -25,6 +25,7 @@ const HomeScreen = ({
   setSpecialError,
   setPostingError,
   postingError,
+  edit,
 }) => {
   const slugMessage = () => {
     let message = "";
@@ -37,6 +38,8 @@ const HomeScreen = ({
     }
     return message;
   };
+
+  console.log(edit);
 
   return (
     <>
@@ -97,6 +100,10 @@ const HomeScreen = ({
   );
 };
 
+HomeScreen.defaultProps = {
+  edit: undefined,
+};
+
 HomeScreen.propTypes = {
   values: PropTypes.shape({}).isRequired,
   setValues: PropTypes.func.isRequired,
@@ -112,6 +119,11 @@ HomeScreen.propTypes = {
     isError: PropTypes.bool,
     text: PropTypes.string,
   }).isRequired,
+  edit: PropTypes.shape({
+    title: PropTypes.string,
+    slug: PropTypes.string,
+    categoryId: PropTypes.string,
+  }),
 };
 
 export default HomeScreen;

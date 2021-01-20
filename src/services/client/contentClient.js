@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable no-unused-vars */
 import axios from "axios";
 import { getToken, deleteToken } from "./authClient";
@@ -16,6 +17,26 @@ export const getContentList = (page = 1, limit = 20) =>
       deleteToken();
       window.location.assign(`${HOST_URL}/`);
     });
+
+export async function getContent(id) {
+  try {
+    const res = await axios.get(`${BASE_URL}/contents/${id}`, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+
+    if (res.status < 300 && res.status > 199) {
+      return { data: res.data };
+    }
+
+    return null;
+  } catch {
+    deleteToken();
+    window.location.assign(`${HOST_URL}/`);
+    return null;
+  }
+}
 
 export const postContent = (
   values,

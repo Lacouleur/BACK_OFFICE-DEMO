@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-underscore-dangle */
+import React, { useState, useEffect } from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import PageContainer from "../styles/styledComponents/global/PageContainer.sc";
@@ -12,7 +14,8 @@ import { IconCreat } from "../styles/styledComponents/contentList/ContentList.sc
 import { Form } from "../styles/styledComponents/editor/Sections.sc";
 import { checkSlug, checkTitle } from "../helper/Editor/checkFields";
 import EditorErrors from "../components/Editor/EditorErrors";
-import { postContent } from "../services/client/contentClient";
+import { getContent, postContent } from "../services/client/contentClient";
+import { getArticleToEdit } from "../services/client/localStorage";
 
 const Editor = () => {
   const [values, setValues] = useState({});
@@ -24,6 +27,18 @@ const Editor = () => {
     isError: false,
     text: "",
   });
+
+  const [articleToEdit, setArticleToEdit] = useState();
+
+  useEffect(() => {
+    async function fetchArticleToEdit() {
+      const res = await getContent(getArticleToEdit());
+      setArticleToEdit(res);
+    }
+    fetchArticleToEdit();
+  }, []);
+
+  console.log(articleToEdit);
 
   function checkAndSend(e) {
     e.preventDefault();
@@ -59,6 +74,15 @@ const Editor = () => {
       />
       <Form onSubmit={checkAndSend}>
         <HomeScreen
+          /*       edit={
+            articleContent
+              ? {
+                  title: articleToEdit.title,
+                  slug: articleToEdit.slug,
+                  categoryId: articleToEdit.category._id,
+                }
+              : undefined
+          } */
           values={values}
           setValues={setValues}
           specialError={specialError}

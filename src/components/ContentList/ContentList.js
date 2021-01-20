@@ -14,6 +14,8 @@ import { getContentList } from "../../services/client/contentClient";
 import { createNewContent } from "../../styles/styledComponents/global/Buttons/CustomButtons.sc";
 import Pagination from "./Pagination";
 import { hostUrl } from "../../services/config/clientConfig";
+import keyGenerator from "../../helper/keyGenerator";
+import { deleteArticleToEdit } from "../../services/client/localStorage";
 
 const ContentList = () => {
   const [contents, setContents] = useState();
@@ -35,6 +37,7 @@ const ContentList = () => {
     const res = await getContentList();
     setPagination(paginationBuilder(res.data));
     setContents(res.data.contents);
+    deleteArticleToEdit();
   }, []);
 
   return (
@@ -52,7 +55,14 @@ const ContentList = () => {
       <ListBox>
         {contents &&
           contents.map((content, index) => (
-            <Content number={index} content={content} key={content._id} />
+            <Content
+              number={index}
+              id={content._id}
+              status={content.state}
+              categoryLabel={content.category?.label}
+              title={content.title}
+              key={keyGenerator(content._id)}
+            />
           ))}
         {pagination && (
           <Pagination

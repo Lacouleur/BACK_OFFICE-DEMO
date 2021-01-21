@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   FieldStyle,
-  Select,
+  Selector,
   FieldError,
   ErrorIcon,
   FieldContainer,
@@ -38,47 +38,35 @@ const Field = ({
   postingError,
   edit,
 }) => {
-  const [selectedValue, setSelectedValue] = useState("");
-  const [state, setstate] = useState("");
-  const [categories, setCategories] = useState();
   const [options, setOptions] = useState([]);
-
-  /*   function selectEditValue(cat) {
-    console.log("cat", cat);
-    if (categories && edit) {
-      categories.map((category) => {
-        if (edit === category.id) {
-          setstate(category.id);
-        }
-        return "";
-      });
-    }
-  } */
+  const [editCategory, setEditCategory] = useState();
 
   useEffect(() => {
     async function fetchCategories() {
       const res = await getCategories();
       const labels = [];
-      const opts = [];
 
       // eslint-disable-next-line no-unused-vars
       Object.entries(res).map(([key, value]) => {
-        labels.push({ label: value.label, id: value._id });
+        labels.push({ label: value.label, value: value._id });
       });
-      opts.push(
-        labels.map((label) => (
-          <option value={label.id} key={keyGenerator(label.label)}>
-            {label.label}
-          </option>
-        ))
-      );
-      setOptions(opts);
-      setCategories(labels);
+      return labels;
     }
-    fetchCategories();
-    /*   const select = await selectEditValue();
-    setSelectedValue(select); */
-  }, []);
+
+    async function selectEditValue() {
+      const opts = await fetchCategories();
+      if (opts && edit) {
+        opts.map((option) => {
+          if (edit === option.value) {
+            setEditCategory(option);
+          }
+        });
+      }
+      setOptions(opts);
+    }
+
+    selectEditValue();
+  }, [edit]);
 
   function textFieldDispatcher(e) {
     switch (section) {
@@ -140,28 +128,29 @@ const Field = ({
 
   return (
     <FieldContainer>
+      {console.log("ICI !!!", editCategory)}
       {fieldType && fieldType === "select" && (
-        <Select
-          defaultValue={selectEditValue()}
+        <Selector
+          value={editCategory}
+          options={options}
+          classNamePrefix="Select"
+          placeholder="Category"
+          isClearable
           onChange={(e) => {
-            const selected = e.target.value;
-            setSelectedValue(selected);
-            if (e.target.value !== "") {
+            if (e?.value) {
+              setEditCategory(e);
               setter({
                 ...values,
-                [name]: e.target.value,
+                [name]: e.value,
               });
             } else {
+              setEditCategory("");
               const vals = { ...values };
               delete vals[name];
               setter({ ...vals });
             }
           }}
-          color={selectedValue === "" ? colors.placeholderGrey : colors.white}
-        >
-          <option value="">{placeholder}</option>
-          {options.map((option) => option)}
-        </Select>
+        />
       )}
       {fieldType && fieldType === "textarea" && (
         <TextArea

@@ -41,7 +41,7 @@ const Editor = () => {
     }
   }, []);
 
-  console.log(articleToEdit);
+  /*   console.log(articleToEdit); */
 
   function checkAndSend(e) {
     e.preventDefault();

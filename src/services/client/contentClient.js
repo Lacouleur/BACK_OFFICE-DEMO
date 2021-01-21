@@ -40,9 +40,8 @@ export async function getContent(id) {
 
     return null;
   } catch {
-    console.log("error");
-    /*  deleteToken();
-    window.location.assign(`${HOST_URL}/`); */
+    deleteToken();
+    window.location.assign(`${HOST_URL}/`);
     return null;
   }
 }

@@ -39,7 +39,7 @@ const HomeScreen = ({
     return message;
   };
 
-  console.log(edit);
+  /*   console.log(edit); */
 
   return (
     <>

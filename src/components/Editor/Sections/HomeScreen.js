@@ -60,6 +60,7 @@ const HomeScreen = ({
           error={titleError}
           setError={setTitleError}
           post={posted}
+          edit={edit ? edit.title : undefined}
         />
         <Field
           placeholder="slug URL"
@@ -75,6 +76,7 @@ const HomeScreen = ({
           setSpecialError={setSpecialError}
           setPostingError={setPostingError}
           postingError={postingError}
+          edit={edit ? edit.slug : undefined}
         />
         <Field
           placeholder="Category"
@@ -85,6 +87,7 @@ const HomeScreen = ({
           post={posted}
           section="main"
           setPostingError={setPostingError}
+          edit={edit ? edit.category : undefined}
         />
 
         <Button
@@ -122,7 +125,7 @@ HomeScreen.propTypes = {
   edit: PropTypes.shape({
     title: PropTypes.string,
     slug: PropTypes.string,
-    categoryId: PropTypes.string,
+    category: PropTypes.string,
   }),
 };
 

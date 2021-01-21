@@ -3,20 +3,28 @@
 import axios from "axios";
 import { getToken, deleteToken } from "./authClient";
 
-export const getContentList = (page = 1, limit = 20) =>
-  axios
-    .get(`${BASE_URL}/contents?limit=${limit}&page=${page}`, {
-      headers: {
-        Authorization: `Bearer ${getToken()}`,
-      },
-    })
-    .then((res) => {
+export async function getContentList(page = 1, limit = 20) {
+  try {
+    const res = await axios.get(
+      `${BASE_URL}/contents?limit=${limit}&page=${page}`,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      }
+    );
+
+    if (res.status < 300 && res.status > 199) {
       return { data: res.data };
-    })
-    .catch(() => {
-      deleteToken();
-      window.location.assign(`${HOST_URL}/`);
-    });
+    }
+
+    return null;
+  } catch {
+    deleteToken();
+    window.location.assign(`${HOST_URL}/`);
+    return null;
+  }
+}
 
 export async function getContent(id) {
   try {
@@ -32,58 +40,70 @@ export async function getContent(id) {
 
     return null;
   } catch {
-    deleteToken();
-    window.location.assign(`${HOST_URL}/`);
+    console.log("error");
+    /*  deleteToken();
+    window.location.assign(`${HOST_URL}/`); */
     return null;
   }
 }
 
-export const postContent = (
+export async function postContent(
   values,
   setValues,
   form,
   setPosted,
   setSpecialError,
   setPostingError
-) =>
-  axios({
-    method: "post",
-    url: `${BASE_URL}/contents`,
-    data: values,
-    headers: {
-      Authorization: `Bearer ${getToken()}`,
-    },
-  })
-    .then(() => {
+) {
+  try {
+    const res = await axios({
+      method: "post",
+      url: `${BASE_URL}/contents`,
+      data: values,
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+
+    if (res.status < 300 && res.status > 199) {
       setValues({});
       form?.reset();
       setSpecialError(false);
       setPosted(true);
-    })
-    .catch((e) => {
-      if (e.response.status === 409) {
-        setPostingError({
-          isError: true,
-          text: e.response.data,
-        });
-        setPosted(false);
-      } else {
-        deleteToken();
-        window.location.assign(`${HOST_URL}/`);
-      }
-    });
+    }
 
-export const getCategories = () =>
-  axios
-    .get(`${BASE_URL}/categories`, {
+    return null;
+  } catch (error) {
+    if (error.response.status === 409) {
+      setPostingError({
+        isError: true,
+        text: error.response.data,
+      });
+      setPosted(false);
+    } else {
+      deleteToken();
+      window.location.assign(`${HOST_URL}/`);
+    }
+    return null;
+  }
+}
+
+export async function getCategories() {
+  try {
+    const res = await axios.get(`${BASE_URL}/categories`, {
       headers: {
         Authorization: `Bearer ${getToken()}`,
       },
-    })
-    .then((res) => {
-      return res.data;
-    })
-    .catch(() => {
-      deleteToken();
-      window.location.assign(`${HOST_URL}/`);
     });
+
+    if (res.status < 300 && res.status > 199) {
+      return res.data;
+    }
+
+    return null;
+  } catch {
+    deleteToken();
+    window.location.assign(`${HOST_URL}/`);
+    return null;
+  }
+}

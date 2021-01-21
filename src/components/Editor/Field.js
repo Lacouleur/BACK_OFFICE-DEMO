@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable array-callback-return */
 import React, { useState, useEffect } from "react";
@@ -35,27 +36,48 @@ const Field = ({
   section,
   setPostingError,
   postingError,
+  edit,
 }) => {
   const [selectedValue, setSelectedValue] = useState("");
+  const [state, setstate] = useState("");
+  const [categories, setCategories] = useState();
   const [options, setOptions] = useState([]);
 
-  useEffect(async () => {
-    const res = await getCategories();
-    const labels = [];
-    const opts = [];
+  /*   function selectEditValue(cat) {
+    console.log("cat", cat);
+    if (categories && edit) {
+      categories.map((category) => {
+        if (edit === category.id) {
+          setstate(category.id);
+        }
+        return "";
+      });
+    }
+  } */
 
-    // eslint-disable-next-line no-unused-vars
-    Object.entries(res).map(([key, value]) => {
-      labels.push({ label: value.label, id: value._id });
-    });
-    opts.push(
-      labels.map((label) => (
-        <option value={label.id} key={keyGenerator(label.label)}>
-          {label.label}
-        </option>
-      ))
-    );
-    setOptions(opts);
+  useEffect(() => {
+    async function fetchCategories() {
+      const res = await getCategories();
+      const labels = [];
+      const opts = [];
+
+      // eslint-disable-next-line no-unused-vars
+      Object.entries(res).map(([key, value]) => {
+        labels.push({ label: value.label, id: value._id });
+      });
+      opts.push(
+        labels.map((label) => (
+          <option value={label.id} key={keyGenerator(label.label)}>
+            {label.label}
+          </option>
+        ))
+      );
+      setOptions(opts);
+      setCategories(labels);
+    }
+    fetchCategories();
+    /*   const select = await selectEditValue();
+    setSelectedValue(select); */
   }, []);
 
   function textFieldDispatcher(e) {
@@ -120,6 +142,7 @@ const Field = ({
     <FieldContainer>
       {fieldType && fieldType === "select" && (
         <Select
+          defaultValue={selectEditValue()}
           onChange={(e) => {
             const selected = e.target.value;
             setSelectedValue(selected);
@@ -134,15 +157,9 @@ const Field = ({
               setter({ ...vals });
             }
           }}
-          color={
-            !selectedValue || !values?.[name]
-              ? colors.placeholderGrey
-              : colors.white
-          }
+          color={selectedValue === "" ? colors.placeholderGrey : colors.white}
         >
-          <option value="" defaultValue="">
-            {placeholder}
-          </option>
+          <option value="">{placeholder}</option>
           {options.map((option) => option)}
         </Select>
       )}
@@ -150,6 +167,7 @@ const Field = ({
         <TextArea
           placeholder={placeholder}
           maxLength={maxlength}
+          defaultValue={edit ? `${edit}` : ""}
           onChange={(e) => {
             if (section === "seo") {
               setter({
@@ -169,6 +187,7 @@ const Field = ({
           placeholder={placeholder}
           maxLength={maxlength}
           onChange={(e) => textFieldDispatcher(e)}
+          defaultValue={edit ? `${edit}` : ""}
           styles={{
             ...fieldStyle,
             color: `${
@@ -228,6 +247,7 @@ Field.defaultProps = {
   values: PropTypes.shape({}),
   setPostingError: undefined,
   postingError: undefined,
+  edit: undefined,
 };
 
 Field.propTypes = {
@@ -251,6 +271,7 @@ Field.propTypes = {
   postingError: PropTypes.shape({
     isError: PropTypes.bool,
   }),
+  edit: PropTypes.string,
 };
 
 export default Field;

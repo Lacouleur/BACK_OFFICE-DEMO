@@ -33,11 +33,14 @@ const ContentList = () => {
     return paginate;
   }
 
-  useEffect(async () => {
-    const res = await getContentList();
-    setPagination(paginationBuilder(res.data));
-    setContents(res.data.contents);
-    deleteArticleToEdit();
+  useEffect(() => {
+    async function fetchContentList() {
+      const res = await getContentList();
+      setPagination(paginationBuilder(res.data));
+      setContents(res.data.contents);
+      deleteArticleToEdit();
+    }
+    fetchContentList();
   }, []);
 
   return (

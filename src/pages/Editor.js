@@ -33,9 +33,12 @@ const Editor = () => {
   useEffect(() => {
     async function fetchArticleToEdit() {
       const res = await getContent(getArticleToEdit());
-      setArticleToEdit(res);
+      setArticleToEdit(res.data);
     }
-    fetchArticleToEdit();
+
+    if (getArticleToEdit()) {
+      fetchArticleToEdit();
+    }
   }, []);
 
   console.log(articleToEdit);
@@ -74,15 +77,6 @@ const Editor = () => {
       />
       <Form onSubmit={checkAndSend}>
         <HomeScreen
-          /*       edit={
-            articleContent
-              ? {
-                  title: articleToEdit.title,
-                  slug: articleToEdit.slug,
-                  categoryId: articleToEdit.category._id,
-                }
-              : undefined
-          } */
           values={values}
           setValues={setValues}
           specialError={specialError}
@@ -95,8 +89,28 @@ const Editor = () => {
           setSpecialError={setSpecialError}
           setPostingError={setPostingError}
           postingError={postingError}
+          edit={
+            articleToEdit
+              ? {
+                  title: articleToEdit.title,
+                  slug: articleToEdit.slug,
+                  category: articleToEdit.category._id,
+                }
+              : undefined
+          }
         />
-        <Seo values={values} setValues={setValues} />
+        <Seo
+          values={values}
+          setValues={setValues}
+          edit={
+            articleToEdit
+              ? {
+                  title: articleToEdit.seo.title,
+                  description: articleToEdit.seo.description,
+                }
+              : undefined
+          }
+        />
       </Form>
       <Button
         styles={{

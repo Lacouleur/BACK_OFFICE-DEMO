@@ -15,7 +15,7 @@ import {
 import exampleSeoImg from "../../../styles/assets/icons/exampleSeo.svg";
 import { ExampleBox } from "../../../styles/styledComponents/editor/Seo.sc";
 
-const Seo = ({ values, setValues }) => {
+const Seo = ({ values, setValues, edit }) => {
   return (
     <SectionBox>
       <SectionTitle>
@@ -29,6 +29,7 @@ const Seo = ({ values, setValues }) => {
         section="seo"
         setter={setValues}
         values={values}
+        edit={edit ? edit.title : undefined}
       />
       <Field
         placeholder="Description"
@@ -39,6 +40,7 @@ const Seo = ({ values, setValues }) => {
         infos="Maximum 155 characters & avoid tab or carrige return"
         setter={setValues}
         values={values}
+        edit={edit ? edit.description : undefined}
       />
       <ExampleBox>
         <FieldTitle>Example</FieldTitle>
@@ -48,9 +50,17 @@ const Seo = ({ values, setValues }) => {
   );
 };
 
+Seo.defaultProps = {
+  edit: undefined,
+};
+
 Seo.propTypes = {
   values: PropTypes.shape({}).isRequired,
   setValues: PropTypes.func.isRequired,
+  edit: PropTypes.shape({
+    title: PropTypes.string,
+    description: PropTypes.string,
+  }),
 };
 
 export default Seo;

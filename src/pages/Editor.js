@@ -14,7 +14,11 @@ import { IconCreat } from "../styles/styledComponents/contentList/ContentList.sc
 import { Form } from "../styles/styledComponents/editor/Sections.sc";
 import { checkSlug, checkTitle } from "../helper/Editor/checkFields";
 import EditorErrors from "../components/Editor/EditorErrors";
-import { getContent, postContent } from "../services/client/contentClient";
+import {
+  getContent,
+  postContent,
+  updateContent,
+} from "../services/client/contentClient";
 import { getArticleToEdit } from "../services/client/localStorage";
 
 const Editor = () => {
@@ -33,7 +37,18 @@ const Editor = () => {
   useEffect(() => {
     async function fetchArticleToEdit() {
       const res = await getContent(getArticleToEdit());
-      setArticleToEdit(res.data);
+      const { data } = res;
+      setArticleToEdit(data);
+      console.log("datas", data);
+      setValues({
+        title: data.title,
+        slug: data.slug,
+        category: data.category?._id,
+        seo: {
+          title: data.seo?.title,
+          description: data.seo?.description,
+        },
+      });
     }
 
     if (getArticleToEdit()) {
@@ -42,7 +57,6 @@ const Editor = () => {
   }, []);
 
   /*   console.log(articleToEdit); */
-
   function checkAndSend(e) {
     e.preventDefault();
     const title = checkTitle(values);
@@ -52,14 +66,26 @@ const Editor = () => {
     setSlugError(slug);
     if (!title && !slug) {
       const form = e.target;
-      postContent(
-        values,
-        setValues,
-        form,
-        setPosted,
-        setSpecialError,
-        setPostingError
-      );
+      if (articleToEdit) {
+        updateContent(
+          values,
+          setValues,
+          form,
+          setPosted,
+          setSpecialError,
+          setPostingError,
+          articleToEdit._id
+        );
+      } else {
+        postContent(
+          values,
+          setValues,
+          form,
+          setPosted,
+          setSpecialError,
+          setPostingError
+        );
+      }
     }
   }
 
@@ -94,7 +120,7 @@ const Editor = () => {
               ? {
                   title: articleToEdit.title,
                   slug: articleToEdit.slug,
-                  category: articleToEdit.category._id,
+                  category: articleToEdit.category?._id,
                 }
               : undefined
           }
@@ -105,8 +131,8 @@ const Editor = () => {
           edit={
             articleToEdit
               ? {
-                  title: articleToEdit.seo.title,
-                  description: articleToEdit.seo.description,
+                  title: articleToEdit.seo?.title,
+                  description: articleToEdit.seo?.description,
                 }
               : undefined
           }

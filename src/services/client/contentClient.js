@@ -87,6 +87,46 @@ export async function postContent(
   }
 }
 
+export async function updateContent(
+  values,
+  setValues,
+  form,
+  setPosted,
+  setSpecialError,
+  setPostingError,
+  articleId
+) {
+  try {
+    const res = await axios({
+      method: "put",
+      url: `${BASE_URL}/contents/${articleId}`,
+      data: values,
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+
+    if (res.status < 300 && res.status > 199) {
+      setSpecialError(false);
+      setPosted(true);
+    }
+
+    return null;
+  } catch (error) {
+    if (error.response.status === 409) {
+      setPostingError({
+        isError: true,
+        text: error.response.data,
+      });
+      setPosted(false);
+    } else {
+      deleteToken();
+      window.location.assign(`${HOST_URL}/`);
+    }
+    return null;
+  }
+}
+
 export async function getCategories() {
   try {
     const res = await axios.get(`${BASE_URL}/categories`, {

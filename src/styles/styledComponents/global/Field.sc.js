@@ -79,7 +79,7 @@ export const Selector = styled(ReactSelect)`
   }
 
   & .Select__option--is-focused {
-    background-color: ${colors.lightGrey};
+    background-color: ${colors.paleViolet};
   }
 
   & .Select__single-value {

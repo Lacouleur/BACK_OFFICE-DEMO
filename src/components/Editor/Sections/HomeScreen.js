@@ -39,8 +39,6 @@ const HomeScreen = ({
     return message;
   };
 
-  /*   console.log(edit); */
-
   return (
     <>
       <SectionBox>

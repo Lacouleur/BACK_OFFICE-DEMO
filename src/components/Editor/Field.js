@@ -50,22 +50,19 @@ const Field = ({
       Object.entries(res).map(([key, value]) => {
         labels.push({ label: value.label, value: value._id });
       });
-      return labels;
-    }
 
-    async function selectEditValue() {
-      const opts = await fetchCategories();
-      if (opts && edit) {
-        opts.map((option) => {
+      setOptions(labels);
+
+      if (labels && edit) {
+        labels.map((option) => {
           if (edit === option.value) {
             setEditCategory(option);
           }
         });
       }
-      setOptions(opts);
     }
 
-    selectEditValue();
+    fetchCategories();
   }, [edit]);
 
   function textFieldDispatcher(e) {
@@ -128,7 +125,6 @@ const Field = ({
 
   return (
     <FieldContainer>
-      {console.log("ICI !!!", editCategory)}
       {fieldType && fieldType === "select" && (
         <Selector
           value={editCategory}

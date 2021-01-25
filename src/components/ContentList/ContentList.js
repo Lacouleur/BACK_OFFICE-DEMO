@@ -57,16 +57,18 @@ const ContentList = () => {
       </TitleBox>
       <ListBox>
         {contents &&
-          contents.map((content, index) => (
-            <Content
-              number={index}
-              id={content._id}
-              status={content.state}
-              categoryLabel={content.category?.label}
-              title={content.title}
-              key={keyGenerator(content._id)}
-            />
-          ))}
+          contents.map((content, index) => {
+            return (
+              <Content
+                number={index}
+                id={content._id}
+                status={content.state}
+                categoryLabel={content.category?.label}
+                title={content.title}
+                key={keyGenerator(content._id)}
+              />
+            );
+          })}
         {pagination && (
           <Pagination
             pagination={pagination}

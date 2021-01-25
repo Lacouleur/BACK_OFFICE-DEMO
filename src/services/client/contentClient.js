@@ -97,19 +97,19 @@ export async function updateContent(
   articleId
 ) {
   try {
-    const res = await axios({
+    /*    const res = await axios({
       method: "put",
       url: `${BASE_URL}/contents/${articleId}`,
       data: values,
       headers: {
         Authorization: `Bearer ${getToken()}`,
       },
-    });
+    }); */
 
-    if (res.status < 300 && res.status > 199) {
-      setSpecialError(false);
-      setPosted(true);
-    }
+    /*  if (res.status < 300 && res.status > 199) { */
+    setSpecialError(false);
+    setPosted(true);
+    /*    } */
 
     return null;
   } catch (error) {
@@ -143,6 +143,27 @@ export async function getCategories() {
   } catch {
     deleteToken();
     window.location.assign(`${HOST_URL}/`);
+    return null;
+  }
+}
+
+export async function deleteContent(id) {
+  try {
+    const res = await axios.delete(`${BASE_URL}/contents/${id}`, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
+
+    if (res.status < 300 && res.status > 199) {
+      console.log("Deleted");
+      return true;
+    }
+    return null;
+  } catch (error) {
+    console.log(error);
+    /*    deleteToken();
+    window.location.assign(`${HOST_URL}/`); */
     return null;
   }
 }

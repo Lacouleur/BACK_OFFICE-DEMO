@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import PropTypes from "prop-types";
@@ -18,6 +19,7 @@ import pen from "../../styles/assets/icons/pen.svg";
 import trash from "../../styles/assets/icons/trash.svg";
 import { setArticleToEdit } from "../../services/client/localStorage";
 import { hostUrl } from "../../services/config/clientConfig";
+import { deleteContent } from "../../services/client/contentClient";
 
 const Content = ({ number, id, status, categoryLabel, title }) => {
   const even = isEven(number);
@@ -55,7 +57,7 @@ const Content = ({ number, id, status, categoryLabel, title }) => {
           Modify
           <IconAction src={pen} />
         </Action>
-        <Action>
+        <Action onClick={() => deleteContent(id)}>
           Archive
           <IconAction src={trash} />
         </Action>

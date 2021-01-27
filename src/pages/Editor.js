@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-underscore-dangle */
+import React, { useState, useEffect } from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import PageContainer from "../styles/styledComponents/global/PageContainer.sc";
@@ -12,7 +14,12 @@ import { IconCreat } from "../styles/styledComponents/contentList/ContentList.sc
 import { Form } from "../styles/styledComponents/editor/Sections.sc";
 import { checkSlug, checkTitle } from "../helper/Editor/checkFields";
 import EditorErrors from "../components/Editor/EditorErrors";
-import { postContent } from "../services/client/contentClient";
+import {
+  getContent,
+  postContent,
+  updateContent,
+} from "../services/client/contentClient";
+import { getArticleToEdit } from "../services/client/localStorage";
 
 const Editor = () => {
   const [values, setValues] = useState({});
@@ -25,6 +32,31 @@ const Editor = () => {
     text: "",
   });
 
+  const [articleToEdit, setArticleToEdit] = useState();
+
+  useEffect(() => {
+    async function fetchArticleToEdit() {
+      const res = await getContent(getArticleToEdit());
+      const { data } = res;
+      setArticleToEdit(data);
+      console.log("datas", data);
+      setValues({
+        title: data.title,
+        slug: data.slug,
+        category: data.category?._id,
+        seo: {
+          title: data.seo?.title,
+          description: data.seo?.description,
+        },
+      });
+    }
+
+    if (getArticleToEdit()) {
+      fetchArticleToEdit();
+    }
+  }, []);
+
+  /*   console.log(articleToEdit); */
   function checkAndSend(e) {
     e.preventDefault();
     const title = checkTitle(values);
@@ -34,14 +66,26 @@ const Editor = () => {
     setSlugError(slug);
     if (!title && !slug) {
       const form = e.target;
-      postContent(
-        values,
-        setValues,
-        form,
-        setPosted,
-        setSpecialError,
-        setPostingError
-      );
+      if (articleToEdit) {
+        updateContent(
+          values,
+          setValues,
+          form,
+          setPosted,
+          setSpecialError,
+          setPostingError,
+          articleToEdit._id
+        );
+      } else {
+        postContent(
+          values,
+          setValues,
+          form,
+          setPosted,
+          setSpecialError,
+          setPostingError
+        );
+      }
     }
   }
 
@@ -71,8 +115,28 @@ const Editor = () => {
           setSpecialError={setSpecialError}
           setPostingError={setPostingError}
           postingError={postingError}
+          edit={
+            articleToEdit
+              ? {
+                  title: articleToEdit.title,
+                  slug: articleToEdit.slug,
+                  category: articleToEdit.category?._id,
+                }
+              : undefined
+          }
         />
-        <Seo values={values} setValues={setValues} />
+        <Seo
+          values={values}
+          setValues={setValues}
+          edit={
+            articleToEdit
+              ? {
+                  title: articleToEdit.seo?.title,
+                  description: articleToEdit.seo?.description,
+                }
+              : undefined
+          }
+        />
       </Form>
       <Button
         styles={{

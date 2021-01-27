@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import TextareaAutosize from "react-textarea-autosize";
+import ReactSelect from "react-select";
 import colors from "../../core/colors";
 
 export const FieldContainer = styled.div`
@@ -45,8 +46,53 @@ export const FieldStyle = styled.input`
   }
 `;
 
-export const Select = styled.select`
-  -webkit-appearance: none;
+export const Selector = styled(ReactSelect)`
+  & .Select__indicator Select__dropdown-indicator {
+    border-color: transparent transparent red;
+  }
+
+  & .Select__control {
+    height: 56px;
+    background-color: ${colors.darkGrey};
+    border: none;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+
+    &--is-focused {
+      border: none;
+      box-shadow: none;
+    }
+  }
+
+  & .Select__menu {
+    height: 56px;
+    margin-top: 0px;
+    background-color: ${colors.darkGrey};
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  & .Select__option {
+    background-color: ${colors.darkGrey};
+    color: ${(props) => props.color || colors.white};
+  }
+
+  & .Select__option--is-focused {
+    background-color: ${colors.paleViolet};
+  }
+
+  & .Select__single-value {
+    color: white;
+  }
+
+  & .Select__clear-indicator {
+    color: ${colors.paleVioletTransp};
+    &:hover {
+      color: ${colors.paleViolet};
+    }
+  }
+  /*   -webkit-appearance: none;
   width: 100%;
   height: 56px;
   background-color: ${colors.darkGrey};
@@ -59,7 +105,7 @@ export const Select = styled.select`
   line-height: 24px;
   option {
     color: ${(props) => props.color || colors.white};
-  }
+  } */
 `;
 
 export const TextArea = styled(TextareaAutosize)`

@@ -25,6 +25,7 @@ const HomeScreen = ({
   setSpecialError,
   setPostingError,
   postingError,
+  edit,
 }) => {
   const slugMessage = () => {
     let message = "";
@@ -57,6 +58,7 @@ const HomeScreen = ({
           error={titleError}
           setError={setTitleError}
           post={posted}
+          edit={edit ? edit.title : undefined}
         />
         <Field
           placeholder="slug URL"
@@ -72,6 +74,7 @@ const HomeScreen = ({
           setSpecialError={setSpecialError}
           setPostingError={setPostingError}
           postingError={postingError}
+          edit={edit ? edit.slug : undefined}
         />
         <Field
           placeholder="Category"
@@ -82,6 +85,7 @@ const HomeScreen = ({
           post={posted}
           section="main"
           setPostingError={setPostingError}
+          edit={edit ? edit.category : undefined}
         />
 
         <Button
@@ -95,6 +99,10 @@ const HomeScreen = ({
       </SectionBox>
     </>
   );
+};
+
+HomeScreen.defaultProps = {
+  edit: undefined,
 };
 
 HomeScreen.propTypes = {
@@ -112,6 +120,11 @@ HomeScreen.propTypes = {
     isError: PropTypes.bool,
     text: PropTypes.string,
   }).isRequired,
+  edit: PropTypes.shape({
+    title: PropTypes.string,
+    slug: PropTypes.string,
+    category: PropTypes.string,
+  }),
 };
 
 export default HomeScreen;

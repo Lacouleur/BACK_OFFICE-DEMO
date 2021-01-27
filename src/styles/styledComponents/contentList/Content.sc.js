@@ -73,6 +73,7 @@ export const ActionBox = styled.div`
 `;
 
 export const Action = styled.div`
+  cursor: pointer;
   margin: 0 20px;
   text-decoration: underline;
   display: flex;

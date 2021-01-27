@@ -1,10 +1,11 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable array-callback-return */
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   FieldStyle,
-  Select,
+  Selector,
   FieldError,
   ErrorIcon,
   FieldContainer,
@@ -15,7 +16,6 @@ import colors from "../../styles/core/colors";
 import exclamationIcon from "../../styles/assets/icons/exclamationGrey.svg";
 import exclamationVioletIcon from "../../styles/assets/icons/exclamation.svg";
 import { getCategories } from "../../services/client/contentClient";
-import keyGenerator from "../../helper/KeyGenerator";
 import { verifySlug } from "../../helper/auth/verifyFields";
 
 const Field = ({
@@ -35,28 +35,34 @@ const Field = ({
   section,
   setPostingError,
   postingError,
+  edit,
 }) => {
-  const [selectedValue, setSelectedValue] = useState("");
   const [options, setOptions] = useState([]);
+  const [editCategory, setEditCategory] = useState();
 
-  useEffect(async () => {
-    const res = await getCategories();
-    const labels = [];
-    const opts = [];
+  useEffect(() => {
+    async function fetchCategories() {
+      const res = await getCategories();
+      const labels = [];
 
-    // eslint-disable-next-line no-unused-vars
-    Object.entries(res).map(([key, value]) => {
-      labels.push({ label: value.label, id: value._id });
-    });
-    opts.push(
-      labels.map((label) => (
-        <option value={label.id} key={keyGenerator(label.label)}>
-          {label.label}
-        </option>
-      ))
-    );
-    setOptions(opts);
-  }, []);
+      // eslint-disable-next-line no-unused-vars
+      Object.entries(res).map(([key, value]) => {
+        labels.push({ label: value.label, value: value._id });
+      });
+
+      setOptions(labels);
+
+      if (labels && edit) {
+        labels.map((option) => {
+          if (edit === option.value) {
+            setEditCategory(option);
+          }
+        });
+      }
+    }
+
+    fetchCategories();
+  }, [edit]);
 
   function textFieldDispatcher(e) {
     switch (section) {
@@ -119,37 +125,33 @@ const Field = ({
   return (
     <FieldContainer>
       {fieldType && fieldType === "select" && (
-        <Select
+        <Selector
+          value={editCategory}
+          options={options}
+          classNamePrefix="Select"
+          placeholder="Category"
+          isClearable
           onChange={(e) => {
-            const selected = e.target.value;
-            setSelectedValue(selected);
-            if (e.target.value !== "") {
+            if (e?.value) {
+              setEditCategory(e);
               setter({
                 ...values,
-                [name]: e.target.value,
+                [name]: e.value,
               });
             } else {
+              setEditCategory("");
               const vals = { ...values };
               delete vals[name];
               setter({ ...vals });
             }
           }}
-          color={
-            !selectedValue || !values?.[name]
-              ? colors.placeholderGrey
-              : colors.white
-          }
-        >
-          <option value="" defaultValue="">
-            {placeholder}
-          </option>
-          {options.map((option) => option)}
-        </Select>
+        />
       )}
       {fieldType && fieldType === "textarea" && (
         <TextArea
           placeholder={placeholder}
           maxLength={maxlength}
+          defaultValue={edit ? `${edit}` : ""}
           onChange={(e) => {
             if (section === "seo") {
               setter({
@@ -169,6 +171,7 @@ const Field = ({
           placeholder={placeholder}
           maxLength={maxlength}
           onChange={(e) => textFieldDispatcher(e)}
+          defaultValue={edit ? `${edit}` : ""}
           styles={{
             ...fieldStyle,
             color: `${
@@ -228,6 +231,7 @@ Field.defaultProps = {
   values: PropTypes.shape({}),
   setPostingError: undefined,
   postingError: undefined,
+  edit: undefined,
 };
 
 Field.propTypes = {
@@ -251,6 +255,7 @@ Field.propTypes = {
   postingError: PropTypes.shape({
     isError: PropTypes.bool,
   }),
+  edit: PropTypes.string,
 };
 
 export default Field;

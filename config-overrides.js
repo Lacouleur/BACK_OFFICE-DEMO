@@ -11,15 +11,13 @@ module.exports = function override(config) {
     );
     config.plugins.push(
       new webpack.DefinePlugin({
-        BASE_URL: JSON.stringify(
-          `http://www.poopeegames.com/la-machine-a-caca/`
-        ),
+        BASE_URL: JSON.stringify(``),
       })
     );
   } else {
     config.plugins.push(
       new webpack.DefinePlugin({
-        HOST_URL: JSON.stringify(`http://localhost:3002`),
+        HOST_URL: JSON.stringify(`http://localhost:3001`),
       })
     );
     config.plugins.push(

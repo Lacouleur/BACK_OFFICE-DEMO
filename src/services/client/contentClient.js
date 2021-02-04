@@ -97,19 +97,19 @@ export async function updateContent(
   articleId
 ) {
   try {
-    /*    const res = await axios({
+    const res = await axios({
       method: "put",
       url: `${BASE_URL}/contents/${articleId}`,
       data: values,
       headers: {
         Authorization: `Bearer ${getToken()}`,
       },
-    }); */
+    });
 
-    /*  if (res.status < 300 && res.status > 199) { */
-    setSpecialError(false);
-    setPosted(true);
-    /*    } */
+    if (res.status < 300 && res.status > 199) {
+      setSpecialError(false);
+      setPosted(true);
+    }
 
     return null;
   } catch (error) {

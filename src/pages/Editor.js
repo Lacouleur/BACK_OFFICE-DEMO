@@ -31,7 +31,6 @@ const Editor = () => {
     isError: false,
     text: "",
   });
-
   const [articleToEdit, setArticleToEdit] = useState();
 
   useEffect(() => {
@@ -39,8 +38,9 @@ const Editor = () => {
       const res = await getContent(getArticleToEdit());
       const { data } = res;
       setArticleToEdit(data);
-      console.log("datas", data);
+      console.log(data);
       setValues({
+        state: data.state,
         title: data.title,
         slug: data.slug,
         category: data.category?._id,
@@ -56,7 +56,6 @@ const Editor = () => {
     }
   }, []);
 
-  /*   console.log(articleToEdit); */
   function checkAndSend(e) {
     e.preventDefault();
     const title = checkTitle(values);

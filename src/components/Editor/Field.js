@@ -170,6 +170,7 @@ const Field = ({
           type={type}
           placeholder={placeholder}
           maxLength={maxlength}
+          disabled={name === "slug" && values.state !== "DRAFT"}
           onChange={(e) => textFieldDispatcher(e)}
           defaultValue={edit ? `${edit}` : ""}
           styles={{
@@ -242,6 +243,7 @@ Field.propTypes = {
   infos: PropTypes.string,
   setter: PropTypes.func.isRequired,
   values: PropTypes.shape({
+    state: PropTypes.string.isRequired,
     seo: PropTypes.shape({}),
   }),
   name: PropTypes.string.isRequired,

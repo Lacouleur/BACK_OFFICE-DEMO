@@ -70,5 +70,5 @@ export const PageTitleBox = styled.div`
   display: flex;
   width: 90%;
   height: 36px;
-  margin: 150px 0 24px 0;
+  margin: 150px 0 24px 5%;
 `;

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 import {
   BurgerMenu,
@@ -10,12 +11,12 @@ import phoenixLogo from "../styles/assets/logos/phoenix-logo.svg";
 import burger from "../styles/assets/icons/burger.svg";
 import { getToken, deleteToken } from "../services/client/authClient";
 
-const Header = () => {
+const Header = ({ position }) => {
   const [isConnected] = useState(!!getToken());
   const history = useHistory();
 
   return (
-    <HeaderContainer>
+    <HeaderContainer position={position}>
       {isConnected && (
         <>
           <BurgerMenu src={burger} />
@@ -30,6 +31,14 @@ const Header = () => {
       <MainLogo src={phoenixLogo} />
     </HeaderContainer>
   );
+};
+
+Header.defaultProps = {
+  position: undefined,
+};
+
+Header.propTypes = {
+  position: PropTypes.string,
 };
 
 export default Header;

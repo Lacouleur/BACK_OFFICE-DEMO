@@ -243,7 +243,7 @@ Field.propTypes = {
   infos: PropTypes.string,
   setter: PropTypes.func.isRequired,
   values: PropTypes.shape({
-    state: PropTypes.string.isRequired,
+    state: PropTypes.string,
     seo: PropTypes.shape({}),
   }),
   name: PropTypes.string.isRequired,

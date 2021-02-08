@@ -7,7 +7,6 @@ import {
 } from "../../../styles/styledComponents/global/Titles.sc";
 import homeIcon from "../../../styles/assets/icons/home.svg";
 import Field from "../Field";
-import Button from "../../../styles/styledComponents/global/Buttons/Buttons.sc";
 import {
   SectionBox,
   SectionTitle,
@@ -87,15 +86,6 @@ const HomeScreen = ({
           setPostingError={setPostingError}
           edit={edit ? edit.category : undefined}
         />
-
-        <Button
-          styles={{
-            alignSelf: "flex-end",
-          }}
-          type="submit"
-        >
-          VALIDATE
-        </Button>
       </SectionBox>
     </>
   );

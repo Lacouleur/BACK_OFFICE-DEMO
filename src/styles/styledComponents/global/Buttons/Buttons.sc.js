@@ -25,6 +25,7 @@ const Button = styled.button`
   margin-bottom: ${(props) => props.styles?.marginBottom || "0"};
   transition: 0.3s;
   opacity: 0.8;
+  position: ${(props) => props.styles?.position || "static"};
   pointer-events: ${(props) => props.styles?.pointerEvents || "auto"};
 
   &:active {

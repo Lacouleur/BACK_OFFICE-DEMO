@@ -28,3 +28,7 @@ export const FormContainer = styled.div`
   width: 90%;
   margin: auto;
 `;
+
+export const DeleteIcon = styled.img`
+  width: 70%;
+`;

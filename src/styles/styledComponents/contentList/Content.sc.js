@@ -4,12 +4,17 @@ import colors from "../../core/colors";
 export const LineContentBox = styled.div`
   display: flex;
   width: 100%;
-  min-height: 59px;
-  max-height: 59px;
+  height: 59px;
   align-items: center;
   justify-content: space-between;
   margin: 0 0;
   background-color: ${(props) => props.styles.backgroundColor};
+
+  &:hover {
+    box-shadow: inset 0px 0px 5px 1px ${colors.shadow};
+    height: 70px;
+    z-index: 10;
+  }
 `;
 
 export const StatusBox = styled.div`

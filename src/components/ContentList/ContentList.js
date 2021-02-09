@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from "react";
 import { H1 } from "../../styles/styledComponents/global/Titles.sc";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";

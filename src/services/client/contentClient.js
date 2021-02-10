@@ -89,8 +89,6 @@ export async function postContent(
 
 export async function updateContent(
   values,
-  setValues,
-  form,
   setPosted,
   setSpecialError,
   setPostingError,

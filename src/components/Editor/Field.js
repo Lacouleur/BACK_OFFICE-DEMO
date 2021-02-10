@@ -65,9 +65,11 @@ const Field = ({
   }, [edit]);
 
   function textFieldDispatcher(e) {
+    const { seo } = values;
+
     switch (section) {
       case "seo":
-        if (name === "title") {
+        if (name === "title" && e.target.value.length > 0) {
           setter({
             ...values,
             seo: {
@@ -75,8 +77,31 @@ const Field = ({
               [name]: e.target.value,
             },
           });
+        } else if (name === "description" && e.target.value.length > 0) {
+          setter({
+            ...values,
+            seo: {
+              ...values.seo,
+              [name]: e.target.value,
+            },
+          });
+        } else {
+          delete seo[name];
+          setter({
+            ...values,
+          });
         }
+
+        if (seo && Object.keys(seo).length === 0) {
+          const newValues = { ...values };
+          delete newValues.seo;
+          setter({
+            ...newValues,
+          });
+        }
+
         break;
+
       case "main":
         if (
           (name === "title" || name === "slug") &&
@@ -84,6 +109,7 @@ const Field = ({
         ) {
           setError(false);
         }
+
         if (name === "slug") {
           if (e.target.value.length > 0) {
             setPostingError({
@@ -91,6 +117,7 @@ const Field = ({
               text: "",
             });
           }
+
           if (verifySlug(e.target.value)) {
             setSpecialError(false);
             setter({
@@ -152,17 +179,7 @@ const Field = ({
           placeholder={placeholder}
           maxLength={maxlength}
           defaultValue={edit ? `${edit}` : ""}
-          onChange={(e) => {
-            if (section === "seo") {
-              setter({
-                ...values,
-                seo: {
-                  ...values.seo,
-                  [name]: e.target.value,
-                },
-              });
-            }
-          }}
+          onChange={(e) => textFieldDispatcher(e)}
         />
       )}
       {!fieldType && (
@@ -170,7 +187,9 @@ const Field = ({
           type={type}
           placeholder={placeholder}
           maxLength={maxlength}
-          disabled={name === "slug" && values.state !== "DRAFT"}
+          disabled={
+            name === "slug" && !(values.state === "DRAFT" || !values.state)
+          }
           onChange={(e) => textFieldDispatcher(e)}
           defaultValue={edit ? `${edit}` : ""}
           styles={{

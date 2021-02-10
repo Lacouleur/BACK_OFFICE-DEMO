@@ -4,7 +4,8 @@ import colors from "../../core/colors";
 export const ErrorNotification = styled.div`
   width: ${(props) => props.styles.width || "392px"};
   border: solid 2px ${(props) => props.styles.borderColor || colors.paleViolet};
-  margin: ${(props) => props.styles.margin || "0 0 36px 0"};
+  margin: ${(props) => props.styles.margin || "0 0 36px 50%"};
+  transform: translateX(-50%);
   padding: 15px 27px 15px 27px;
   display: flex;
   transition: all ease 0.3;

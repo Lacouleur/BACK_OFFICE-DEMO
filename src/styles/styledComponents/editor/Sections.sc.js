@@ -21,5 +21,10 @@ export const SectionBox = styled.div`
   display: flex;
 `;
 export const Form = styled.form`
+  width: 100%;
+`;
+
+export const FormContainer = styled.div`
   width: 90%;
+  margin: auto;
 `;

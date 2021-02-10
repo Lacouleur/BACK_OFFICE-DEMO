@@ -11,7 +11,10 @@ import Button from "../styles/styledComponents/global/Buttons/Buttons.sc";
 import plus from "../styles/assets/icons/plus.svg";
 import { createNewContent } from "../styles/styledComponents/global/Buttons/CustomButtons.sc";
 import { IconCreat } from "../styles/styledComponents/contentList/ContentList.sc";
-import { Form } from "../styles/styledComponents/editor/Sections.sc";
+import {
+  Form,
+  FormContainer,
+} from "../styles/styledComponents/editor/Sections.sc";
 import { checkSlug, checkTitle } from "../helper/Editor/checkFields";
 import EditorErrors from "../components/Editor/EditorErrors";
 import {
@@ -20,6 +23,7 @@ import {
   updateContent,
 } from "../services/client/contentClient";
 import { getArticleToEdit } from "../services/client/localStorage";
+import ActionBar from "../components/Editor/actionBar/ActionBar";
 
 const Editor = () => {
   const [values, setValues] = useState({});
@@ -87,52 +91,55 @@ const Editor = () => {
 
   return (
     <PageContainer position="relative">
-      <Header />
-      <PageTitle />
-      <EditorErrors
-        postingError={postingError}
-        specialError={specialError}
-        posted={posted}
-        setPosted={setPosted}
-        titleError={titleError}
-        slugError={slugError}
-      />
+      <Header position="fixed" />
       <Form onSubmit={checkAndSend}>
-        <HomeScreen
-          values={values}
-          setValues={setValues}
+        <ActionBar />
+        <PageTitle />
+        <EditorErrors
+          postingError={postingError}
           specialError={specialError}
           posted={posted}
           setPosted={setPosted}
-          setTitleError={setTitleError}
           titleError={titleError}
-          setSlugError={setSlugError}
           slugError={slugError}
-          setSpecialError={setSpecialError}
-          setPostingError={setPostingError}
-          postingError={postingError}
-          edit={
-            articleToEdit
-              ? {
-                  title: articleToEdit.title,
-                  slug: articleToEdit.slug,
-                  category: articleToEdit.category?._id,
-                }
-              : undefined
-          }
         />
-        <Seo
-          values={values}
-          setValues={setValues}
-          edit={
-            articleToEdit
-              ? {
-                  title: articleToEdit.seo?.title,
-                  description: articleToEdit.seo?.description,
-                }
-              : undefined
-          }
-        />
+        <FormContainer>
+          <HomeScreen
+            values={values}
+            setValues={setValues}
+            specialError={specialError}
+            posted={posted}
+            setPosted={setPosted}
+            setTitleError={setTitleError}
+            titleError={titleError}
+            setSlugError={setSlugError}
+            slugError={slugError}
+            setSpecialError={setSpecialError}
+            setPostingError={setPostingError}
+            postingError={postingError}
+            edit={
+              articleToEdit
+                ? {
+                    title: articleToEdit.title,
+                    slug: articleToEdit.slug,
+                    category: articleToEdit.category?._id,
+                  }
+                : undefined
+            }
+          />
+          <Seo
+            values={values}
+            setValues={setValues}
+            edit={
+              articleToEdit
+                ? {
+                    title: articleToEdit.seo?.title,
+                    description: articleToEdit.seo?.description,
+                  }
+                : undefined
+            }
+          />
+        </FormContainer>
       </Form>
       <Button
         styles={{

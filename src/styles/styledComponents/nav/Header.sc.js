@@ -6,8 +6,9 @@ export const HeaderContainer = styled.div`
   width: 100%;
   height: 56px;
   background-color: ${colors.black};
-  position: absolute;
+  position: ${(props) => props.position || "absolute"};
   top: 0;
+  z-index: 100;
 `;
 
 export const DisconectButton = styled.button`

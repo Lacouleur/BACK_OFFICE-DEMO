@@ -47,6 +47,7 @@ const Editor = () => {
         delete seo.images;
       }
       setValues({
+        state: data.state,
         title: data.title,
         slug: data.slug,
         category: data.category?._id,
@@ -69,8 +70,10 @@ const Editor = () => {
     if (!title && !slug) {
       const form = e.target;
       if (articleToEdit) {
+        const valuesUpdate = values;
+        delete valuesUpdate.state;
         updateContent(
-          values,
+          valuesUpdate,
           setPosted,
           setSpecialError,
           setPostingError,

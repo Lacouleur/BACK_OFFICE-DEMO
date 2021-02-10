@@ -38,16 +38,15 @@ const Editor = () => {
       const res = await getContent(getArticleToEdit());
       const { data } = res;
       setArticleToEdit(data);
-      console.log(data);
+      const { seo } = data;
+      if (seo.images.length === 0) {
+        delete seo.images;
+      }
       setValues({
-        state: data.state,
         title: data.title,
         slug: data.slug,
         category: data.category?._id,
-        seo: {
-          title: data.seo?.title,
-          description: data.seo?.description,
-        },
+        ...(seo && { seo }),
       });
     }
 
@@ -68,8 +67,6 @@ const Editor = () => {
       if (articleToEdit) {
         updateContent(
           values,
-          setValues,
-          form,
           setPosted,
           setSpecialError,
           setPostingError,

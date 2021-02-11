@@ -12,6 +12,7 @@ const ActionBar = () => {
   return (
     <ActionBarContainer>
       <Button
+        type="button"
         styles={BackButton}
         onClick={() => window.location.assign(`${hostUrl}`)}
       >

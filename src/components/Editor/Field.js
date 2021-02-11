@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-underscore-dangle */
 /* eslint-disable array-callback-return */
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
@@ -36,6 +34,7 @@ const Field = ({
   setPostingError,
   postingError,
   edit,
+  contentState,
 }) => {
   const [options, setOptions] = useState([]);
   const [editCategory, setEditCategory] = useState();
@@ -188,24 +187,34 @@ const Field = ({
           placeholder={placeholder}
           maxLength={maxlength}
           disabled={
-            name === "slug" && !(values.state === "DRAFT" || !values.state)
+            name === "slug" && !(contentState === "DRAFT" || !contentState)
           }
-          onChange={(e) => textFieldDispatcher(e)}
-          defaultValue={edit ? `${edit}` : ""}
-          styles={{
-            ...fieldStyle,
-            color: `${
-              error || specialError || postingError?.isError
-                ? colors.paleViolet
-                : colors.white
-            }`,
-            border: `${
-              error || specialError || postingError?.isError
-                ? `2px solid ${colors.paleViolet}`
-                : `none`
-            }`,
-            height: "56px",
+          onInput={(e) => {
+            textFieldDispatcher(e);
           }}
+          defaultValue={edit ? `${edit}` : ""}
+          styles={
+            name === "slug" && !(contentState === "DRAFT" || !contentState)
+              ? {
+                  ...fieldStyle,
+                  color: colors.placeholderGrey,
+                  height: "56px",
+                }
+              : {
+                  ...fieldStyle,
+                  color: `${
+                    error || specialError || postingError?.isError
+                      ? colors.paleViolet
+                      : colors.white
+                  }`,
+                  border: `${
+                    error || specialError || postingError?.isError
+                      ? `2px solid ${colors.paleViolet}`
+                      : `none`
+                  }`,
+                  height: "56px",
+                }
+          }
         />
       )}
       {infos && (
@@ -252,6 +261,7 @@ Field.defaultProps = {
   setPostingError: undefined,
   postingError: undefined,
   edit: undefined,
+  contentState: undefined,
 };
 
 Field.propTypes = {
@@ -277,6 +287,7 @@ Field.propTypes = {
     isError: PropTypes.bool,
   }),
   edit: PropTypes.string,
+  contentState: PropTypes.string,
 };
 
 export default Field;

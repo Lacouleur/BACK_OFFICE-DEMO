@@ -23,6 +23,17 @@ export const DisconectButton = styled.button`
   transform: translate(0, -50%);
   top: 50%;
   right: 0;
+  opacity: 0.8;
+  transition: 0.3;
+
+  &:hover {
+    opacity: 1;
+    box-shadow: 0px 0px 10px 1px ${colors.red};
+  }
+
+  &:active {
+    opacity: 0.8;
+  }
 `;
 
 export const BurgerMenu = styled.img`

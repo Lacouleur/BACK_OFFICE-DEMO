@@ -1,36 +1,70 @@
-import React from "react";
+/* eslint-disable consistent-return */
+/* eslint-disable array-callback-return */
+import React, { useRef, useEffect } from "react";
 import PropTypes from "prop-types";
-import {
-  DeleteModule,
-  DeleteIcon,
-  SectionBox,
-  SectionTitle,
-} from "../../../../styles/styledComponents/editor/Sections.sc";
 import {
   TitleIcon,
   FormTitle,
 } from "../../../../styles/styledComponents/global/Titles.sc";
-import textIcon from "../../../../styles/assets/icons/text.svg";
-import trashIcon from "../../../../styles/assets/icons/trash.svg";
+import homeIcon from "../../../../styles/assets/icons/home.svg";
+import {
+  SectionBox,
+  SectionTitle,
+} from "../../../../styles/styledComponents/editor/Sections.sc";
+import crossIcon from "../../../../styles/assets/icons/cross-white.svg";
+import Field from "../../Field";
+import { Close } from "../../../../styles/styledComponents/editor/modules/ModuleCreator.sc";
 
-const TextModule = (listSetter) => {
+const TextModule = ({ module, setModulesList }) => {
+  const textModuleRef = useRef(null);
+
+  useEffect(() => {
+    textModuleRef.current.scrollIntoView({ behavior: "smooth" });
+  }, []);
+
   return (
     <>
-      <SectionBox>
+      <SectionBox ref={textModuleRef}>
+        <Close
+          src={crossIcon}
+          onClick={() => {
+            setModulesList((currentList) => {
+              let newList = [];
+              currentList.find((searchedModule, index) => {
+                if (searchedModule?.id === module?.id) {
+                  newList = currentList.splice(index, 1);
+                }
+                newList = [...currentList];
+              });
+              return newList;
+            });
+          }}
+        />
         <SectionTitle>
-          <TitleIcon src={textIcon} />
-          <FormTitle>Text</FormTitle>
+          <TitleIcon src={homeIcon} />
+          <FormTitle>
+            Text Block
+            {module.id}
+          </FormTitle>
         </SectionTitle>
-        <DeleteModule onClick={listSetter((list) => [...list, module.name])}>
-          <DeleteIcon src={trashIcon} />
-        </DeleteModule>
+        <Field
+          placeholder="textBlock"
+          fieldType="textarea"
+          name="text"
+          section="text"
+          maxlength="155"
+        />
       </SectionBox>
     </>
   );
 };
 
 TextModule.propTypes = {
-  listSetter: PropTypes.func.isRequired,
+  module: PropTypes.shape({
+    name: PropTypes.string,
+    icon: PropTypes.string,
+    id: PropTypes.string,
+  }).isRequired,
+  setModulesList: PropTypes.func.isRequired,
 };
-
 export default TextModule;

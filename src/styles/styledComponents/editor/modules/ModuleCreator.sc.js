@@ -1,22 +1,32 @@
 import styled from "styled-components";
 import colors from "../../../core/colors";
 
-export const ModuleBlock = styled.div`
-  cursor: pointer;
-  width: 10%;
-  min-width: 50px;
-  min-height: 50px;
+export const DeleteModule = styled.div`
+  position: absolute;
+  right: 5%;
+  width: 16px;
+`;
+
+export const ModulesContainer = styled.div`
+  position: relative;
+  width: 90%;
   display: flex;
-  justify-content: center;
+  align-items: center;
+  justify-content: space-evenly;
+`;
+
+export const ModuleBox = styled.div`
+  margin-top: 3%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 10vw;
+  height: 10vw;
   background-color: ${colors.paleViolet};
-  transition: 0.2s;
+  transition: 0.3s;
   opacity: 0.8;
   border-radius: 5px;
-  &:after {
-    content: "";
-    display: block;
-    padding-bottom: 100%;
-  }
 
   &:hover {
     opacity: 1;
@@ -24,17 +34,24 @@ export const ModuleBlock = styled.div`
   }
 `;
 
-export const ModulesListContainer = styled.div`
-  width: 100%;
-  min-width: 100%;
-  margin: 40px 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
+export const ModuleText = styled.div`
+  color: ${colors.darkGrey};
 `;
 
-export const ModuleImg = styled.img`
-  width: 50%;
+export const ModuleIcon = styled.img`
+  margin-top: 20px;
+  width: 50px;
 `;
-export const toto = "titi";
+
+export const Close = styled.img`
+  width: 20px;
+  height: 20px;
+  transition: 0.3s;
+  position: absolute;
+  right: 5%;
+  top: 30px;
+
+  &:hover {
+    transform: rotate(90deg);
+  }
+`;

@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
@@ -24,6 +22,7 @@ import {
 } from "../services/client/contentClient";
 import { getArticleToEdit } from "../services/client/localStorage";
 import ActionBar from "../components/Editor/actionBar/ActionBar";
+import ModuleCreator from "../components/Editor/Sections/Modules/ModuleCreator";
 
 const Editor = () => {
   const [values, setValues] = useState({});
@@ -31,11 +30,14 @@ const Editor = () => {
   const [slugError, setSlugError] = useState(false);
   const [specialError, setSpecialError] = useState(false);
   const [posted, setPosted] = useState(false);
+  const [contentState, setContentState] = useState("");
   const [postingError, setPostingError] = useState({
     isError: false,
     text: "",
   });
   const [articleToEdit, setArticleToEdit] = useState();
+  const [newModule, setNewModule] = useState(false);
+  const [modulesList, setModulesList] = useState([]);
 
   useEffect(() => {
     async function fetchArticleToEdit() {
@@ -43,11 +45,11 @@ const Editor = () => {
       const { data } = res;
       setArticleToEdit(data);
       const { seo } = data;
-      if (seo.images.length === 0) {
+      if (seo?.images?.length === 0) {
         delete seo.images;
       }
+      setContentState(data.state);
       setValues({
-        state: data.state,
         title: data.title,
         slug: data.slug,
         category: data.category?._id,
@@ -70,10 +72,8 @@ const Editor = () => {
     if (!title && !slug) {
       const form = e.target;
       if (articleToEdit) {
-        const valuesUpdate = values;
-        delete valuesUpdate.state;
         updateContent(
-          valuesUpdate,
+          values,
           setPosted,
           setSpecialError,
           setPostingError,
@@ -120,6 +120,7 @@ const Editor = () => {
             setSpecialError={setSpecialError}
             setPostingError={setPostingError}
             postingError={postingError}
+            contentState={contentState}
             edit={
               articleToEdit
                 ? {
@@ -142,9 +143,19 @@ const Editor = () => {
                 : undefined
             }
           />
+
+          {modulesList && modulesList.map((module) => module.component)}
+
+          {newModule && (
+            <ModuleCreator
+              setModulesList={setModulesList}
+              editorStatus={setNewModule}
+            />
+          )}
         </FormContainer>
       </Form>
       <Button
+        onClick={() => setNewModule(true)}
         styles={{
           ...createNewContent,
           alignSelf: "flex-end",

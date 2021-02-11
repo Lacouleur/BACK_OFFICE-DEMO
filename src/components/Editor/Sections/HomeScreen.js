@@ -25,6 +25,7 @@ const HomeScreen = ({
   setPostingError,
   postingError,
   edit,
+  contentState,
 }) => {
   const slugMessage = () => {
     let message = "";
@@ -74,6 +75,7 @@ const HomeScreen = ({
           setPostingError={setPostingError}
           postingError={postingError}
           edit={edit ? edit.slug : undefined}
+          contentState={contentState}
         />
         <Field
           placeholder="Category"
@@ -106,6 +108,7 @@ HomeScreen.propTypes = {
   slugError: PropTypes.bool.isRequired,
   setSlugError: PropTypes.func.isRequired,
   setPostingError: PropTypes.func.isRequired,
+  contentState: PropTypes.string.isRequired,
   postingError: PropTypes.shape({
     isError: PropTypes.bool,
     text: PropTypes.string,

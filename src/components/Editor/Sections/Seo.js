@@ -22,7 +22,6 @@ const Seo = ({ values, setValues, edit }) => {
         <TitleIcon src={seoIcon} />
         <FormTitle>SEO</FormTitle>
       </SectionTitle>
-      <FieldTitle>Text and category</FieldTitle>
       <Field
         placeholder="Title"
         name="title"

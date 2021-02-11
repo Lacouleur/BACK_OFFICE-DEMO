@@ -178,7 +178,7 @@ const Field = ({
           placeholder={placeholder}
           maxLength={maxlength}
           defaultValue={edit ? `${edit}` : ""}
-          onChange={(e) => textFieldDispatcher(e)}
+          onInput={(e) => textFieldDispatcher(e)}
         />
       )}
       {!fieldType && (

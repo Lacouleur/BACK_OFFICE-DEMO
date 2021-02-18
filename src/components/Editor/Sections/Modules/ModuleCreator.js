@@ -16,7 +16,6 @@ import surveyIcon from "../../../../styles/assets/icons/survey.svg";
 import buttonIcon from "../../../../styles/assets/icons/button.svg";
 import crossIcon from "../../../../styles/assets/icons/cross-white.svg";
 import keyGenerator from "../../../../helper/keyGenerator";
-import TextModule from "./TextModule";
 import {
   ModuleBox,
   ModulesContainer,
@@ -27,10 +26,10 @@ import {
 
 const ModuleCreator = ({ setModulesList, editorStatus }) => {
   const DefaultModules = [
-    { name: "text", icon: textIcon, id: keyGenerator("txt") },
-    { name: "quiz", icon: quizIcon, id: keyGenerator("quiz") },
-    { name: "survey", icon: surveyIcon, id: keyGenerator("survey") },
-    { name: "button", icon: buttonIcon, id: keyGenerator("button") },
+    { type: "text", icon: textIcon, id: keyGenerator("txt") },
+    { type: "quiz", icon: quizIcon, id: keyGenerator("quiz") },
+    { type: "survey", icon: surveyIcon, id: keyGenerator("survey") },
+    { type: "button", icon: buttonIcon, id: keyGenerator("button") },
   ];
 
   const moduleRef = useRef(null);
@@ -54,25 +53,20 @@ const ModuleCreator = ({ setModulesList, editorStatus }) => {
                 key={module.id}
                 onClick={() => {
                   editorStatus(false);
-                  if (module.name === "text") {
+                  if (module.type === "text") {
                     setModulesList((currentList) => [
                       ...currentList,
                       {
                         id: module.id,
-                        component: (
-                          <TextModule
-                            key={keyGenerator("txt")}
-                            module={module}
-                            setModulesList={setModulesList}
-                          />
-                        ),
+                        type: "text",
+                        text: "",
                       },
                     ]);
                   }
                 }}
               >
                 <ModuleIcon src={module.icon} />
-                <ModuleText>{module.name}</ModuleText>
+                <ModuleText>{module.type}</ModuleText>
               </ModuleBox>
             ))}
         </ModulesContainer>

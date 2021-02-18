@@ -26,7 +26,7 @@ const Seo = ({ values, setValues, edit }) => {
         placeholder="Title"
         name="title"
         section="seo"
-        setter={setValues}
+        setValues={setValues}
         values={values}
         edit={edit ? edit.title : undefined}
       />
@@ -37,7 +37,7 @@ const Seo = ({ values, setValues, edit }) => {
         section="seo"
         maxlength="155"
         infos="Maximum 155 characters & avoid tab or carrige return"
-        setter={setValues}
+        setValues={setValues}
         values={values}
         edit={edit ? edit.description : undefined}
       />

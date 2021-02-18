@@ -1,6 +1,7 @@
 /* eslint-disable array-callback-return */
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+/* import JoditEditor from "jodit-react"; */
 import {
   FieldStyle,
   Selector,
@@ -14,7 +15,8 @@ import colors from "../../styles/core/colors";
 import exclamationIcon from "../../styles/assets/icons/exclamationGrey.svg";
 import exclamationVioletIcon from "../../styles/assets/icons/exclamation.svg";
 import { getCategories } from "../../services/client/contentClient";
-import { verifySlug } from "../../helper/auth/verifyFields";
+import fieldDispatcher from "../../helper/Editor/fieldDispatcher";
+/* import { CKWraper } from "../../styles/styledComponents/editor/modules/TextModule.sc"; */
 
 const Field = ({
   fieldStyle,
@@ -22,7 +24,7 @@ const Field = ({
   placeholder,
   maxlength,
   infos,
-  setter,
+  setValues,
   values,
   name,
   error,
@@ -63,89 +65,18 @@ const Field = ({
     fetchCategories();
   }, [edit]);
 
-  function textFieldDispatcher(e) {
-    const { seo } = values;
-
-    switch (section) {
-      case "seo":
-        if (name === "title" && e.target.value.length > 0) {
-          setter({
-            ...values,
-            seo: {
-              ...values.seo,
-              [name]: e.target.value,
-            },
-          });
-        } else if (name === "description" && e.target.value.length > 0) {
-          setter({
-            ...values,
-            seo: {
-              ...values.seo,
-              [name]: e.target.value,
-            },
-          });
-        } else {
-          delete seo[name];
-          setter({
-            ...values,
-          });
-        }
-
-        if (seo && Object.keys(seo).length === 0) {
-          const newValues = { ...values };
-          delete newValues.seo;
-          setter({
-            ...newValues,
-          });
-        }
-
-        break;
-
-      case "main":
-        if (
-          (name === "title" || name === "slug") &&
-          e.target.value.length > 0
-        ) {
-          setError(false);
-        }
-
-        if (name === "slug") {
-          if (e.target.value.length > 0) {
-            setPostingError({
-              isError: false,
-              text: "",
-            });
-          }
-
-          if (verifySlug(e.target.value)) {
-            setSpecialError(false);
-            setter({
-              ...values,
-              [name]: e.target.value,
-            });
-          } else if (e.target.value.length > 0 && !verifySlug(e.target.value)) {
-            setSpecialError(true);
-          } else {
-            setter({
-              ...values,
-              [name]: e.target.value,
-            });
-            setSpecialError(false);
-          }
-        } else if (name === "htag") {
-          setter({
-            ...values,
-            header: { [name]: e.target.value },
-          });
-        } else {
-          setter({
-            ...values,
-            [name]: e.target.value,
-          });
-        }
-        break;
-      default:
-    }
+  function dispatchFields(e) {
+    fieldDispatcher(
+      setEditCategory,
+      setError,
+      setSpecialError,
+      setValues,
+      section,
+      setPostingError,
+      values,
+      name,
+      e
+    );
   }
 
   return (
@@ -157,20 +88,7 @@ const Field = ({
           classNamePrefix="Select"
           placeholder="Category"
           isClearable
-          onChange={(e) => {
-            if (e?.value) {
-              setEditCategory(e);
-              setter({
-                ...values,
-                [name]: e.value,
-              });
-            } else {
-              setEditCategory("");
-              const vals = { ...values };
-              delete vals[name];
-              setter({ ...vals });
-            }
-          }}
+          onChange={(e) => dispatchFields(e)}
         />
       )}
       {fieldType && fieldType === "textarea" && (
@@ -178,9 +96,22 @@ const Field = ({
           placeholder={placeholder}
           maxLength={maxlength}
           defaultValue={edit ? `${edit}` : ""}
-          onInput={(e) => textFieldDispatcher(e)}
+          onInput={(e) => dispatchFields(e)}
         />
       )}
+      {/*       {fieldType && fieldType === "textEditor" && (
+        <CKWraper>
+          {console.log("EDIT =>", edit)}
+          <JoditEditor
+            ref={joditEditor}
+            value={textModuleValue}
+            onBlur={(e) => {
+              setTextModuleValue(e.target.innerHTML);
+              /*  dispatchFields(e); 
+            }}
+          />
+        </CKWraper>
+      )} */}
       {!fieldType && (
         <FieldStyle
           type={type}
@@ -190,7 +121,7 @@ const Field = ({
             name === "slug" && !(contentState === "DRAFT" || !contentState)
           }
           onInput={(e) => {
-            textFieldDispatcher(e);
+            dispatchFields(e);
           }}
           defaultValue={edit ? `${edit}` : ""}
           styles={
@@ -270,7 +201,7 @@ Field.propTypes = {
   placeholder: PropTypes.string,
   maxlength: PropTypes.string,
   infos: PropTypes.string,
-  setter: PropTypes.func.isRequired,
+  setValues: PropTypes.func.isRequired,
   values: PropTypes.shape({
     state: PropTypes.string,
     seo: PropTypes.shape({}),

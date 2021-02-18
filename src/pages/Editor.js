@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
@@ -23,6 +24,8 @@ import {
 import { getArticleToEdit } from "../services/client/localStorage";
 import ActionBar from "../components/Editor/actionBar/ActionBar";
 import ModuleCreator from "../components/Editor/Sections/Modules/ModuleCreator";
+/* import TextModule from "../components/Editor/Sections/Modules/TextModule";
+import keyGenerator from "../helper/keyGenerator"; */
 
 const Editor = () => {
   const [values, setValues] = useState({});
@@ -45,15 +48,18 @@ const Editor = () => {
       const { data } = res;
       setArticleToEdit(data);
       const { seo } = data;
+      const { components } = data;
       if (seo?.images?.length === 0) {
         delete seo.images;
       }
       setContentState(data.state);
+      setModulesList(components ? [...components] : []);
       setValues({
         title: data.title,
         slug: data.slug,
         category: data.category?._id,
         ...(seo && { seo }),
+        ...(components && { components }),
       });
     }
 
@@ -144,7 +150,28 @@ const Editor = () => {
             }
           />
 
-          {modulesList && modulesList.map((module) => module.component)}
+          {/*           {modulesList &&
+            modulesList.map((module) => {
+              let editedModule = {};
+              if (!module.id) {
+                editedModule = { ...module, id: keyGenerator(module.type) };
+              } else {
+                editedModule = { ...module };
+              }
+              if (module.type === "text") {
+                return (
+                  <TextModule
+                    key={keyGenerator("text")}
+                    module={editedModule}
+                    setModulesList={setModulesList}
+                    values={values}
+                    setValues={setValues}
+                    edit={articleToEdit ? { ...editedModule } : undefined}
+                  />
+                );
+              }
+              return "";
+            })} */}
 
           {newModule && (
             <ModuleCreator

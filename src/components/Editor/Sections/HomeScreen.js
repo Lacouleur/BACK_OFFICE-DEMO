@@ -53,7 +53,7 @@ const HomeScreen = ({
           infos="Maximum 64 characters"
           name="title"
           section="main"
-          setter={setValues}
+          setValues={setValues}
           values={values}
           error={titleError}
           setError={setTitleError}
@@ -63,7 +63,7 @@ const HomeScreen = ({
         <Field
           placeholder="slug URL"
           infos={`${slugMessage()}`}
-          setter={setValues}
+          setValues={setValues}
           values={values}
           name="slug"
           section="main"
@@ -79,7 +79,7 @@ const HomeScreen = ({
         />
         <Field
           placeholder="Category"
-          setter={setValues}
+          setValues={setValues}
           values={values}
           name="category"
           fieldType="select"

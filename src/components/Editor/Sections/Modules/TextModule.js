@@ -1,25 +1,36 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import JoditEditor from "jodit-react";
 import {
   TitleIcon,
   FormTitle,
 } from "../../../../styles/styledComponents/global/Titles.sc";
-import homeIcon from "../../../../styles/assets/icons/home.svg";
 import {
   SectionBox,
   SectionTitle,
 } from "../../../../styles/styledComponents/editor/Sections.sc";
 import crossIcon from "../../../../styles/assets/icons/cross-white.svg";
-import Field from "../../Field";
+import textIcon from "../../../../styles/assets/icons/text.svg";
 import { Close } from "../../../../styles/styledComponents/editor/modules/ModuleCreator.sc";
+import { CKWraper } from "../../../../styles/styledComponents/editor/modules/TextModule.sc";
 
-const TextModule = ({ module, setModulesList }) => {
+const TextModule = ({ module, setModulesList, setValues, values, edit }) => {
   const textModuleRef = useRef(null);
+  const joditEditor = useRef(null);
+  const [textModuleValue, setTextModuleValue] = useState("");
 
   useEffect(() => {
     textModuleRef.current.scrollIntoView({ behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
+    /*    textModuleRef.current.scrollIntoView({ behavior: "smooth" });
+    if (joditEditor?.current?.value !== textModuleValue) {
+      joditEditor.current.value = textModuleValue;
+    } */
   }, []);
 
   return (
@@ -41,30 +52,40 @@ const TextModule = ({ module, setModulesList }) => {
           }}
         />
         <SectionTitle>
-          <TitleIcon src={homeIcon} />
-          <FormTitle>
-            Text Block
-            {module.id}
-          </FormTitle>
+          <TitleIcon src={textIcon} />
+          <FormTitle>Text module</FormTitle>
         </SectionTitle>
-        <Field
-          placeholder="textBlock"
-          fieldType="textarea"
-          name="text"
-          section="text"
-          maxlength="155"
-        />
+        <CKWraper>
+          <JoditEditor
+            ref={joditEditor}
+            /* value={values.components[0].text} */
+            onChange={(e) => {
+              setValues({
+                ...values,
+                components: [{ type: "text", text: `${e}` }],
+              });
+              console.log(e);
+            }}
+          />
+        </CKWraper>
       </SectionBox>
     </>
   );
 };
 
+TextModule.defaultProps = {
+  edit: undefined,
+};
+
 TextModule.propTypes = {
   module: PropTypes.shape({
-    name: PropTypes.string,
+    type: PropTypes.string,
     icon: PropTypes.string,
     id: PropTypes.string,
   }).isRequired,
   setModulesList: PropTypes.func.isRequired,
+  setValues: PropTypes.func.isRequired,
+  values: PropTypes.shape([]).isRequired,
+  edit: PropTypes.shape({}),
 };
 export default TextModule;

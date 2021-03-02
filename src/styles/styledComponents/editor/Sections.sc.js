@@ -5,9 +5,7 @@ export const SectionTitle = styled.div`
   display: flex;
 `;
 
-export const ExampleSeo = styled.img`
-  width: 100%;
-`;
+export const ExampleSeo = styled.img``;
 
 export const SectionBox = styled.div`
   position: relative;

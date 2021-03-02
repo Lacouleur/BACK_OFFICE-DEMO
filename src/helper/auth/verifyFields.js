@@ -1,5 +1,5 @@
 export function verifySlug(value) {
-  const slugRegex = new RegExp(/^[a-z0-9-]+(?:[a-z0-9]+)*$/);
+  const slugRegex = new RegExp(/^[a-z0-9-]+(?:[a-z0-9]*)$/);
   const isSlug = slugRegex.exec(value);
   if (isSlug) {
     return true;

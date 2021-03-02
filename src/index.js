@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import Home from "./pages/Home";
 import Auth from "./pages/Auth";
-import Error404 from "./pages/404";
+/* import error404 from "./pages/404"; */
 import PrivateRoute from "./services/routes/PrivatesRoutes";
 import PublicRoute from "./services/routes/PublicRoutes";
 import Editor from "./pages/Editor";
@@ -28,7 +28,7 @@ const rootComponent = (
         <PublicRoute restricted path="/" exact component={Auth} />
         <PrivateRoute path="/dashboard" exact component={Home} />
         <PrivateRoute path="/editor" exact component={Editor} />
-        <PublicRoute path="/" component={Error404} />
+        {/* <Route path="/" component={error404} /> */}
       </Switch>
     </Router>
   </Provider>

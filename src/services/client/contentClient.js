@@ -1,146 +1,50 @@
 import axios from "axios";
-import { getToken, deleteToken } from "./authClient";
+import { getToken } from "./authClient";
 
-export async function getContentList(page = 1, limit = 20) {
-  try {
-    const res = await axios.get(
-      `${BASE_URL}/contents?limit=${limit}&page=${page}`,
-      {
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-        },
-      }
-    );
-
-    if (res.status < 300 && res.status > 199) {
-      return { data: res.data };
-    }
-
-    return null;
-  } catch {
-    deleteToken();
-    window.location.assign(`${HOST_URL}/`);
-    return null;
-  }
+export function getContentList(page = 1, limit = 20) {
+  return axios.get(`${BASE_URL}/contents?limit=${limit}&page=${page}`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 }
 
-export async function getContent(id) {
-  try {
-    const res = await axios.get(`${BASE_URL}/contents/${id}`, {
-      headers: {
-        Authorization: `Bearer ${getToken()}`,
-      },
-    });
-
-    if (res.status < 300 && res.status > 199) {
-      return { data: res.data };
-    }
-
-    return null;
-  } catch {
-    deleteToken();
-    window.location.assign(`${HOST_URL}/`);
-    return null;
-  }
+export function getContent(id) {
+  return axios.get(`${BASE_URL}/contents/${id}`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 }
 
-export async function postContent(
-  values,
-  setValues,
-  form,
-  setPosted,
-  setSpecialError,
-  setPostingError
-) {
-  try {
-    const res = await axios({
-      method: "post",
-      url: `${BASE_URL}/contents`,
-      data: values,
-      headers: {
-        Authorization: `Bearer ${getToken()}`,
-      },
-    });
-
-    if (res.status < 300 && res.status > 199) {
-      setValues({});
-      form?.reset();
-      setSpecialError(false);
-      setPosted(true);
-    }
-
-    return null;
-  } catch (error) {
-    if (error.response.status === 409) {
-      setPostingError({
-        isError: true,
-        text: error.response.data,
-      });
-      setPosted(false);
-    } else {
-      deleteToken();
-      window.location.assign(`${HOST_URL}/`);
-    }
-    return null;
-  }
+export function postContent(values) {
+  return axios({
+    method: "post",
+    url: `${BASE_URL}/contents`,
+    data: values,
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 }
 
-export async function updateContent(
-  values,
-  setPosted,
-  setSpecialError,
-  setPostingError,
-  articleId
-) {
-  try {
-    const res = await axios({
-      method: "put",
-      url: `${BASE_URL}/contents/${articleId}`,
-      data: values,
-      headers: {
-        Authorization: `Bearer ${getToken()}`,
-      },
-    });
-
-    if (res.status < 300 && res.status > 199) {
-      setSpecialError(false);
-      setPosted(true);
-    }
-
-    return null;
-  } catch (error) {
-    if (error.response.status === 409) {
-      setPostingError({
-        isError: true,
-        text: error.response.data,
-      });
-      setPosted(false);
-    } else {
-      deleteToken();
-      window.location.assign(`${HOST_URL}/`);
-    }
-    return null;
-  }
+export function update(values, articleId) {
+  return axios({
+    method: "put",
+    url: `${BASE_URL}/contents/${articleId}`,
+    data: values,
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 }
 
 export async function getCategories() {
-  try {
-    const res = await axios.get(`${BASE_URL}/categories`, {
-      headers: {
-        Authorization: `Bearer ${getToken()}`,
-      },
-    });
-
-    if (res.status < 300 && res.status > 199) {
-      return res.data;
-    }
-
-    return null;
-  } catch {
-    deleteToken();
-    window.location.assign(`${HOST_URL}/`);
-    return null;
-  }
+  return axios.get(`${BASE_URL}/categories`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 }
 
 export async function deleteContent(id) {

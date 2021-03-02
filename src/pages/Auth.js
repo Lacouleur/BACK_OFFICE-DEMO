@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { sendAuth, setToken, getToken } from "../services/client/authClient";
 import idIcon from "../styles/assets/icons/id.svg";
 import lockIcon from "../styles/assets/icons/lock.svg";
-import Field from "../components/Auth/Fields";
+import AuthField from "../components/Auth/AuthField";
 import { Form, AuthBox } from "../styles/styledComponents/auth/Auth.sc";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -17,39 +17,26 @@ import Button from "../styles/styledComponents/global/Buttons/Buttons.sc";
 import { loginButton } from "../styles/styledComponents/global/Buttons/CustomButtons.sc";
 import PageContainer from "../styles/styledComponents/global/PageContainer.sc";
 import Error from "../components/Notifications/Error";
+import { logUser } from "../store/actions/clientActions";
 
 const Auth = () => {
-  const [mail, setMail] = useState("");
-  const [pass, setPass] = useState("");
-  const [error, setError] = useState();
+  const authState = useSelector(({ authReducer }) => authReducer);
+  const { mailFieldError, passwordFieldError, authError } = authState;
+  const dispatch = useDispatch();
   const history = useHistory();
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    const data = {
-      email: mail,
-      password: pass,
+    const redirectTo = (link) => {
+      history.push(link);
     };
-    sendAuth(data)
-      .then((token) => {
-        if (token) {
-          setToken(token.token);
-        }
-      })
-      .then(() => {
-        if (getToken()) {
-          history.push("/dashboard");
-        } else {
-          setError(true);
-        }
-      });
+    dispatch(logUser(redirectTo));
   };
 
   return (
     <PageContainer position="absolute">
       <Header />
       <AuthBox>
-        {error && (
+        {authError && (
           <Error
             text="Incorrect username and/or password. Please check and try again."
             styles={{
@@ -64,39 +51,30 @@ const Auth = () => {
 
         <Form onSubmit={(e) => handleSubmit(e)} autocomplete="on">
           <FormTitle>Log in</FormTitle>
-          <Field
-            settings={{
-              icon: idIcon,
-              eye: false,
-              type: "mail",
-              placeholder: "ID",
-              setter: setMail,
-              status: mail,
-            }}
+
+          <AuthField
+            icon={idIcon}
+            eye={false}
+            type="mail"
+            placeholder="ID"
+            status={mailFieldError}
           />
 
-          <Field
-            settings={{
-              icon: lockIcon,
-              eye: true,
-              type: "password",
-              placeholder: "password",
-              setter: setPass,
-              status: pass,
-            }}
+          <AuthField
+            icon={lockIcon}
+            eye
+            type="password"
+            placeholder="password"
+            status={passwordFieldError}
           />
 
           <Button
             styles={
-              mail !== "" && pass !== "" && mail !== "unvalid"
+              !mailFieldError && !passwordFieldError
                 ? loginButton.clickable
                 : loginButton.unClickable
             }
-            type={
-              mail !== "" && pass !== "" && mail !== "unvalid"
-                ? "submit"
-                : "text"
-            }
+            type={!mailFieldError && !passwordFieldError ? "submit" : "text"}
           >
             Login
           </Button>

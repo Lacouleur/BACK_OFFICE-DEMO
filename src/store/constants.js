@@ -1,0 +1,26 @@
+// COMMONS
+export const SET_POSTED = "SET_POSTED";
+export const SET_ERROR_SPECIAL = "SET_ERROR_SPECIAL";
+export const SET_ERROR_POSTING = "SET_ERROR_POSTING";
+export const CONTENT_LOADED = "CONTENT_LOADED";
+
+// AUTH
+export const SET_MAIL = "SET_MAIL";
+export const SET_PASSWORD = "SET_PASSWORD";
+export const SET_ERROR_AUTH = "SET_ERROR_AUTH";
+
+// CONTENT LIST
+export const SET_CONTENTS_LIST = "SET_CONTENT_LIST";
+export const SET_PAGINATION = "SET_PAGINATION";
+
+// HOMESCREEN
+export const ADD_SLUG = "ADD_SLUG";
+export const ADD_TITLE = "ADD_TITLE";
+export const ADD_CATEGORY = "ADD_CATEGORY";
+export const SET_CATEGORIES_LIST = "SET_CATEGORIES_LIST";
+export const SET_ERROR_TITLE = "SET_ERROR_TITLE";
+export const SET_ERROR_SLUG = "SET_ERROR_SLUG";
+
+// SEO
+export const ADD_SEO_TITLE = "ADD_SEO_TITLE";
+export const ADD_SEO_DESCRIPTION = "ADD_SEO_DESCRIPTION";

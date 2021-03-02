@@ -7,11 +7,10 @@ export function verifySlug(value) {
   return false;
 }
 
-export function verifyField(id, value, setter) {
-  if (id === "ID") {
+export function verifyField(type, value) {
+  if (type === "mail") {
     if (value.length < 8) {
-      setter("");
-      return;
+      return false;
     }
 
     const mailRegex = new RegExp(
@@ -21,18 +20,15 @@ export function verifyField(id, value, setter) {
     const isMail = mailRegex.exec(value);
 
     if (isMail) {
-      setter(value);
-      return;
+      return false;
     }
-    setter("unvalid");
-    return;
+    return true;
   }
 
-  if (id === "password" && value.length > 4) {
-    setter(value);
-    return;
+  if (type === "password" && value.length > 4) {
+    return false;
   }
-  setter("");
+  return true;
 }
 
 export default verifyField;

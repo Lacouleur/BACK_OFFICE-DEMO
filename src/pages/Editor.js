@@ -1,5 +1,6 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import PageContainer from "../styles/styledComponents/global/PageContainer.sc";
@@ -14,171 +15,50 @@ import {
   Form,
   FormContainer,
 } from "../styles/styledComponents/editor/Sections.sc";
-import { checkSlug, checkTitle } from "../helper/Editor/checkFields";
 import EditorErrors from "../components/Editor/EditorErrors";
-import {
-  getContent,
-  postContent,
-  updateContent,
-} from "../services/client/contentClient";
-import { getArticleToEdit } from "../services/client/localStorage";
 import ActionBar from "../components/Editor/actionBar/ActionBar";
 import ModuleCreator from "../components/Editor/Sections/Modules/ModuleCreator";
-/* import TextModule from "../components/Editor/Sections/Modules/TextModule";
-import keyGenerator from "../helper/keyGenerator"; */
+import { checkAndSend, fetchContent } from "../store/actions/clientActions";
 
 const Editor = () => {
-  const [values, setValues] = useState({});
-  const [titleError, setTitleError] = useState(false);
-  const [slugError, setSlugError] = useState(false);
-  const [specialError, setSpecialError] = useState(false);
-  const [posted, setPosted] = useState(false);
-  const [contentState, setContentState] = useState("");
-  const [postingError, setPostingError] = useState({
-    isError: false,
-    text: "",
-  });
-  const [articleToEdit, setArticleToEdit] = useState();
+  const dispatch = useDispatch();
   const [newModule, setNewModule] = useState(false);
-  const [modulesList, setModulesList] = useState([]);
+  const contentsState = useSelector(
+    ({ contentListReducer }) => contentListReducer
+  );
+  const homeScreenState = useSelector(
+    ({ homeScreenReducer }) => homeScreenReducer
+  );
 
-  useEffect(() => {
-    async function fetchArticleToEdit() {
-      const res = await getContent(getArticleToEdit());
-      const { data } = res;
-      setArticleToEdit(data);
-      const { seo } = data;
-      const { components } = data;
-      if (seo?.images?.length === 0) {
-        delete seo.images;
-      }
-      setContentState(data.state);
-      setModulesList(components ? [...components] : []);
-      setValues({
-        title: data.title,
-        slug: data.slug,
-        category: data.category?._id,
-        ...(seo && { seo }),
-        ...(components && { components }),
-      });
-    }
+  const { isEditing } = homeScreenState;
+  const location = useLocation();
 
-    if (getArticleToEdit()) {
-      fetchArticleToEdit();
-    }
-  }, []);
-
-  function checkAndSend(e) {
+  function handleSubmit(e) {
     e.preventDefault();
-    const title = checkTitle(values);
-    const slug = specialError ? true : checkSlug(values);
-
-    setTitleError(title);
-    setSlugError(slug);
-    if (!title && !slug) {
-      const form = e.target;
-      if (articleToEdit) {
-        updateContent(
-          values,
-          setPosted,
-          setSpecialError,
-          setPostingError,
-          articleToEdit._id
-        );
-      } else {
-        postContent(
-          values,
-          setValues,
-          form,
-          setPosted,
-          setSpecialError,
-          setPostingError
-        );
-      }
+    if (!isEditing) {
+      dispatch(checkAndSend());
+    } else {
+      dispatch(checkAndSend("update", location.state.id));
     }
   }
+  useEffect(() => {
+    if (location.state?.id) {
+      dispatch(fetchContent(location.state.id));
+    }
+  }, []);
 
   return (
     <PageContainer position="relative">
       <Header position="fixed" />
-      <Form onSubmit={checkAndSend}>
+      <Form onSubmit={handleSubmit}>
         <ActionBar />
         <PageTitle />
-        <EditorErrors
-          postingError={postingError}
-          specialError={specialError}
-          posted={posted}
-          setPosted={setPosted}
-          titleError={titleError}
-          slugError={slugError}
-        />
+        <EditorErrors />
         <FormContainer>
-          <HomeScreen
-            values={values}
-            setValues={setValues}
-            specialError={specialError}
-            posted={posted}
-            setPosted={setPosted}
-            setTitleError={setTitleError}
-            titleError={titleError}
-            setSlugError={setSlugError}
-            slugError={slugError}
-            setSpecialError={setSpecialError}
-            setPostingError={setPostingError}
-            postingError={postingError}
-            contentState={contentState}
-            edit={
-              articleToEdit
-                ? {
-                    title: articleToEdit.title,
-                    slug: articleToEdit.slug,
-                    category: articleToEdit.category?._id,
-                  }
-                : undefined
-            }
-          />
-          <Seo
-            values={values}
-            setValues={setValues}
-            edit={
-              articleToEdit
-                ? {
-                    title: articleToEdit.seo?.title,
-                    description: articleToEdit.seo?.description,
-                  }
-                : undefined
-            }
-          />
+          <HomeScreen />
+          <Seo />
 
-          {/*           {modulesList &&
-            modulesList.map((module) => {
-              let editedModule = {};
-              if (!module.id) {
-                editedModule = { ...module, id: keyGenerator(module.type) };
-              } else {
-                editedModule = { ...module };
-              }
-              if (module.type === "text") {
-                return (
-                  <TextModule
-                    key={keyGenerator("text")}
-                    module={editedModule}
-                    setModulesList={setModulesList}
-                    values={values}
-                    setValues={setValues}
-                    edit={articleToEdit ? { ...editedModule } : undefined}
-                  />
-                );
-              }
-              return "";
-            })} */}
-
-          {newModule && (
-            <ModuleCreator
-              setModulesList={setModulesList}
-              editorStatus={setNewModule}
-            />
-          )}
+          {newModule && <ModuleCreator editorStatus={setNewModule} />}
         </FormContainer>
       </Form>
       <Button

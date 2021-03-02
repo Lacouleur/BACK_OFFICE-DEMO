@@ -64,7 +64,6 @@ const TextModule = ({ module, setModulesList, setValues, values, edit }) => {
                 ...values,
                 components: [{ type: "text", text: `${e}` }],
               });
-              console.log(e);
             }}
           />
         </CKWraper>

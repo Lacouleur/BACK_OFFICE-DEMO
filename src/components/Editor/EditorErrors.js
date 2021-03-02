@@ -1,35 +1,41 @@
 import React, { useEffect } from "react";
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 import keyGenerator from "../../helper/keyGenerator";
 import Error from "../Notifications/Error";
+import { setPosted } from "../../store/actions/commonsActions";
 
-const EditorErrors = ({
-  postingError,
-  specialError,
-  posted,
-  setPosted,
-  titleError,
-  slugError,
-}) => {
+const EditorErrors = () => {
+  const homeScreenState = useSelector(
+    ({ homeScreenReducer }) => homeScreenReducer
+  );
+  const dispatch = useDispatch();
+  const {
+    postingError,
+    titleError,
+    slugError,
+    isPosted,
+    regexSlugError,
+  } = homeScreenState;
+
   useEffect(() => {
-    if (posted) {
+    if (isPosted) {
       window.scrollTo(0, 0);
       setTimeout(() => {
-        setPosted(false);
+        dispatch(setPosted(false));
       }, 3000);
     }
-  }, [posted]);
+  }, [isPosted]);
 
   return (
     <>
-      {postingError.isError && (
+      {postingError && (
         <Error
           key={keyGenerator()}
-          text={postingError.text}
+          text="Slug already exist"
           styles={{ width: "90%" }}
         />
       )}
-      {posted && (
+      {isPosted && (
         <Error
           key={keyGenerator()}
           text="The content has been saved"
@@ -47,24 +53,12 @@ const EditorErrors = ({
       {slugError && (
         <Error
           key={keyGenerator()}
-          text={`Content need a ${specialError ? "valid " : ""} slug URL.`}
+          text={`Content need a ${regexSlugError ? "valid " : ""} slug URL.`}
           styles={{ width: "90%" }}
         />
       )}
     </>
   );
-};
-
-EditorErrors.propTypes = {
-  postingError: PropTypes.shape({
-    isError: PropTypes.bool,
-    text: PropTypes.string,
-  }).isRequired,
-  specialError: PropTypes.bool.isRequired,
-  posted: PropTypes.bool.isRequired,
-  setPosted: PropTypes.func.isRequired,
-  titleError: PropTypes.bool.isRequired,
-  slugError: PropTypes.bool.isRequired,
 };
 
 export default EditorErrors;

@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 import {
   TitleIcon,
   FormTitle,
@@ -12,26 +13,27 @@ import {
   SectionTitle,
 } from "../../../styles/styledComponents/editor/Sections.sc";
 
-const HomeScreen = ({
-  values,
-  setValues,
-  specialError,
-  posted,
-  setTitleError,
-  titleError,
-  setSlugError,
-  slugError,
-  setSpecialError,
-  setPostingError,
-  postingError,
-  edit,
-  contentState,
-}) => {
+const HomeScreen = () => {
+  const homeScreenState = useSelector(
+    ({ homeScreenReducer }) => homeScreenReducer
+  );
+
+  const {
+    title: mainTitle,
+    slug,
+    category,
+    regexSlugError,
+    slugError,
+    titleError,
+    postingError,
+    isEditing,
+  } = homeScreenState;
+
   const slugMessage = () => {
     let message = "";
-    if (postingError.isError) {
-      message = `${postingError.text}`;
-    } else if (specialError) {
+    if (postingError) {
+      message = `Slug already exist`;
+    } else if (regexSlugError) {
       message = "INVALID ! Only characters, numbers and hyphens.";
     } else {
       message = "Only characters, numbers and hyphens.";
@@ -52,41 +54,24 @@ const HomeScreen = ({
           maxlength="64"
           infos="Maximum 64 characters"
           name="title"
-          section="main"
-          setValues={setValues}
-          values={values}
+          section="homeScreen"
+          edit={isEditing ? mainTitle : undefined}
           error={titleError}
-          setError={setTitleError}
-          post={posted}
-          edit={edit ? edit.title : undefined}
         />
         <Field
           placeholder="slug URL"
           infos={`${slugMessage()}`}
-          setValues={setValues}
-          values={values}
           name="slug"
-          section="main"
-          error={slugError}
-          setError={setSlugError}
-          post={posted}
-          specialError={specialError}
-          setSpecialError={setSpecialError}
-          setPostingError={setPostingError}
-          postingError={postingError}
-          edit={edit ? edit.slug : undefined}
-          contentState={contentState}
+          section="homeScreen"
+          edit={isEditing ? slug : undefined}
+          error={regexSlugError || postingError || slugError}
         />
         <Field
           placeholder="Category"
-          setValues={setValues}
-          values={values}
           name="category"
           fieldType="select"
-          post={posted}
-          section="main"
-          setPostingError={setPostingError}
-          edit={edit ? edit.category : undefined}
+          section="homeScreen"
+          edit={isEditing ? category : undefined}
         />
       </SectionBox>
     </>
@@ -98,21 +83,6 @@ HomeScreen.defaultProps = {
 };
 
 HomeScreen.propTypes = {
-  values: PropTypes.shape({}).isRequired,
-  setValues: PropTypes.func.isRequired,
-  specialError: PropTypes.bool.isRequired,
-  setSpecialError: PropTypes.func.isRequired,
-  posted: PropTypes.bool.isRequired,
-  titleError: PropTypes.bool.isRequired,
-  setTitleError: PropTypes.func.isRequired,
-  slugError: PropTypes.bool.isRequired,
-  setSlugError: PropTypes.func.isRequired,
-  setPostingError: PropTypes.func.isRequired,
-  contentState: PropTypes.string.isRequired,
-  postingError: PropTypes.shape({
-    isError: PropTypes.bool,
-    text: PropTypes.string,
-  }).isRequired,
   edit: PropTypes.shape({
     title: PropTypes.string,
     slug: PropTypes.string,

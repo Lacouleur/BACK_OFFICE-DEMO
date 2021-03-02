@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 import React, { useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import {
@@ -43,7 +42,7 @@ const ModuleCreator = ({ setModulesList, editorStatus }) => {
       <SectionBox ref={moduleRef}>
         <SectionTitle>
           <TitleIcon src={homeIcon} />
-          <FormTitle>CREAT NEW MODULE</FormTitle>
+          <FormTitle>CREATE NEW MODULE</FormTitle>
         </SectionTitle>
         <Close src={crossIcon} onClick={() => editorStatus(false)} />
         <ModulesContainer>

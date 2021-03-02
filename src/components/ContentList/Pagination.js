@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 import {
   PageListLi,
   PageListUl,
@@ -9,20 +9,20 @@ import {
 import arrowLeft from "../../styles/assets/icons/arrow-left.svg";
 import arrowRight from "../../styles/assets/icons/arrow-right.svg";
 import keyGenerator from "../../helper/keyGenerator";
-import { getContentList } from "../../services/client/contentClient";
 import colors from "../../styles/core/colors";
+import { fetchContentsList } from "../../store/actions/clientActions";
 
-const Pagination = ({ pagination, setPagination, setContents }) => {
-  const { currentPage, lastPage } = pagination;
+const Pagination = () => {
+  const contentState = useSelector(
+    ({ contentListReducer }) => contentListReducer
+  );
+  const { currentPage, lastPage } = contentState;
   const pageArr = [];
   const maxDisplayedPages = lastPage < 5 ? lastPage : 5;
+  const dispatch = useDispatch();
 
   const changePage = (pageNumber) => {
-    if (pageNumber)
-      getContentList(parseInt(pageNumber, 10)).then((res) => {
-        setContents(res.data.contents);
-        setPagination(res.data);
-      });
+    if (pageNumber) dispatch(fetchContentsList(parseInt(pageNumber, 10)));
   };
 
   for (let i = 1; i <= maxDisplayedPages && i <= lastPage; i += 1) {
@@ -63,17 +63,6 @@ const Pagination = ({ pagination, setPagination, setContents }) => {
       />
     </PaginationBox>
   );
-};
-
-Pagination.propTypes = {
-  pagination: PropTypes.shape({
-    currentPage: PropTypes.number,
-    nextPage: PropTypes.number,
-    previousPage: PropTypes.number,
-    lastPage: PropTypes.number,
-  }).isRequired,
-  setPagination: PropTypes.func.isRequired,
-  setContents: PropTypes.func.isRequired,
 };
 
 export default Pagination;

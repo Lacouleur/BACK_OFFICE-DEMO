@@ -1,15 +1,12 @@
 import axios from "axios";
 
-export const sendAuth = (data) =>
-  axios({
+export const sendAuth = (data) => {
+  return axios({
     method: "post",
     url: `${BASE_URL}/auth/login`,
     data,
-  })
-    .then((token) => {
-      return token.data;
-    })
-    .catch(() => {});
+  });
+};
 
 export const setToken = (token) => localStorage.setItem("token", token);
 

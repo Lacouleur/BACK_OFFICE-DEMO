@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import {
   CategoryName,
   Title,
@@ -15,8 +16,6 @@ import isEven from "../../helper/isEven";
 import colors from "../../styles/core/colors";
 import pen from "../../styles/assets/icons/pen.svg";
 import trash from "../../styles/assets/icons/trash.svg";
-import { setArticleToEdit } from "../../services/client/localStorage";
-import { hostUrl } from "../../services/config/clientConfig";
 import { deleteContent } from "../../services/client/contentClient";
 
 const Content = ({ number, id, status, categoryLabel, title }) => {
@@ -46,15 +45,17 @@ const Content = ({ number, id, status, categoryLabel, title }) => {
         </Status>
       </StatusBox>
       <ActionBox>
-        <Action
-          onClick={() => {
-            setArticleToEdit(id);
-            window.location.assign(`${hostUrl}/editor`);
+        <Link
+          to={{
+            pathname: "/editor",
+            state: { id },
           }}
         >
-          Modify
-          <IconAction src={pen} />
-        </Action>
+          <Action>
+            Modify
+            <IconAction src={pen} />
+          </Action>
+        </Link>
         <Action onClick={() => deleteContent(id)}>
           Archive
           <IconAction src={trash} />

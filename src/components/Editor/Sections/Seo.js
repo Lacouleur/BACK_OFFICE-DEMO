@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 import {
   TitleIcon,
   FormTitle,
@@ -15,7 +16,10 @@ import {
 import exampleSeoImg from "../../../styles/assets/icons/exampleSeo.svg";
 import { ExampleBox } from "../../../styles/styledComponents/editor/Seo.sc";
 
-const Seo = ({ values, setValues, edit }) => {
+const Seo = () => {
+  const seoState = useSelector(({ seoReducer }) => seoReducer);
+  const { title: seoTitle, description, isEditing } = seoState;
+
   return (
     <SectionBox>
       <SectionTitle>
@@ -26,9 +30,7 @@ const Seo = ({ values, setValues, edit }) => {
         placeholder="Title"
         name="title"
         section="seo"
-        setValues={setValues}
-        values={values}
-        edit={edit ? edit.title : undefined}
+        edit={isEditing ? seoTitle : undefined}
       />
       <Field
         placeholder="Description"
@@ -37,9 +39,7 @@ const Seo = ({ values, setValues, edit }) => {
         section="seo"
         maxlength="155"
         infos="Maximum 155 characters & avoid tab or carrige return"
-        setValues={setValues}
-        values={values}
-        edit={edit ? edit.description : undefined}
+        edit={isEditing ? description : undefined}
       />
       <ExampleBox>
         <FieldTitle>Example</FieldTitle>
@@ -54,8 +54,6 @@ Seo.defaultProps = {
 };
 
 Seo.propTypes = {
-  values: PropTypes.shape({}).isRequired,
-  setValues: PropTypes.func.isRequired,
   edit: PropTypes.shape({
     title: PropTypes.string,
     description: PropTypes.string,

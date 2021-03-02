@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { H1 } from "../../styles/styledComponents/global/Titles.sc";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import Content from "./Content";
@@ -9,72 +11,51 @@ import {
   TitleBox,
   ListBox,
 } from "../../styles/styledComponents/contentList/ContentList.sc";
-import { getContentList } from "../../services/client/contentClient";
+
 import { createNewContent } from "../../styles/styledComponents/global/Buttons/CustomButtons.sc";
 import Pagination from "./Pagination";
-import { hostUrl } from "../../services/config/clientConfig";
+
 import keyGenerator from "../../helper/keyGenerator";
-import { deleteArticleToEdit } from "../../services/client/localStorage";
+
+import { fetchContentsList } from "../../store/actions/clientActions";
 
 const ContentList = () => {
-  const [contents, setContents] = useState();
-  const [pagination, setPagination] = useState();
+  const dispatch = useDispatch();
+  const contentsState = useSelector(
+    ({ contentListReducer }) => contentListReducer
+  );
 
-  function paginationBuilder(data) {
-    const isNextPage = data.nextPage || 1;
-    const isPreviousPage = data.previousPage || 1;
-    const paginate = {
-      currentPage: data.currentPage,
-      nextPage: isNextPage,
-      previousPage: isPreviousPage,
-      lastPage: data.lastPage,
-    };
-    return paginate;
-  }
+  const { contentsList } = contentsState;
 
   useEffect(() => {
-    async function fetchContentList() {
-      const res = await getContentList();
-      setPagination(paginationBuilder(res.data));
-      setContents(res.data.contents);
-      deleteArticleToEdit();
-    }
-    fetchContentList();
+    dispatch(fetchContentsList());
   }, []);
 
   return (
     <ContentSectionBox>
       <TitleBox>
         <H1> CONTENT LIST</H1>
-        <Button
-          styles={createNewContent}
-          onClick={() => window.location.assign(`${hostUrl}/editor`)}
-        >
-          <IconCreat src={plus} />
-          CREATE NEW CONTENT
-        </Button>
+        <Link to="/editor">
+          <Button styles={createNewContent}>
+            <IconCreat src={plus} />
+            CREATE NEW CONTENT
+          </Button>
+        </Link>
       </TitleBox>
       <ListBox>
-        {contents &&
-          contents.map((content, index) => {
-            return (
-              <Content
-                number={index}
-                id={content._id}
-                status={content.state}
-                categoryLabel={content.category?.label}
-                title={content.title}
-                key={keyGenerator(content._id)}
-              />
-            );
-          })}
-        {pagination && (
-          <Pagination
-            pagination={pagination}
-            setPagination={setPagination}
-            setContents={setContents}
-          />
-        )}
+        {contentsList.map((content, index) => {
+          return (
+            <Content
+              number={index}
+              id={content._id}
+              status={content.state}
+              categoryLabel={content.category?.label}
+              title={content.title}
+              key={keyGenerator(content._id)}
+            />
+          );
+        })}
+        <Pagination />
       </ListBox>
     </ContentSectionBox>
   );

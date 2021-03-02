@@ -8,6 +8,11 @@ export const FieldContainer = styled.div`
   flex-direction: column;
   margin-bottom: 30px;
   margin: 16px 0 16px 0;
+`;
+
+export const FieldBox = styled.div`
+  width: ${(props) => props.styles?.width || "100%"};
+  flex-direction: column;
   position: relative;
 `;
 
@@ -92,20 +97,6 @@ export const Selector = styled(ReactSelect)`
       color: ${colors.paleViolet};
     }
   }
-  /*   -webkit-appearance: none;
-  width: 100%;
-  height: 56px;
-  background-color: ${colors.darkGrey};
-  border: none;
-  padding: 0 20px;
-  color: ${(props) => props.color};
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
-  font-size: 16px;
-  line-height: 24px;
-  option {
-    color: ${(props) => props.color || colors.white};
-  } */
 `;
 
 export const TextArea = styled(TextareaAutosize)`

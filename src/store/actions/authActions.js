@@ -1,4 +1,4 @@
-import { SET_PASSWORD, SET_MAIL, SET_ERROR_AUTH, SET_AUTH } from "../constants";
+import { SET_PASSWORD, SET_MAIL, SET_ERROR_AUTH } from "../constants";
 
 export const setPassword = (payload) => ({
   type: SET_PASSWORD,

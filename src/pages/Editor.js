@@ -23,9 +23,7 @@ import { checkAndSend, fetchContent } from "../store/actions/clientActions";
 const Editor = () => {
   const dispatch = useDispatch();
   const [newModule, setNewModule] = useState(false);
-  const contentsState = useSelector(
-    ({ contentListReducer }) => contentListReducer
-  );
+
   const homeScreenState = useSelector(
     ({ homeScreenReducer }) => homeScreenReducer
   );

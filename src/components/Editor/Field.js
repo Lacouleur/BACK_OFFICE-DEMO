@@ -46,7 +46,9 @@ const Field = ({
   const { articleStatus } = contentListState;
 
   useEffect(() => {
-    dispatch(fetchCategoriesList());
+    if (categoriesList.length === 0) {
+      dispatch(fetchCategoriesList());
+    }
     if (categoriesList && edit) {
       categoriesList.map((option) => {
         if (edit === option.value) {

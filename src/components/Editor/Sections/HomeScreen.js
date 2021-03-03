@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   TitleIcon,
   FormTitle,
@@ -12,11 +12,15 @@ import {
   SectionBox,
   SectionTitle,
 } from "../../../styles/styledComponents/editor/Sections.sc";
+import { checkAndSend } from "../../../store/actions/clientActions";
+import useClickOutside from "../../../helper/cutomHooks/useClickOutside";
 
 const HomeScreen = () => {
   const homeScreenState = useSelector(
     ({ homeScreenReducer }) => homeScreenReducer
   );
+  const dispatch = useDispatch();
+  const homeScreenRef = useRef();
 
   const {
     title: mainTitle,
@@ -27,6 +31,8 @@ const HomeScreen = () => {
     titleError,
     postingError,
     isEditing,
+    articleId,
+    isChanged,
   } = homeScreenState;
 
   const slugMessage = () => {
@@ -41,9 +47,18 @@ const HomeScreen = () => {
     return message;
   };
 
+  function onClickOutside() {
+    if (!isEditing && isChanged) {
+      dispatch(checkAndSend());
+    } else if (isEditing && isChanged) {
+      dispatch(checkAndSend("update", articleId));
+    }
+  }
+  useClickOutside(homeScreenRef, onClickOutside);
+
   return (
     <>
-      <SectionBox>
+      <SectionBox ref={homeScreenRef}>
         <SectionTitle>
           <TitleIcon src={homeIcon} />
           <FormTitle>HOME SCREEN</FormTitle>

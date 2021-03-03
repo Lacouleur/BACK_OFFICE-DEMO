@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   TitleIcon,
   FormTitle,
@@ -15,13 +15,30 @@ import {
 } from "../../../styles/styledComponents/editor/Sections.sc";
 import exampleSeoImg from "../../../styles/assets/icons/exampleSeo.svg";
 import { ExampleBox } from "../../../styles/styledComponents/editor/Seo.sc";
+import { checkAndSend } from "../../../store/actions/clientActions";
+import useClickOutside from "../../../helper/cutomHooks/useClickOutside";
 
 const Seo = () => {
+  const seoRef = useRef();
   const seoState = useSelector(({ seoReducer }) => seoReducer);
-  const { title: seoTitle, description, isEditing } = seoState;
+  const homeScreenState = useSelector(
+    ({ homeScreenReducer }) => homeScreenReducer
+  );
+  const { isEditing, articleId } = homeScreenState;
+  const { title: seoTitle, description, isChanged } = seoState;
+  const dispatch = useDispatch();
+
+  function onClickOutside() {
+    if (!isEditing && isChanged) {
+      dispatch(checkAndSend());
+    } else if (isEditing && isChanged) {
+      dispatch(checkAndSend("update", articleId));
+    }
+  }
+  useClickOutside(seoRef, onClickOutside);
 
   return (
-    <SectionBox>
+    <SectionBox ref={seoRef}>
       <SectionTitle>
         <TitleIcon src={seoIcon} />
         <FormTitle>SEO</FormTitle>

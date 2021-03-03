@@ -4464,7 +4464,15 @@
     "immutable" "~3.7.4"
     "invariant" "^2.2.1"
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 "draft-js@^0.11.7", "draft-js@>=0.7.0":
+=======
+"draft-js@^0.11.7":
+>>>>>>> 22cd8b7... Working editor
+=======
+"draft-js@^0.11.7", "draft-js@>=0.7.0":
+>>>>>>> ac01ada... Save, delete, update ok
   "integrity" "sha512-ne7yFfN4sEL82QPQEn80xnADR8/Q6ALVworbC5UOSzOvjffmYfFsr3xSZtxbIirti14R7Y33EZC5rivpLgIbsg=="
   "resolved" "https://registry.npmjs.org/draft-js/-/draft-js-0.11.7.tgz"
   "version" "0.11.7"
@@ -9571,7 +9579,15 @@
     "strip-ansi" "6.0.0"
     "text-table" "0.2.0"
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 "react-dom@^15.0.2|| ^16.0.0-rc || ^16.0.0", "react-dom@^17.0.1":
+=======
+"react-dom@^17.0.1":
+>>>>>>> 22cd8b7... Working editor
+=======
+"react-dom@^15.0.2|| ^16.0.0-rc || ^16.0.0", "react-dom@^17.0.1":
+>>>>>>> ac01ada... Save, delete, update ok
   "integrity" "sha512-6eV150oJZ9U2t9svnsspTMrWNyHc6chX0KzDeAOXftRa8bNeOKTTfCJ7KorIwenkHd2xqVTBTCZd79yk/lx/Ug=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-17.0.1.tgz"
   "version" "17.0.1"
@@ -9752,7 +9768,15 @@
     "loose-envify" "^1.4.0"
     "prop-types" "^15.6.2"
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 "react@^15.0.2|| ^16.0.0-rc || ^16.0.0", "react@^17.0.1":
+=======
+"react@^17.0.1":
+>>>>>>> 22cd8b7... Working editor
+=======
+"react@^15.0.2|| ^16.0.0-rc || ^16.0.0", "react@^17.0.1":
+>>>>>>> ac01ada... Save, delete, update ok
   "integrity" "sha512-lG9c9UuMHdcAexXtigOZLX8exLWkW0Ku29qPRU8uhF2R9BN96dLCt0psvzPLlHc5OWkgymP3qwTRgbnw5BKx3w=="
   "resolved" "https://registry.npmjs.org/react/-/react-17.0.1.tgz"
   "version" "17.0.1"
@@ -11897,10 +11921,23 @@
   "resolved" "https://registry.npmjs.org/uuid/-/uuid-3.4.0.tgz"
   "version" "3.4.0"
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> ac01ada... Save, delete, update ok
 "uuid@^8.3.0", "uuid@^8.3.2":
   "integrity" "sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg=="
   "resolved" "https://registry.npmjs.org/uuid/-/uuid-8.3.2.tgz"
   "version" "8.3.2"
+<<<<<<< HEAD
+=======
+"uuid@^8.3.0":
+  "integrity" "sha512-FOmRr+FmWEIG8uhZv6C2bTgEVXsHk08kE7mPlrBbEe+c3r9pjceVPgupIfNIhc4yx55H69OXANrUaSuu9eInKg=="
+  "resolved" "https://registry.npmjs.org/uuid/-/uuid-8.3.1.tgz"
+  "version" "8.3.1"
+>>>>>>> 22cd8b7... Working editor
+=======
+>>>>>>> ac01ada... Save, delete, update ok
 
 "v8-compile-cache@^2.0.3", "v8-compile-cache@^2.2.0":
   "integrity" "sha512-gTpR5XQNKFwOd4clxfnhaqvfqMpqEwr4tOtCyz4MtYZX2JYhfr1JvBFKdS+7K/9rfpZR3VLX+YWBbKoxCgS43Q=="

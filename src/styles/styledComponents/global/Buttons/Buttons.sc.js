@@ -6,7 +6,7 @@ const Button = styled.button`
     props.styles?.background || `${colors.paleViolet}`};
   color: ${(props) => props.styles?.fontColor || `${colors.black}`};
   cursor: ${(props) => props.styles?.cursor || "pointer"};
-  border: ${(props) => props.styles?.borderRadius || "none"};
+  border: ${(props) => props.styles?.border || "none"};
   border-radius: ${(props) => props.styles?.borderRadius || "5px"};
   width: ${(props) => props.styles?.width || "100px"};
   height: ${(props) => props.styles?.height || "36px"};

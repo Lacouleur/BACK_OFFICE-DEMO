@@ -11,6 +11,8 @@ import {
   CONTENT_LOADED,
   SET_ERROR_POSTING,
   CLEAN_CONTENT_STATE,
+  SET_IS_EDITING,
+  SET_ARTICLE_ID,
 } from "../constants";
 
 import {} from "../actions/commonsActions";
@@ -19,6 +21,7 @@ const initialState = {
   title: "",
   slug: "",
   categoriesList: [],
+  articleId: "",
   category: null,
   titleError: false,
   slugError: false,
@@ -26,6 +29,7 @@ const initialState = {
   postingError: false,
   isPosted: false,
   isEditing: false,
+  isChanged: false,
   options: [],
 };
 
@@ -37,7 +41,7 @@ const homeScreenReducer = (state = initialState, action = {}) => {
       if (action.payload && action.payload.length > 0) {
         oldState.titleError = false;
       }
-      return { ...oldState, title: action.payload };
+      return { ...oldState, title: action.payload, isChanged: true };
     }
 
     case ADD_SLUG: {
@@ -54,11 +58,11 @@ const homeScreenReducer = (state = initialState, action = {}) => {
         oldState.regexSlugError = false;
       }
 
-      return { ...oldState, slug: action.payload };
+      return { ...oldState, slug: action.payload, isChanged: true };
     }
 
     case ADD_CATEGORY: {
-      return { ...oldState, category: action.payload };
+      return { ...oldState, category: action.payload, isChanged: true };
     }
 
     case SET_CATEGORIES_LIST: {
@@ -75,6 +79,21 @@ const homeScreenReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         isPosted: action.payload,
+        isChanged: false,
+      };
+    }
+
+    case SET_IS_EDITING: {
+      return {
+        ...oldState,
+        isEditing: action.payload,
+      };
+    }
+
+    case SET_ARTICLE_ID: {
+      return {
+        ...oldState,
+        articleId: action.payload,
       };
     }
 

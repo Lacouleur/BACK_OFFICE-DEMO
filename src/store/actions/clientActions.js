@@ -1,9 +1,14 @@
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
 import {
   deleteToken,
   sendAuth,
   setToken,
 } from "../../services/client/authClient";
 import {
+  saveComponent,
+  updateComponent,
+  deleteComponent,
   getCategories,
   getContent,
   getContentList,
@@ -15,6 +20,8 @@ import {
   setPosted,
   setErrorSpecial,
   contentLoaded,
+  setIsEditing,
+  setArticleId,
 } from "./commonsActions";
 import { setContentsList, setPagination } from "./contentListActions";
 
@@ -24,6 +31,12 @@ import {
   setErrorSlug,
   setErrorTitle,
 } from "./homeScreenActions";
+import {
+  showCloseModal,
+  closeModule,
+  setNewModule,
+  setModulePosted,
+} from "./moduleActions";
 
 export const CONTENT_LOADED = "CONTENT_LOADED";
 
@@ -79,15 +92,17 @@ export function checkAndSend(type = null, articleId = null) {
         try {
           const response = await postContent(values);
           if (response.status < 300 && response.status > 199) {
+            dispatch(setArticleId(response.data));
             dispatch(setPosted(true));
+            dispatch(setIsEditing(true));
           }
         } catch (error) {
           if (error.response.status === 409) {
             dispatch(setErrorPosting(true));
             dispatch(setPosted(false));
+            dispatch(setIsEditing(false));
           } else {
             console.log(error);
-            console.log(values);
           }
         }
       }
@@ -185,6 +200,109 @@ export function fetchCategoriesList() {
     } catch (error) {
       deleteToken();
       return null;
+    }
+  };
+}
+
+export function deleteModule(articleId, moduleId) {
+  console.warn("DELETE", moduleId);
+  return async (dispatch, getState) => {
+    const { homeScreenReducer } = getState();
+    const { isEditing } = homeScreenReducer;
+
+    try {
+      const response = await deleteComponent(articleId, moduleId);
+      if (response.status < 300 && response.status > 199) {
+        dispatch(closeModule(moduleId));
+        console.log(
+          `Patrick, i've deleted the module id:${moduleId} and the server return =>`,
+          response
+        );
+      }
+    } catch (error) {
+      console.error(
+        `Patrick, i've fail deleting the module id:${moduleId} and the server return =>`,
+        error
+      );
+    }
+  };
+}
+
+export function saveModule(uuid, request = "save") {
+  return async (dispatch, getState) => {
+    const { homeScreenReducer, modulesReducer } = getState();
+    const { articleId, isEditing } = homeScreenReducer;
+    const { modulesList } = modulesReducer;
+    let values = {};
+
+    if (request === "save") {
+      console.warn("SAVING");
+      modulesList.find((module) => {
+        if (module.uuid === uuid) {
+          values = {
+            type: module.type,
+            text: module.text,
+            order: module.order,
+            uuid,
+          };
+        }
+        return null;
+      });
+
+      console.log(
+        `Patrick, values to SAVE for the ${values.type}-module are=>`,
+        values
+      );
+
+      try {
+        const response = await saveComponent(articleId, values);
+        if (response.status < 300 && response.status > 199) {
+          dispatch(setModulePosted(uuid));
+          console.log(
+            `Patrick, i've SAVED the ${values.type}-module (id:${uuid}) with succes. The API return =>`,
+            response
+          );
+        }
+      } catch (error) {
+        console.log(
+          `Patrick, i've try to SAVE the ${values.type}-module (id:${uuid})but i get an ERROR. The error is=>`,
+          error
+        );
+      }
+    }
+
+    if (request === "update") {
+      console.warn("UPDATING");
+
+      modulesList.find((module) => {
+        if (module.uuid === uuid) {
+          values = {
+            type: module.type,
+            text: module.text,
+            order: module.order,
+          };
+        }
+        return null;
+      });
+      console.log(
+        `Patrick, values to UPDATE of the ${values.type}-module (id:${uuid}) are=>`,
+        values
+      );
+      try {
+        const response = await updateComponent(articleId, values, uuid);
+        if (response.status < 300 && response.status > 199) {
+          dispatch(setModulePosted(uuid));
+          console.log(
+            `Patrick, i've updated the ${values.type}-module (id:${uuid}) with succes. The API return =>`,
+            response
+          );
+        }
+      } catch (error) {
+        console.error(
+          `Patrick, i've try to update the ${values.type}-module (id:${uuid})but i get an ERROR. The error is=>`,
+          error
+        );
+      }
     }
   };
 }

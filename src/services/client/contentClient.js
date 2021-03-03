@@ -47,6 +47,14 @@ export async function getCategories() {
   });
 }
 
+export async function deleteComponent(id, uuid) {
+  return axios.delete(`${BASE_URL}/contents/${id}/components/${uuid}`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}
+
 export async function deleteContent(id) {
   try {
     const res = await axios.delete(`${BASE_URL}/contents/${id}`, {
@@ -56,14 +64,34 @@ export async function deleteContent(id) {
     });
 
     if (res.status < 300 && res.status > 199) {
-      console.log("Deleted");
       return true;
     }
     return null;
   } catch (error) {
-    console.log(error);
-    /*    deleteToken();
+    /* deleteToken();
     window.location.assign(`${HOST_URL}/`); */
     return null;
   }
+}
+
+export async function updateComponent(articleId, values, uuid) {
+  return axios({
+    method: "put",
+    url: `${BASE_URL}/contents/${articleId}/components/${uuid}`,
+    data: values,
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}
+
+export async function saveComponent(articleId, values) {
+  return axios({
+    method: "post",
+    url: `${BASE_URL}/contents/${articleId}/components`,
+    data: values,
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 }

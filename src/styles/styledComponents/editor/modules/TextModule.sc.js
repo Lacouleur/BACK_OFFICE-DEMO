@@ -19,8 +19,14 @@ export const DraftJsContainer = styled.div`
   font-size: 16px;
   box-shadow: 0 0 3px 1px ${colors.transpGrey};
 
-  &&& .DraftEditor-root {
-    width: 600px;
+  &&& .DraftEditor {
+    &-root {
+      width: 100%;
+    }
+    &-editorContainer {
+      width: 100%;
+      height: 100%;
+    }
   }
 `;
 

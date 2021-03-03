@@ -4,10 +4,11 @@ import {
   CONTENT_LOADED,
   ADD_SEO_DESCRIPTION,
   CLEAN_CONTENT_STATE,
+  SET_POSTED,
 } from "../constants";
 
 const initialState = {
-  isEditing: false,
+  isChanged: false,
 };
 
 const seoReducer = (state = initialState, action = {}) => {
@@ -19,6 +20,7 @@ const seoReducer = (state = initialState, action = {}) => {
         return {
           ...oldState,
           title: action.payload,
+          isChanged: true,
         };
       }
       if (
@@ -27,10 +29,12 @@ const seoReducer = (state = initialState, action = {}) => {
       ) {
         delete oldState.title;
         return {
+          isChanged: true,
           ...oldState,
         };
       }
       return {
+        isChanged: true,
         ...oldState,
       };
     }
@@ -39,6 +43,7 @@ const seoReducer = (state = initialState, action = {}) => {
       if (action.payload.length > 0) {
         return {
           ...oldState,
+          isChanged: true,
           description: action.payload,
         };
       }
@@ -49,10 +54,19 @@ const seoReducer = (state = initialState, action = {}) => {
         delete oldState.description;
         return {
           ...oldState,
+          isChanged: true,
         };
       }
       return {
         ...oldState,
+        isChanged: true,
+      };
+    }
+
+    case SET_POSTED: {
+      return {
+        ...oldState,
+        isChanged: false,
       };
     }
 
@@ -67,13 +81,13 @@ const seoReducer = (state = initialState, action = {}) => {
       }
       return {
         ...oldState,
-        isEditing: true,
+        isChanged: false,
       };
     }
 
     case CLEAN_CONTENT_STATE: {
       return {
-        isEditing: false,
+        isChanged: false,
       };
     }
 

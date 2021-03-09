@@ -3,6 +3,7 @@ export const SET_POSTED = "SET_POSTED";
 export const SET_ERROR_SPECIAL = "SET_ERROR_SPECIAL";
 export const SET_ERROR_POSTING = "SET_ERROR_POSTING";
 export const CONTENT_LOADED = "CONTENT_LOADED";
+export const CLEAN_CONTENT_STATE = "CLEAN_CONTENT_STATE";
 
 // AUTH
 export const SET_MAIL = "SET_MAIL";
@@ -24,3 +25,10 @@ export const SET_ERROR_SLUG = "SET_ERROR_SLUG";
 // SEO
 export const ADD_SEO_TITLE = "ADD_SEO_TITLE";
 export const ADD_SEO_DESCRIPTION = "ADD_SEO_DESCRIPTION";
+
+// Module Creator
+
+export const SET_MODULE_LIST = "SET_MODULE_LIST";
+export const SET_NEW_MODULE = "SET_NEW_MODULE";
+export const DELETE_MODULE = "DELETE_MODULE";
+export const SET_VALUE_TEXTMODULE = "SET_VALUE_TEXTMODULE";

@@ -18,6 +18,7 @@ import Pagination from "./Pagination";
 import keyGenerator from "../../helper/keyGenerator";
 
 import { fetchContentsList } from "../../store/actions/clientActions";
+import { cleanContentState } from "../../store/actions/commonsActions";
 
 const ContentList = () => {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const ContentList = () => {
 
   useEffect(() => {
     dispatch(fetchContentsList());
+    dispatch(cleanContentState());
   }, []);
 
   return (

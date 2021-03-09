@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
 import {
   TitleIcon,
   FormTitle,
@@ -14,7 +15,6 @@ import quizIcon from "../../../../styles/assets/icons/quiz.svg";
 import surveyIcon from "../../../../styles/assets/icons/survey.svg";
 import buttonIcon from "../../../../styles/assets/icons/button.svg";
 import crossIcon from "../../../../styles/assets/icons/cross-white.svg";
-import keyGenerator from "../../../../helper/keyGenerator";
 import {
   ModuleBox,
   ModulesContainer,
@@ -22,16 +22,19 @@ import {
   ModuleIcon,
   Close,
 } from "../../../../styles/styledComponents/editor/modules/ModuleCreator.sc";
+import { setNewModule } from "../../../../store/actions/moduleCreatorActions";
+import keyGenerator from "../../../../helper/keyGenerator";
 
-const ModuleCreator = ({ setModulesList, editorStatus }) => {
+const ModuleCreator = ({ setIsOpen }) => {
   const DefaultModules = [
-    { type: "text", icon: textIcon, id: keyGenerator("txt") },
-    { type: "quiz", icon: quizIcon, id: keyGenerator("quiz") },
-    { type: "survey", icon: surveyIcon, id: keyGenerator("survey") },
-    { type: "button", icon: buttonIcon, id: keyGenerator("button") },
+    { type: "text", icon: textIcon },
+    { type: "quiz", icon: quizIcon },
+    { type: "survey", icon: surveyIcon },
+    { type: "button", icon: buttonIcon },
   ];
 
   const moduleRef = useRef(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     moduleRef.current.scrollIntoView();
@@ -44,24 +47,15 @@ const ModuleCreator = ({ setModulesList, editorStatus }) => {
           <TitleIcon src={homeIcon} />
           <FormTitle>CREATE NEW MODULE</FormTitle>
         </SectionTitle>
-        <Close src={crossIcon} onClick={() => editorStatus(false)} />
+        <Close src={crossIcon} onClick={() => setIsOpen(false)} />
         <ModulesContainer>
           {DefaultModules &&
             DefaultModules.map((module) => (
               <ModuleBox
-                key={module.id}
+                key={keyGenerator(module.type)}
                 onClick={() => {
-                  editorStatus(false);
-                  if (module.type === "text") {
-                    setModulesList((currentList) => [
-                      ...currentList,
-                      {
-                        id: module.id,
-                        type: "text",
-                        text: "",
-                      },
-                    ]);
-                  }
+                  setIsOpen(false);
+                  dispatch(setNewModule(module.type));
                 }}
               >
                 <ModuleIcon src={module.icon} />
@@ -74,10 +68,7 @@ const ModuleCreator = ({ setModulesList, editorStatus }) => {
   );
 };
 
-/* HomeScreen.defaultProps = {}; */
-
 ModuleCreator.propTypes = {
-  setModulesList: PropTypes.func.isRequired,
-  editorStatus: PropTypes.func.isRequired,
+  setIsOpen: PropTypes.func.isRequired,
 };
 export default ModuleCreator;

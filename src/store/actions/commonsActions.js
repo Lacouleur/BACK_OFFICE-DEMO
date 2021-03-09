@@ -3,6 +3,7 @@ import {
   SET_ERROR_SPECIAL,
   SET_ERROR_POSTING,
   CONTENT_LOADED,
+  CLEAN_CONTENT_STATE,
 } from "../constants";
 
 export const setPosted = (payload) => ({
@@ -22,5 +23,10 @@ export const setErrorPosting = (payload) => ({
 
 export const contentLoaded = (payload) => ({
   type: CONTENT_LOADED,
+  payload,
+});
+
+export const cleanContentState = (payload) => ({
+  type: CLEAN_CONTENT_STATE,
   payload,
 });

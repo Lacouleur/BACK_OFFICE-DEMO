@@ -10,6 +10,7 @@ import {
   SET_ERROR_SLUG,
   CONTENT_LOADED,
   SET_ERROR_POSTING,
+  CLEAN_CONTENT_STATE,
 } from "../constants";
 
 import {} from "../actions/commonsActions";
@@ -18,7 +19,7 @@ const initialState = {
   title: "",
   slug: "",
   categoriesList: [],
-  category: "",
+  category: null,
   titleError: false,
   slugError: false,
   regexSlugError: false,
@@ -108,7 +109,22 @@ const homeScreenReducer = (state = initialState, action = {}) => {
         isEditing: true,
         title: action.payload?.title ?? "",
         slug: action.payload?.slug ?? "",
-        category: action.payload?.category._id ?? "",
+        category: action.payload?.category?._id ?? "",
+      };
+
+    case CLEAN_CONTENT_STATE:
+      return {
+        title: "",
+        slug: "",
+        categoriesList: [],
+        category: null,
+        titleError: false,
+        slugError: false,
+        regexSlugError: false,
+        postingError: false,
+        isPosted: false,
+        isEditing: false,
+        options: [],
       };
 
     default:

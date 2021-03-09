@@ -29,9 +29,10 @@ export const CONTENT_LOADED = "CONTENT_LOADED";
 
 export function checkAndSend(type = null, articleId = null) {
   return async (dispatch, getState) => {
-    const { seoReducer, homeScreenReducer } = getState();
+    const { seoReducer, homeScreenReducer, modulesReducer } = getState();
     const { title: mainTitle, slug, category } = homeScreenReducer;
     const { description, title: seoTitle } = seoReducer;
+    const { modulesList } = modulesReducer;
 
     const slugError = !slug;
     const titleError = !mainTitle;
@@ -44,11 +45,22 @@ export function checkAndSend(type = null, articleId = null) {
       dispatch(setErrorTitle(true));
     }
 
-    const values = {
-      title: mainTitle,
-      slug,
-      category: category ?? null,
-    };
+    let values = {};
+
+    if (type === "update") {
+      values = {
+        title: mainTitle,
+        slug,
+        category: category ?? null,
+      };
+    } else {
+      values = {
+        title: mainTitle,
+        slug,
+        category: category ?? null,
+        components: modulesList,
+      };
+    }
 
     if (seoTitle || description) {
       values.seo = {};
@@ -74,8 +86,8 @@ export function checkAndSend(type = null, articleId = null) {
             dispatch(setErrorPosting(true));
             dispatch(setPosted(false));
           } else {
-            deleteToken();
-            window.location.assign(`${HOST_URL}/`);
+            console.log(error);
+            console.log(values);
           }
         }
       }
@@ -116,8 +128,9 @@ export function fetchContent(id) {
 
       return null;
     } catch (error) {
-      deleteToken();
-      window.location.assign(`${HOST_URL}/`);
+      console.log(error);
+      /*   deleteToken();
+      window.location.assign(`${HOST_URL}/`); */
       return null;
     }
   };

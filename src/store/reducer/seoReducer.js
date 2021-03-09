@@ -3,6 +3,7 @@ import {
   ADD_SEO_TITLE,
   CONTENT_LOADED,
   ADD_SEO_DESCRIPTION,
+  CLEAN_CONTENT_STATE,
 } from "../constants";
 
 const initialState = {
@@ -58,15 +59,21 @@ const seoReducer = (state = initialState, action = {}) => {
     case CONTENT_LOADED: {
       const { seo } = action.payload;
 
-      if (seo.title) {
+      if (seo?.title) {
         oldState.title = seo.title;
       }
-      if (seo.description) {
+      if (seo?.description) {
         oldState.description = seo.description;
       }
       return {
         ...oldState,
         isEditing: true,
+      };
+    }
+
+    case CLEAN_CONTENT_STATE: {
+      return {
+        isEditing: false,
       };
     }
 

@@ -19,14 +19,17 @@ import EditorErrors from "../components/Editor/EditorErrors";
 import ActionBar from "../components/Editor/actionBar/ActionBar";
 import ModuleCreator from "../components/Editor/Sections/Modules/ModuleCreator";
 import { checkAndSend, fetchContent } from "../store/actions/clientActions";
+import TextModule from "../components/Editor/Sections/Modules/TextModule";
 
 const Editor = () => {
   const dispatch = useDispatch();
-  const [newModule, setNewModule] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const homeScreenState = useSelector(
     ({ homeScreenReducer }) => homeScreenReducer
   );
+
+  const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
 
   const { isEditing } = homeScreenState;
   const location = useLocation();
@@ -55,12 +58,23 @@ const Editor = () => {
         <FormContainer>
           <HomeScreen />
           <Seo />
-
-          {newModule && <ModuleCreator editorStatus={setNewModule} />}
+          {isOpen && <ModuleCreator setIsOpen={setIsOpen} />}
+          {modulesState.modulesList?.map((module) => {
+            if (module.type === "text") {
+              return (
+                <TextModule
+                  key={module.uuid}
+                  module={module}
+                  edit={isEditing}
+                />
+              );
+            }
+            return null;
+          })}
         </FormContainer>
       </Form>
       <Button
-        onClick={() => setNewModule(true)}
+        onClick={() => setIsOpen(true)}
         styles={{
           ...createNewContent,
           alignSelf: "flex-end",

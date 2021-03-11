@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable no-return-assign */
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
@@ -18,63 +20,86 @@ import {
 import EditorErrors from "../components/Editor/EditorErrors";
 import ActionBar from "../components/Editor/actionBar/ActionBar";
 import ModuleCreator from "../components/Editor/Sections/Modules/ModuleCreator";
-import { checkAndSend, fetchContent } from "../store/actions/clientActions";
+import { fetchContent, saveModule } from "../store/actions/clientActions";
 import TextModule from "../components/Editor/Sections/Modules/TextModule";
+import { setArticleId } from "../store/actions/commonsActions";
+import {
+  setErrorSlug,
+  setErrorTitle,
+} from "../store/actions/homeScreenActions";
 
 const Editor = () => {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
-
+  const location = useLocation();
   const homeScreenState = useSelector(
     ({ homeScreenReducer }) => homeScreenReducer
   );
+  const { isEditing, articleId } = homeScreenState;
 
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
 
-  const { isEditing } = homeScreenState;
-  const location = useLocation();
+  const { modulesList } = modulesState;
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (!isEditing) {
-      dispatch(checkAndSend());
-    } else {
-      dispatch(checkAndSend("update", location.state.id));
-    }
-  }
   useEffect(() => {
-    if (location.state?.id) {
-      dispatch(fetchContent(location.state.id));
+    if (!articleId && location.state?.id) {
+      dispatch(setArticleId(location.state?.id));
+      dispatch(fetchContent(location.state?.id));
     }
   }, []);
+
+  useEffect(() => {
+    modulesList?.map((module) => {
+    if (module.isNewModule) {
+      dispatch(saveModule(module.uuid, "save"));
+    }
+    return null;
+  });
+  }, [modulesList]);
+
 
   return (
     <PageContainer position="relative">
       <Header position="fixed" />
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <ActionBar />
         <PageTitle />
         <EditorErrors />
         <FormContainer>
           <HomeScreen />
           <Seo />
-          {isOpen && <ModuleCreator setIsOpen={setIsOpen} />}
-          {modulesState.modulesList?.map((module) => {
+          {modulesList?.map((module) => {
             if (module.type === "text") {
-              return (
-                <TextModule
-                  key={module.uuid}
-                  module={module}
-                  edit={isEditing}
-                />
-              );
+              if (module.isPostedModule) {
+                return (
+                  <TextModule
+                    key={module.uuid}
+                    text={module.text}
+                    uuid={module.uuid}
+                    isChanged={module.isChanged}
+                    edit={isEditing}
+                    isOpenCloseModal={module.isOpenCloseModal}
+                    isNewModule={module.isNewModule}
+                  />
+                );
+              }
             }
             return null;
           })}
+          {isOpen && articleId && <ModuleCreator setIsOpen={setIsOpen} />}
         </FormContainer>
       </Form>
       <Button
-        onClick={() => setIsOpen(true)}
+        onClick={() => {
+          if (articleId) {
+            setIsOpen(true);
+            dispatch(setErrorTitle(false));
+            dispatch(setErrorSlug(false));
+          } else {
+            dispatch(setErrorTitle(true));
+            dispatch(setErrorSlug(true));
+          }
+        }}
         styles={{
           ...createNewContent,
           alignSelf: "flex-end",

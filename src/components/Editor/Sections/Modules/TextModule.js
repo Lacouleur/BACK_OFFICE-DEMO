@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-expressions */
-/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
@@ -7,7 +6,7 @@ import React, { useRef, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Editor as DraftJs, EditorState, RichUtils } from "draft-js";
 import "../../../../styles/css/draft.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBold,
@@ -34,42 +33,60 @@ import {
   ToolsbarItems,
 } from "../../../../styles/styledComponents/editor/modules/TextModule.sc";
 import {
-  deleteModule,
   setValueTextModule,
-} from "../../../../store/actions/moduleCreatorActions";
+  showCloseModal,
+} from "../../../../store/actions/moduleActions";
 import keyGenerator from "../../../../helper/keyGenerator";
-import { createNewContent } from "../../../../styles/styledComponents/global/Buttons/CustomButtons.sc";
+import CloseModal from "../../../Modals.js/CloseModal";
+import useClickOutside from "../../../../helper/cutomHooks/useClickOutside";
+import { saveModule } from "../../../../store/actions/clientActions";
 
-const TextModule = ({ module, setModulesList, edit }) => {
+const TextModule = ({
+  text,
+  uuid,
+  isChanged,
+  edit,
+  isOpenCloseModal,
+  isNewModule,
+}) => {
   const dispatch = useDispatch();
   const textModuleRef = useRef(null);
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
+  const textEditorRef = useRef(null);
+  const HomeScreenState = useSelector(
+    ({ homeScreenReducer }) => homeScreenReducer
   );
-
-  useEffect(() => {
-    textModuleRef.current.scrollIntoView({ behavior: "smooth" });
-  }, []);
-
-  useEffect(() => {
-    dispatch(
-      setValueTextModule({
-        id: module?.uuid,
-        value: convertToHTML(editorState.getCurrentContent()),
-      })
-    );
-  }, [editorState]);
-
-  useEffect(() => {
+  const { articleId } = HomeScreenState;
+  function setContent() {
     if (edit) {
-      setEditorState(
-        EditorState.createWithContent(convertFromHTML(module.text))
+      return EditorState.createWithContent(convertFromHTML(text));
+    }
+    return EditorState.createEmpty();
+  }
+
+  const [editorState, setEditorState] = useState(setContent());
+
+  useEffect(() => {
+    if (isNewModule) {
+      textModuleRef.current.scrollIntoView({ behavior: "smooth" });
+      textEditorRef.current.focus();
+    }
+    dispatch(showCloseModal(false));
+  }, [isNewModule]);
+
+  useEffect(() => {
+    const newValue = convertToHTML(editorState.getCurrentContent());
+    if (newValue !== text) {
+      dispatch(
+        setValueTextModule({
+          id: uuid,
+          value: convertToHTML(editorState.getCurrentContent()),
+        })
       );
     }
-  }, [edit]);
+  }, [editorState]);
 
   function applyStyle(style) {
-    setEditorState(RichUtils.toggleInlineStyle(editorState, style));
+    setEditorState(RichUtils.toggleInlineStyle(editorState, style, edit));
   }
 
   function isActive(style) {
@@ -95,14 +112,28 @@ const TextModule = ({ module, setModulesList, edit }) => {
     },
   ];
 
+  function onClickOutside() {
+    if (isChanged) {
+      dispatch(saveModule(uuid, "update"));
+    }
+  }
+
+  useClickOutside(textModuleRef, onClickOutside);
+
   return (
-    <>
-      <SectionBox ref={textModuleRef}>
-        {/*  {console.log("convertedContent", convertedContent)} */}
+    <div ref={textModuleRef}>
+      {isOpenCloseModal && (
+        <CloseModal
+          moduleId={uuid}
+          moduleRef={textModuleRef}
+          articleId={articleId}
+        />
+      )}
+      <SectionBox>
         <Close
           src={crossIcon}
           onClick={() => {
-            dispatch(deleteModule());
+            dispatch(showCloseModal({ value: true, id: uuid }));
           }}
         />
         <SectionTitle>
@@ -128,6 +159,7 @@ const TextModule = ({ module, setModulesList, edit }) => {
           </ToolbarContainer>
           <DraftJsContainer>
             <DraftJs
+              ref={textEditorRef}
               placeholder="start to tip in"
               editorState={editorState}
               onChange={setEditorState}
@@ -135,23 +167,16 @@ const TextModule = ({ module, setModulesList, edit }) => {
           </DraftJsContainer>
         </DraftJsWrapper>
       </SectionBox>
-    </>
+    </div>
   );
 };
 
-/* TextModule.defaultProps = {
-  edit: undefined,
-};
-
 TextModule.propTypes = {
-  module: PropTypes.shape({
-    type: PropTypes.string,
-    icon: PropTypes.string,
-    id: PropTypes.string,
-  }).isRequired,
-  setModulesList: PropTypes.func.isRequired,
-  setValues: PropTypes.func.isRequired,
-  values: PropTypes.shape([]).isRequired,
-  edit: PropTypes.shape({}),
-}; */
+  text: PropTypes.string.isRequired,
+  uuid: PropTypes.string.isRequired,
+  isChanged: PropTypes.bool.isRequired,
+  edit: PropTypes.bool.isRequired,
+  isOpenCloseModal: PropTypes.bool.isRequired,
+  isNewModule: PropTypes.bool.isRequired,
+};
 export default TextModule;

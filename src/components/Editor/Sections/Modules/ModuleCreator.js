@@ -22,7 +22,7 @@ import {
   ModuleIcon,
   Close,
 } from "../../../../styles/styledComponents/editor/modules/ModuleCreator.sc";
-import { setNewModule } from "../../../../store/actions/moduleCreatorActions";
+import { setNewModule } from "../../../../store/actions/moduleActions";
 import keyGenerator from "../../../../helper/keyGenerator";
 
 const ModuleCreator = ({ setIsOpen }) => {

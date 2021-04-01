@@ -16,7 +16,6 @@ import {
 } from "../../styles/styledComponents/modal/CloseModal.sc";
 
 const CloseModal = ({ moduleId, moduleRef, articleId }) => {
-  console.log("UUID IN CLOSE MODAL", moduleId);
   const modal = useRef(null);
   const dispatch = useDispatch();
 

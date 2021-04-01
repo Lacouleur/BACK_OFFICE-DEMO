@@ -11,7 +11,7 @@ export const SectionBox = styled.div`
   position: relative;
   width: 100%;
   background-color: ${colors.mediumGrey};
-  min-width: 800px;
+  min-width: 900px;
   height: auto;
   margin-bottom: 20px;
   flex-direction: column;
@@ -23,7 +23,8 @@ export const Form = styled.form`
 `;
 
 export const FormContainer = styled.div`
-  width: 90%;
+  padding-top: calc(56px + 93px + 12px);
+  width: 70%;
   margin: auto;
 `;
 

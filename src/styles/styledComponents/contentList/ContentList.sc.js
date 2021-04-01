@@ -3,7 +3,6 @@ import colors from "../../core/colors";
 
 export const ContentSectionBox = styled.div`
   margin-top: 100px;
-  width: 90%;
   overflow: hidden;
 `;
 

@@ -5,6 +5,7 @@ import {
   ADD_CATEGORY,
   SET_CATEGORIES_LIST,
   ADD_TITLE,
+  SET_UPDATED_AT,
 } from "../constants";
 
 export const addTitle = (payload) => ({
@@ -34,5 +35,10 @@ export const addCategory = (payload) => ({
 
 export const setCategoriesList = (payload) => ({
   type: SET_CATEGORIES_LIST,
+  payload,
+});
+
+export const setUpdatedAt = (payload) => ({
+  type: SET_UPDATED_AT,
   payload,
 });

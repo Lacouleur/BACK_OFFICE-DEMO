@@ -31,12 +31,12 @@ import {
   setErrorSlug,
   setErrorTitle,
 } from "./homeScreenActions";
+import { closeModule, setModulePosted } from "./moduleActions";
 import {
-  showCloseModal,
-  closeModule,
-  setNewModule,
-  setModulePosted,
-} from "./moduleActions";
+  setUpdatedAt,
+  setProgrammedAt,
+  setPublishedAt,
+} from "./actionBarActions";
 
 export const CONTENT_LOADED = "CONTENT_LOADED";
 
@@ -95,6 +95,7 @@ export function checkAndSend(type = null, articleId = null) {
             dispatch(setArticleId(response.data));
             dispatch(setPosted(true));
             dispatch(setIsEditing(true));
+            dispatch(setUpdatedAt(response.data.updatedAt));
           }
         } catch (error) {
           if (error.response.status === 409) {
@@ -115,6 +116,7 @@ export function checkAndSend(type = null, articleId = null) {
           if (result.status < 300 && result.status > 199) {
             dispatch(setErrorSpecial(false));
             dispatch(setPosted(true));
+            dispatch(setUpdatedAt("create"));
           }
 
           return null;
@@ -139,13 +141,14 @@ export function fetchContent(id) {
       const response = await getContent(id);
       if (response.status < 300 && response.status > 199) {
         dispatch(contentLoaded(response.data));
+        dispatch(setUpdatedAt(response.data.updatedAt));
+        dispatch(setPublishedAt(response.data.publishedAt));
+        dispatch(setProgrammedAt(response.data.publishScheduledAt));
       }
 
       return null;
     } catch (error) {
       console.log(error);
-      /*   deleteToken();
-      window.location.assign(`${HOST_URL}/`); */
       return null;
     }
   };

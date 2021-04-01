@@ -8,7 +8,6 @@ import Header from "../components/Header";
 import PageContainer from "../styles/styledComponents/global/PageContainer.sc";
 import HomeScreen from "../components/Editor/Sections/HomeScreen";
 import Seo from "../components/Editor/Sections/Seo";
-import PageTitle from "../components/PageTitle";
 import Button from "../styles/styledComponents/global/Buttons/Buttons.sc";
 import plus from "../styles/assets/icons/plus.svg";
 import { createNewContent } from "../styles/styledComponents/global/Buttons/CustomButtons.sc";
@@ -57,13 +56,11 @@ const Editor = () => {
   });
   }, [modulesList]);
 
-
   return (
     <PageContainer position="relative">
       <Header position="fixed" />
       <Form>
         <ActionBar />
-        <PageTitle />
         <EditorErrors />
         <FormContainer>
           <HomeScreen />

@@ -18,10 +18,10 @@ import {
 import {} from "../actions/commonsActions";
 
 const initialState = {
+  articleId: "",
   title: "",
   slug: "",
   categoriesList: [],
-  articleId: "",
   category: null,
   titleError: false,
   slugError: false,
@@ -129,10 +129,12 @@ const homeScreenReducer = (state = initialState, action = {}) => {
         title: action.payload?.title ?? "",
         slug: action.payload?.slug ?? "",
         category: action.payload?.category?._id ?? "",
+        updatedAt: action.payload?.updatedAt ?? "",
       };
 
     case CLEAN_CONTENT_STATE:
       return {
+        articleId: "",
         title: "",
         slug: "",
         categoriesList: [],
@@ -143,6 +145,7 @@ const homeScreenReducer = (state = initialState, action = {}) => {
         postingError: false,
         isPosted: false,
         isEditing: false,
+        isChanged: false,
         options: [],
       };
 

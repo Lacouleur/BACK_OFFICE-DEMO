@@ -4,6 +4,7 @@ import seoReducer from "./reducer/seoReducer";
 import contentListReducer from "./reducer/contentListReducer";
 import authReducer from "./reducer/authReducer";
 import modulesReducer from "./reducer/modulesReducer";
+import actionBarReducer from "./reducer/actionBarReducer";
 
 export default combineReducers({
   homeScreenReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
   contentListReducer,
   authReducer,
   modulesReducer,
+  actionBarReducer,
 });

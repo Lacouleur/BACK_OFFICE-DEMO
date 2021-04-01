@@ -16,6 +16,11 @@ export const SET_ERROR_AUTH = "SET_ERROR_AUTH";
 export const SET_CONTENTS_LIST = "SET_CONTENT_LIST";
 export const SET_PAGINATION = "SET_PAGINATION";
 
+// ACTION BAR
+export const SET_UPDATED_AT = "SET_UPDATED_AT";
+export const SET_PUBLISHED = "SET_PUBLISHED";
+export const SET_PROGRAMMED = "SET_PROGRAMMED";
+
 // HOMESCREEN
 export const ADD_SLUG = "ADD_SLUG";
 export const ADD_TITLE = "ADD_TITLE";

@@ -65,7 +65,7 @@ const Field = ({
         <Selector
           value={editCategory}
           options={categoriesList}
-          classNamePrefix="Select"
+          classNamePrefix="select"
           placeholder={name}
           isClearable
           onChange={(e) => {

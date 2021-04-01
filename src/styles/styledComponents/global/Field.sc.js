@@ -52,49 +52,53 @@ export const FieldStyle = styled.input`
 `;
 
 export const Selector = styled(ReactSelect)`
-  & .Select__indicator Select__dropdown-indicator {
-    border-color: transparent transparent red;
-  }
+  & .select {
+    &__indicator &__dropdown-indicator {
+      border-color: transparent transparent red;
+    }
 
-  & .Select__control {
-    height: 56px;
-    background-color: ${colors.darkGrey};
-    border: none;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+    &__control {
+      height: 56px;
+      background-color: ${colors.darkGrey};
+      border: none;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
 
-    &--is-focused {
+      &--is-focused {
+        border: none;
+        box-shadow: none;
+      }
+    }
+
+    &__menu {
+      height: 56px;
+      margin-top: 0px;
+      background-color: ${colors.darkGrey};
       border: none;
       box-shadow: none;
+      border-radius: 0;
     }
-  }
 
-  & .Select__menu {
-    height: 56px;
-    margin-top: 0px;
-    background-color: ${colors.darkGrey};
-    border: none;
-    box-shadow: none;
-    border-radius: 0;
-  }
+    &__option {
+      background-color: ${colors.darkGrey};
+      color: ${(props) => props.color || colors.white};
+    }
 
-  & .Select__option {
-    background-color: ${colors.darkGrey};
-    color: ${(props) => props.color || colors.white};
-  }
+    &__option {
+      &--is-focused {
+        background-color: ${colors.paleViolet};
+      }
+    }
 
-  & .Select__option--is-focused {
-    background-color: ${colors.paleViolet};
-  }
+    &__single-value {
+      color: white;
+    }
 
-  & .Select__single-value {
-    color: white;
-  }
-
-  & .Select__clear-indicator {
-    color: ${colors.paleVioletTransp};
-    &:hover {
-      color: ${colors.paleViolet};
+    &__clear-indicator {
+      color: ${colors.paleVioletTransp};
+      &:hover {
+        color: ${colors.paleViolet};
+      }
     }
   }
 `;

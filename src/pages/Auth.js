@@ -33,55 +33,57 @@ const Auth = () => {
   };
 
   return (
-    <PageContainer position="absolute">
-      <Header />
-      <AuthBox>
-        {authError && (
-          <Error
-            text="Incorrect username and/or password. Please check and try again."
-            styles={{
-              margin: "36px 0 0 0",
-            }}
-          />
-        )}
-        <MainTitleBox>
-          <H1>PHOENIX&apos;S BACK OFFICE</H1>
-          <H2>Welcome to Phoenix Media&apos;s Backoffice</H2>
-        </MainTitleBox>
+    <>
+      <PageContainer position="absolute">
+        <Header />
+        <AuthBox>
+          {authError && (
+            <Error
+              text="Incorrect username and/or password. Please check and try again."
+              styles={{
+                margin: "36px 0 0 0",
+              }}
+            />
+          )}
+          <MainTitleBox>
+            <H1>PHOENIX&apos;S BACK OFFICE</H1>
+            <H2>Welcome to Phoenix Media&apos;s Backoffice</H2>
+          </MainTitleBox>
 
-        <Form onSubmit={(e) => handleSubmit(e)} autocomplete="on">
-          <FormTitle>Log in</FormTitle>
+          <Form onSubmit={(e) => handleSubmit(e)} autocomplete="on">
+            <FormTitle>Log in</FormTitle>
 
-          <AuthField
-            icon={idIcon}
-            eye={false}
-            type="mail"
-            placeholder="ID"
-            status={mailFieldError}
-          />
+            <AuthField
+              icon={idIcon}
+              eye={false}
+              type="mail"
+              placeholder="ID"
+              status={mailFieldError}
+            />
 
-          <AuthField
-            icon={lockIcon}
-            eye
-            type="password"
-            placeholder="password"
-            status={passwordFieldError}
-          />
+            <AuthField
+              icon={lockIcon}
+              eye
+              type="password"
+              placeholder="password"
+              status={passwordFieldError}
+            />
 
-          <Button
-            styles={
-              !mailFieldError && !passwordFieldError
-                ? loginButton.clickable
-                : loginButton.unClickable
-            }
-            type={!mailFieldError && !passwordFieldError ? "submit" : "text"}
-          >
-            Login
-          </Button>
-        </Form>
+            <Button
+              styles={
+                !mailFieldError && !passwordFieldError
+                  ? loginButton.clickable
+                  : loginButton.unClickable
+              }
+              type={!mailFieldError && !passwordFieldError ? "submit" : "text"}
+            >
+              Login
+            </Button>
+          </Form>
+        </AuthBox>
         <Footer />
-      </AuthBox>
-    </PageContainer>
+      </PageContainer>
+    </>
   );
 };
 

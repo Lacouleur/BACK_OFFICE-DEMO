@@ -84,10 +84,10 @@ const Editor = () => {
             return null;
           })}
           {isOpen && articleId && <ModuleCreator setIsOpen={setIsOpen} />}
-        </FormContainer>
-      </Form>
-      <Button
-        onClick={() => {
+        
+          <Button
+            type="button"
+            onClick={() => {
           if (articleId) {
             setIsOpen(true);
             dispatch(setErrorTitle(false));
@@ -97,15 +97,17 @@ const Editor = () => {
             dispatch(setErrorSlug(true));
           }
         }}
-        styles={{
+            styles={{
           ...createNewContent,
-          alignSelf: "flex-end",
-          marginRight: "5%",
+          marginLeft: "auto",
+          maginRight: "0",
         }}
-      >
-        <IconCreat src={plus} />
-        ADD A NEW BLOCK
-      </Button>
+          >
+            <IconCreat src={plus} />
+            ADD A NEW BLOCK
+          </Button>
+        </FormContainer>
+      </Form>
       <Footer />
     </PageContainer>
   );

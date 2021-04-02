@@ -32,6 +32,7 @@ const Button = styled.button`
   bottom: ${(props) => props.styles?.bottom || "0"};
   pointer-events: ${(props) => props.styles?.pointerEvents || "auto"};
   transform: ${(props) => props.styles?.transform || ""};
+  z-index: ${(props) => props.styles?.zIndex || "1"};
 
   &:active {
     background-color: ${colors.paleVioletTransp};

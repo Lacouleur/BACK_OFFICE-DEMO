@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,6 +12,8 @@ import {
   SectionBox,
   ExampleSeo,
   SectionTitle,
+  CollapsedText,
+  Gradient,
 } from "../../../styles/styledComponents/editor/Sections.sc";
 import exampleSeoImg from "../../../styles/assets/icons/exampleSeo.svg";
 import { ExampleBox } from "../../../styles/styledComponents/editor/Seo.sc";
@@ -27,8 +29,10 @@ const Seo = () => {
   const { isEditing, articleId } = homeScreenState;
   const { title: seoTitle, description, isChanged } = seoState;
   const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(false);
 
   function onClickOutside() {
+    setIsOpen(false);
     if (!isEditing && isChanged) {
       dispatch(checkAndSend());
     } else if (isEditing && isChanged) {
@@ -38,30 +42,41 @@ const Seo = () => {
   useClickOutside(seoRef, onClickOutside);
 
   return (
-    <SectionBox ref={seoRef}>
+    <SectionBox onClick={() => setIsOpen(true)} ref={seoRef} isOpen={isOpen}>
+      {!isOpen && <Gradient />}
       <SectionTitle>
         <TitleIcon src={seoIcon} />
         <FormTitle>SEO</FormTitle>
       </SectionTitle>
-      <Field
-        placeholder="Title"
-        name="title"
-        section="seo"
-        edit={isEditing ? seoTitle : undefined}
-      />
-      <Field
-        placeholder="Description"
-        fieldType="textarea"
-        name="description"
-        section="seo"
-        maxlength="155"
-        infos="Maximum 155 characters & avoid tab or carrige return"
-        edit={isEditing ? description : undefined}
-      />
-      <ExampleBox>
-        <FieldTitle>Example</FieldTitle>
-        <ExampleSeo src={exampleSeoImg} />
-      </ExampleBox>
+      {!isOpen && (
+        <>
+          <CollapsedText>{seoTitle}</CollapsedText>
+          <CollapsedText>{description}</CollapsedText>
+        </>
+      )}
+      {isOpen && (
+        <>
+          <Field
+            placeholder="Title"
+            name="title"
+            section="seo"
+            edit={isEditing ? seoTitle : undefined}
+          />
+          <Field
+            placeholder="Description"
+            fieldType="textarea"
+            name="description"
+            section="seo"
+            maxlength="155"
+            infos="Maximum 155 characters & avoid tab or carrige return"
+            edit={isEditing ? description : undefined}
+          />
+          <ExampleBox>
+            <FieldTitle>Example</FieldTitle>
+            <ExampleSeo src={exampleSeoImg} />
+          </ExampleBox>
+        </>
+      )}
     </SectionBox>
   );
 };

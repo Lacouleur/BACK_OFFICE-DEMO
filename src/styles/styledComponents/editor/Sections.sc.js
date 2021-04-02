@@ -1,23 +1,41 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import colors from "../../core/colors";
 
 export const SectionTitle = styled.div`
+  z-index: 20;
   display: flex;
 `;
 
 export const ExampleSeo = styled.img``;
 
+export const CollapsedText = styled.p`
+  margin-top: 18px;
+`;
+
+const SectionBoxClosedMixin = css`
+  max-height: 160px;
+  height: 160px;
+  padding: 30px 30px 8px 30px;
+  overflow: hidden;
+`;
+
+const SectionBoxOpenMixin = css`
+  height: 100%;
+  padding: 30px;
+  overflow: visible;
+`;
+
 export const SectionBox = styled.div`
+  ${(props) => (props.isOpen ? SectionBoxOpenMixin : SectionBoxClosedMixin)};
   position: relative;
   width: 100%;
   background-color: ${colors.mediumGrey};
   min-width: 900px;
-  height: auto;
   margin-bottom: 20px;
   flex-direction: column;
-  padding: 30px;
   display: flex;
 `;
+
 export const Form = styled.form`
   width: 100%;
 `;
@@ -30,4 +48,19 @@ export const FormContainer = styled.div`
 
 export const DeleteIcon = styled.img`
   width: 70%;
+`;
+
+export const Gradient = styled.div`
+  display: ${(props) => props.styles?.display};
+  background-color: green;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 2;
+  background: ${colors.darkGrey};
+  background: linear-gradient(
+    0deg,
+    rgba(56, 56, 56, 1) 0%,
+    rgba(149, 149, 149, 0) 100%
+  );
 `;

@@ -1,20 +1,37 @@
 /* eslint-disable import/prefer-default-export */
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import colors from "../../../core/colors";
+
+export const ModuleContainer = styled.div`
+  position: relative;
+  &:hover {
+    max-height: ${(props) => props.styles?.maxHeight || `100%`};
+  }
+`;
 
 export const DraftJsWrapper = styled.div`
   width: 700px;
   display: flex;
   height: fit-content;
   flex-direction: column;
-  margin-top: 3em;
+  margin-top: 18px;
+  overflow: hidden;
+`;
+
+const DraftJsContainerClosedMixin = css`
+  background-color: transparent;
+`;
+
+const DraftJsContainerOpenMixin = css`
+  background-color: ${colors.lightGrey};
 `;
 
 export const DraftJsContainer = styled.div`
+  ${(props) =>
+    props.isOpen ? DraftJsContainerOpenMixin : DraftJsContainerClosedMixin};
   display: flex;
   min-height: 300px;
   border-radius: 0 0 3px 3px;
-  background-color: ${colors.lightGrey};
   padding: 5px;
   font-size: 16px;
   box-shadow: 0 0 3px 1px ${colors.transpGrey};
@@ -32,6 +49,7 @@ export const DraftJsContainer = styled.div`
 
 export const ToolbarContainer = styled.div`
   display: flex;
+  visibility: ${(props) => props.styles?.visibility};
   flex-direction: row;
   align-items: center;
   min-height: 48px;

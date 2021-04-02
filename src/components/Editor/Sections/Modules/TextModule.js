@@ -1,6 +1,4 @@
-/* eslint-disable no-unused-expressions */
 /* eslint-disable no-unused-vars */
-/* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
 import React, { useRef, useEffect, useState } from "react";
 import PropTypes from "prop-types";
@@ -21,6 +19,8 @@ import {
 import {
   SectionBox,
   SectionTitle,
+  Gradient,
+  CollapsedText,
 } from "../../../../styles/styledComponents/editor/Sections.sc";
 import crossIcon from "../../../../styles/assets/icons/cross-white.svg";
 import textIcon from "../../../../styles/assets/icons/text.svg";
@@ -31,6 +31,7 @@ import {
   ToolbarContainer,
   ToolsIconsContainer,
   ToolsbarItems,
+  ModuleContainer,
 } from "../../../../styles/styledComponents/editor/modules/TextModule.sc";
 import {
   setValueTextModule,
@@ -64,11 +65,13 @@ const TextModule = ({
   }
 
   const [editorState, setEditorState] = useState(setContent());
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (isNewModule) {
       textModuleRef.current.scrollIntoView({ behavior: "smooth" });
       textEditorRef.current.focus();
+      setIsOpen(true);
     }
     dispatch(showCloseModal(false));
   }, [isNewModule]);
@@ -113,6 +116,7 @@ const TextModule = ({
   ];
 
   function onClickOutside() {
+    setIsOpen(false);
     if (isChanged) {
       dispatch(saveModule(uuid, "update"));
     }
@@ -121,53 +125,57 @@ const TextModule = ({
   useClickOutside(textModuleRef, onClickOutside);
 
   return (
-    <div ref={textModuleRef}>
+    <ModuleContainer onClick={() => setIsOpen(true)} ref={textModuleRef}>
       {isOpenCloseModal && (
         <CloseModal
           moduleId={uuid}
-          moduleRef={textModuleRef}
+          /* moduleRef={textModuleRef} */
           articleId={articleId}
         />
       )}
-      <SectionBox>
-        <Close
-          src={crossIcon}
-          onClick={() => {
-            dispatch(showCloseModal({ value: true, id: uuid }));
-          }}
-        />
+      <Close
+        src={crossIcon}
+        onClick={() => {
+          dispatch(showCloseModal({ value: true, id: uuid }));
+        }}
+      />
+      {!isOpen && <Gradient />}
+      <SectionBox isOpen={isOpen}>
         <SectionTitle>
           <TitleIcon src={textIcon} />
           <FormTitle>Text module</FormTitle>
         </SectionTitle>
         <DraftJsWrapper>
-          <ToolbarContainer>
-            <ToolsIconsContainer>
-              {toolsList.map((tool, index) => (
-                <ToolsbarItems
-                  isActive={isActive(tool.style)}
-                  key={keyGenerator(index)}
-                  onMouseDown={(e) => {
-                    e.preventDefault();
-                    applyStyle(tool.style);
-                  }}
-                >
-                  {tool.icon || tool.label}
-                </ToolsbarItems>
-              ))}
-            </ToolsIconsContainer>
-          </ToolbarContainer>
-          <DraftJsContainer>
+          {isOpen && (
+            <ToolbarContainer>
+              <ToolsIconsContainer>
+                {toolsList.map((tool, index) => (
+                  <ToolsbarItems
+                    isActive={isActive(tool.style)}
+                    key={keyGenerator(index)}
+                    type="button"
+                    onMouseUp={(e) => {
+                      e.preventDefault();
+                      applyStyle(tool.style);
+                    }}
+                  >
+                    {tool.icon || tool.label}
+                  </ToolsbarItems>
+                ))}
+              </ToolsIconsContainer>
+            </ToolbarContainer>
+          )}
+          <DraftJsContainer isOpen={isOpen}>
             <DraftJs
               ref={textEditorRef}
-              placeholder="start to tip in"
+              placeholder={isOpen ? "start to tip in" : "Empty block"}
               editorState={editorState}
               onChange={setEditorState}
             />
           </DraftJsContainer>
         </DraftJsWrapper>
       </SectionBox>
-    </div>
+    </ModuleContainer>
   );
 };
 

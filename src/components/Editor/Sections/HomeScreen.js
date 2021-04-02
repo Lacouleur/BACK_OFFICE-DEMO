@@ -1,4 +1,5 @@
-import React, { useRef } from "react";
+/* eslint-disable no-unused-vars */
+import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -9,6 +10,8 @@ import {
 import homeIcon from "../../../styles/assets/icons/home.svg";
 import Field from "../Field";
 import {
+  CollapsedText,
+  Gradient,
   SectionBox,
   SectionTitle,
 } from "../../../styles/styledComponents/editor/Sections.sc";
@@ -21,9 +24,10 @@ const HomeScreen = () => {
   );
   const dispatch = useDispatch();
   const homeScreenRef = useRef();
+  const [isOpen, setIsOpen] = useState(false);
 
   const {
-    title: mainTitle,
+    title,
     slug,
     category,
     regexSlugError,
@@ -48,6 +52,7 @@ const HomeScreen = () => {
   };
 
   function onClickOutside() {
+    setIsOpen(false);
     if (!isEditing && isChanged) {
       dispatch(checkAndSend());
     } else if (isEditing && isChanged) {
@@ -58,51 +63,54 @@ const HomeScreen = () => {
 
   return (
     <>
-      <SectionBox ref={homeScreenRef}>
+      <SectionBox
+        onClick={() => setIsOpen(true)}
+        ref={homeScreenRef}
+        isOpen={isOpen}
+      >
+        {!isOpen && <Gradient />}
         <SectionTitle>
           <TitleIcon src={homeIcon} />
           <FormTitle>HOME SCREEN</FormTitle>
         </SectionTitle>
-        <FieldTitle>Title and slug URL</FieldTitle>
-        <Field
-          placeholder="Title"
-          maxlength="64"
-          infos="Maximum 64 characters"
-          name="title"
-          section="homeScreen"
-          edit={isEditing ? mainTitle : undefined}
-          error={titleError}
-        />
-        <Field
-          placeholder="slug URL"
-          infos={`${slugMessage()}`}
-          name="slug"
-          section="homeScreen"
-          edit={isEditing ? slug : undefined}
-          error={regexSlugError || postingError || slugError}
-        />
-        <Field
-          placeholder="Category"
-          name="category"
-          fieldType="select"
-          section="homeScreen"
-          edit={isEditing ? category : undefined}
-        />
+        {!isOpen && (
+          <>
+            <CollapsedText>{title}</CollapsedText>
+            <CollapsedText>{slug}</CollapsedText>
+          </>
+        )}
+        {isOpen && (
+          <>
+            <FieldTitle>Title and slug URL</FieldTitle>
+            <Field
+              placeholder="Title"
+              maxlength="64"
+              infos="Maximum 64 characters"
+              name="title"
+              section="homeScreen"
+              edit={isEditing ? title : undefined}
+              error={titleError}
+            />
+            <Field
+              placeholder="slug URL"
+              infos={`${slugMessage()}`}
+              name="slug"
+              section="homeScreen"
+              edit={isEditing ? slug : undefined}
+              error={regexSlugError || postingError || slugError}
+            />
+            <Field
+              placeholder="Category"
+              name="category"
+              fieldType="select"
+              section="homeScreen"
+              edit={isEditing ? category : undefined}
+            />
+          </>
+        )}
       </SectionBox>
     </>
   );
-};
-
-HomeScreen.defaultProps = {
-  edit: undefined,
-};
-
-HomeScreen.propTypes = {
-  edit: PropTypes.shape({
-    title: PropTypes.string,
-    slug: PropTypes.string,
-    category: PropTypes.string,
-  }),
 };
 
 export default HomeScreen;

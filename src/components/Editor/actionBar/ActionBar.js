@@ -27,6 +27,7 @@ import Button from "../../../styles/styledComponents/global/Buttons/Buttons.sc";
 import colors from "../../../styles/core/colors";
 import eyeIcon from "../../../styles/assets/icons/eye.svg";
 import trashIcon from "../../../styles/assets/icons/trash.svg";
+import { checkAndSend, saveModule } from "../../../store/actions/clientActions";
 
 const ActionBar = () => {
   const dispatch = useDispatch();
@@ -37,8 +38,12 @@ const ActionBar = () => {
   const actionBarState = useSelector(
     ({ actionBarReducer }) => actionBarReducer
   );
+
+  const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
+
   const { updatedAt, programmedAt, publishedAt } = actionBarState;
-  const { isEditing } = homeScreenState;
+  const { isEditing, isChanged, articleId } = homeScreenState;
+  const { modulesList } = modulesState;
   const history = useHistory();
   const [updateDate, setUpdateDate] = useState();
   const [programmedDate, setProgrammedDate] = useState();
@@ -74,6 +79,22 @@ const ActionBar = () => {
     }
   }, [updatedAt, programmedAt, publishedAt]);
 
+  function handleSubmit() {
+    if (!isEditing && isChanged) {
+      dispatch(checkAndSend());
+    }
+
+    if (isEditing && isChanged) {
+      dispatch(checkAndSend("update", articleId));
+    }
+    modulesList?.map((module) => {
+      if (module.isChanged) {
+        dispatch(saveModule(module.uuid, "update"));
+      }
+      return null;
+    });
+  }
+
   return (
     <ActionBarContainer>
       <ButtonsContainer>
@@ -85,7 +106,7 @@ const ActionBar = () => {
           <BackIcon src={backArrow} />
           <BackText>BACK</BackText>
         </Button>
-        <Button styles={saveButton} type="submit">
+        <Button onClick={() => handleSubmit} styles={saveButton} type="button">
           save
         </Button>
       </ButtonsContainer>

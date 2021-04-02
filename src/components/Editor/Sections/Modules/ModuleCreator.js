@@ -42,7 +42,7 @@ const ModuleCreator = ({ setIsOpen }) => {
 
   return (
     <>
-      <SectionBox ref={moduleRef}>
+      <SectionBox ref={moduleRef} isOpen>
         <SectionTitle>
           <TitleIcon src={homeIcon} />
           <FormTitle>CREATE NEW MODULE</FormTitle>

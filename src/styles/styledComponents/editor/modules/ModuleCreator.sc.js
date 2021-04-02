@@ -44,6 +44,7 @@ export const ModuleIcon = styled.img`
 `;
 
 export const Close = styled.img`
+  z-index: 21;
   width: 20px;
   height: 20px;
   transition: 0.3s;

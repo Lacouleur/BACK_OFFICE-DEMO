@@ -89,6 +89,7 @@ export function checkAndSend(type = "save", articleId = null) {
     if (!slugError && !titleError) {
       // post
       if (type === "save") {
+        console.log("SAVING");
         try {
           const response = await postContent(values);
           if (response.status < 300 && response.status > 199) {
@@ -110,6 +111,7 @@ export function checkAndSend(type = "save", articleId = null) {
 
       // update
       if (type === "update") {
+        console.log("UPDATING");
         try {
           const result = await update(values, articleId);
 
@@ -125,6 +127,7 @@ export function checkAndSend(type = "save", articleId = null) {
             dispatch(setErrorPosting(true));
             dispatch(setPosted(false));
           } else {
+            console.log(error);
             dispatch(setPosted(false));
           }
           return null;
@@ -239,7 +242,7 @@ export function saveModule(uuid, request = "save") {
     let values = {};
 
     if (request === "save") {
-      console.warn("SAVING");
+      console.warn("SAVING MODULE");
       modulesList.find((module) => {
         if (module.uuid === uuid) {
           values = {
@@ -275,7 +278,7 @@ export function saveModule(uuid, request = "save") {
     }
 
     if (request === "update") {
-      console.warn("UPDATING");
+      console.warn("UPDATING MODULE");
 
       modulesList.find((module) => {
         if (module.uuid === uuid) {

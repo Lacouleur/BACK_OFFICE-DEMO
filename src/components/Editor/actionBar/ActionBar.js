@@ -31,6 +31,7 @@ import { checkAndSend, saveModule } from "../../../store/actions/clientActions";
 import {
   setErrorSlug,
   setErrorTitle,
+  setUpdatedAt,
 } from "../../../store/actions/homeScreenActions";
 
 const ActionBar = () => {
@@ -87,15 +88,20 @@ const ActionBar = () => {
       dispatch(checkAndSend());
     }
 
-    if (isEditing) {
-      dispatch(checkAndSend("update", articleId));
+    if (isEditing && !isChanged) {
+      dispatch(setUpdatedAt("create"));
     }
-    modulesList?.map((module) => {
-      if (module.isChanged) {
-        dispatch(saveModule(module.uuid, "update"));
-      }
-      return null;
-    });
+
+    if (isEditing && isChanged) {
+      dispatch(checkAndSend("update", articleId));
+
+      modulesList?.map((module) => {
+        if (module.isChanged) {
+          dispatch(saveModule(module.uuid, "update"));
+        }
+        return null;
+      });
+    }
   }
 
   return (
@@ -118,9 +124,10 @@ const ActionBar = () => {
               if (!title) {
                 dispatch(setErrorTitle(true));
               }
-            }
-
-            if (isEditing) {
+              if (title && slug) {
+                handleSubmit();
+              }
+            } else {
               handleSubmit();
             }
           }}

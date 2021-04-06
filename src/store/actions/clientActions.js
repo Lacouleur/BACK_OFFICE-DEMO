@@ -92,6 +92,7 @@ export function checkAndSend(type = null, articleId = null) {
         try {
           const response = await postContent(values);
           if (response.status < 300 && response.status > 199) {
+            console.log("coucou");
             dispatch(setArticleId(response.data));
             dispatch(setPosted(true));
             dispatch(setIsEditing(true));
@@ -294,6 +295,7 @@ export function saveModule(uuid, request = "save") {
       try {
         const response = await updateComponent(articleId, values, uuid);
         if (response.status < 300 && response.status > 199) {
+          dispatch(setUpdatedAt("create"));
           dispatch(setModulePosted(uuid));
           console.log(
             `Patrick, i've updated the ${values.type}-module (id:${uuid}) with succes. The API return =>`,

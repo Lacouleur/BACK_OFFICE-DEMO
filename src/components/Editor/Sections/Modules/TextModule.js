@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable no-unused-vars */
 /* eslint-disable array-callback-return */
 import React, { useRef, useEffect, useState } from "react";
@@ -37,7 +38,6 @@ import {
   setValueTextModule,
   showCloseModal,
 } from "../../../../store/actions/moduleActions";
-import keyGenerator from "../../../../helper/keyGenerator";
 import CloseModal from "../../../Modals.js/CloseModal";
 import useClickOutside from "../../../../helper/cutomHooks/useClickOutside";
 import { saveModule } from "../../../../store/actions/clientActions";
@@ -129,7 +129,7 @@ const TextModule = ({
       {isOpenCloseModal && (
         <CloseModal
           moduleId={uuid}
-          /* moduleRef={textModuleRef} */
+          moduleRef={textModuleRef}
           articleId={articleId}
         />
       )}
@@ -145,16 +145,20 @@ const TextModule = ({
           <TitleIcon src={textIcon} />
           <FormTitle>Text module</FormTitle>
         </SectionTitle>
-        <DraftJsWrapper>
+        <DraftJsWrapper
+          onMouseDown={(e) => {
+            textEditorRef.current.focus();
+          }}
+        >
           {isOpen && (
             <ToolbarContainer>
               <ToolsIconsContainer>
                 {toolsList.map((tool, index) => (
                   <ToolsbarItems
                     isActive={isActive(tool.style)}
-                    key={keyGenerator(index)}
+                    key={index}
                     type="button"
-                    onMouseUp={(e) => {
+                    onMouseDown={(e) => {
                       e.preventDefault();
                       applyStyle(tool.style);
                     }}

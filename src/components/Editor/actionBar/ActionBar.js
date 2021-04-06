@@ -31,7 +31,6 @@ import { checkAndSend, saveModule } from "../../../store/actions/clientActions";
 
 const ActionBar = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
   const homeScreenState = useSelector(
     ({ homeScreenReducer }) => homeScreenReducer
   );

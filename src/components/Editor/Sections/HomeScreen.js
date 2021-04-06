@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -39,20 +39,27 @@ const HomeScreen = () => {
     isChanged,
   } = homeScreenState;
 
-  const slugMessage = () => {
+  function slugMessage() {
     let message = "";
     if (postingError) {
-      message = `Slug already exist`;
+      message = "Slug already exist";
     } else if (regexSlugError) {
       message = "INVALID ! Only characters, numbers and hyphens.";
     } else {
       message = "Only characters, numbers and hyphens.";
     }
     return message;
-  };
+  }
+
+  useEffect(() => {
+    // eslint-disable-next-line no-unused-expressions
+    articleId ? setIsOpen(false) : setIsOpen(true);
+  }, [articleId]);
 
   function onClickOutside() {
-    setIsOpen(false);
+    if (title && slug) {
+      setIsOpen(false);
+    }
     if (!isEditing && isChanged) {
       dispatch(checkAndSend());
     } else if (isEditing && isChanged) {
@@ -85,7 +92,9 @@ const HomeScreen = () => {
             <Field
               placeholder="Title"
               maxlength="64"
-              infos="Maximum 64 characters"
+              infos={
+                titleError ? "Content need a title." : "Maximum 64 characters"
+              }
               name="title"
               section="homeScreen"
               edit={isEditing ? title : undefined}
@@ -93,7 +102,7 @@ const HomeScreen = () => {
             />
             <Field
               placeholder="slug URL"
-              infos={`${slugMessage()}`}
+              infos={slugError ? "Content need a slug." : `${slugMessage()}`}
               name="slug"
               section="homeScreen"
               edit={isEditing ? slug : undefined}

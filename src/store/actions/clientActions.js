@@ -40,7 +40,7 @@ import {
 
 export const CONTENT_LOADED = "CONTENT_LOADED";
 
-export function checkAndSend(type = null, articleId = null) {
+export function checkAndSend(type = "save", articleId = null) {
   return async (dispatch, getState) => {
     const { seoReducer, homeScreenReducer, modulesReducer } = getState();
     const { title: mainTitle, slug, category } = homeScreenReducer;
@@ -88,15 +88,14 @@ export function checkAndSend(type = null, articleId = null) {
 
     if (!slugError && !titleError) {
       // post
-      if (!type) {
+      if (type === "save") {
         try {
           const response = await postContent(values);
           if (response.status < 300 && response.status > 199) {
-            console.log("coucou");
             dispatch(setArticleId(response.data));
             dispatch(setPosted(true));
             dispatch(setIsEditing(true));
-            dispatch(setUpdatedAt(response.data.updatedAt));
+            dispatch(setUpdatedAt("create"));
           }
         } catch (error) {
           if (error.response.status === 409) {

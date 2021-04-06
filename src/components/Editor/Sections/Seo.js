@@ -19,6 +19,10 @@ import exampleSeoImg from "../../../styles/assets/icons/exampleSeo.svg";
 import { ExampleBox } from "../../../styles/styledComponents/editor/Seo.sc";
 import { checkAndSend } from "../../../store/actions/clientActions";
 import useClickOutside from "../../../helper/cutomHooks/useClickOutside";
+import {
+  setErrorSlug,
+  setErrorTitle,
+} from "../../../store/actions/homeScreenActions";
 
 const Seo = () => {
   const seoRef = useRef();
@@ -26,7 +30,7 @@ const Seo = () => {
   const homeScreenState = useSelector(
     ({ homeScreenReducer }) => homeScreenReducer
   );
-  const { isEditing, articleId } = homeScreenState;
+  const { isEditing, articleId, title: mainTitle, slug } = homeScreenState;
   const { title: seoTitle, description, isChanged } = seoState;
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
@@ -42,7 +46,23 @@ const Seo = () => {
   useClickOutside(seoRef, onClickOutside);
 
   return (
-    <SectionBox onClick={() => setIsOpen(true)} ref={seoRef} isOpen={isOpen}>
+    <SectionBox
+      onClick={() => {
+        if (isEditing) {
+          setIsOpen(true);
+        } else {
+          setIsOpen(false);
+          if (!mainTitle) {
+            dispatch(setErrorTitle(true));
+          }
+          if (!slug) {
+            dispatch(setErrorSlug(true));
+          }
+        }
+      }}
+      ref={seoRef}
+      isOpen={isOpen}
+    >
       {!isOpen && <Gradient />}
       <SectionTitle>
         <TitleIcon src={seoIcon} />
@@ -50,7 +70,9 @@ const Seo = () => {
       </SectionTitle>
       {!isOpen && (
         <>
-          <CollapsedText>{seoTitle}</CollapsedText>
+          <CollapsedText>
+            {seoTitle || "Commencer à entrer des informations de référencement"}
+          </CollapsedText>
           <CollapsedText>{description}</CollapsedText>
         </>
       )}

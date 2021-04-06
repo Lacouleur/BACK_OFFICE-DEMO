@@ -28,6 +28,10 @@ import colors from "../../../styles/core/colors";
 import eyeIcon from "../../../styles/assets/icons/eye.svg";
 import trashIcon from "../../../styles/assets/icons/trash.svg";
 import { checkAndSend, saveModule } from "../../../store/actions/clientActions";
+import {
+  setErrorSlug,
+  setErrorTitle,
+} from "../../../store/actions/homeScreenActions";
 
 const ActionBar = () => {
   const dispatch = useDispatch();
@@ -41,7 +45,7 @@ const ActionBar = () => {
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
 
   const { updatedAt, programmedAt, publishedAt } = actionBarState;
-  const { isEditing, isChanged, articleId } = homeScreenState;
+  const { isEditing, isChanged, articleId, title, slug } = homeScreenState;
   const { modulesList } = modulesState;
   const history = useHistory();
   const [updateDate, setUpdateDate] = useState();
@@ -83,7 +87,7 @@ const ActionBar = () => {
       dispatch(checkAndSend());
     }
 
-    if (isEditing && isChanged) {
+    if (isEditing) {
       dispatch(checkAndSend("update", articleId));
     }
     modulesList?.map((module) => {
@@ -105,7 +109,24 @@ const ActionBar = () => {
           <BackIcon src={backArrow} />
           <BackText>BACK</BackText>
         </Button>
-        <Button onClick={() => handleSubmit} styles={saveButton} type="button">
+        <Button
+          onClick={() => {
+            if (!isEditing) {
+              if (!slug) {
+                dispatch(setErrorSlug(true));
+              }
+              if (!title) {
+                dispatch(setErrorTitle(true));
+              }
+            }
+
+            if (isEditing) {
+              handleSubmit();
+            }
+          }}
+          styles={saveButton}
+          type="button"
+        >
           save
         </Button>
       </ButtonsContainer>

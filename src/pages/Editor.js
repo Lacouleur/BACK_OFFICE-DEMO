@@ -16,7 +16,6 @@ import {
   Form,
   FormContainer,
 } from "../styles/styledComponents/editor/Sections.sc";
-import EditorErrors from "../components/Editor/EditorErrors";
 import ActionBar from "../components/Editor/actionBar/ActionBar";
 import ModuleCreator from "../components/Editor/Sections/Modules/ModuleCreator";
 import { fetchContent, saveModule } from "../store/actions/clientActions";
@@ -26,6 +25,9 @@ import {
   setErrorSlug,
   setErrorTitle,
 } from "../store/actions/homeScreenActions";
+import colors from "../styles/core/colors";
+
+
 
 const Editor = () => {
   const dispatch = useDispatch();
@@ -34,7 +36,7 @@ const Editor = () => {
   const homeScreenState = useSelector(
     ({ homeScreenReducer }) => homeScreenReducer
   );
-  const { isEditing, articleId } = homeScreenState;
+  const { isEditing, articleId, title, slug } = homeScreenState;
 
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
 
@@ -61,7 +63,6 @@ const Editor = () => {
       <Header position="fixed" />
       <Form>
         <ActionBar />
-        <EditorErrors />
         <FormContainer>
           <HomeScreen />
           <Seo />
@@ -84,7 +85,6 @@ const Editor = () => {
             return null;
           })}
           {isOpen && articleId && <ModuleCreator setIsOpen={setIsOpen} />}
-        
           <Button
             type="button"
             onClick={() => {
@@ -92,16 +92,27 @@ const Editor = () => {
             setIsOpen(true);
             dispatch(setErrorTitle(false));
             dispatch(setErrorSlug(false));
-          } else {
-            dispatch(setErrorTitle(true));
-            dispatch(setErrorSlug(true));
-          }
+          } else if (!isEditing) {
+              if (!slug) {
+                dispatch(setErrorSlug(true));
+              }
+              if (!title) {
+                dispatch(setErrorTitle(true));
+              }
+            }
         }}
-            styles={{
+            styles={
+              isEditing ? {
           ...createNewContent,
           marginLeft: "auto",
           maginRight: "0",
-        }}
+        } : {
+          ...createNewContent,
+          marginLeft: "auto",
+          maginRight: "0",
+          background: `${colors.lightGrey}`
+        }
+}
           >
             <IconCreat src={plus} />
             ADD A NEW BLOCK

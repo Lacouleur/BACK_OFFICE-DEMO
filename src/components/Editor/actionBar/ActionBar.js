@@ -46,7 +46,16 @@ const ActionBar = () => {
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
 
   const { updatedAt, programmedAt, publishedAt } = actionBarState;
-  const { isEditing, isChanged, articleId, title, slug } = homeScreenState;
+  const {
+    isEditing,
+    isChanged,
+    articleId,
+    title,
+    slug,
+    slugError,
+    postingError,
+    regexSlugError,
+  } = homeScreenState;
   const { modulesList } = modulesState;
   const history = useHistory();
   const [updateDate, setUpdateDate] = useState();
@@ -124,7 +133,13 @@ const ActionBar = () => {
               if (!title) {
                 dispatch(setErrorTitle(true));
               }
-              if (title && slug) {
+              if (
+                title &&
+                slug &&
+                !slugError &&
+                !regexSlugError &&
+                !postingError
+              ) {
                 handleSubmit();
               }
             } else {

@@ -71,7 +71,7 @@ const Seo = () => {
       {!isOpen && (
         <>
           <CollapsedText>
-            {seoTitle || "Commencer à entrer des informations de référencement"}
+            {seoTitle || "Click on the block to start editing SEO infos"}
           </CollapsedText>
           <CollapsedText>{description}</CollapsedText>
         </>

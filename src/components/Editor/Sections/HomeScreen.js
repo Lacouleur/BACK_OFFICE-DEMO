@@ -57,7 +57,7 @@ const HomeScreen = () => {
   }, [articleId]);
 
   function onClickOutside() {
-    if (title && slug) {
+    if (title && slug && !slugError && !regexSlugError && !postingError) {
       setIsOpen(false);
     }
     if (!isEditing && isChanged) {

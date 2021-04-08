@@ -4,63 +4,78 @@ import { Link } from "react-router-dom";
 import {
   CategoryName,
   Title,
-  Status,
-  Action,
+  StatusIcon,
   IconAction,
   StatusText,
   LineContentBox,
   StatusBox,
-  ActionBox,
+  Lang,
+  TitleDateBox,
+  UpdatedDate,
+  LastSavedText,
+  IconActionBox,
+  ButtonIcon,
+  Tooltip,
+  TooltipText,
 } from "../../styles/styledComponents/contentList/Content.sc";
 import isEven from "../../helper/isEven";
 import colors from "../../styles/core/colors";
-import pen from "../../styles/assets/icons/pen.svg";
 import trash from "../../styles/assets/icons/trash.svg";
-import { deleteContent } from "../../services/client/contentClient";
+import clock from "../../styles/assets/icons/clock.svg";
+import eye from "../../styles/assets/icons/eye.svg";
+import copy from "../../styles/assets/icons/copy.svg";
+import pen from "../../styles/assets/icons/pen.svg";
+import buildDate from "../../helper/buildDate";
+import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 
-const Content = ({ number, id, status, categoryLabel, title }) => {
+const Content = ({ number, id, categoryLabel, title, lang, updatedAt }) => {
   const even = isEven(number);
+  const updateDate = buildDate(new Date(updatedAt));
+
   return (
     <LineContentBox
       styles={{
         backgroundColor: `${even ? colors.darkGrey : colors.mediumGrey}`,
       }}
     >
+      <Lang>{lang.substring(0, 2)}</Lang>
       <CategoryName>{categoryLabel}</CategoryName>
-      <Title>{title}</Title>
+      <TitleDateBox>
+        <Title>{title}</Title>
+        <UpdatedDate>{updateDate}</UpdatedDate>
+      </TitleDateBox>
       <StatusBox>
-        <Status
-          styles={
-            status !== "PUBLISHED"
-              ? {
-                  border: `solid 2px ${colors.transpGrey}`,
-                  color: `${colors.white}`,
-                  background: `${colors.darkGrey}`,
-                  shadow: "none",
-                }
-              : {}
-          }
-        >
-          <StatusText>{status}</StatusText>
-        </Status>
+        <Tooltip>
+          <TooltipText>Published</TooltipText>
+          <TooltipText>02/22/11</TooltipText>
+        </Tooltip>
+        <StatusIcon src={clock} />
+        <StatusText>Will Be Published</StatusText>
+        <LastSavedText>{`${updateDate}`}</LastSavedText>
       </StatusBox>
-      <ActionBox>
-        <Link
-          to={{
-            pathname: "/editor",
-            state: { id },
+      <IconActionBox>
+        <IconAction src={eye} />
+        <IconAction src={trash} />
+        <IconAction src={copy} />
+      </IconActionBox>
+      <Link
+        to={{
+          pathname: "/editor",
+          state: { id },
+        }}
+      >
+        <Button
+          styles={{
+            background: "transparent",
+            fontColor: `${colors.paleViolet}`,
+            border: `1px solid ${colors.paleViolet}`,
+            fontWeight: "700",
           }}
         >
-          <Action>
-            Modify
-            <IconAction src={pen} />
-          </Action>
-        </Link>
-        <Action onClick={() => deleteContent(id)}>
-          Archive
-          <IconAction src={trash} />
-        </Action>
-      </ActionBox>
+          Modify
+          <ButtonIcon src={pen} />
+        </Button>
+      </Link>
     </LineContentBox>
   );
 };
@@ -73,8 +88,9 @@ Content.propTypes = {
   number: PropTypes.number.isRequired,
   id: PropTypes.string.isRequired,
   categoryLabel: PropTypes.string,
-  status: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  lang: PropTypes.string.isRequired,
+  updatedAt: PropTypes.string.isRequired,
 };
 
 export default Content;

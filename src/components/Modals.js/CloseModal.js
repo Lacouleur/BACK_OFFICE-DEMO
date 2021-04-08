@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable no-unused-vars */
 import PropTypes from "prop-types";
 import React, { useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";

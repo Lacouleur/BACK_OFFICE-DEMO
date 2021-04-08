@@ -1,17 +1,17 @@
 import React from "react";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import FooterContainer from "../styles/styledComponents/nav/Footer.sc";
 
-const Footer = () => {
-  return <FooterContainer />;
+const Footer = ({ position }) => {
+  return <FooterContainer position={position} />;
 };
 
-/* Footer.defaultProps = {
+Footer.defaultProps = {
   position: undefined,
 };
 
 Footer.propTypes = {
   position: PropTypes.string,
 };
- */
+
 export default Footer;

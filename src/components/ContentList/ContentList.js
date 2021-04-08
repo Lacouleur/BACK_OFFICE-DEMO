@@ -53,6 +53,8 @@ const ContentList = () => {
               status={content.state}
               categoryLabel={content.category?.label}
               title={content.title}
+              lang={content.language}
+              updatedAt={content.updatedAt}
               key={keyGenerator(content._id)}
             />
           );

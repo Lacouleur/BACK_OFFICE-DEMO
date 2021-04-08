@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { SET_UPDATED_AT, SET_PUBLISHED, SET_PROGRAMMED } from "../constants";
 
 export const setUpdatedAt = (payload) => ({

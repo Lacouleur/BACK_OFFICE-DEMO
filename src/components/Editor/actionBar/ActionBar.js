@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ActionBarContainer,
@@ -28,10 +27,11 @@ import colors from "../../../styles/core/colors";
 import eyeIcon from "../../../styles/assets/icons/eye.svg";
 import trashIcon from "../../../styles/assets/icons/trash.svg";
 import { checkAndSend, saveModule } from "../../../store/actions/clientActions";
+import { setUpdatedAt } from "../../../store/actions/actionBarActions";
+import buildDate from "../../../helper/buildDate";
 import {
   setErrorSlug,
   setErrorTitle,
-  setUpdatedAt,
 } from "../../../store/actions/homeScreenActions";
 
 const ActionBar = () => {
@@ -63,22 +63,6 @@ const ActionBar = () => {
   const [publishedDate, setPublishedDate] = useState();
 
   useEffect(() => {
-    const options1 = {
-      day: "numeric",
-      month: "numeric",
-      year: "numeric",
-    };
-    const options2 = {
-      hours: "2-digit",
-      minutes: "2-digit",
-    };
-    function buildDate(date) {
-      return `${date.toLocaleDateString(
-        navigator.language,
-        options1
-      )} - ${date.toLocaleTimeString(navigator.language, options2)}`;
-    }
-
     const createUpdateDate = new Date(updatedAt);
     setUpdateDate(buildDate(createUpdateDate));
 

@@ -119,7 +119,7 @@ const Editor = () => {
           </Button>
         </FormContainer>
       </Form>
-      <Footer />
+      <Footer position="fixed" />
     </PageContainer>
   );
 };

@@ -1,5 +1,4 @@
 /* eslint-disable react/no-array-index-key */
-/* eslint-disable no-unused-vars */
 /* eslint-disable array-callback-return */
 import React, { useRef, useEffect, useState } from "react";
 import PropTypes from "prop-types";
@@ -21,7 +20,6 @@ import {
   SectionBox,
   SectionTitle,
   Gradient,
-  CollapsedText,
 } from "../../../../styles/styledComponents/editor/Sections.sc";
 import crossIcon from "../../../../styles/assets/icons/cross-white.svg";
 import textIcon from "../../../../styles/assets/icons/text.svg";
@@ -146,7 +144,7 @@ const TextModule = ({
           <FormTitle>Text module</FormTitle>
         </SectionTitle>
         <DraftJsWrapper
-          onMouseDown={(e) => {
+          onMouseDown={() => {
             textEditorRef.current.focus();
           }}
         >

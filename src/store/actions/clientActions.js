@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
+import { useHistory } from "react-router-dom";
 import {
   deleteToken,
+  getToken,
   sendAuth,
   setToken,
 } from "../../services/client/authClient";
@@ -37,6 +39,8 @@ import {
   setProgrammedAt,
   setPublishedAt,
 } from "./actionBarActions";
+
+const history = useHistory;
 
 export const CONTENT_LOADED = "CONTENT_LOADED";
 
@@ -104,6 +108,8 @@ export function checkAndSend(type = "save", articleId = null) {
             dispatch(setPosted(false));
             dispatch(setIsEditing(false));
           } else {
+            deleteToken();
+            history.push("/");
             console.log(error);
           }
         }
@@ -128,6 +134,8 @@ export function checkAndSend(type = "save", articleId = null) {
             dispatch(setPosted(false));
           } else {
             console.log(error);
+            deleteToken();
+            history.push("/");
             dispatch(setPosted(false));
           }
           return null;
@@ -151,6 +159,8 @@ export function fetchContent(id) {
 
       return null;
     } catch (error) {
+      deleteToken();
+      history.push("/");
       console.log(error);
       return null;
     }
@@ -168,6 +178,8 @@ export function fetchContentsList(page) {
 
       return null;
     } catch (error) {
+      deleteToken();
+      history.push("/");
       return null;
     }
   };
@@ -205,6 +217,7 @@ export function fetchCategoriesList() {
       return null;
     } catch (error) {
       deleteToken();
+      history.push("/");
       return null;
     }
   };
@@ -226,6 +239,8 @@ export function deleteModule(articleId, moduleId) {
         );
       }
     } catch (error) {
+      deleteToken();
+      history.push("/");
       console.error(
         `Patrick, i've fail deleting the module id:${moduleId} and the server return =>`,
         error
@@ -254,7 +269,8 @@ export function saveModule(uuid, request = "save") {
         }
         return null;
       });
-
+      deleteToken();
+      history.push("/");
       console.log(
         `Patrick, values to SAVE for the ${values.type}-module are=>`,
         values
@@ -270,6 +286,8 @@ export function saveModule(uuid, request = "save") {
           );
         }
       } catch (error) {
+        deleteToken();
+        history.push("/");
         console.log(
           `Patrick, i've try to SAVE the ${values.type}-module (id:${uuid})but i get an ERROR. The error is=>`,
           error
@@ -305,6 +323,8 @@ export function saveModule(uuid, request = "save") {
           );
         }
       } catch (error) {
+        deleteToken();
+        history.push("/");
         console.error(
           `Patrick, i've try to update the ${values.type}-module (id:${uuid})but i get an ERROR. The error is=>`,
           error

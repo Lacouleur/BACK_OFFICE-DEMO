@@ -4,7 +4,7 @@ import colors from "../../core/colors";
 const FooterContainer = styled.div`
   width: 100%;
   background-color: ${colors.black};
-  position: relative;
+  position: ${(props) => props.position || "relative"};
   margin-top: 100px;
   min-height: 56px;
   bottom: 0;

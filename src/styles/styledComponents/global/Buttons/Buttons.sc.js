@@ -10,6 +10,7 @@ const Button = styled.button`
   border-radius: ${(props) => props.styles?.borderRadius || "5px"};
   width: ${(props) => props.styles?.width || "100px"};
   height: ${(props) => props.styles?.height || "36px"};
+  font-weight: ${(props) => props.styles?.fontWeight || "400"};
   font-size: ${(props) => props.styles?.fontSize || "14px"};
   line-height: ${(props) => props.styles?.lineHeight || "16px"};
   text-transform: ${(props) => props.styles?.textTransform || "uppercase"};

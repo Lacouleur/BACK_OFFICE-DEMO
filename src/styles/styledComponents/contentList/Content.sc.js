@@ -89,8 +89,7 @@ export const TitleDateBox = styled.div`
   align-items: flex-start;
   justify-content: center;
   flex-grow: 1;
-  width: 15%;
-  max-width: 312px;
+  width: 312px;
 `;
 
 export const UpdatedDate = styled.p`

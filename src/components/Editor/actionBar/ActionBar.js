@@ -28,7 +28,6 @@ import colors from "../../../styles/core/colors";
 import eyeIcon from "../../../styles/assets/icons/eye.svg";
 import trashIcon from "../../../styles/assets/icons/trash.svg";
 import { checkAndSend, saveModule } from "../../../store/actions/clientActions";
-import { setUpdatedAt } from "../../../store/actions/actionBarActions";
 import buildDate from "../../../helper/buildDate";
 
 const ActionBar = () => {
@@ -90,10 +89,6 @@ const ActionBar = () => {
   function handleSubmit() {
     if (!isEditing && contentIsChanged) {
       dispatch(checkAndSend());
-    }
-
-    if (isEditing && !contentIsChanged) {
-      dispatch(setUpdatedAt("create"));
     }
 
     if (isEditing && contentIsChanged) {

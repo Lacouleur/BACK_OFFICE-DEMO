@@ -96,30 +96,16 @@ export const ToolsbarItems = styled.div`
   }
 `;
 
-/*   &&& .jodit {
-    &-wysiwyg {
-      background-color: ${colors.darkGrey};
-    }
+export const Delete = styled.img`
+  z-index: 21;
+  width: 31px;
+  height: 31px;
+  transition: 0.3s;
+  position: absolute;
+  right: 76px;
+  top: 30px;
 
-    &-container:not(.jodit_inline) {
-    }
-
-    &-icon {
-      fill: ${colors.paleViolet};
-    }
-
-    &-toolbar {
-      &-button__trigger {
-        svg {
-          fill: ${colors.paleViolet};
-        }
-      }
-      &__box {
-        background-color: ${colors.mediumGrey};
-      }
-    }
-
-    &-status-bar__item {
-      color: ${colors.mediumGrey};
-    }
-  } */
+  &:hover {
+    transform: rotate(90deg);
+  }
+`;

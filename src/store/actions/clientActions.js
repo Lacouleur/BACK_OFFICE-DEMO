@@ -221,6 +221,7 @@ export function deleteModule(articleId, moduleId) {
     try {
       const response = await deleteComponent(articleId, moduleId);
       if (response.status < 300 && response.status > 199) {
+        dispatch(setUpdatedAt("create"));
         dispatch(closeModule(moduleId));
         console.log(
           `Patrick, i've deleted the module id:${moduleId} and the server return =>`,

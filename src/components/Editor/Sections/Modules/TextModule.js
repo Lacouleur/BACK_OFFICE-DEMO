@@ -21,9 +21,8 @@ import {
   SectionTitle,
   Gradient,
 } from "../../../../styles/styledComponents/editor/Sections.sc";
-import crossIcon from "../../../../styles/assets/icons/cross-white.svg";
+import trashIcon from "../../../../styles/assets/icons/trash.svg";
 import textIcon from "../../../../styles/assets/icons/text.svg";
-import { Close } from "../../../../styles/styledComponents/editor/modules/ModuleCreator.sc";
 import {
   DraftJsWrapper,
   DraftJsContainer,
@@ -31,6 +30,7 @@ import {
   ToolsIconsContainer,
   ToolsbarItems,
   ModuleContainer,
+  Delete,
 } from "../../../../styles/styledComponents/editor/modules/TextModule.sc";
 import {
   setValueTextModule,
@@ -133,8 +133,8 @@ const TextModule = ({
       )}
       {!isOpen && <Gradient />}
       <SectionBox isOpen={isOpen}>
-        <Close
-          src={crossIcon}
+        <Delete
+          src={trashIcon}
           onClick={() => {
             dispatch(showCloseModal({ value: true, id: uuid }));
           }}

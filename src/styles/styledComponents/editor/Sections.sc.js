@@ -38,6 +38,7 @@ export const SectionBox = styled.div`
 
 export const Form = styled.form`
   width: 100%;
+  margin-bottom: 200px;
 `;
 
 export const FormContainer = styled.div`

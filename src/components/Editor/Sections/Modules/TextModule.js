@@ -131,14 +131,14 @@ const TextModule = ({
           articleId={articleId}
         />
       )}
-      <Close
-        src={crossIcon}
-        onClick={() => {
-          dispatch(showCloseModal({ value: true, id: uuid }));
-        }}
-      />
       {!isOpen && <Gradient />}
       <SectionBox isOpen={isOpen}>
+        <Close
+          src={crossIcon}
+          onClick={() => {
+            dispatch(showCloseModal({ value: true, id: uuid }));
+          }}
+        />
         <SectionTitle>
           <TitleIcon src={textIcon} />
           <FormTitle>Text module</FormTitle>

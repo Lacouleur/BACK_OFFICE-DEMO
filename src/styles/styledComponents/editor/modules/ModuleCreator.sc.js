@@ -49,7 +49,7 @@ export const Close = styled.img`
   height: 20px;
   transition: 0.3s;
   position: absolute;
-  right: 76px;
+  right: 83px;
   top: 30px;
 
   &:hover {

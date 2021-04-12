@@ -6,6 +6,7 @@ import {
   BackIcon,
   backButton,
   saveButton,
+  saveButtonDisable,
   BackText,
   StatusContainer,
   LastSavedBox,
@@ -29,10 +30,6 @@ import trashIcon from "../../../styles/assets/icons/trash.svg";
 import { checkAndSend, saveModule } from "../../../store/actions/clientActions";
 import { setUpdatedAt } from "../../../store/actions/actionBarActions";
 import buildDate from "../../../helper/buildDate";
-import {
-  setErrorSlug,
-  setErrorTitle,
-} from "../../../store/actions/homeScreenActions";
 
 const ActionBar = () => {
   const dispatch = useDispatch();
@@ -42,25 +39,39 @@ const ActionBar = () => {
   const actionBarState = useSelector(
     ({ actionBarReducer }) => actionBarReducer
   );
-
+  const seoState = useSelector(({ seoReducer }) => seoReducer);
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
 
   const { updatedAt, programmedAt, publishedAt } = actionBarState;
+  const { isChanged: seoChanged } = seoState;
   const {
     isEditing,
-    isChanged,
+    isChanged: homeScreenChanged,
     articleId,
-    title,
-    slug,
-    slugError,
-    postingError,
-    regexSlugError,
   } = homeScreenState;
   const { modulesList } = modulesState;
   const history = useHistory();
   const [updateDate, setUpdateDate] = useState();
   const [programmedDate, setProgrammedDate] = useState();
   const [publishedDate, setPublishedDate] = useState();
+  const [contentIsChanged, setContentIsChanged] = useState(false);
+
+  useEffect(() => {
+    const modifiedModules = [];
+    modulesList.map((module) => {
+      if (module.isChanged) {
+        modifiedModules.push(module);
+        return null;
+      }
+      return null;
+    });
+
+    if (seoChanged || homeScreenChanged || modifiedModules.length > 0) {
+      setContentIsChanged(true);
+    } else {
+      setContentIsChanged(false);
+    }
+  }, [seoChanged, homeScreenChanged, modulesState]);
 
   useEffect(() => {
     const createUpdateDate = new Date(updatedAt);
@@ -77,15 +88,15 @@ const ActionBar = () => {
   }, [updatedAt, programmedAt, publishedAt]);
 
   function handleSubmit() {
-    if (!isEditing && isChanged) {
+    if (!isEditing && contentIsChanged) {
       dispatch(checkAndSend());
     }
 
-    if (isEditing && !isChanged) {
+    if (isEditing && !contentIsChanged) {
       dispatch(setUpdatedAt("create"));
     }
 
-    if (isEditing && isChanged) {
+    if (isEditing && contentIsChanged) {
       dispatch(checkAndSend("update", articleId));
 
       modulesList?.map((module) => {
@@ -110,8 +121,9 @@ const ActionBar = () => {
         </Button>
         <Button
           onClick={() => {
-            if (!isEditing) {
-              if (!slug) {
+            if (isEditing) {
+              handleSubmit();
+              /* if (!slug) {
                 dispatch(setErrorSlug(true));
               }
               if (!title) {
@@ -125,15 +137,13 @@ const ActionBar = () => {
                 !postingError
               ) {
                 handleSubmit();
-              }
-            } else {
-              handleSubmit();
+              } */
             }
           }}
-          styles={saveButton}
+          styles={contentIsChanged ? saveButton : saveButtonDisable}
           type="button"
         >
-          save
+          {contentIsChanged ? "save" : "saved"}
         </Button>
       </ButtonsContainer>
       <StatusContainer>

@@ -54,6 +54,16 @@ export const saveButton = {
   top: "50%",
 };
 
+export const saveButtonDisable = {
+  height: "42px",
+  width: "79px",
+  position: "absolute",
+  left: "15%",
+  transform: "translateY(-50%)",
+  top: "50%",
+  background: `${colors.mediumGrey}`,
+};
+
 export const BackIcon = styled.img`
   width: 8px;
 `;

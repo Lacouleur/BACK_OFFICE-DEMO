@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import colors from "../../core/colors";
 
 export const LineContentBox = styled.div`
@@ -63,14 +63,33 @@ export const TooltipText = styled.p`
   z-index: 2;
 `;
 
+const publishedTextMixin = css`
+  color: ${colors.green};
+`;
+
+const unPublishedTextMixin = css`
+  color: ${colors.lightGrey};
+`;
+
+const scheduledTextMixin = css`
+  color: ${colors.deepBlue};
+`;
+
 export const StatusText = styled.p`
+  ${(props) => (props.published ? publishedTextMixin : "")};
+  ${(props) => (props.unpublished ? unPublishedTextMixin : "")};
+  ${(props) => (props.scheduled ? scheduledTextMixin : "")};
   margin-left: 40px;
   font-size: 14px;
   line-height: 20px;
   font-weight: 700;
+  text-transform: uppercase;
 `;
 
 export const LastSavedText = styled.p`
+  ${(props) => (props.published ? publishedTextMixin : "")};
+  ${(props) => (props.unpublished ? unPublishedTextMixin : "")};
+  ${(props) => (props.scheduled ? scheduledTextMixin : "")};
   font-weight: 400;
   font-style: italic;
   font-size: 12px;
@@ -79,6 +98,7 @@ export const LastSavedText = styled.p`
 `;
 
 export const StatusIcon = styled.img`
+  width: 24px;
   position: absolute;
   left: 10px;
 `;
@@ -125,30 +145,6 @@ export const Title = styled.div`
   white-space: nowrap;
 `;
 
-/* export const Status = styled.div`
-  height: 32px;
-  font-size: 14px;
-  line-height: 28px;
-  color: ${(props) => props.styles.color || `${colors.paleViolet}`};
-  border-radius: 16px;
-  border: ${(props) => props.styles.border || `solid 2px ${colors.paleViolet}`};
-  padding: 0 8px 0 8px;
-  margin: 0 20px;
-  background-color: ${(props) =>
-    props.styles.background || colors.paleVioletTransp};
-  text-align: center;
-  box-shadow: ${(props) =>
-    props.styles.shadow || `0px 0px 10px 1px ${colors.paleVioletTransp}`};
-`; */
-
-/* export const Action = styled.div`
-  cursor: pointer;
-  margin: 0 20px;
-  text-decoration: underline;
-  display: flex;
-  flex-wrap: nowrap;
-`;
- */
 export const IconActionBox = styled.div`
   display: flex;
   flex-direction: row;

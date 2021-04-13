@@ -68,8 +68,6 @@ export async function deleteContent(id) {
     }
     return null;
   } catch (error) {
-    /* deleteToken();
-    window.location.assign(`${HOST_URL}/`); */
     return null;
   }
 }

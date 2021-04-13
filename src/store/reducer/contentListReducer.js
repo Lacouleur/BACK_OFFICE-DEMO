@@ -1,27 +1,15 @@
-import {
-  CONTENT_LOADED,
-  SET_CONTENTS_LIST,
-  SET_PAGINATION,
-} from "../constants";
+import { SET_CONTENTS_LIST, SET_PAGINATION } from "../constants";
 
 import {} from "../actions/commonsActions";
 
 const initialState = {
   contentsList: [],
-  articleStatus: "",
 };
 
 const contentListReducer = (state = initialState, action = {}) => {
   const oldState = { ...state };
 
   switch (action.type) {
-    case CONTENT_LOADED: {
-      return {
-        ...oldState,
-        articleStatus: action.payload.state,
-      };
-    }
-
     case SET_CONTENTS_LIST: {
       return {
         ...oldState,

@@ -118,21 +118,6 @@ const ActionBar = () => {
           onClick={() => {
             if (isEditing) {
               handleSubmit();
-              /* if (!slug) {
-                dispatch(setErrorSlug(true));
-              }
-              if (!title) {
-                dispatch(setErrorTitle(true));
-              }
-              if (
-                title &&
-                slug &&
-                !slugError &&
-                !regexSlugError &&
-                !postingError
-              ) {
-                handleSubmit();
-              } */
             }
           }}
           styles={contentIsChanged ? saveButton : saveButtonDisable}
@@ -165,7 +150,7 @@ const ActionBar = () => {
           <>
             <Separator />
             <StatusBox>
-              <ColorDot background={`${colors.turquoiseBlue}`} />
+              <ColorDot background={`${colors.green}`} />
               <StatusText>Published</StatusText>
               <StatusText>{`${publishedDate}`}</StatusText>
             </StatusBox>

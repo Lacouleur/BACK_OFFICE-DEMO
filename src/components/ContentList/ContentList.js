@@ -51,7 +51,10 @@ const ContentList = () => {
               number={index}
               id={content._id}
               status={content.state}
+              programmedAt={content.publishScheduledAt}
+              publishedAt={content.publishedAt}
               categoryLabel={content.category?.label}
+              modified={content.modified}
               title={content.title}
               lang={content.language}
               updatedAt={content.updatedAt}

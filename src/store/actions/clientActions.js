@@ -66,13 +66,13 @@ export function checkAndSend(type = "save", articleId = null) {
       values = {
         title: mainTitle,
         slug,
-        category: category ?? null,
+        category: !category ? null : category,
       };
     } else {
       values = {
         title: mainTitle,
         slug,
-        category: category ?? null,
+        category: !category ? null : category,
         components: modulesList,
       };
     }

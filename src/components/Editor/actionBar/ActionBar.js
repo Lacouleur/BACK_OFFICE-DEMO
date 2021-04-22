@@ -215,7 +215,7 @@ const ActionBar = () => {
         <ActionIcon src={eyeIcon} />
         <ActionIcon src={trashIcon} />
         <PublishButton
-          isActive={!!articleId}
+          isActive={!!(articleId && !contentIsChanged)}
           type="button"
           onClick={
             () => {
@@ -228,7 +228,7 @@ const ActionBar = () => {
         >
           {actionButtonContent}
         </PublishButton>
-        {status === "PUBLISHED" && modified && (
+        {status === "PUBLISHED" && modified && !contentIsChanged && (
           <Selector
             placeholder=""
             classNamePrefix="select"

@@ -21,6 +21,7 @@ import {
   ActionsContainer,
   ActionIcon,
   ButtonsContainer,
+  PublishButton,
 } from "../../../styles/styledComponents/editor/ActionBar.sc";
 import backArrow from "../../../styles/assets/icons/arrow-left.svg";
 import Button from "../../../styles/styledComponents/global/Buttons/Buttons.sc";
@@ -29,6 +30,9 @@ import eyeIcon from "../../../styles/assets/icons/eye.svg";
 import trashIcon from "../../../styles/assets/icons/trash.svg";
 import { checkAndSend, saveModule } from "../../../store/actions/clientActions";
 import buildDate from "../../../helper/buildDate";
+import PublishModal from "../../Modals/PublishModal";
+import { setIsOpenPublishModal } from "../../../store/actions/actionBarActions";
+import ErrorModal from "../../Modals/ErrorModal";
 
 const ActionBar = () => {
   const dispatch = useDispatch();
@@ -41,19 +45,53 @@ const ActionBar = () => {
   const seoState = useSelector(({ seoReducer }) => seoReducer);
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
 
-  const { updatedAt, programmedAt, publishedAt } = actionBarState;
+  const {
+    updatedAt,
+    programmedAt,
+    publishedAt,
+    isOpenPublishModal,
+    isOpenErrorModal,
+  } = actionBarState;
+
   const { isChanged: seoChanged } = seoState;
   const {
     isEditing,
+    title,
+    slug,
+    titleError,
+    slugError,
+    regexSlugError,
+    postingError,
     isChanged: homeScreenChanged,
     articleId,
+    modified,
+    status,
   } = homeScreenState;
+
   const { modulesList } = modulesState;
   const history = useHistory();
   const [updateDate, setUpdateDate] = useState();
   const [programmedDate, setProgrammedDate] = useState();
   const [publishedDate, setPublishedDate] = useState();
   const [contentIsChanged, setContentIsChanged] = useState(false);
+  const [actionButtonContent, setActionButtonContent] = useState("");
+  const [isArticleError, setIsArticleError] = useState("");
+  const selectOptions = [{ value: "UNPUBLISH", label: "UNPUBLISH" }];
+
+  useEffect(() => {
+    if (
+      titleError ||
+      slugError ||
+      regexSlugError ||
+      postingError ||
+      !slug ||
+      !title
+    ) {
+      setIsArticleError(true);
+    } else {
+      setIsArticleError(false);
+    }
+  }, [titleError, slugError, regexSlugError, postingError, title, slug]);
 
   useEffect(() => {
     const modifiedModules = [];
@@ -86,6 +124,16 @@ const ActionBar = () => {
     }
   }, [updatedAt, programmedAt, publishedAt]);
 
+  useEffect(() => {
+    if (status === "PUBLISHED" && modified) {
+      setActionButtonContent("UPDATE");
+    } else if (status === "PUBLISHED" && !modified) {
+      setActionButtonContent("UNPUBLISH");
+    } else {
+      setActionButtonContent("PUBLISH");
+    }
+  }, [homeScreenState]);
+
   function handleSubmit() {
     if (!isEditing && contentIsChanged) {
       dispatch(checkAndSend());
@@ -105,6 +153,10 @@ const ActionBar = () => {
 
   return (
     <ActionBarContainer>
+      {isOpenErrorModal && <ErrorModal />}
+      {isOpenPublishModal && (
+        <PublishModal action={actionButtonContent} articleId={articleId} />
+      )}
       <ButtonsContainer>
         <Button
           type="button"
@@ -120,7 +172,9 @@ const ActionBar = () => {
               handleSubmit();
             }
           }}
-          styles={contentIsChanged ? saveButton : saveButtonDisable}
+          styles={
+            contentIsChanged && !isArticleError ? saveButton : saveButtonDisable
+          }
           type="button"
         >
           {contentIsChanged ? "save" : "saved"}
@@ -146,7 +200,7 @@ const ActionBar = () => {
             </ProgrammedBox>
           </>
         )}
-        {publishedAt && (
+        {publishedAt && status === "PUBLISHED" && (
           <>
             <Separator />
             <StatusBox>
@@ -160,7 +214,33 @@ const ActionBar = () => {
       <ActionsContainer>
         <ActionIcon src={eyeIcon} />
         <ActionIcon src={trashIcon} />
-        <Selector classNamePrefix="select" placeholder="PUBLISH" />
+        <PublishButton
+          isActive={!!articleId}
+          type="button"
+          onClick={
+            () => {
+              if (articleId) {
+                dispatch(setIsOpenPublishModal(true));
+              }
+            }
+            // eslint-disable-next-line react/jsx-curly-newline
+          }
+        >
+          {actionButtonContent}
+        </PublishButton>
+        {status === "PUBLISHED" && modified && (
+          <Selector
+            placeholder=""
+            classNamePrefix="select"
+            options={selectOptions}
+            onChange={(e) => {
+              if (e?.value === "UNPUBLISH") {
+                setActionButtonContent(e?.value);
+                dispatch(setIsOpenPublishModal(true));
+              }
+            }}
+          />
+        )}
       </ActionsContainer>
     </ActionBarContainer>
   );

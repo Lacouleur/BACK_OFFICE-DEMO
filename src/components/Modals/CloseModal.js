@@ -11,7 +11,7 @@ import {
   ModalContainer,
   Cross,
   ButtonsBox,
-} from "../../styles/styledComponents/modal/CloseModal.sc";
+} from "../../styles/styledComponents/modal/Modal.sc";
 
 const CloseModal = ({ moduleId, moduleRef, articleId }) => {
   const modal = useRef(null);

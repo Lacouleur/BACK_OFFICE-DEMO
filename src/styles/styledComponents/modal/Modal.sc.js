@@ -7,8 +7,10 @@ export const ModalContainer = styled.div`
   bottom: 0;
   right: 0;
   left: 0;
+  min-width: 900px;
+  height: ${(props) => props.height || "auto"};
   background-color: #1b182190;
-  z-index: 101;
+  z-index: 99;
 `;
 export const ModalBox = styled.div`
   background-color: ${colors.mediumGrey};

@@ -32,7 +32,8 @@ export const StatusBox = styled.div`
 
 export const Tooltip = styled.div`
   visibility: hidden;
-  width: 120px;
+  min-width: 120px;
+  max-width: 190px;
   background-color: ${colors.mediumGrey};
   box-shadow: 0px 11px 15px ${colors.shadow};
   text-align: left;
@@ -93,7 +94,7 @@ export const LastSavedText = styled.p`
   font-weight: 400;
   font-style: italic;
   font-size: 12px;
-  line-height: 20px;
+  line-height: 14px;
   margin-left: 40px;
 `;
 

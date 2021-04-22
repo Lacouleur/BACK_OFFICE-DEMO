@@ -53,10 +53,12 @@ export const DeleteIcon = styled.img`
 
 export const Gradient = styled.div`
   display: ${(props) => props.styles?.display};
-  background-color: green;
   width: 100%;
+  min-width: 900px;
   height: 100%;
   position: absolute;
+  top: 0;
+  left: 0;
   z-index: 2;
   background: ${colors.darkGrey};
   background: linear-gradient(
@@ -64,4 +66,9 @@ export const Gradient = styled.div`
     rgba(56, 56, 56, 1) 0%,
     rgba(149, 149, 149, 0) 100%
   );
+`;
+
+export const NewBlockButtonBox = styled.div`
+  width: 100%;
+  min-width: 900px;
 `;

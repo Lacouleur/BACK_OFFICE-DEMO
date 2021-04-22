@@ -5,6 +5,8 @@ import {
   ADD_CATEGORY,
   SET_CATEGORIES_LIST,
   ADD_TITLE,
+  SET_STATUS,
+  SET_MODIFIED,
 } from "../constants";
 
 export const addTitle = (payload) => ({
@@ -34,5 +36,15 @@ export const addCategory = (payload) => ({
 
 export const setCategoriesList = (payload) => ({
   type: SET_CATEGORIES_LIST,
+  payload,
+});
+
+export const setStatus = (payload) => ({
+  type: SET_STATUS,
+  payload,
+});
+
+export const setModified = (payload) => ({
+  type: SET_MODIFIED,
   payload,
 });

@@ -21,9 +21,6 @@ const Status = ({ status, updatedAt, publishedAt, modified }) => {
     <StatusBox>
       {status === "DRAFT" && (
         <>
-          <Tooltip>
-            <TooltipText>DRAFT</TooltipText>
-          </Tooltip>
           <StatusIcon src={editPenIcon} />
           <StatusText unpublished>Draft</StatusText>
           <LastSavedText unpublished>offline</LastSavedText>
@@ -32,41 +29,28 @@ const Status = ({ status, updatedAt, publishedAt, modified }) => {
 
       {status === "UNPUBLISHED" && (
         <>
-          <Tooltip>
-            {modified && (
-              <>
-                <TooltipText>modified</TooltipText>
-                <TooltipText>{`${updateDate}`}</TooltipText>
-              </>
-            )}
-            {!modified && (
-              <>
-                <TooltipText>unpublished</TooltipText>
-              </>
-            )}
-          </Tooltip>
+          {modified && (
+            <Tooltip>
+              <TooltipText>modified</TooltipText>
+              <TooltipText>{`${updateDate}`}</TooltipText>
+            </Tooltip>
+          )}
           <StatusIcon src={editPenIcon} />
           <StatusText unpublished>Unpublished</StatusText>
-          <LastSavedText unpublished>offline</LastSavedText>
+          <LastSavedText unpublished>
+            {modified ? "offline - modified" : "offline"}
+          </LastSavedText>
         </>
       )}
 
       {status === "PUBLISHED" && (
         <>
-          <Tooltip>
-            {modified && (
-              <>
-                <TooltipText>modified</TooltipText>
-                <TooltipText>{`${updateDate}`}</TooltipText>
-              </>
-            )}
-            {!modified && (
-              <>
-                <TooltipText>published</TooltipText>
-                <TooltipText>{`${publishedDate}`}</TooltipText>
-              </>
-            )}
-          </Tooltip>
+          {modified && (
+            <Tooltip>
+              <TooltipText>modified</TooltipText>
+              <TooltipText>{`${updateDate}`}</TooltipText>
+            </Tooltip>
+          )}
           <StatusIcon src={modified ? pendingIcon : checkIcon} />
           <StatusText published>Published</StatusText>
           <LastSavedText published>{`${publishedDate}`}</LastSavedText>

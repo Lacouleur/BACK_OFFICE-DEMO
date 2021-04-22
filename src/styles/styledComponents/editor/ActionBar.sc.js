@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import ReactSelect from "react-select";
 import colors from "../../core/colors";
 
@@ -144,6 +144,29 @@ export const ActionIcon = styled.img`
   margin-right: 10%;
 `;
 
+const publishButtonDisable = css`
+  color: ${colors.mediumGrey};
+  border-bottom: 1px solid ${colors.mediumGrey};
+`;
+
+const publishButtonEnabled = css`
+  color: ${colors.paleViolet};
+  border-bottom: 1px solid ${colors.paleViolet};
+`;
+
+export const PublishButton = styled.button`
+  ${(props) => (props.isActive ? publishButtonEnabled : publishButtonDisable)};
+  width: 118px;
+  height: 43px;
+  background-color: ${colors.darkGrey};
+  border: none;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  border-top-left-radius: 5px;
+`;
+
 export const Selector = styled(ReactSelect)`
   & .select {
     &__indicator &__dropdown-indicator {
@@ -152,13 +175,15 @@ export const Selector = styled(ReactSelect)`
 
     &__indicator {
       &-separator {
+        margin: 0;
+        height: 100%;
         background-color: ${colors.paleViolet};
       }
     }
 
     &__control {
       height: 43px;
-      width: 155px;
+      width: 37px;
       background-color: ${colors.darkGrey};
       border: none;
       border-bottom-left-radius: 0;
@@ -176,12 +201,13 @@ export const Selector = styled(ReactSelect)`
     }
 
     &__menu {
-      height: 56px;
       margin-top: 0px;
       background-color: ${colors.darkGrey};
       border: none;
       box-shadow: none;
       border-radius: 0;
+      left: -118px;
+      width: 155px;
     }
 
     &__option {
@@ -195,14 +221,24 @@ export const Selector = styled(ReactSelect)`
       }
     }
 
-    &__single-value {
-      color: white;
+    &__single {
+      &-value {
+        color: white;
+      }
     }
 
-    &__clear-indicator {
-      color: ${colors.paleVioletTransp};
-      &:hover {
-        color: ${colors.paleViolet};
+    &__clear {
+      &-indicator {
+        color: ${colors.paleVioletTransp};
+        &:hover {
+          color: ${colors.paleViolet};
+        }
+      }
+    }
+
+    &__value {
+      &-container {
+        padding: 0;
       }
     }
   }

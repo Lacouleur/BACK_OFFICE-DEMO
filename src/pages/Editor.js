@@ -15,6 +15,7 @@ import { IconCreat } from "../styles/styledComponents/contentList/ContentList.sc
 import {
   Form,
   FormContainer,
+  NewBlockButtonBox,
 } from "../styles/styledComponents/editor/Sections.sc";
 import ActionBar from "../components/Editor/actionBar/ActionBar";
 import ModuleCreator from "../components/Editor/Sections/Modules/ModuleCreator";
@@ -85,9 +86,10 @@ const Editor = () => {
             return null;
           })}
           {isOpen && articleId && <ModuleCreator setIsOpen={setIsOpen} />}
-          <Button
-            type="button"
-            onClick={() => {
+          <NewBlockButtonBox>
+            <Button
+              type="button"
+              onClick={() => {
           if (articleId) {
             setIsOpen(true);
             dispatch(setErrorTitle(false));
@@ -101,7 +103,7 @@ const Editor = () => {
               }
             }
         }}
-            styles={
+              styles={
               isEditing ? {
           ...createNewContent,
           marginLeft: "auto",
@@ -113,10 +115,11 @@ const Editor = () => {
           background: `${colors.lightGrey}`
         }
 }
-          >
-            <IconCreat src={plus} />
-            ADD A NEW BLOCK
-          </Button>
+            >
+              <IconCreat src={plus} />
+              ADD A NEW BLOCK
+            </Button>
+          </NewBlockButtonBox>
         </FormContainer>
       </Form>
       <Footer position="fixed" />

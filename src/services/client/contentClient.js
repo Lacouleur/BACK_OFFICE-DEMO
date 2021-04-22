@@ -93,3 +93,13 @@ export async function saveComponent(articleId, values) {
     },
   });
 }
+
+export async function publishManager(articleId, action) {
+  return axios({
+    method: "put",
+    url: `${BASE_URL}/contents/${articleId}/${action}`,
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}

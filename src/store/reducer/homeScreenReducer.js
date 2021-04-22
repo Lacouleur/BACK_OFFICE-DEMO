@@ -13,14 +13,16 @@ import {
   CLEAN_CONTENT_STATE,
   SET_IS_EDITING,
   SET_ARTICLE_ID,
+  SET_STATUS,
+  SET_MODIFIED,
 } from "../constants";
-
-import {} from "../actions/commonsActions";
 
 const initialState = {
   articleId: "",
   title: "",
   slug: "",
+  status: "",
+  modified: null,
   categoriesList: [],
   category: null,
   titleError: false,
@@ -75,6 +77,13 @@ const homeScreenReducer = (state = initialState, action = {}) => {
       return { ...oldState, categoriesList: list };
     }
 
+    case SET_STATUS: {
+      return {
+        ...oldState,
+        status: action.payload,
+      };
+    }
+
     case SET_POSTED: {
       return {
         ...oldState,
@@ -87,6 +96,13 @@ const homeScreenReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         isEditing: action.payload,
+      };
+    }
+
+    case SET_MODIFIED: {
+      return {
+        ...oldState,
+        modified: action.payload,
       };
     }
 
@@ -130,6 +146,8 @@ const homeScreenReducer = (state = initialState, action = {}) => {
         slug: action.payload?.slug ?? "",
         category: action.payload?.category?._id ?? "",
         updatedAt: action.payload?.updatedAt ?? "",
+        status: action.payload?.state ?? "",
+        modified: action.payload?.modified ?? null,
       };
 
     case CLEAN_CONTENT_STATE:
@@ -137,6 +155,7 @@ const homeScreenReducer = (state = initialState, action = {}) => {
         articleId: "",
         title: "",
         slug: "",
+        status: "",
         categoriesList: [],
         category: null,
         titleError: false,

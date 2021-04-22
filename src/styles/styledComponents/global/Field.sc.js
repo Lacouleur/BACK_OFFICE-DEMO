@@ -161,8 +161,9 @@ export const FieldInfosBox = styled.div`
 `;
 
 export const FieldIcon = styled.img`
+  opacity: ${(props) => (props.passwordShown ? "1" : ".5")};
   position: absolute;
-  left: ${(props) => (props.info === "eyeIcon" ? "90%" : "0")};
+  left: ${(props) => (props.info === "eyeIcon" ? "87%" : "0")};
   margin: ${(props) => (props.info === "eyeIcon" ? "0" : "0 0 0 13px")};
   top: 50%;
   transform: translateY(-50%);

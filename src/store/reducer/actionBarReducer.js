@@ -3,6 +3,8 @@ import {
   CLEAN_CONTENT_STATE,
   SET_PUBLISHED,
   SET_PROGRAMMED,
+  SET_IS_OPEN_PUBLISH_MODAL,
+  SHOW_ERROR_MODAL,
 } from "../constants";
 
 import {} from "../actions/actionBarActions";
@@ -11,6 +13,8 @@ const initialState = {
   updatedAt: "",
   publishedAt: null,
   programmedAt: null,
+  isOpenPublishModal: false,
+  isOpenErrorModal: false,
 };
 
 const actionBarReducer = (state = initialState, action = {}) => {
@@ -54,11 +58,27 @@ const actionBarReducer = (state = initialState, action = {}) => {
         programmedAt: null,
       };
 
+    case SET_IS_OPEN_PUBLISH_MODAL: {
+      return {
+        ...oldState,
+        isOpenPublishModal: action.payload,
+      };
+    }
+
+    case SHOW_ERROR_MODAL: {
+      return {
+        ...oldState,
+        isOpenErrorModal: action.payload,
+      };
+    }
+
     case CLEAN_CONTENT_STATE:
       return {
         updatedAt: "",
         publishedAt: null,
         programmedAt: null,
+        isOpenPublishModal: false,
+        isOpenErrorModal: false,
       };
 
     default:

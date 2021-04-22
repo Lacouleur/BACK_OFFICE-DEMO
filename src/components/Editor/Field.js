@@ -35,15 +35,11 @@ const Field = ({
   const dispatch = useDispatch();
   const [editCategory, setEditCategory] = useState();
 
-  const contentListState = useSelector(
-    ({ contentListReducer }) => contentListReducer
-  );
   const homeScreenState = useSelector(
     ({ homeScreenReducer }) => homeScreenReducer
   );
-  const { categoriesList } = homeScreenState;
 
-  const { articleStatus } = contentListState;
+  const { categoriesList, status } = homeScreenState;
 
   useEffect(() => {
     if (categoriesList.length === 0) {
@@ -96,9 +92,7 @@ const Field = ({
           type={type}
           placeholder={placeholder}
           maxLength={maxlength}
-          disabled={
-            name === "slug" && !(articleStatus === "DRAFT" || !articleStatus)
-          }
+          disabled={name === "slug" && !(status === "DRAFT" || !status)}
           onInput={(e) => {
             if (name === "title" && section === "homeScreen") {
               dispatch(addTitle(e.target.value));
@@ -112,7 +106,7 @@ const Field = ({
           }}
           defaultValue={edit ? `${edit}` : ""}
           styles={
-            name === "slug" && !(articleStatus === "DRAFT" || !articleStatus)
+            name === "slug" && !(status === "DRAFT" || !status)
               ? {
                   color: colors.placeholderGrey,
                   height: "56px",

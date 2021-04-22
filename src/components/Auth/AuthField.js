@@ -33,6 +33,7 @@ const AuthField = ({ icon, eye, type, placeholder, status }) => {
         <FieldIcon src={icon} info="fieldIcon" />
         {eye && (
           <FieldIcon
+            passwordShown={passwordShown}
             src={eyeIcon}
             info="eyeIcon"
             onClick={togglePasswordVisiblity}

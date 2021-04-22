@@ -36,7 +36,7 @@ import {
   setValueTextModule,
   showCloseModal,
 } from "../../../../store/actions/moduleActions";
-import CloseModal from "../../../Modals.js/CloseModal";
+import CloseModal from "../../../Modals/CloseModal";
 import useClickOutside from "../../../../helper/cutomHooks/useClickOutside";
 import { saveModule } from "../../../../store/actions/clientActions";
 

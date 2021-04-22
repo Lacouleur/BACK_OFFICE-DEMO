@@ -1,4 +1,10 @@
-import { SET_UPDATED_AT, SET_PUBLISHED, SET_PROGRAMMED } from "../constants";
+import {
+  SET_UPDATED_AT,
+  SET_PUBLISHED,
+  SET_PROGRAMMED,
+  SET_IS_OPEN_PUBLISH_MODAL,
+  SHOW_ERROR_MODAL,
+} from "../constants";
 
 export const setUpdatedAt = (payload) => ({
   type: SET_UPDATED_AT,
@@ -12,5 +18,15 @@ export const setPublishedAt = (payload) => ({
 
 export const setProgrammedAt = (payload) => ({
   type: SET_PROGRAMMED,
+  payload,
+});
+
+export const setIsOpenPublishModal = (payload) => ({
+  type: SET_IS_OPEN_PUBLISH_MODAL,
+  payload,
+});
+
+export const showErrorModal = (payload) => ({
+  type: SHOW_ERROR_MODAL,
   payload,
 });

@@ -1,12 +1,6 @@
 /* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
-import { useHistory } from "react-router-dom";
-import {
-  deleteToken,
-  getToken,
-  sendAuth,
-  setToken,
-} from "../../services/client/authClient";
+
+import { sendAuth, setToken } from "../../services/client/authClient";
 import {
   saveComponent,
   updateComponent,
@@ -16,6 +10,7 @@ import {
   getContentList,
   postContent,
   update,
+  publishManager,
 } from "../../services/client/contentClient";
 import {
   setErrorPosting,
@@ -32,12 +27,15 @@ import {
   setCategoriesList,
   setErrorSlug,
   setErrorTitle,
+  setModified,
+  setStatus,
 } from "./homeScreenActions";
 import { closeModule, setModulePosted } from "./moduleActions";
 import {
   setUpdatedAt,
   setProgrammedAt,
   setPublishedAt,
+  showErrorModal,
 } from "./actionBarActions";
 
 export const CONTENT_LOADED = "CONTENT_LOADED";
@@ -99,6 +97,7 @@ export function checkAndSend(type = "save", articleId = null) {
             dispatch(setPosted(true));
             dispatch(setIsEditing(true));
             dispatch(setUpdatedAt("create"));
+            dispatch(setModified(true));
           }
         } catch (error) {
           if (error.response.status === 409) {
@@ -107,6 +106,7 @@ export function checkAndSend(type = "save", articleId = null) {
             dispatch(setIsEditing(false));
           } else {
             console.log(error);
+            dispatch(showErrorModal(true));
           }
         }
       }
@@ -121,6 +121,7 @@ export function checkAndSend(type = "save", articleId = null) {
             dispatch(setErrorSpecial(false));
             dispatch(setPosted(true));
             dispatch(setUpdatedAt("create"));
+            dispatch(setModified(true));
           }
 
           return null;
@@ -130,7 +131,7 @@ export function checkAndSend(type = "save", articleId = null) {
             dispatch(setPosted(false));
           } else {
             console.log(error);
-
+            dispatch(showErrorModal(true));
             dispatch(setPosted(false));
           }
           return null;
@@ -214,21 +215,20 @@ export function fetchCategoriesList() {
 
 export function deleteModule(articleId, moduleId) {
   console.warn("DELETE", moduleId);
-  return async (dispatch, getState) => {
-    const { homeScreenReducer } = getState();
-    const { isEditing } = homeScreenReducer;
-
+  return async (dispatch) => {
     try {
       const response = await deleteComponent(articleId, moduleId);
       if (response.status < 300 && response.status > 199) {
         dispatch(setUpdatedAt("create"));
         dispatch(closeModule(moduleId));
+        dispatch(setModified(true));
         console.log(
           `Patrick, i've deleted the module id:${moduleId} and the server return =>`,
           response
         );
       }
     } catch (error) {
+      dispatch(showErrorModal(true));
       console.error(
         `Patrick, i've fail deleting the module id:${moduleId} and the server return =>`,
         error
@@ -240,7 +240,7 @@ export function deleteModule(articleId, moduleId) {
 export function saveModule(uuid, request = "save") {
   return async (dispatch, getState) => {
     const { homeScreenReducer, modulesReducer } = getState();
-    const { articleId, isEditing } = homeScreenReducer;
+    const { articleId } = homeScreenReducer;
     const { modulesList } = modulesReducer;
     let values = {};
 
@@ -266,12 +266,14 @@ export function saveModule(uuid, request = "save") {
         const response = await saveComponent(articleId, values);
         if (response.status < 300 && response.status > 199) {
           dispatch(setModulePosted(uuid));
+          dispatch(setModified(true));
           console.log(
             `Patrick, i've SAVED the ${values.type}-module (id:${uuid}) with succes. The API return =>`,
             response
           );
         }
       } catch (error) {
+        dispatch(showErrorModal(true));
         console.log(
           `Patrick, i've try to SAVE the ${values.type}-module (id:${uuid})but i get an ERROR. The error is=>`,
           error
@@ -301,17 +303,45 @@ export function saveModule(uuid, request = "save") {
         if (response.status < 300 && response.status > 199) {
           dispatch(setUpdatedAt("create"));
           dispatch(setModulePosted(uuid));
+          dispatch(setModified(true));
           console.log(
             `Patrick, i've updated the ${values.type}-module (id:${uuid}) with succes. The API return =>`,
             response
           );
         }
       } catch (error) {
+        dispatch(showErrorModal(true));
         console.error(
           `Patrick, i've try to update the ${values.type}-module (id:${uuid})but i get an ERROR. The error is=>`,
           error
         );
       }
+    }
+  };
+}
+
+export function publishAction(articleId, mode) {
+  return async (dispatch) => {
+    let action = "";
+    if (mode === "UPDATE") {
+      action = "PUBLISH";
+    } else {
+      action = mode;
+    }
+    try {
+      const response = await publishManager(articleId, action);
+      if (response.status < 300 && response.status > 199) {
+        if (action === "PUBLISH") {
+          dispatch(setStatus("PUBLISHED"));
+          dispatch(setModified(false));
+        }
+        if (action === "UNPUBLISH") {
+          dispatch(setStatus("UNPUBLISHED"));
+        }
+      }
+    } catch (error) {
+      dispatch(showErrorModal(true));
+      console.log(error);
     }
   };
 }

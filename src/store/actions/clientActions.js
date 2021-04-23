@@ -295,7 +295,7 @@ export function saveModule(uuid, request = "save") {
         return null;
       });
       console.log(
-        `Patrick, values to UPDATE of the ${values.type}-module (id:${uuid}) are=>`,
+        `values to UPDATE of the ${values.type}-module (id:${uuid}) are=>`,
         values
       );
       try {

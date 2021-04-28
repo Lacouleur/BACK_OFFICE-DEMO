@@ -3,7 +3,7 @@ const colors = {
   darkGrey: "#292929",
   mediumGrey: "#383838",
   lightGrey: "#acacac",
-  fadedGrey: "474747",
+  fadedGrey: "#474747",
   transpGrey: "#ffffff1f",
   placeholderGrey: "#7f7f7f",
   white: "#FFFFFF",

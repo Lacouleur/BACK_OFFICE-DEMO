@@ -8,91 +8,44 @@ export const ModuleContainer = styled.div`
   }
 `;
 
-export const DraftJsWrapper = styled.div`
-  width: 700px;
-  display: flex;
-  height: fit-content;
-  flex-direction: column;
-  margin-top: 18px;
-  overflow: hidden;
-`;
-
 const DraftJsContainerClosedMixin = css`
   background-color: transparent;
 `;
 
 const DraftJsContainerOpenMixin = css`
-  background-color: ${colors.lightGrey};
+  background-color: ${colors.darkGrey};
 `;
 
-export const DraftJsContainer = styled.div`
-  ${(props) =>
-    props.isOpen ? DraftJsContainerOpenMixin : DraftJsContainerClosedMixin};
-  display: flex;
-  min-height: 300px;
-  border-radius: 0 0 3px 3px;
-  padding: 5px;
-  font-size: 16px;
-  box-shadow: 0 0 3px 1px ${colors.transpGrey};
-
-  &&& .DraftEditor {
-    &-root {
-      width: 100%;
-    }
-    &-editorContainer {
-      width: 100%;
-      height: 100%;
-    }
+export const DraftJsWrapper = styled.div`
+  & .wrapper {
+    width: 80%;
+    display: flex;
+    height: fit-content;
+    flex-direction: column;
+    margin-top: 18px;
+    overflow: hidden;
   }
-`;
 
-export const ToolbarContainer = styled.div`
-  display: flex;
-  visibility: ${(props) => props.styles?.visibility};
-  flex-direction: row;
-  align-items: center;
-  min-height: 48px;
-  padding: 5px 7px;
-  margin-bottom: 8px;
-  border-radius: 2px 2px 0 0;
-  box-shadow: 0 0 3px 1px ${colors.transpGrey};
-`;
+  & .toolbar {
+    display: flex;
+    visibility: ${(props) => props.styles?.visibility};
+    flex-direction: row;
+    align-items: center;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 0 0 3px 1px ${colors.transpGrey};
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    background-color: ${colors.darkGrey};
+  }
 
-export const ToolsIconsContainer = styled.div`
-  display: flex;
-  margin-right: 7px;
-`;
-
-export const ToolsbarItems = styled.div`
-  width: 28px;
-  height: 27px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 5px;
-  box-shadow: 0 1px 11px 1px ${colors.transpGrey};
-  background-color: ${colors.lightGrey};
-  color: ${colors.white};
-  font-size: 16px;
-  transition: all 250ms ease-in-out;
-  cursor: pointer;
-
-  ${(props) =>
-    props.isActive &&
-    `
-  transform: translateY(1px);
-  color: ${colors.paleViolet};
-  background-color: transparent;
-  box-shadow: none;
-  border: 1px solid ${colors.transpGrey};
-  `}
-
-  &:hover {
-    transform: translateY(1px);
-    color: ${colors.paleViolet};
-    background-color: transparent;
-    box-shadow: none;
-    border: 1px solid ${colors.transpGrey};
+  & .editor {
+    min-height: 300px;
+    border-radius: 0 0 3px 3px;
+    padding: 5px;
+    font-size: 16px;
+    ${(props) =>
+      props.isOpen ? DraftJsContainerOpenMixin : DraftJsContainerClosedMixin};
   }
 `;
 

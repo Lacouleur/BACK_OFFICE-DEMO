@@ -182,12 +182,12 @@ const ActionBar = () => {
       </ButtonsContainer>
       <StatusContainer>
         {isEditing && (
-          <>
+          <LastSavedText>
             <LastSavedBox>
               <LastSavedText>Last Saved</LastSavedText>
               <LastSavedText>{`${updateDate}`}</LastSavedText>
             </LastSavedBox>
-          </>
+          </LastSavedText>
         )}
 
         {programmedAt && (

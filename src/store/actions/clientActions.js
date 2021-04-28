@@ -243,78 +243,78 @@ export function saveModule(uuid, request = "save") {
     const { articleId } = homeScreenReducer;
     const { modulesList } = modulesReducer;
     let values = {};
+    let isNewModule = false;
 
     if (request === "save") {
-      console.warn("SAVING MODULE");
       modulesList.find((module) => {
-        if (module.uuid === uuid) {
+        if (module.uuid === uuid && module.isNewModule) {
           values = {
             type: module.type,
             text: module.text,
             order: module.order,
             uuid,
           };
+          isNewModule = true;
         }
         return null;
       });
-      console.log(
-        `Patrick, values to SAVE for the ${values.type}-module are=>`,
-        values
-      );
 
-      try {
-        const response = await saveComponent(articleId, values);
-        if (response.status < 300 && response.status > 199) {
-          dispatch(setModulePosted(uuid));
-          dispatch(setModified(true));
+      if (isNewModule) {
+        try {
+          const response = await saveComponent(articleId, values);
+          if (response.status < 300 && response.status > 199) {
+            dispatch(setModulePosted(uuid));
+            dispatch(setModified(true));
+            console.log(
+              `Patrick, i've SAVED the ${values.type}-module (id:${uuid}) with succes. The API return =>`,
+              response
+            );
+          }
+        } catch (error) {
+          dispatch(showErrorModal(true));
           console.log(
-            `Patrick, i've SAVED the ${values.type}-module (id:${uuid}) with succes. The API return =>`,
-            response
+            `Patrick, i've try to SAVE the ${values.type}-module (id:${uuid})but i get an ERROR. The error is=>`,
+            error
           );
         }
-      } catch (error) {
-        dispatch(showErrorModal(true));
-        console.log(
-          `Patrick, i've try to SAVE the ${values.type}-module (id:${uuid})but i get an ERROR. The error is=>`,
-          error
-        );
       }
     }
 
     if (request === "update") {
       console.warn("UPDATING MODULE");
+      let isChanged = false;
 
       modulesList.find((module) => {
-        if (module.uuid === uuid) {
+        if (module.uuid === uuid && module.isChanged) {
           values = {
             type: module.type,
             text: module.text,
             order: module.order,
           };
+          isChanged = true;
         }
         return null;
       });
-      console.log(
-        `values to UPDATE of the ${values.type}-module (id:${uuid}) are=>`,
-        values
-      );
-      try {
-        const response = await updateComponent(articleId, values, uuid);
-        if (response.status < 300 && response.status > 199) {
-          dispatch(setUpdatedAt("create"));
-          dispatch(setModulePosted(uuid));
-          dispatch(setModified(true));
-          console.log(
-            `Patrick, i've updated the ${values.type}-module (id:${uuid}) with succes. The API return =>`,
-            response
+
+      if (isChanged) {
+        try {
+          const response = await updateComponent(articleId, values, uuid);
+          if (response.status < 300 && response.status > 199) {
+            dispatch(setUpdatedAt("create"));
+            dispatch(setModulePosted(uuid));
+            dispatch(setModified(true));
+            console.log(
+              `Patrick, i've updated the ${values.type}-module (id:${uuid}) with succes. Values was =>${values.text} The API return =>`,
+              response
+            );
+          }
+        } catch (error) {
+          dispatch(showErrorModal(true));
+          console.error(
+            `Patrick, i've try to update the ${values.type}-module (id:${uuid})but i get an ERROR. The error is=>`,
+            error
           );
         }
-      } catch (error) {
-        dispatch(showErrorModal(true));
-        console.error(
-          `Patrick, i've try to update the ${values.type}-module (id:${uuid})but i get an ERROR. The error is=>`,
-          error
-        );
       }
     }
   };

@@ -32,7 +32,7 @@ const modulesReducer = (state = initialState, action = {}) => {
               uuid: `${uuidv4()}`,
               order: state.modulesList.length + 1,
               isPostedModule: false,
-              isChanged: true,
+              isChanged: false,
               isNewModule: true,
               isOpenCloseModal: false,
             },
@@ -52,6 +52,7 @@ const modulesReducer = (state = initialState, action = {}) => {
             isPostedModule: true,
             isChanged: false,
             isOpenCloseModal: false,
+            isNewModule: false,
           };
         }
         return {

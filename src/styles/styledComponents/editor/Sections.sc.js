@@ -45,6 +45,7 @@ export const FormContainer = styled.div`
   padding-top: calc(56px + 93px + 12px);
   width: 70%;
   margin: auto;
+  max-width: 2000px;
 `;
 
 export const DeleteIcon = styled.img`

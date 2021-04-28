@@ -20,7 +20,7 @@ import {
 import ActionBar from "../components/Editor/actionBar/ActionBar";
 import ModuleCreator from "../components/Editor/Sections/Modules/ModuleCreator";
 import { fetchContent, saveModule } from "../store/actions/clientActions";
-import TextModule from "../components/Editor/Sections/Modules/TextModule";
+import TextModule from "../components/Editor/Sections/Modules/TextModule/TextModule";
 import { setArticleId } from "../store/actions/commonsActions";
 import {
   setErrorSlug,

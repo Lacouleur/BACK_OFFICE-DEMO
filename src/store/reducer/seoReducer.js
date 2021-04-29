@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 import {
   ADD_SEO_TITLE,
   CONTENT_LOADED,

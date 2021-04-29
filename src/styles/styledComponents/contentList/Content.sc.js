@@ -52,7 +52,7 @@ export const Tooltip = styled.div`
     border-left: 10px solid transparent;
     border-bottom: 10px solid ${colors.mediumGrey};
     border-top: 10px solid transparent;
-    left: 10px;
+    left: ${(props) => (props.centred ? "45%" : "10px")};
     top: -20px;
   }
 `;

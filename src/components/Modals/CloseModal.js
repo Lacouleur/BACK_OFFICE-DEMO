@@ -27,9 +27,9 @@ const CloseModal = ({ moduleId, moduleRef, articleId }) => {
         <Message>If you remove this module, content will be lost.</Message>
         <Cross
           src={crossIcon}
-          onClick={() =>
-            // eslint-disable-next-line prettier/prettier
-            dispatch(showCloseModal({ value: false, id: moduleId }))}
+          onClick={() => {
+            dispatch(showCloseModal({ value: false, id: moduleId }));
+          }}
         />
         <ButtonsBox>
           <Button

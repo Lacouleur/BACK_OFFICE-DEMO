@@ -56,20 +56,13 @@ export async function deleteComponent(id, uuid) {
 }
 
 export async function deleteContent(id) {
-  try {
-    const res = await axios.delete(`${BASE_URL}/contents/${id}`, {
-      headers: {
-        Authorization: `Bearer ${getToken()}`,
-      },
-    });
-
-    if (res.status < 300 && res.status > 199) {
-      return true;
-    }
-    return null;
-  } catch (error) {
-    return null;
-  }
+  return axios({
+    method: "put",
+    url: `${BASE_URL}/contents/${id}/archive`,
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 }
 
 export async function updateComponent(articleId, values, uuid) {

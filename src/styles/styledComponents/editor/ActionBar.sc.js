@@ -139,10 +139,27 @@ export const ActionsContainer = styled.div`
   justify-content: flex-end;
 `;
 
+export const ActionIconbox = styled.div`
+  &:hover {
+    & div:nth-of-type(1) {
+      visibility: hidden;
+    }
+  }
+`;
+
 export const ActionIcon = styled.img`
   width: 31px;
   margin-right: 10%;
+  position: relative;
+
+  &:hover {
+    & + div {
+      visibility: visible;
+    }
+  }
 `;
+
+export const HoverBox = styled.div``;
 
 const publishButtonDisable = css`
   color: ${colors.mediumGrey};

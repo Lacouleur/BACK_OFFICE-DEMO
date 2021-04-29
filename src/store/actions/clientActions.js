@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import { sendAuth, setToken } from "../../services/client/authClient";
 import {
   saveComponent,
@@ -11,6 +9,7 @@ import {
   postContent,
   update,
   publishManager,
+  deleteContent,
 } from "../../services/client/contentClient";
 import {
   setErrorPosting,
@@ -157,6 +156,28 @@ export function fetchContent(id) {
     } catch (error) {
       console.log(error);
       return null;
+    }
+  };
+}
+
+export function archiveContent(articleId, redirectTo) {
+  console.warn("DELETE", articleId);
+  return async (dispatch) => {
+    try {
+      const response = await deleteContent(articleId);
+      if (response.status < 300 && response.status > 199) {
+        redirectTo("/dashboard");
+        console.log(
+          `Article Deleted, id:${articleId} and the server return =>`,
+          response
+        );
+      }
+    } catch (error) {
+      dispatch(showErrorModal(true));
+      console.error(
+        `Delete fail, id:${articleId} and the server return =>`,
+        error
+      );
     }
   };
 }

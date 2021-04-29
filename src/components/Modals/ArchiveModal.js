@@ -1,31 +1,34 @@
 import PropTypes from "prop-types";
 import React, { useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import useClickOutside from "../../helper/cutomHooks/useClickOutside";
-import { setIsOpenPublishModal } from "../../store/actions/actionBarActions";
-import { publishAction } from "../../store/actions/clientActions";
+import { setIsOpenArchiveModal } from "../../store/actions/actionBarActions";
+import { archiveContent } from "../../store/actions/clientActions";
+import crossIcon from "../../styles/assets/icons/cross-white.svg";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import {
   Message,
   ModalBox,
   ModalContainer,
+  Cross,
   ButtonsBox,
 } from "../../styles/styledComponents/modal/Modal.sc";
 
-const PublishModal = ({ action, articleId }) => {
+const ArchiveModal = ({ articleId }) => {
   const modal = useRef(null);
   const dispatch = useDispatch();
-
-  function handlePublish() {
-    dispatch(publishAction(articleId, action));
-  }
+  const history = useHistory();
+  const redirectTo = (link) => {
+    history.push(link);
+  };
 
   useEffect(() => {
     modal.current.scrollIntoView({ behavior: "smooth" });
   }, []);
 
   function onClickOutside() {
-    dispatch(setIsOpenPublishModal(false));
+    dispatch(setIsOpenArchiveModal(false));
   }
 
   useClickOutside(modal, onClickOutside);
@@ -33,7 +36,11 @@ const PublishModal = ({ action, articleId }) => {
   return (
     <ModalContainer height="200vh">
       <ModalBox ref={modal}>
-        <Message>{`Are you sure you want to ${action} this content ?`}</Message>
+        <Message>Are you sure you want to archive this content ?</Message>
+        <Cross
+          src={crossIcon}
+          onClick={() => dispatch(setIsOpenArchiveModal(false))}
+        />
         <ButtonsBox>
           <Button
             type="button"
@@ -43,7 +50,7 @@ const PublishModal = ({ action, articleId }) => {
               border: "1px solid white",
             }}
             onClick={() => {
-              dispatch(setIsOpenPublishModal(false));
+              dispatch(setIsOpenArchiveModal(false));
             }}
           >
             CANCEL
@@ -51,11 +58,11 @@ const PublishModal = ({ action, articleId }) => {
           <Button
             type="button"
             onClick={() => {
-              handlePublish(action === "UPDATE" ? "PUBLISH" : action);
-              dispatch(setIsOpenPublishModal(false));
+              dispatch(setIsOpenArchiveModal(false));
+              dispatch(archiveContent(articleId, redirectTo));
             }}
           >
-            {action}
+            DELETE
           </Button>
         </ButtonsBox>
       </ModalBox>
@@ -63,9 +70,8 @@ const PublishModal = ({ action, articleId }) => {
   );
 };
 
-PublishModal.propTypes = {
-  action: PropTypes.string.isRequired,
+ArchiveModal.propTypes = {
   articleId: PropTypes.string.isRequired,
 };
 
-export default PublishModal;
+export default ArchiveModal;

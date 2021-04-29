@@ -90,7 +90,6 @@ const TextModule = ({
 
   function onEditorStateChange(e) {
     setEditorState(e);
-    HTMLconverter(editorState);
   }
 
   function onClickOutside() {
@@ -170,7 +169,7 @@ const TextModule = ({
                 options: ["H2", "H3", "H4", "Blockquote"],
               },
               list: { inDropdown: true },
-              link: { inDropdown: true, defaultTargetOption: "_blank" },
+              link: { inDropdown: true, defaultTargetOption: "_self" },
               history: { inDropdown: false },
             }}
           />

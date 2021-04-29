@@ -27,18 +27,16 @@ function HTMLconverter(editorState, mode = "to", data = "") {
     entityToHTML: (entity, originalText) => {
       if (entity.type === "LINK") {
         return (
-          <a href={entity.data.url} target="_blank" rel="noreferrer">
+          <a
+            href={entity.data.url}
+            target={entity.data.targetOption}
+            rel="noreferrer"
+          >
             {originalText}
           </a>
         );
       }
       return originalText;
-    },
-    htmlToEntity: (nodeName, node, createEntity) => {
-      if (nodeName === "a") {
-        return createEntity("LINK", "MUTABLE", { url: node.href });
-      }
-      return null;
     },
   };
 
@@ -51,7 +49,10 @@ function HTMLconverter(editorState, mode = "to", data = "") {
     },
     htmlToEntity: (nodeName, node, createEntity) => {
       if (nodeName === "a") {
-        return createEntity("LINK", "MUTABLE", { url: node.href });
+        return createEntity("LINK", "MUTABLE", {
+          url: node.href,
+          targetOption: node.target,
+        });
       }
       return null;
     },

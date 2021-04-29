@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,11 +29,20 @@ import Button from "../../../styles/styledComponents/global/Buttons/Buttons.sc";
 import colors from "../../../styles/core/colors";
 import eyeIcon from "../../../styles/assets/icons/eye.svg";
 import trashIcon from "../../../styles/assets/icons/trash.svg";
+import trashGreyIcon from "../../../styles/assets/icons/trash-grey.svg";
 import { checkAndSend, saveModule } from "../../../store/actions/clientActions";
 import buildDate from "../../../helper/buildDate";
 import PublishModal from "../../Modals/PublishModal";
-import { setIsOpenPublishModal } from "../../../store/actions/actionBarActions";
+import {
+  setIsOpenPublishModal,
+  setIsOpenArchiveModal,
+} from "../../../store/actions/actionBarActions";
 import ErrorModal from "../../Modals/ErrorModal";
+import ArchiveModal from "../../Modals/ArchiveModal";
+import {
+  Tooltip,
+  TooltipText,
+} from "../../../styles/styledComponents/contentList/Content.sc";
 
 const ActionBar = () => {
   const dispatch = useDispatch();
@@ -51,6 +61,7 @@ const ActionBar = () => {
     publishedAt,
     isOpenPublishModal,
     isOpenErrorModal,
+    isOpenArchiveModal,
   } = actionBarState;
 
   const { isChanged: seoChanged } = seoState;
@@ -75,6 +86,7 @@ const ActionBar = () => {
   const [publishedDate, setPublishedDate] = useState();
   const [contentIsChanged, setContentIsChanged] = useState(false);
   const [actionButtonContent, setActionButtonContent] = useState("");
+  const [isDeleteButton, setIsDeleteButton] = useState(false);
   const [isArticleError, setIsArticleError] = useState("");
   const selectOptions = [{ value: "UNPUBLISH", label: "UNPUBLISH" }];
 
@@ -127,10 +139,13 @@ const ActionBar = () => {
   useEffect(() => {
     if (status === "PUBLISHED" && modified) {
       setActionButtonContent("UPDATE");
+      /* setIsDeleteButton(false); */
     } else if (status === "PUBLISHED" && !modified) {
       setActionButtonContent("UNPUBLISH");
+      /* setIsDeleteButton(false); */
     } else {
       setActionButtonContent("PUBLISH");
+      setIsDeleteButton(true);
     }
   }, [homeScreenState]);
 
@@ -157,6 +172,7 @@ const ActionBar = () => {
       {isOpenPublishModal && (
         <PublishModal action={actionButtonContent} articleId={articleId} />
       )}
+      {isOpenArchiveModal && <ArchiveModal articleId={articleId} />}
       <ButtonsContainer>
         <Button
           type="button"
@@ -213,18 +229,27 @@ const ActionBar = () => {
       </StatusContainer>
       <ActionsContainer>
         <ActionIcon src={eyeIcon} />
-        <ActionIcon src={trashIcon} />
+        {isDeleteButton ? (
+          <ActionIcon
+            src={trashIcon}
+            /* onClick={() => dispatch(setIsOpenArchiveModal(true))} */
+          />
+        ) : (
+          <>
+            <ActionIcon src={trashGreyIcon} />
+            {/* <Tooltip centred>
+              <TooltipText>A published content cannot be archived</TooltipText>
+            </Tooltip> */}
+          </>
+        )}
         <PublishButton
           isActive={!!(articleId && !contentIsChanged)}
           type="button"
-          onClick={
-            () => {
-              if (articleId) {
-                dispatch(setIsOpenPublishModal(true));
-              }
+          onClick={() => {
+            if (articleId) {
+              dispatch(setIsOpenPublishModal(true));
             }
-            // eslint-disable-next-line react/jsx-curly-newline
-          }
+          }}
         >
           {actionButtonContent}
         </PublishButton>

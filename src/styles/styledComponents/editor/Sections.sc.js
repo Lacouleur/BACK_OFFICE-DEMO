@@ -13,10 +13,14 @@ export const CollapsedText = styled.p`
 `;
 
 const SectionBoxClosedMixin = css`
-  max-height: 160px;
   height: 160px;
   padding: 30px 30px 8px 30px;
   overflow: hidden;
+  transition: height 0.3s ease;
+
+  &:hover {
+    height: 200px;
+  }
 `;
 
 const SectionBoxOpenMixin = css`
@@ -64,7 +68,7 @@ export const Gradient = styled.div`
   background: ${colors.darkGrey};
   background: linear-gradient(
     0deg,
-    rgba(56, 56, 56, 1) 0%,
+    rgba(56, 56, 56, 0.8) 0%,
     rgba(149, 149, 149, 0) 100%
   );
 `;

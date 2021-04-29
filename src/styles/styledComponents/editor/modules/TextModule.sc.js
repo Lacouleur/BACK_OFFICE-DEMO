@@ -40,12 +40,39 @@ export const DraftJsWrapper = styled.div`
   }
 
   & .editor {
+    overflow: hidden;
     min-height: 300px;
+    max-height: 65vh;
     border-radius: 0 0 3px 3px;
-    padding: 5px;
+    padding: 9px;
     font-size: 16px;
     ${(props) =>
       props.isOpen ? DraftJsContainerOpenMixin : DraftJsContainerClosedMixin};
+
+    /* width */
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: ${colors.transpGrey};
+      border-radius: 5px;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: ${colors.lightGrey};
+    }
+
+    &:hover {
+      overflow: auto;
+    }
   }
 `;
 

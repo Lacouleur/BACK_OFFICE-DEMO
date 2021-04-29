@@ -5,6 +5,7 @@ import {
   SET_PROGRAMMED,
   SET_IS_OPEN_PUBLISH_MODAL,
   SHOW_ERROR_MODAL,
+  SET_IS_OPEN_ARCHIVE_MODAL,
 } from "../constants";
 
 import {} from "../actions/actionBarActions";
@@ -15,6 +16,7 @@ const initialState = {
   programmedAt: null,
   isOpenPublishModal: false,
   isOpenErrorModal: false,
+  isOpenArchiveModal: false,
 };
 
 const actionBarReducer = (state = initialState, action = {}) => {
@@ -72,6 +74,13 @@ const actionBarReducer = (state = initialState, action = {}) => {
       };
     }
 
+    case SET_IS_OPEN_ARCHIVE_MODAL: {
+      return {
+        ...oldState,
+        isOpenArchiveModal: action.payload,
+      };
+    }
+
     case CLEAN_CONTENT_STATE:
       return {
         updatedAt: "",
@@ -79,6 +88,7 @@ const actionBarReducer = (state = initialState, action = {}) => {
         programmedAt: null,
         isOpenPublishModal: false,
         isOpenErrorModal: false,
+        isOpenArchiveModal: false,
       };
 
     default:

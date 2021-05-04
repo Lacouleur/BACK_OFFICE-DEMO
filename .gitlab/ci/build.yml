@@ -1,0 +1,19 @@
+
+build_repository_integ:
+  extends:
+    - .workflow_integ
+    - .variables_integ
+    - .build
+
+build_repository_preprod:
+  extends:
+    - .workflow_preprod
+    - .variables_preprod
+    - .build
+
+build_repository_prod:
+  extends:
+    - .workflow_prod
+    - .variables_prod
+    - .build
+

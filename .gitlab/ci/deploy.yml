@@ -1,0 +1,36 @@
+deploy_repository_preprod:
+  extends:
+    - .workflow_preprod
+    - .variables_preprod
+    - .deploy
+
+deploy_repository_prod:
+  extends:
+    - .workflow_prod
+    - .variables_prod
+    - .deploy
+
+deploy_repository_integ:
+
+  extends:
+    - .target_branches
+    - .workflow_integ
+    - .variables_integ
+
+  image: dockerhub.ftven.net/curlimages/curl
+
+  stage: deploy
+
+  environment: integration
+
+  script:
+    - curl -s -v -X POST
+      -F "token=$CI_JOB_TOKEN"
+      -F "ref=master"
+      -F "variables[FTVEN_TARGET_ENV]=integ"
+      -F "variables[FTVEN_UPSTREAM_JOB_URL]=$CI_JOB_URL"
+      -F "variables[FTVEN_K8S_IMG]=phoenix/${PHX_IMAGE_SUFFIX}-${PHX_ENV_TARGET}"
+      -F "variables[FTVEN_K8S_NS]=phoenix"
+      -F "variables[FTVEN_K8S_PROJECT]=$CI_PROJECT_NAME"
+      https://gitlab.ftven.net/api/v4/projects/4810/trigger/pipeline
+

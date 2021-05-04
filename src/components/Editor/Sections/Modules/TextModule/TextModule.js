@@ -169,7 +169,7 @@ const TextModule = ({
                 options: ["H2", "H3", "H4", "Blockquote"],
               },
               list: { inDropdown: true },
-              link: { inDropdown: true, defaultTargetOption: "_self" },
+              link: { inDropdown: true, defaultTargetOption: "_blank" },
               history: { inDropdown: false },
             }}
           />

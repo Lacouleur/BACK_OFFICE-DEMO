@@ -35,7 +35,7 @@ const Auth = () => {
 
   useEffect(() => {
     if (getToken()) {
-      history.push("dashboard");
+      history.push("/dashboard");
     }
   }, []);
 

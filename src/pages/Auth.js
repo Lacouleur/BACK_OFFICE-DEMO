@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import idIcon from "../styles/assets/icons/id.svg";
@@ -18,6 +18,7 @@ import { loginButton } from "../styles/styledComponents/global/Buttons/CustomBut
 import PageContainer from "../styles/styledComponents/global/PageContainer.sc";
 import Error from "../components/Notifications/Error";
 import { logUser } from "../store/actions/clientActions";
+import { getToken } from "../services/client/authClient";
 
 const Auth = () => {
   const authState = useSelector(({ authReducer }) => authReducer);
@@ -31,6 +32,12 @@ const Auth = () => {
     };
     dispatch(logUser(redirectTo));
   };
+
+  useEffect(() => {
+    if (getToken()) {
+      history.push("dashboard");
+    }
+  }, []);
 
   return (
     <>

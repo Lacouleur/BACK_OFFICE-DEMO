@@ -14,7 +14,7 @@ const PublicRoute = ({
     <Route
       {...otherProps}
       render={(props) =>
-        getToken() && restricted ? (
+        getToken() ? (
           <Redirect
             to={{
               pathname: "/dashboard",

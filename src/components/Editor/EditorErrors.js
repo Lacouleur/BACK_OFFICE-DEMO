@@ -5,8 +5,8 @@ import Error from "../Notifications/Error";
 import { setPosted } from "../../store/actions/commonsActions";
 
 const EditorErrors = () => {
-  const homeScreenState = useSelector(
-    ({ homeScreenReducer }) => homeScreenReducer
+  const MainInformationState = useSelector(
+    ({ mainInformationReducer }) => mainInformationReducer
   );
   const dispatch = useDispatch();
   const {
@@ -15,7 +15,7 @@ const EditorErrors = () => {
     slugError,
     isPosted,
     regexSlugError,
-  } = homeScreenState;
+  } = MainInformationState;
 
   useEffect(() => {
     if (isPosted) {

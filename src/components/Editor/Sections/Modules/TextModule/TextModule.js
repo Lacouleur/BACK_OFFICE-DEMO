@@ -43,10 +43,10 @@ const TextModule = ({
   const dispatch = useDispatch();
   const textModuleRef = useRef(null);
   const textEditorRef = useRef(null);
-  const HomeScreenState = useSelector(
-    ({ homeScreenReducer }) => homeScreenReducer
+  const MainInformationState = useSelector(
+    ({ mainInformationReducer }) => mainInformationReducer
   );
-  const { articleId } = HomeScreenState;
+  const { articleId } = MainInformationState;
   const [isOpen, setIsOpen] = useState(false);
   const [editorState, setEditorState] = useState();
 
@@ -168,8 +168,11 @@ const TextModule = ({
                 inDropdown: true,
                 options: ["H2", "H3", "H4", "Blockquote"],
               },
-              list: { inDropdown: true },
-              link: { inDropdown: true, defaultTargetOption: "_blank" },
+              list: {
+                inDropdown: true,
+                options: ["unordered", "ordered"],
+              },
+              link: { inDropdown: true, defaultTargetOption: "_self" },
               history: { inDropdown: false },
             }}
           />

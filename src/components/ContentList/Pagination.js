@@ -6,8 +6,7 @@ import {
   PageListArrow,
   PaginationBox,
 } from "../../styles/styledComponents/contentList/Pagination.sc";
-import arrowLeft from "../../styles/assets/icons/arrow-left.svg";
-import arrowRight from "../../styles/assets/icons/arrow-right.svg";
+import arrow from "../../styles/assets/icons/arrow-left.svg";
 import keyGenerator from "../../helper/keyGenerator";
 import colors from "../../styles/core/colors";
 import { fetchContentsList } from "../../store/actions/clientActions";
@@ -47,7 +46,7 @@ const Pagination = () => {
   return (
     <PaginationBox>
       <PageListArrow
-        src={arrowLeft}
+        src={arrow}
         onClick={() => {
           changePage(currentPage - 1);
         }}
@@ -55,7 +54,8 @@ const Pagination = () => {
       />
       <PageListUl>{pageArr}</PageListUl>
       <PageListArrow
-        src={arrowRight}
+        right
+        src={arrow}
         onClick={() => {
           changePage(currentPage + 1);
         }}

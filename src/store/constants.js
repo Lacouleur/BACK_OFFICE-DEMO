@@ -24,7 +24,7 @@ export const SET_IS_OPEN_PUBLISH_MODAL = "SET_IS_OPEN_PUBLISH_MODAL";
 export const SHOW_ERROR_MODAL = "SHOW_ERROR_MODAL";
 export const SET_IS_OPEN_ARCHIVE_MODAL = "SET_IS_OPEN_ARCHIVE_MODAL";
 
-// HOMESCREEN
+// MAIN IFORMATION
 export const ADD_SLUG = "ADD_SLUG";
 export const ADD_TITLE = "ADD_TITLE";
 export const ADD_CATEGORY = "ADD_CATEGORY";
@@ -33,6 +33,7 @@ export const SET_ERROR_TITLE = "SET_ERROR_TITLE";
 export const SET_ERROR_SLUG = "SET_ERROR_SLUG";
 export const SET_STATUS = "SET_STATUS";
 export const SET_MODIFIED = "SET_MODIFIED";
+export const ADD_LANG = "ADD_LANG";
 
 // SEO
 export const ADD_SEO_TITLE = "ADD_SEO_TITLE";

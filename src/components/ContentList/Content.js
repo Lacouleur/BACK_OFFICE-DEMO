@@ -11,16 +11,25 @@ import {
   UpdatedDate,
   IconActionBox,
   ButtonIcon,
+  Tooltip,
+  TooltipText,
 } from "../../styles/styledComponents/contentList/Content.sc";
 import isEven from "../../helper/isEven";
 import colors from "../../styles/core/colors";
-import trash from "../../styles/assets/icons/trash.svg";
+import trashIcon from "../../styles/assets/icons/trash.svg";
+import greyTrashIcon from "../../styles/assets/icons/trash-grey.svg";
+import darkTrashIcon from "../../styles/assets/icons/trash-dark.svg";
 import eye from "../../styles/assets/icons/eye.svg";
 import copy from "../../styles/assets/icons/copy.svg";
 import pen from "../../styles/assets/icons/pen.svg";
 import buildDate from "../../helper/buildDate";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import Status from "./Status";
+import {
+  ActionIcon,
+  ArchiveBox,
+} from "../../styles/styledComponents/editor/ActionBar.sc";
+/* import { setIsOpenArchiveModal } from "../../store/actions/actionBarActions"; */
 
 const Content = ({
   number,
@@ -36,6 +45,7 @@ const Content = ({
 }) => {
   const even = isEven(number);
   const updateDate = buildDate(new Date(updatedAt));
+
   return (
     <LineContentBox
       styles={{
@@ -58,7 +68,21 @@ const Content = ({
 
       <IconActionBox>
         <IconAction src={eye} />
-        <IconAction src={trash} />
+        {status !== "PUBLISHED" ? (
+          <ArchiveBox role="button">
+            <ActionIcon
+              src={trashIcon}
+              /* onClick={() => dispatch(setIsOpenArchiveModal(true))} */
+            />
+          </ArchiveBox>
+        ) : (
+          <ArchiveBox role="button">
+            <ActionIcon src={even ? greyTrashIcon : darkTrashIcon} />
+            <Tooltip>
+              <TooltipText>A published content cannot be archived</TooltipText>
+            </Tooltip>
+          </ArchiveBox>
+        )}
         <IconAction src={copy} />
       </IconActionBox>
       <Link

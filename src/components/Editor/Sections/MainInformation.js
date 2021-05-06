@@ -16,17 +16,18 @@ import {
 import { checkAndSend } from "../../../store/actions/clientActions";
 import useClickOutside from "../../../helper/cutomHooks/useClickOutside";
 
-const HomeScreen = () => {
-  const homeScreenState = useSelector(
-    ({ homeScreenReducer }) => homeScreenReducer
+const MainInformation = () => {
+  const mainInformationState = useSelector(
+    ({ mainInformationReducer }) => mainInformationReducer
   );
   const dispatch = useDispatch();
-  const homeScreenRef = useRef();
+  const mainInformationRef = useRef();
   const [isOpen, setIsOpen] = useState(false);
 
   const {
     title,
     slug,
+    lang,
     category,
     regexSlugError,
     slugError,
@@ -35,7 +36,7 @@ const HomeScreen = () => {
     isEditing,
     articleId,
     isChanged,
-  } = homeScreenState;
+  } = mainInformationState;
 
   function slugMessage() {
     let message = "";
@@ -64,19 +65,19 @@ const HomeScreen = () => {
       dispatch(checkAndSend("update", articleId));
     }
   }
-  useClickOutside(homeScreenRef, onClickOutside);
+  useClickOutside(mainInformationRef, onClickOutside);
 
   return (
     <>
       <SectionBox
         onClick={() => setIsOpen(true)}
-        ref={homeScreenRef}
+        ref={mainInformationRef}
         isOpen={isOpen}
       >
         {!isOpen && <Gradient />}
         <SectionTitle>
           <TitleIcon src={homeIcon} />
-          <FormTitle>HOME SCREEN</FormTitle>
+          <FormTitle>MAIN INFORMATION</FormTitle>
         </SectionTitle>
         {!isOpen && (
           <>
@@ -88,13 +89,13 @@ const HomeScreen = () => {
           <>
             <FieldTitle>Title and slug URL</FieldTitle>
             <Field
-              placeholder="Title"
-              maxlength="64"
+              placeholder="Title (internal)"
+              maxlength="40"
               infos={
-                titleError ? "Content need a title." : "Maximum 64 characters"
+                titleError ? "Content need a title." : "Maximum 40 characters"
               }
               name="title"
-              section="homeScreen"
+              section="mainInformation"
               edit={isEditing ? title : undefined}
               error={titleError}
             />
@@ -102,7 +103,7 @@ const HomeScreen = () => {
               placeholder="slug URL"
               infos={slugError ? "Content need a slug." : `${slugMessage()}`}
               name="slug"
-              section="homeScreen"
+              section="mainInformation"
               edit={isEditing ? slug : undefined}
               error={regexSlugError || postingError || slugError}
             />
@@ -110,8 +111,15 @@ const HomeScreen = () => {
               placeholder="Category"
               name="category"
               fieldType="select"
-              section="homeScreen"
+              section="mainInformation"
               edit={isEditing ? category : undefined}
+            />
+            <Field
+              placeholder="Language"
+              name="lang"
+              fieldType="select"
+              section="mainInformation"
+              edit={isEditing ? lang : "fr"}
             />
           </>
         )}
@@ -120,4 +128,4 @@ const HomeScreen = () => {
   );
 };
 
-export default HomeScreen;
+export default MainInformation;

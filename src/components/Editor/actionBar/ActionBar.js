@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,6 +22,7 @@ import {
   ActionIcon,
   ButtonsContainer,
   PublishButton,
+  ArchiveBox,
 } from "../../../styles/styledComponents/editor/ActionBar.sc";
 import backArrow from "../../../styles/assets/icons/arrow-left.svg";
 import Button from "../../../styles/styledComponents/global/Buttons/Buttons.sc";
@@ -46,8 +46,8 @@ import {
 
 const ActionBar = () => {
   const dispatch = useDispatch();
-  const homeScreenState = useSelector(
-    ({ homeScreenReducer }) => homeScreenReducer
+  const MainInformationState = useSelector(
+    ({ mainInformationReducer }) => mainInformationReducer
   );
   const actionBarState = useSelector(
     ({ actionBarReducer }) => actionBarReducer
@@ -73,11 +73,11 @@ const ActionBar = () => {
     slugError,
     regexSlugError,
     postingError,
-    isChanged: homeScreenChanged,
+    isChanged: MainInformationChanged,
     articleId,
     modified,
     status,
-  } = homeScreenState;
+  } = MainInformationState;
 
   const { modulesList } = modulesState;
   const history = useHistory();
@@ -115,12 +115,12 @@ const ActionBar = () => {
       return null;
     });
 
-    if (seoChanged || homeScreenChanged || modifiedModules.length > 0) {
+    if (seoChanged || MainInformationChanged || modifiedModules.length > 0) {
       setContentIsChanged(true);
     } else {
       setContentIsChanged(false);
     }
-  }, [seoChanged, homeScreenChanged, modulesState]);
+  }, [seoChanged, MainInformationChanged, modulesState]);
 
   useEffect(() => {
     const createUpdateDate = new Date(updatedAt);
@@ -139,15 +139,15 @@ const ActionBar = () => {
   useEffect(() => {
     if (status === "PUBLISHED" && modified) {
       setActionButtonContent("UPDATE");
-      /* setIsDeleteButton(false); */
+      setIsDeleteButton(false);
     } else if (status === "PUBLISHED" && !modified) {
       setActionButtonContent("UNPUBLISH");
-      /* setIsDeleteButton(false); */
+      setIsDeleteButton(false);
     } else {
       setActionButtonContent("PUBLISH");
       setIsDeleteButton(true);
     }
-  }, [homeScreenState]);
+  }, [MainInformationState]);
 
   function handleSubmit() {
     if (!isEditing && contentIsChanged) {
@@ -230,17 +230,19 @@ const ActionBar = () => {
       <ActionsContainer>
         <ActionIcon src={eyeIcon} />
         {isDeleteButton ? (
-          <ActionIcon
-            src={trashIcon}
-            /* onClick={() => dispatch(setIsOpenArchiveModal(true))} */
-          />
+          <ArchiveBox role="button">
+            <ActionIcon
+              src={trashIcon}
+              onClick={() => dispatch(setIsOpenArchiveModal(true))}
+            />
+          </ArchiveBox>
         ) : (
-          <>
+          <ArchiveBox role="button">
             <ActionIcon src={trashGreyIcon} />
-            {/* <Tooltip centred>
+            <Tooltip action>
               <TooltipText>A published content cannot be archived</TooltipText>
-            </Tooltip> */}
-          </>
+            </Tooltip>
+          </ArchiveBox>
         )}
         <PublishButton
           isActive={!!(articleId && !contentIsChanged)}

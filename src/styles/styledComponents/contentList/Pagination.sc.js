@@ -4,20 +4,18 @@ export const PaginationBox = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-top: auto;
+  margin-top: 18px;
+  margin-bottom: 70px;
   height: 60px;
-  width: 20%;
-  max-width: 200px;
-  margin-left: auto;
-  margin-right: 0;
+  min-width: 1000px;
 `;
 
 export const PageListUl = styled.ul`
   list-style-type: none;
   padding: 0;
   margin: 0;
-  width: calc(100%);
   min-height: 30px;
+  font-size: 16px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -34,9 +32,9 @@ export const PageListLi = styled.li`
 
 export const PageListArrow = styled.img`
   visibility: ${(props) => props.hide};
-  width: 14px;
+  height: 16px;
   margin: 0 30px;
-  padding-top: 5px;
   align-self: center;
   cursor: pointer;
+  transform: ${(props) => (props.right ? "rotate(180deg)" : "")};
 `;

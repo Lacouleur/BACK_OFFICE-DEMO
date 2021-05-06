@@ -28,7 +28,7 @@ import {
   setErrorTitle,
   setModified,
   setStatus,
-} from "./homeScreenActions";
+} from "./mainInformationActions";
 import { closeModule, setModulePosted } from "./moduleActions";
 import {
   setUpdatedAt,
@@ -41,8 +41,8 @@ export const CONTENT_LOADED = "CONTENT_LOADED";
 
 export function checkAndSend(type = "save", articleId = null) {
   return async (dispatch, getState) => {
-    const { seoReducer, homeScreenReducer, modulesReducer } = getState();
-    const { title: mainTitle, slug, category } = homeScreenReducer;
+    const { seoReducer, mainInformationReducer, modulesReducer } = getState();
+    const { title: mainTitle, slug, category, lang } = mainInformationReducer;
     const { description, title: seoTitle } = seoReducer;
     const { modulesList } = modulesReducer;
 
@@ -90,7 +90,7 @@ export function checkAndSend(type = "save", articleId = null) {
       if (type === "save") {
         console.log("SAVING");
         try {
-          const response = await postContent(values);
+          const response = await postContent(values, lang);
           if (response.status < 300 && response.status > 199) {
             dispatch(setArticleId(response.data));
             dispatch(setPosted(true));
@@ -114,7 +114,7 @@ export function checkAndSend(type = "save", articleId = null) {
       if (type === "update") {
         console.log("UPDATING");
         try {
-          const result = await update(values, articleId);
+          const result = await update(values, articleId, lang);
 
           if (result.status < 300 && result.status > 199) {
             dispatch(setErrorSpecial(false));
@@ -146,6 +146,7 @@ export function fetchContent(id) {
     try {
       const response = await getContent(id);
       if (response.status < 300 && response.status > 199) {
+        console.log(response.data);
         dispatch(contentLoaded(response.data));
         dispatch(setUpdatedAt(response.data.updatedAt));
         dispatch(setPublishedAt(response.data.publishedAt));
@@ -260,8 +261,8 @@ export function deleteModule(articleId, moduleId) {
 
 export function saveModule(uuid, request = "save") {
   return async (dispatch, getState) => {
-    const { homeScreenReducer, modulesReducer } = getState();
-    const { articleId } = homeScreenReducer;
+    const { mainInformationReducer, modulesReducer } = getState();
+    const { articleId } = mainInformationReducer;
     const { modulesList } = modulesReducer;
     let values = {};
     let isNewModule = false;

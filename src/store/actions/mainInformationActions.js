@@ -7,6 +7,7 @@ import {
   ADD_TITLE,
   SET_STATUS,
   SET_MODIFIED,
+  ADD_LANG,
 } from "../constants";
 
 export const addTitle = (payload) => ({
@@ -46,5 +47,10 @@ export const setStatus = (payload) => ({
 
 export const setModified = (payload) => ({
   type: SET_MODIFIED,
+  payload,
+});
+
+export const addLang = (payload) => ({
+  type: ADD_LANG,
   payload,
 });

@@ -22,15 +22,15 @@ import useClickOutside from "../../../helper/cutomHooks/useClickOutside";
 import {
   setErrorSlug,
   setErrorTitle,
-} from "../../../store/actions/homeScreenActions";
+} from "../../../store/actions/mainInformationActions";
 
 const Seo = () => {
   const seoRef = useRef();
   const seoState = useSelector(({ seoReducer }) => seoReducer);
-  const homeScreenState = useSelector(
-    ({ homeScreenReducer }) => homeScreenReducer
+  const MainInformationState = useSelector(
+    ({ mainInformationReducer }) => mainInformationReducer
   );
-  const { isEditing, articleId, title: mainTitle, slug } = homeScreenState;
+  const { isEditing, articleId, title: mainTitle, slug } = MainInformationState;
   const { title: seoTitle, description, isChanged } = seoState;
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);

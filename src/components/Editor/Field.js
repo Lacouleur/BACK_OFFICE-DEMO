@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
@@ -5,7 +6,8 @@ import {
   addTitle,
   addSlug,
   addCategory,
-} from "../../store/actions/homeScreenActions";
+  addLang,
+} from "../../store/actions/mainInformationActions";
 import { addSeoDescription, addSeoTitle } from "../../store/actions/seoActions";
 import {
   FieldStyle,
@@ -15,11 +17,16 @@ import {
   FieldContainer,
   FieldInfosBox,
   TextArea,
+  FieldBox,
 } from "../../styles/styledComponents/global/Field.sc";
 import colors from "../../styles/core/colors";
 import exclamationIcon from "../../styles/assets/icons/exclamationGrey.svg";
 import exclamationVioletIcon from "../../styles/assets/icons/exclamation.svg";
 import { fetchCategoriesList } from "../../store/actions/clientActions";
+import {
+  Tooltip,
+  TooltipText,
+} from "../../styles/styledComponents/contentList/Content.sc";
 
 const Field = ({
   type,
@@ -34,21 +41,43 @@ const Field = ({
 }) => {
   const dispatch = useDispatch();
   const [editCategory, setEditCategory] = useState();
+  const [selectedLang, setSelectedLang] = useState();
+  const langList = [
+    {
+      label: "French",
+      value: "fr",
+    },
+    {
+      label: "German",
+      value: "de",
+    },
+  ];
 
-  const homeScreenState = useSelector(
-    ({ homeScreenReducer }) => homeScreenReducer
+  const MainInformationState = useSelector(
+    ({ mainInformationReducer }) => mainInformationReducer
   );
 
-  const { categoriesList, status } = homeScreenState;
+  const { categoriesList, status } = MainInformationState;
 
   useEffect(() => {
     if (categoriesList.length === 0) {
       dispatch(fetchCategoriesList());
     }
+
     if (categoriesList && edit) {
       categoriesList.map((option) => {
         if (edit === option.value) {
           setEditCategory(option);
+        }
+        return null;
+      });
+    }
+
+    if (!selectedLang) {
+      langList.map((option) => {
+        if (edit === option.value) {
+          setSelectedLang(option);
+          return null;
         }
         return null;
       });
@@ -58,22 +87,38 @@ const Field = ({
   return (
     <FieldContainer>
       {fieldType && fieldType === "select" && (
-        <Selector
-          value={editCategory}
-          options={categoriesList}
-          classNamePrefix="select"
-          placeholder={name}
-          isClearable
-          onChange={(e) => {
-            if (e?.value) {
-              setEditCategory(e);
-              dispatch(addCategory(e.value));
-            } else {
-              setEditCategory("");
-              dispatch(addCategory(""));
-            }
-          }}
-        />
+        <FieldBox langSelector>
+          <Selector
+            isDisabled={name === "lang" && !(status === "DRAFT" || !status)}
+            value={name === "lang" ? selectedLang : editCategory}
+            options={name === "lang" ? langList : categoriesList}
+            classNamePrefix="select"
+            placeholder={name}
+            isClearable
+            onChange={(e) => {
+              if (e?.value) {
+                if (name === "category") {
+                  setEditCategory(e);
+                  dispatch(addCategory(e.value));
+                }
+                if (name === "lang") {
+                  setSelectedLang(e);
+                  dispatch(addLang(e.value));
+                }
+              } else if (name === "category") {
+                setEditCategory("");
+                dispatch(addCategory(""));
+              }
+            }}
+          />
+          {name === "lang" && !(status === "DRAFT" || !status) && (
+            <Tooltip>
+              <TooltipText>
+                The language of a published content cannot be changed.
+              </TooltipText>
+            </Tooltip>
+          )}
+        </FieldBox>
       )}
       {fieldType && fieldType === "textarea" && (
         <TextArea
@@ -88,41 +133,50 @@ const Field = ({
         />
       )}
       {!fieldType && (
-        <FieldStyle
-          type={type}
-          placeholder={placeholder}
-          maxLength={maxlength}
-          disabled={name === "slug" && !(status === "DRAFT" || !status)}
-          onInput={(e) => {
-            if (name === "title" && section === "homeScreen") {
-              dispatch(addTitle(e.target.value));
+        <FieldBox slugField>
+          <FieldStyle
+            type={type}
+            placeholder={placeholder}
+            maxLength={maxlength}
+            disabled={name === "slug" && !(status === "DRAFT" || !status)}
+            onInput={(e) => {
+              if (name === "title" && section === "mainInformation") {
+                dispatch(addTitle(e.target.value));
+              }
+              if (name === "slug" && section === "mainInformation") {
+                dispatch(addSlug(e.target.value));
+              }
+              if (name === "title" && section === "seo") {
+                dispatch(addSeoTitle(e.target.value));
+              }
+            }}
+            defaultValue={edit ? `${edit}` : ""}
+            styles={
+              name === "slug" && !(status === "DRAFT" || !status)
+                ? {
+                    color: colors.placeholderGrey,
+                    height: "56px",
+                    border: `${
+                      error ? `2px solid ${colors.paleViolet}` : `none`
+                    }`,
+                  }
+                : {
+                    color: `${error ? colors.paleViolet : colors.white}`,
+                    border: `${
+                      error ? `2px solid ${colors.paleViolet}` : `none`
+                    }`,
+                    height: "56px",
+                  }
             }
-            if (name === "slug" && section === "homeScreen") {
-              dispatch(addSlug(e.target.value));
-            }
-            if (name === "title" && section === "seo") {
-              dispatch(addSeoTitle(e.target.value));
-            }
-          }}
-          defaultValue={edit ? `${edit}` : ""}
-          styles={
-            name === "slug" && !(status === "DRAFT" || !status)
-              ? {
-                  color: colors.placeholderGrey,
-                  height: "56px",
-                  border: `${
-                    error ? `2px solid ${colors.paleViolet}` : `none`
-                  }`,
-                }
-              : {
-                  color: `${error ? colors.paleViolet : colors.white}`,
-                  border: `${
-                    error ? `2px solid ${colors.paleViolet}` : `none`
-                  }`,
-                  height: "56px",
-                }
-          }
-        />
+          />
+          {name === "slug" && !(status === "DRAFT" || !status) && (
+            <Tooltip>
+              <TooltipText>
+                The slug of a published content cannot be changed.
+              </TooltipText>
+            </Tooltip>
+          )}
+        </FieldBox>
       )}
       {infos && (
         <FieldInfosBox

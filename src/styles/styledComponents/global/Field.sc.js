@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import TextareaAutosize from "react-textarea-autosize";
 import ReactSelect from "react-select";
 import colors from "../../core/colors";
@@ -10,7 +10,25 @@ export const FieldContainer = styled.div`
   margin: 16px 0 16px 0;
 `;
 
+export const langSelectorFieldBoxMixin = css`
+  &:hover {
+    & div:nth-of-type(2) {
+      visibility: visible;
+    }
+  }
+`;
+
+export const slugFieldBoxMixin = css`
+  &:hover {
+    & div:nth-of-type(1) {
+      visibility: visible;
+    }
+  }
+`;
+
 export const FieldBox = styled.div`
+  ${(props) => (props.langSelector ? langSelectorFieldBoxMixin : "")};
+  ${(props) => (props.slugField ? slugFieldBoxMixin : "")};
   width: ${(props) => props.styles?.width || "100%"};
   flex-direction: column;
   position: relative;
@@ -51,7 +69,40 @@ export const FieldStyle = styled.input`
   }
 `;
 
+const unactiveSelectorMixin = css`
+  & .select {
+    &__indicator {
+      display: none;
+      &-separator {
+        display: none;
+      }
+    }
+
+    &__single-value {
+      color: ${colors.lightGrey};
+    }
+  }
+`;
+
+const activeSelectorMixin = css`
+  & .select {
+    &__indicator {
+      display: block;
+      &-separator {
+        display: block;
+      }
+    }
+
+    &__single-value {
+      color: ${colors.white};
+    }
+  }
+`;
+
 export const Selector = styled(ReactSelect)`
+  ${(props) => console.log("Is diable", props.isDisabled)}
+  ${(props) =>
+    props.isDisabled ? unactiveSelectorMixin : activeSelectorMixin};
   & .select {
     &__indicator &__dropdown-indicator {
       border-color: transparent transparent red;
@@ -88,10 +139,6 @@ export const Selector = styled(ReactSelect)`
       &--is-focused {
         background-color: ${colors.paleViolet};
       }
-    }
-
-    &__single-value {
-      color: white;
     }
 
     &__clear-indicator {

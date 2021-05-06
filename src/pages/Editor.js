@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import PageContainer from "../styles/styledComponents/global/PageContainer.sc";
-import HomeScreen from "../components/Editor/Sections/HomeScreen";
+import MainInformation from "../components/Editor/Sections/MainInformation";
 import Seo from "../components/Editor/Sections/Seo";
 import Button from "../styles/styledComponents/global/Buttons/Buttons.sc";
 import plus from "../styles/assets/icons/plus.svg";
@@ -25,7 +25,7 @@ import { setArticleId } from "../store/actions/commonsActions";
 import {
   setErrorSlug,
   setErrorTitle,
-} from "../store/actions/homeScreenActions";
+} from "../store/actions/mainInformationActions";
 import colors from "../styles/core/colors";
 
 
@@ -34,10 +34,10 @@ const Editor = () => {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const homeScreenState = useSelector(
-    ({ homeScreenReducer }) => homeScreenReducer
+  const MainInformationState = useSelector(
+    ({ mainInformationReducer }) => mainInformationReducer
   );
-  const { isEditing, articleId, title, slug } = homeScreenState;
+  const { isEditing, articleId, title, slug } = MainInformationState;
 
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
 
@@ -65,7 +65,7 @@ const Editor = () => {
       <Form>
         <ActionBar />
         <FormContainer>
-          <HomeScreen />
+          <MainInformation />
           <Seo />
           {modulesList?.map((module) => {
             if (module.type === "text") {

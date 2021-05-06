@@ -15,12 +15,14 @@ import {
   SET_ARTICLE_ID,
   SET_STATUS,
   SET_MODIFIED,
+  ADD_LANG,
 } from "../constants";
 
 const initialState = {
   articleId: "",
   title: "",
   slug: "",
+  lang: "",
   status: "",
   modified: null,
   categoriesList: [],
@@ -35,7 +37,7 @@ const initialState = {
   options: [],
 };
 
-const homeScreenReducer = (state = initialState, action = {}) => {
+const mainInformationReducer = (state = initialState, action = {}) => {
   const oldState = { ...state };
 
   switch (action.type) {
@@ -65,6 +67,10 @@ const homeScreenReducer = (state = initialState, action = {}) => {
 
     case ADD_CATEGORY: {
       return { ...oldState, category: action.payload, isChanged: true };
+    }
+
+    case ADD_LANG: {
+      return { ...oldState, lang: action.payload, isChanged: true };
     }
 
     case SET_CATEGORIES_LIST: {
@@ -138,23 +144,31 @@ const homeScreenReducer = (state = initialState, action = {}) => {
       };
     }
 
-    case CONTENT_LOADED:
+    case CONTENT_LOADED: {
+      let lang = "fr";
+      if (action.payload.language === "german") {
+        lang = "de";
+      }
+
       return {
         ...oldState,
         isEditing: true,
         title: action.payload?.title ?? "",
         slug: action.payload?.slug ?? "",
+        lang: lang || "",
         category: action.payload?.category?._id ?? "",
         updatedAt: action.payload?.updatedAt ?? "",
         status: action.payload?.state ?? "",
         modified: action.payload?.modified ?? null,
       };
+    }
 
     case CLEAN_CONTENT_STATE:
       return {
         articleId: "",
         title: "",
         slug: "",
+        lang: "",
         status: "",
         categoriesList: [],
         category: null,
@@ -173,4 +187,4 @@ const homeScreenReducer = (state = initialState, action = {}) => {
   }
 };
 
-export default homeScreenReducer;
+export default mainInformationReducer;

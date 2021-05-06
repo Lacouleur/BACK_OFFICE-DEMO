@@ -9,7 +9,7 @@ const Home = () => {
     <PageContainer position="absolute">
       <Header />
       <ContentList />
-      <Footer />
+      <Footer position="fixed" />
     </PageContainer>
   );
 };

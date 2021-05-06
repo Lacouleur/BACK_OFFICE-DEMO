@@ -2,8 +2,9 @@ import styled from "styled-components";
 import colors from "../../core/colors";
 
 export const ContentSectionBox = styled.div`
-  margin-top: 100px;
+  margin-top: 56px;
   overflow: hidden;
+  min-width: 800px;
 `;
 
 export const TitleBox = styled.div`
@@ -16,9 +17,9 @@ export const TitleBox = styled.div`
 
 export const ListBox = styled.div`
   flex-direction: column;
-  height: 50%;
   min-height: 500px;
-  height: 87%;
+  max-height: 1110px;
+  height: 70vh;
   width: 100%;
   padding: 30px;
   background-color: ${colors.mediumGrey};

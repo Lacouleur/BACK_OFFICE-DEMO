@@ -34,37 +34,39 @@ const ContentList = () => {
   }, []);
 
   return (
-    <ContentSectionBox>
-      <TitleBox>
-        <H1> CONTENT LIST</H1>
-        <Link to="/editor">
-          <Button styles={createNewContent}>
-            <IconCreat src={plus} />
-            CREATE NEW CONTENT
-          </Button>
-        </Link>
-      </TitleBox>
-      <ListBox>
-        {contentsList.map((content, index) => {
-          return (
-            <Content
-              number={index}
-              id={content._id}
-              status={content.state}
-              programmedAt={content.publishScheduledAt}
-              publishedAt={content.publishedAt}
-              categoryLabel={content.category?.label}
-              modified={content.modified}
-              title={content.title}
-              lang={content.language}
-              updatedAt={content.updatedAt}
-              key={keyGenerator(content._id)}
-            />
-          );
-        })}
-        <Pagination />
-      </ListBox>
-    </ContentSectionBox>
+    <>
+      <ContentSectionBox>
+        <TitleBox>
+          <H1> CONTENT LIST</H1>
+          <Link to="/editor">
+            <Button styles={createNewContent}>
+              <IconCreat src={plus} />
+              CREATE NEW CONTENT
+            </Button>
+          </Link>
+        </TitleBox>
+        <ListBox>
+          {contentsList.map((content, index) => {
+            return (
+              <Content
+                number={index}
+                id={content._id}
+                status={content.state}
+                programmedAt={content.publishScheduledAt}
+                publishedAt={content.publishedAt}
+                categoryLabel={content.category?.label}
+                modified={content.modified}
+                title={content.title}
+                lang={content.language}
+                updatedAt={content.updatedAt}
+                key={keyGenerator(content._id)}
+              />
+            );
+          })}
+        </ListBox>
+      </ContentSectionBox>
+      <Pagination />
+    </>
   );
 };
 

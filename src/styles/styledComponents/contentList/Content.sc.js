@@ -30,7 +30,12 @@ export const StatusBox = styled.div`
   }
 `;
 
+export const ActionToolTipMixin = css`
+  left: -4px !important;
+`;
+
 export const Tooltip = styled.div`
+  ${(props) => (props.action ? ActionToolTipMixin : "")};
   visibility: hidden;
   min-width: 120px;
   max-width: 190px;
@@ -52,7 +57,7 @@ export const Tooltip = styled.div`
     border-left: 10px solid transparent;
     border-bottom: 10px solid ${colors.mediumGrey};
     border-top: 10px solid transparent;
-    left: ${(props) => (props.centred ? "45%" : "10px")};
+    left: 10px;
     top: -20px;
   }
 `;

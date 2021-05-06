@@ -17,10 +17,14 @@ export function getContent(id) {
   });
 }
 
-export function postContent(values) {
+export function postContent(values, lang) {
+  let string = "";
+  if (lang) {
+    string = `?language=${lang}`;
+  }
   return axios({
     method: "post",
-    url: `${BASE_URL}/contents`,
+    url: `${BASE_URL}/contents${string}`,
     data: values,
     headers: {
       Authorization: `Bearer ${getToken()}`,
@@ -28,10 +32,14 @@ export function postContent(values) {
   });
 }
 
-export function update(values, articleId) {
+export function update(values, articleId, lang) {
+  let string = "";
+  if (lang) {
+    string = `?language=${lang}`;
+  }
   return axios({
     method: "put",
-    url: `${BASE_URL}/contents/${articleId}`,
+    url: `${BASE_URL}/contents/${articleId}${string}`,
     data: values,
     headers: {
       Authorization: `Bearer ${getToken()}`,

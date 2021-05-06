@@ -49,6 +49,7 @@ export const DraftJsWrapper = styled.div`
     ${(props) =>
       props.isOpen ? DraftJsContainerOpenMixin : DraftJsContainerClosedMixin};
 
+    /* Scrollbar */
     /* width */
     &::-webkit-scrollbar {
       width: 10px;

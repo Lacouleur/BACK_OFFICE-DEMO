@@ -29,6 +29,7 @@ import {
   setErrorTitle,
 } from "../../store/actions/mainInformationActions";
 import colors from "../../styles/core/colors";
+import HomeNavigation from "../../components/Editor/Sections/HomeNavigation";
 
 
 
@@ -83,7 +84,9 @@ const Editor = () => {
                 return null;
             }
             })}
-
+            
+          <HomeNavigation />
+  
           {isOpen && articleId && <ModuleCreator setIsOpen={setIsOpen} />}
           <NewBlockButtonBox>
             <Button

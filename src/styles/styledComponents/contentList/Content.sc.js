@@ -35,7 +35,7 @@ export const ActionToolTipMixin = css`
 `;
 
 export const Tooltip = styled.div`
-  ${(props) => (props.action ? ActionToolTipMixin : "")};
+  ${(props) => (props.archive ? ActionToolTipMixin : "")};
   visibility: hidden;
   min-width: 120px;
   max-width: 190px;

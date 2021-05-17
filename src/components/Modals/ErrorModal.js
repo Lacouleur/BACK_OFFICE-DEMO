@@ -1,5 +1,7 @@
 import React, { useRef, useEffect } from "react";
-import { useDispatch } from "react-redux";
+
+import { useDispatch, useSelector } from "react-redux";
+import useClickOutside from "../../helper/cutomHooks/useClickOutside";
 import { showErrorModal } from "../../store/actions/actionBarActions";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import {
@@ -13,17 +15,32 @@ const ErrorModal = () => {
   const modal = useRef(null);
   const dispatch = useDispatch();
 
+  const ActionBarState = useSelector(
+    ({ actionBarReducer }) => actionBarReducer
+  );
+
+  const { errorMessage } = ActionBarState;
+
   useEffect(() => {
     modal.current.scrollIntoView({ behavior: "smooth" });
   }, []);
 
+  function onClickOutside() {
+    dispatch(showErrorModal(false));
+  }
+
+  useClickOutside(modal, onClickOutside);
+
   return (
-    <ModalContainer ref={modal} height="200vh">
-      <ModalBox>
-        <Message>
-          Oups, something went wrong.
-          <p>Please try again or contact administrator.</p>
-        </Message>
+    <ModalContainer height="200vh">
+      <ModalBox ref={modal}>
+        {errorMessage && <Message>{errorMessage}</Message>}
+        {!errorMessage && (
+          <Message>
+            Oups, something went wrong.
+            <p>Please try again or contact administrator.</p>
+          </Message>
+        )}
         <ButtonsBox>
           <Button
             type="button"

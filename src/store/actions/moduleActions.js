@@ -4,6 +4,8 @@ import {
   CLOSE_MODULE,
   SET_VALUE_TEXTMODULE,
   SHOW_CLOSE_MODAL,
+  SET_IMAGE_UUID,
+  SET_ALT_IMAGE,
 } from "../constants";
 
 export const setNewModule = (payload) => ({
@@ -28,5 +30,15 @@ export const showCloseModal = (payload) => ({
 
 export const setModulePosted = (payload) => ({
   type: SET_MODULE_POSTED,
+  payload,
+});
+
+export const setImageUuid = (payload) => ({
+  type: SET_IMAGE_UUID,
+  payload,
+});
+
+export const setAltImage = (payload) => ({
+  type: SET_ALT_IMAGE,
   payload,
 });

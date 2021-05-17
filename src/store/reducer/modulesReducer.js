@@ -4,10 +4,12 @@ import {
   SET_NEW_MODULE,
   CLOSE_MODULE,
   SET_VALUE_TEXTMODULE,
+  SET_IMAGE_UUID,
   CONTENT_LOADED,
   CLEAN_CONTENT_STATE,
   SHOW_CLOSE_MODAL,
   SET_MODULE_POSTED,
+  SET_ALT_IMAGE,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -21,27 +23,51 @@ const modulesReducer = (state = initialState, action = {}) => {
   switch (action.type) {
     case SET_NEW_MODULE: {
       const { payload } = action;
-      if (payload === "text") {
-        return {
-          ...oldState,
-          modulesList: [
-            ...oldState.modulesList,
-            {
-              type: "text",
-              text: "<p></p>",
-              uuid: `${uuidv4()}`,
-              order: state.modulesList.length + 1,
-              isPostedModule: false,
-              isChanged: false,
-              isNewModule: true,
-              isOpenCloseModal: false,
-            },
-          ],
-        };
+      switch (payload) {
+        case "text": {
+          return {
+            ...oldState,
+            modulesList: [
+              ...oldState.modulesList,
+              {
+                type: "text",
+                text: "<p></p>",
+                uuid: `${uuidv4()}`,
+                order: state.modulesList.length + 1,
+                isPostedModule: false,
+                isChanged: false,
+                isNewModule: true,
+                isOpenCloseModal: false,
+              },
+            ],
+          };
+        }
+        case "image": {
+          return {
+            ...oldState,
+            modulesList: [
+              ...oldState.modulesList,
+              {
+                image: {
+                  alt: null,
+                  source: null,
+                  uuid: null,
+                  urls: {},
+                },
+                type: "image",
+                order: state.modulesList.length + 1,
+                uuid: `${uuidv4()}`,
+                isPostedModule: false,
+                isChanged: false,
+                isNewModule: true,
+                isOpenCloseModal: false,
+              },
+            ],
+          };
+        }
+        default:
+          return null;
       }
-      return {
-        ...oldState,
-      };
     }
 
     case SET_MODULE_POSTED: {
@@ -93,6 +119,53 @@ const modulesReducer = (state = initialState, action = {}) => {
             isChanged: true,
           };
         }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_IMAGE_UUID: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            image: {
+              alt: module.image.alt,
+              source: module.image.source,
+              uuid: value.uuid,
+              urls: value.urls,
+            },
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_ALT_IMAGE: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          console.log(value);
+          oldState.modulesList[index] = {
+            ...module,
+            image: {
+              alt: value,
+              source: module.image.source,
+              uuid: module.image.uuid,
+              urls: module.image.urls,
+            },
+            isChanged: true,
+          };
+        }
+
         return null;
       });
 

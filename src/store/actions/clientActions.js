@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { sendAuth, setToken } from "../../services/client/authClient";
 import {
   saveComponent,
@@ -10,13 +11,13 @@ import {
   update,
   publishManager,
   deleteContent,
+  uploadImage,
 } from "../../services/client/contentClient";
 import {
   setErrorPosting,
   setPosted,
   setErrorSpecial,
   contentLoaded,
-  setIsEditing,
   setArticleId,
 } from "./commonsActions";
 import { setContentsList, setPagination } from "./contentListActions";
@@ -29,13 +30,14 @@ import {
   setModified,
   setStatus,
 } from "./mainInformationActions";
-import { closeModule, setModulePosted } from "./moduleActions";
+import { closeModule, setImageUuid, setModulePosted } from "./moduleActions";
 import {
   setUpdatedAt,
   setProgrammedAt,
   setPublishedAt,
   showErrorModal,
 } from "./actionBarActions";
+import { nameSpaceError } from "../../helper/errorMessages";
 
 export const CONTENT_LOADED = "CONTENT_LOADED";
 
@@ -94,7 +96,6 @@ export function checkAndSend(type = "save", articleId = null) {
           if (response.status < 300 && response.status > 199) {
             dispatch(setArticleId(response.data));
             dispatch(setPosted(true));
-            dispatch(setIsEditing(true));
             dispatch(setUpdatedAt("create"));
             dispatch(setModified(true));
           }
@@ -102,9 +103,8 @@ export function checkAndSend(type = "save", articleId = null) {
           if (error.response.status === 409) {
             dispatch(setErrorPosting(true));
             dispatch(setPosted(false));
-            dispatch(setIsEditing(false));
           } else {
-            console.log(error);
+            console.log("error =>", error?.response?.data);
             dispatch(showErrorModal(true));
           }
         }
@@ -129,7 +129,7 @@ export function checkAndSend(type = "save", articleId = null) {
             dispatch(setErrorPosting(true));
             dispatch(setPosted(false));
           } else {
-            console.log(error);
+            console.log("error =>", error?.response?.data);
             dispatch(showErrorModal(true));
             dispatch(setPosted(false));
           }
@@ -146,7 +146,6 @@ export function fetchContent(id) {
     try {
       const response = await getContent(id);
       if (response.status < 300 && response.status > 199) {
-        console.log(response.data);
         dispatch(contentLoaded(response.data));
         dispatch(setUpdatedAt(response.data.updatedAt));
         dispatch(setPublishedAt(response.data.publishedAt));
@@ -155,7 +154,7 @@ export function fetchContent(id) {
 
       return null;
     } catch (error) {
-      console.log(error);
+      console.log("error =>", error?.response?.data);
       return null;
     }
   };
@@ -177,7 +176,7 @@ export function archiveContent(articleId, redirectTo) {
       dispatch(showErrorModal(true));
       console.error(
         `Delete fail, id:${articleId} and the server return =>`,
-        error
+        error?.response?.data
       );
     }
   };
@@ -194,6 +193,7 @@ export function fetchContentsList(page) {
 
       return null;
     } catch (error) {
+      console.log("error =>", error?.response?.data);
       return null;
     }
   };
@@ -216,6 +216,7 @@ export function logUser(redirectTo) {
       return false;
     } catch (error) {
       dispatch(setErrorAuth(true));
+      console.log("error =>", error?.response?.data);
       return false;
     }
   };
@@ -253,7 +254,7 @@ export function deleteModule(articleId, moduleId) {
       dispatch(showErrorModal(true));
       console.error(
         `Patrick, i've fail deleting the module id:${moduleId} and the server return =>`,
-        error
+        error.response.data
       );
     }
   };
@@ -268,18 +269,46 @@ export function saveModule(uuid, request = "save") {
     let isNewModule = false;
 
     if (request === "save") {
+      console.log("SAVING MODULE");
       modulesList.find((module) => {
         if (module.uuid === uuid && module.isNewModule) {
-          values = {
-            type: module.type,
-            text: module.text,
-            order: module.order,
-            uuid,
-          };
-          isNewModule = true;
+          switch (module.type) {
+            case "text": {
+              const { type, text, order } = module;
+              values = {
+                uuid,
+                type,
+                text,
+                order,
+              };
+              isNewModule = true;
+              break;
+            }
+            case "image": {
+              const { type, image, order } = module;
+              values = {
+                uuid,
+                type,
+                image: {
+                  alt: image.alt,
+                  source: image.source,
+                  uuid: image.uuid,
+                },
+                order,
+              };
+              isNewModule = true;
+
+              break;
+            }
+
+            default:
+              return null;
+          }
         }
         return null;
       });
+
+      console.log(isNewModule);
 
       if (isNewModule) {
         try {
@@ -296,7 +325,7 @@ export function saveModule(uuid, request = "save") {
           dispatch(showErrorModal(true));
           console.log(
             `Patrick, i've try to SAVE the ${values.type}-module (id:${uuid})but i get an ERROR. The error is=>`,
-            error
+            error.response.data
           );
         }
       }
@@ -308,12 +337,36 @@ export function saveModule(uuid, request = "save") {
 
       modulesList.find((module) => {
         if (module.uuid === uuid && module.isChanged) {
-          values = {
-            type: module.type,
-            text: module.text,
-            order: module.order,
-          };
-          isChanged = true;
+          switch (module.type) {
+            case "text": {
+              const { type, text, order } = module;
+              values = {
+                type,
+                text,
+                order,
+              };
+              isChanged = true;
+              break;
+            }
+            case "image": {
+              const { type, image, order } = module;
+              values = {
+                type,
+                image: {
+                  alt: image.alt,
+                  source: image.source,
+                  uuid: image.uuid,
+                },
+                order,
+              };
+              isChanged = true;
+
+              break;
+            }
+
+            default:
+              return null;
+          }
         }
         return null;
       });
@@ -326,7 +379,7 @@ export function saveModule(uuid, request = "save") {
             dispatch(setModulePosted(uuid));
             dispatch(setModified(true));
             console.log(
-              `Patrick, i've updated the ${values.type}-module (id:${uuid}) with succes. Values was =>${values.text} The API return =>`,
+              `Patrick, i've updated the ${values.type}-module (id:${uuid}) with succes. The API return =>`,
               response
             );
           }
@@ -334,7 +387,7 @@ export function saveModule(uuid, request = "save") {
           dispatch(showErrorModal(true));
           console.error(
             `Patrick, i've try to update the ${values.type}-module (id:${uuid})but i get an ERROR. The error is=>`,
-            error
+            error.response.data
           );
         }
       }
@@ -344,26 +397,44 @@ export function saveModule(uuid, request = "save") {
 
 export function publishAction(articleId, mode) {
   return async (dispatch) => {
-    let action = "";
+    let actionName = "";
     if (mode === "UPDATE") {
-      action = "PUBLISH";
+      actionName = "PUBLISH";
     } else {
-      action = mode;
+      actionName = mode;
     }
     try {
-      const response = await publishManager(articleId, action);
+      const response = await publishManager(articleId, actionName);
       if (response.status < 300 && response.status > 199) {
-        if (action === "PUBLISH") {
+        if (actionName === "PUBLISH") {
           dispatch(setStatus("PUBLISHED"));
           dispatch(setModified(false));
         }
-        if (action === "UNPUBLISH") {
+        if (actionName === "UNPUBLISH") {
           dispatch(setStatus("UNPUBLISHED"));
         }
       }
     } catch (error) {
       dispatch(showErrorModal(true));
       console.log(error);
+    }
+  };
+}
+
+export function saveImage(image, moduleId) {
+  return async (dispatch) => {
+    const formData = new FormData();
+    formData.append("file", image);
+    try {
+      const response = await uploadImage(formData);
+      if (response.status < 300 && response.status > 199) {
+        dispatch(setImageUuid({ id: moduleId, value: response.data }));
+      }
+    } catch (error) {
+      if (error?.response.status === 400) {
+        dispatch(showErrorModal(nameSpaceError()));
+      }
+      showErrorModal(true);
     }
   };
 }

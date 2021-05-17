@@ -9,7 +9,7 @@ export const DeleteModule = styled.div`
 
 export const ModulesContainer = styled.div`
   position: relative;
-  width: 90%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-evenly;

@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import {
   TitleIcon,
   FormTitle,
@@ -23,6 +24,7 @@ const MainInformation = () => {
   const dispatch = useDispatch();
   const mainInformationRef = useRef();
   const [isOpen, setIsOpen] = useState(false);
+  const { articleId } = useParams();
 
   const {
     title,
@@ -33,8 +35,6 @@ const MainInformation = () => {
     slugError,
     titleError,
     postingError,
-    isEditing,
-    articleId,
     isChanged,
   } = mainInformationState;
 
@@ -59,10 +59,11 @@ const MainInformation = () => {
     if (title && slug && !slugError && !regexSlugError && !postingError) {
       setIsOpen(false);
     }
-    if (!isEditing && isChanged) {
-      dispatch(checkAndSend());
-    } else if (isEditing && isChanged) {
+
+    if (isChanged) {
       dispatch(checkAndSend("update", articleId));
+    } else if (isChanged && !articleId) {
+      dispatch(checkAndSend());
     }
   }
   useClickOutside(mainInformationRef, onClickOutside);
@@ -96,7 +97,7 @@ const MainInformation = () => {
               }
               name="title"
               section="mainInformation"
-              edit={isEditing ? title : undefined}
+              edit={title}
               error={titleError}
             />
             <Field
@@ -104,7 +105,7 @@ const MainInformation = () => {
               infos={slugError ? "Content need a slug." : `${slugMessage()}`}
               name="slug"
               section="mainInformation"
-              edit={isEditing ? slug : undefined}
+              edit={slug}
               error={regexSlugError || postingError || slugError}
             />
             <Field
@@ -112,14 +113,14 @@ const MainInformation = () => {
               name="category"
               fieldType="select"
               section="mainInformation"
-              edit={isEditing ? category : undefined}
+              edit={category || null}
             />
             <Field
               placeholder="Language"
               name="lang"
               fieldType="select"
               section="mainInformation"
-              edit={isEditing ? lang : "fr"}
+              edit={lang || "fr"}
             />
           </>
         )}

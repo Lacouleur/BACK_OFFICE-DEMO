@@ -19,10 +19,6 @@ import exampleSeoImg from "../../../styles/assets/icons/exampleSeo.svg";
 import { ExampleBox } from "../../../styles/styledComponents/editor/Seo.sc";
 import { checkAndSend } from "../../../store/actions/clientActions";
 import useClickOutside from "../../../helper/cutomHooks/useClickOutside";
-import {
-  setErrorSlug,
-  setErrorTitle,
-} from "../../../store/actions/mainInformationActions";
 
 const Seo = () => {
   const seoRef = useRef();
@@ -30,16 +26,14 @@ const Seo = () => {
   const MainInformationState = useSelector(
     ({ mainInformationReducer }) => mainInformationReducer
   );
-  const { isEditing, articleId, title: mainTitle, slug } = MainInformationState;
+  const { articleId } = MainInformationState;
   const { title: seoTitle, description, isChanged } = seoState;
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
 
   function onClickOutside() {
     setIsOpen(false);
-    if (!isEditing && isChanged) {
-      dispatch(checkAndSend());
-    } else if (isEditing && isChanged) {
+    if (isChanged) {
       dispatch(checkAndSend("update", articleId));
     }
   }
@@ -48,17 +42,7 @@ const Seo = () => {
   return (
     <SectionBox
       onClick={() => {
-        if (isEditing) {
-          setIsOpen(true);
-        } else {
-          setIsOpen(false);
-          if (!mainTitle) {
-            dispatch(setErrorTitle(true));
-          }
-          if (!slug) {
-            dispatch(setErrorSlug(true));
-          }
-        }
+        setIsOpen(true);
       }}
       ref={seoRef}
       isOpen={isOpen}
@@ -82,7 +66,7 @@ const Seo = () => {
             placeholder="Title"
             name="title"
             section="seo"
-            edit={isEditing ? seoTitle : undefined}
+            edit={seoTitle || undefined}
           />
           <Field
             placeholder="Description"
@@ -91,7 +75,7 @@ const Seo = () => {
             section="seo"
             maxlength="155"
             infos="Maximum 155 characters & avoid tab or carrige return"
-            edit={isEditing ? description : undefined}
+            edit={description || undefined}
           />
           <ExampleBox>
             <FieldTitle>Example</FieldTitle>

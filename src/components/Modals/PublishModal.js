@@ -12,12 +12,12 @@ import {
   ButtonsBox,
 } from "../../styles/styledComponents/modal/Modal.sc";
 
-const PublishModal = ({ action, articleId }) => {
+const PublishModal = ({ actionName, articleId }) => {
   const modal = useRef(null);
   const dispatch = useDispatch();
 
   function handlePublish() {
-    dispatch(publishAction(articleId, action));
+    dispatch(publishAction(articleId, actionName));
   }
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const PublishModal = ({ action, articleId }) => {
   return (
     <ModalContainer height="200vh">
       <ModalBox ref={modal}>
-        <Message>{`Are you sure you want to ${action} this content ?`}</Message>
+        <Message>{`Are you sure you want to ${actionName} this content ?`}</Message>
         <ButtonsBox>
           <Button
             type="button"
@@ -51,11 +51,11 @@ const PublishModal = ({ action, articleId }) => {
           <Button
             type="button"
             onClick={() => {
-              handlePublish(action === "UPDATE" ? "PUBLISH" : action);
+              handlePublish(actionName === "UPDATE" ? "PUBLISH" : actionName);
               dispatch(setIsOpenPublishModal(false));
             }}
           >
-            {action}
+            {actionName}
           </Button>
         </ButtonsBox>
       </ModalBox>
@@ -64,7 +64,7 @@ const PublishModal = ({ action, articleId }) => {
 };
 
 PublishModal.propTypes = {
-  action: PropTypes.string.isRequired,
+  actionName: PropTypes.string.isRequired,
   articleId: PropTypes.string.isRequired,
 };
 

@@ -16,7 +16,7 @@ import {
   Gradient,
 } from "../../../../../styles/styledComponents/editor/Sections.sc";
 import trashIcon from "../../../../../styles/assets/icons/trash.svg";
-import textIcon from "../../../../../styles/assets/icons/text.svg";
+import textIcon from "../../../../../styles/assets/icons/text-white.svg";
 import {
   DraftJsWrapper,
   ModuleContainer,
@@ -36,7 +36,6 @@ const TextModule = ({
   text,
   uuid,
   isChanged,
-  edit,
   isOpenCloseModal,
   isNewModule,
 }) => {
@@ -61,7 +60,7 @@ const TextModule = ({
 
   useEffect(() => {
     function setContent() {
-      if (edit) {
+      if (text) {
         const converted = HTMLconverter(editorState, "from", text);
         const stateWithContent = EditorState.createWithContent(converted);
         return stateWithContent;
@@ -76,7 +75,6 @@ const TextModule = ({
 
     if (editorState) {
       const newValue = HTMLconverter(editorState);
-      console.log(newValue);
       if (newValue !== text) {
         dispatch(
           setValueTextModule({
@@ -94,7 +92,10 @@ const TextModule = ({
 
   function onClickOutside() {
     setIsOpen(false);
-    if (isChanged) {
+    if (isChanged && isNewModule) {
+      dispatch(saveModule(uuid, "save"));
+    }
+    if (isChanged && !isNewModule) {
       dispatch(saveModule(uuid, "update"));
     }
   }
@@ -186,7 +187,6 @@ TextModule.propTypes = {
   text: PropTypes.string.isRequired,
   uuid: PropTypes.string.isRequired,
   isChanged: PropTypes.bool.isRequired,
-  edit: PropTypes.bool.isRequired,
   isOpenCloseModal: PropTypes.bool.isRequired,
   isNewModule: PropTypes.bool.isRequired,
 };

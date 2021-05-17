@@ -18,20 +18,17 @@ export const langSelectorFieldBoxMixin = css`
   }
 `;
 
-export const slugFieldBoxMixin = css`
+export const FieldBox = styled.div`
+  ${(props) => (props.langSelector ? langSelectorFieldBoxMixin : "")};
+  width: ${(props) => props.styles?.width || "100%"};
+  flex-direction: column;
+  position: relative;
+
   &:hover {
     & div:nth-of-type(1) {
       visibility: visible;
     }
   }
-`;
-
-export const FieldBox = styled.div`
-  ${(props) => (props.langSelector ? langSelectorFieldBoxMixin : "")};
-  ${(props) => (props.slugField ? slugFieldBoxMixin : "")};
-  width: ${(props) => props.styles?.width || "100%"};
-  flex-direction: column;
-  position: relative;
 `;
 
 export const FieldError = styled.div`
@@ -52,11 +49,18 @@ export const FieldStyle = styled.input`
   background-color: ${colors.darkGrey};
   border: ${(props) => props.styles.border || "none"};
   padding-left: ${(props) => props.styles.paddingLeft || "20px"};
+  padding-right: ${(props) => props.styles.paddingRight || "0"};
   color: ${(props) => props.styles.color || colors.white};
+  cursor: ${(props) => props.styles.cursor || "auto"};
+  text-overflow: ${(props) => props.styles.textOverflow || "clip"};
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
   font-size: 16px;
   line-height: 24px;
+
+  &::-webkit-file-upload-button {
+    display: none;
+  }
 
   // customing the native CSS for autocomplet.
   &:-webkit-autofill {
@@ -100,7 +104,6 @@ const activeSelectorMixin = css`
 `;
 
 export const Selector = styled(ReactSelect)`
-  ${(props) => console.log("Is diable", props.isDisabled)}
   ${(props) =>
     props.isDisabled ? unactiveSelectorMixin : activeSelectorMixin};
   & .select {
@@ -214,4 +217,13 @@ export const FieldIcon = styled.img`
   margin: ${(props) => (props.info === "eyeIcon" ? "0" : "0 0 0 13px")};
   top: 50%;
   transform: translateY(-50%);
+`;
+
+export const FieldButton = styled.div`
+  cursor: pointer;
+  position: absolute;
+  display: inline;
+  right: 16px;
+  transform: translateY(-50%);
+  top: 50%;
 `;

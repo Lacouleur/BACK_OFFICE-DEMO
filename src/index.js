@@ -10,7 +10,8 @@ import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import Error404 from "./pages/404";
 import PrivateRoute from "./services/routes/PrivatesRoutes";
-import Editor from "./pages/Editor";
+import EditorCreate from "./pages/Editor/EditorCreate";
+import EditorEdit from "./pages/Editor/EditorEdit";
 import combineReducers from "./store/combineReducers";
 import logMiddleware from "./store/logMiddleware";
 
@@ -28,7 +29,8 @@ const rootComponent = (
           <Auth />
         </Route>
         <PrivateRoute path="/dashboard" exact component={Home} />
-        <PrivateRoute path="/editor" exact component={Editor} />
+        <PrivateRoute path="/editor" exact component={EditorCreate} />
+        <PrivateRoute path="/editor/:articleId" exact component={EditorEdit} />
         <Route path="*">
           <Error404 />
         </Route>

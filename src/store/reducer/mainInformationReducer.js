@@ -11,7 +11,6 @@ import {
   CONTENT_LOADED,
   SET_ERROR_POSTING,
   CLEAN_CONTENT_STATE,
-  SET_IS_EDITING,
   SET_ARTICLE_ID,
   SET_STATUS,
   SET_MODIFIED,
@@ -32,7 +31,6 @@ const initialState = {
   regexSlugError: false,
   postingError: false,
   isPosted: false,
-  isEditing: false,
   isChanged: false,
   options: [],
 };
@@ -98,13 +96,6 @@ const mainInformationReducer = (state = initialState, action = {}) => {
       };
     }
 
-    case SET_IS_EDITING: {
-      return {
-        ...oldState,
-        isEditing: action.payload,
-      };
-    }
-
     case SET_MODIFIED: {
       return {
         ...oldState,
@@ -152,7 +143,6 @@ const mainInformationReducer = (state = initialState, action = {}) => {
 
       return {
         ...oldState,
-        isEditing: true,
         title: action.payload?.title ?? "",
         slug: action.payload?.slug ?? "",
         lang: lang || "",
@@ -177,7 +167,6 @@ const mainInformationReducer = (state = initialState, action = {}) => {
         regexSlugError: false,
         postingError: false,
         isPosted: false,
-        isEditing: false,
         isChanged: false,
         options: [],
       };

@@ -66,7 +66,6 @@ const ActionBar = () => {
 
   const { isChanged: seoChanged } = seoState;
   const {
-    isEditing,
     title,
     slug,
     titleError,
@@ -79,6 +78,7 @@ const ActionBar = () => {
     status,
   } = MainInformationState;
 
+  const isEditing = !!articleId;
   const { modulesList } = modulesState;
   const history = useHistory();
   const [updateDate, setUpdateDate] = useState();
@@ -170,7 +170,7 @@ const ActionBar = () => {
     <ActionBarContainer>
       {isOpenErrorModal && <ErrorModal />}
       {isOpenPublishModal && (
-        <PublishModal action={actionButtonContent} articleId={articleId} />
+        <PublishModal actionName={actionButtonContent} articleId={articleId} />
       )}
       {isOpenArchiveModal && <ArchiveModal articleId={articleId} />}
       <ButtonsContainer>
@@ -239,7 +239,7 @@ const ActionBar = () => {
         ) : (
           <ArchiveBox role="button">
             <ActionIcon src={trashGreyIcon} />
-            <Tooltip action>
+            <Tooltip archive>
               <TooltipText>A published content cannot be archived</TooltipText>
             </Tooltip>
           </ArchiveBox>

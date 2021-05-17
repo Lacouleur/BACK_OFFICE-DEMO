@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
@@ -18,15 +19,24 @@ import {
   FieldInfosBox,
   TextArea,
   FieldBox,
+  FieldButton,
 } from "../../styles/styledComponents/global/Field.sc";
+import { Br } from "../../styles/styledComponents/modal/Modal.sc";
 import colors from "../../styles/core/colors";
 import exclamationIcon from "../../styles/assets/icons/exclamationGrey.svg";
 import exclamationVioletIcon from "../../styles/assets/icons/exclamation.svg";
-import { fetchCategoriesList } from "../../store/actions/clientActions";
+import {
+  fetchCategoriesList,
+  saveImage,
+} from "../../store/actions/clientActions";
 import {
   Tooltip,
   TooltipText,
 } from "../../styles/styledComponents/contentList/Content.sc";
+import { showErrorModal } from "../../store/actions/actionBarActions";
+import convertBytes from "../../helper/convertBytes";
+import { sizeOrFormatError } from "../../helper/errorMessages";
+import { setAltImage } from "../../store/actions/moduleActions";
 
 const Field = ({
   type,
@@ -38,10 +48,12 @@ const Field = ({
   fieldType,
   section,
   edit,
+  moduleId,
 }) => {
   const dispatch = useDispatch();
   const [editCategory, setEditCategory] = useState();
   const [selectedLang, setSelectedLang] = useState();
+  const [fileTitle, setFileTitle] = useState("");
   const langList = [
     {
       label: "French",
@@ -57,8 +69,14 @@ const Field = ({
     ({ mainInformationReducer }) => mainInformationReducer
   );
 
+  const actionBarState = useSelector(
+    ({ actionBarReducer }) => actionBarReducer
+  );
+
+  const { errorMessage } = actionBarState;
   const { categoriesList, status } = MainInformationState;
 
+  // Next functions concern File Uploader fields
   useEffect(() => {
     if (categoriesList.length === 0) {
       dispatch(fetchCategoriesList());
@@ -83,6 +101,29 @@ const Field = ({
       });
     }
   }, [edit]);
+
+  const hiddenFileInput = React.useRef(null);
+  const handleClick = (event) => {
+    hiddenFileInput.current.click();
+  };
+
+  const handleChange = (event) => {
+    const file = event.target.files[0];
+    if (
+      file &&
+      file.size < 500000 &&
+      (file.type === "image/png" ||
+        file.type === "image/jpg" ||
+        file.type === "image/gif" ||
+        file.type === "image/jpeg")
+    ) {
+      dispatch(saveImage(file, moduleId));
+      setFileTitle(file.name);
+    } else {
+      dispatch(showErrorModal(sizeOrFormatError(file)));
+      setFileTitle("");
+    }
+  };
 
   return (
     <FieldContainer>
@@ -132,8 +173,36 @@ const Field = ({
           }}
         />
       )}
+      {fieldType && fieldType === "uploader" && (
+        <FieldBox
+          onClick={(e) => {
+            handleClick(e);
+          }}
+        >
+          <FieldStyle
+            styles={{
+              height: "56px",
+              cursor: "pointer",
+              paddingRight: "104px",
+              textOverflow: "ellipsis",
+            }}
+            placeholder={placeholder}
+            defaultValue={edit ? `${edit}` : ""}
+            type="text"
+            maxLength={maxlength}
+            disabled
+          />
+          <input
+            type="file"
+            ref={hiddenFileInput}
+            onChange={handleChange}
+            style={{ display: "none" }}
+          />
+          <FieldButton>UPLOAD</FieldButton>
+        </FieldBox>
+      )}
       {!fieldType && (
-        <FieldBox slugField>
+        <FieldBox>
           <FieldStyle
             type={type}
             placeholder={placeholder}
@@ -148,6 +217,9 @@ const Field = ({
               }
               if (name === "title" && section === "seo") {
                 dispatch(addSeoTitle(e.target.value));
+              }
+              if (name === "altImage" && section === "imageModule") {
+                dispatch(setAltImage({ id: moduleId, value: e.target.value }));
               }
             }}
             defaultValue={edit ? `${edit}` : ""}
@@ -203,6 +275,7 @@ Field.defaultProps = {
   fieldType: undefined,
   section: undefined,
   edit: undefined,
+  moduleId: undefined,
 };
 
 Field.propTypes = {
@@ -215,6 +288,7 @@ Field.propTypes = {
   fieldType: PropTypes.string,
   section: PropTypes.string,
   edit: PropTypes.string,
+  moduleId: PropTypes.string,
 };
 
 export default Field;

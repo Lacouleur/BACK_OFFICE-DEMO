@@ -104,3 +104,17 @@ export async function publishManager(articleId, action) {
     },
   });
 }
+
+// eslint-disable-next-line no-unused-vars
+export async function uploadImage(data) {
+  /*   return `${uuidv4()}`; */
+  return axios({
+    method: "post",
+    url: `${BASE_URL}/images`,
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+      "Content-Type": "application/json",
+    },
+    data,
+  });
+}

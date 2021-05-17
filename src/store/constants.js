@@ -4,7 +4,6 @@ export const SET_ERROR_SPECIAL = "SET_ERROR_SPECIAL";
 export const SET_ERROR_POSTING = "SET_ERROR_POSTING";
 export const CONTENT_LOADED = "CONTENT_LOADED";
 export const CLEAN_CONTENT_STATE = "CLEAN_CONTENT_STATE";
-export const SET_IS_EDITING = "SET_IS_EDITING";
 export const SET_ARTICLE_ID = "SET_ARTICLE_ID";
 
 // AUTH
@@ -39,7 +38,7 @@ export const ADD_LANG = "ADD_LANG";
 export const ADD_SEO_TITLE = "ADD_SEO_TITLE";
 export const ADD_SEO_DESCRIPTION = "ADD_SEO_DESCRIPTION";
 
-// Module Creator
+// MODULE
 
 export const SET_MODULE_LIST = "SET_MODULE_LIST";
 export const SET_NEW_MODULE = "SET_NEW_MODULE";
@@ -47,3 +46,5 @@ export const CLOSE_MODULE = "CLOSE_MODULE";
 export const SET_VALUE_TEXTMODULE = "SET_VALUE_TEXTMODULE";
 export const SHOW_CLOSE_MODAL = "SHOW_CLOSE_MODAL";
 export const SET_MODULE_POSTED = "SET_MODULE_POSTED";
+export const SET_IMAGE_UUID = "SET_IMAGE_UUID";
+export const SET_ALT_IMAGE = "SET_ALT_IMAGE";

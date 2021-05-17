@@ -12,8 +12,7 @@ import {
 } from "../../../../styles/styledComponents/editor/Sections.sc";
 import textIcon from "../../../../styles/assets/icons/text.svg";
 import quizIcon from "../../../../styles/assets/icons/quiz.svg";
-import surveyIcon from "../../../../styles/assets/icons/survey.svg";
-import buttonIcon from "../../../../styles/assets/icons/button.svg";
+import imageIcon from "../../../../styles/assets/icons/image-black.svg";
 import crossIcon from "../../../../styles/assets/icons/cross-white.svg";
 import {
   ModuleBox,
@@ -28,9 +27,8 @@ import keyGenerator from "../../../../helper/keyGenerator";
 const ModuleCreator = ({ setIsOpen }) => {
   const DefaultModules = [
     { type: "text", icon: textIcon },
-    { type: "quiz", icon: quizIcon },
-    { type: "survey", icon: surveyIcon },
-    { type: "button", icon: buttonIcon },
+    { type: "question", icon: quizIcon },
+    { type: "image", icon: imageIcon },
   ];
 
   const moduleRef = useRef(null);

@@ -18,7 +18,7 @@ export const ModalBox = styled.div`
   transform: translate(-50%);
   margin-top: 170px;
   margin-left: 50%;
-  height: 224px;
+  height: 260px;
   width: 807px;
 `;
 
@@ -29,6 +29,10 @@ export const Message = styled.p`
   max-width: 90%;
   margin-left: 27px;
   padding-top: 27px;
+`;
+
+export const Br = styled.br`
+  margin-top: 12px;
 `;
 
 export const ButtonsBox = styled.div`

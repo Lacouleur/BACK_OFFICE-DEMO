@@ -17,6 +17,7 @@ const initialState = {
   isOpenPublishModal: false,
   isOpenErrorModal: false,
   isOpenArchiveModal: false,
+  errorMessage: null,
 };
 
 const actionBarReducer = (state = initialState, action = {}) => {
@@ -68,9 +69,17 @@ const actionBarReducer = (state = initialState, action = {}) => {
     }
 
     case SHOW_ERROR_MODAL: {
+      if (typeof action.payload !== "boolean") {
+        return {
+          ...oldState,
+          isOpenErrorModal: true,
+          errorMessage: action.payload,
+        };
+      }
       return {
         ...oldState,
         isOpenErrorModal: action.payload,
+        errorMessage: null,
       };
     }
 
@@ -89,6 +98,7 @@ const actionBarReducer = (state = initialState, action = {}) => {
         isOpenPublishModal: false,
         isOpenErrorModal: false,
         isOpenArchiveModal: false,
+        errorMessage: null,
       };
 
     default:

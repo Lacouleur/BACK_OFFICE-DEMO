@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import {
   CategoryName,
   Title,
@@ -29,7 +30,7 @@ import {
   ActionIcon,
   ArchiveBox,
 } from "../../styles/styledComponents/editor/ActionBar.sc";
-/* import { setIsOpenArchiveModal } from "../../store/actions/actionBarActions"; */
+import { setIsOpenArchiveModal } from "../../store/actions/actionBarActions";
 
 const Content = ({
   number,
@@ -45,6 +46,7 @@ const Content = ({
 }) => {
   const even = isEven(number);
   const updateDate = buildDate(new Date(updatedAt));
+  const dispatch = useDispatch();
 
   return (
     <LineContentBox
@@ -72,7 +74,7 @@ const Content = ({
           <ArchiveBox role="button">
             <ActionIcon
               src={trashIcon}
-              /* onClick={() => dispatch(setIsOpenArchiveModal(true))} */
+              onClick={() => dispatch(setIsOpenArchiveModal(true))}
             />
           </ArchiveBox>
         ) : (
@@ -87,8 +89,7 @@ const Content = ({
       </IconActionBox>
       <Link
         to={{
-          pathname: "/editor",
-          state: { id },
+          pathname: `/editor/${id}`,
         }}
       >
         <Button

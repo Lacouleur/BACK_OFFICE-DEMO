@@ -19,27 +19,26 @@ import { checkAndSend } from "../../../store/actions/clientActions";
 import useClickOutside from "../../../helper/cutomHooks/useClickOutside";
 
 const HomeNavigation = () => {
-  const HomeNavigationState = useSelector(
-    ({ HomeNavigationReducer }) => HomeNavigationReducer
+  const homeNavigationState = useSelector(
+    ({ homeNavigationReducer }) => homeNavigationReducer
   );
   const dispatch = useDispatch();
   const HomeNavigationRef = useRef();
   const [isOpen, setIsOpen] = useState(false);
   const { articleId } = useParams();
-  const [isHomeImage, setIsHomeImage] = useState(true);
+  const [isHomeImage, setIsHomeImage] = useState(false);
+  const [isNavImage, setIsNavImage] = useState(false);
   const [isNavigationImage, setIsNavigationImage] = useState(true);
 
   const {
-    title,
-    slug,
-    lang,
-    category,
-    regexSlugError,
-    slugError,
-    titleError,
-    postingError,
-    isChanged,
-  } = HomeNavigationState;
+    homeTitle,
+    readingTime,
+    homeImgUuid,
+    homeImgAlt,
+    navImgUuid,
+    navImgAlt,
+    homeNavIsChanged,
+  } = homeNavigationState;
 
   useEffect(() => {
     // eslint-disable-next-line no-unused-expressions
@@ -47,17 +46,24 @@ const HomeNavigation = () => {
   }, [articleId]);
 
   function onClickOutside() {
-    if (title && slug && !slugError && !regexSlugError && !postingError) {
-      setIsOpen(false);
-    }
+    setIsOpen(false);
 
-    if (isChanged) {
+    if (homeNavIsChanged) {
       dispatch(checkAndSend("update", articleId));
-    } else if (isChanged && !articleId) {
-      dispatch(checkAndSend());
     }
   }
   useClickOutside(HomeNavigationRef, onClickOutside);
+
+  useEffect(() => {
+    if (homeImgUuid) {
+      /*  setImageTitle(imageUuid.split("/")[1]); */
+      setIsHomeImage(true);
+    }
+    if (navImgUuid) {
+      /*    setImageTitle(imageUuid.split("/")[1]); */
+      setIsNavImage(true);
+    }
+  }, [homeNavIsChanged, homeImgUuid, navImgUuid]);
 
   return (
     <>
@@ -73,23 +79,19 @@ const HomeNavigation = () => {
         </SectionTitle>
         {!isOpen && (
           <>
-            <CollapsedText>{title}</CollapsedText>
-            <CollapsedText>{slug}</CollapsedText>
+            <CollapsedText>Le titre collapsé</CollapsedText>
+            <CollapsedText>les infos collapsés</CollapsedText>
           </>
         )}
         {isOpen && (
           <>
-            <FieldTitle>Title and slug URL</FieldTitle>
             <Field
               placeholder="Title (home)"
               maxlength="80"
-              infos={
-                titleError ? "Content need a title." : "Maximum 40 characters"
-              }
+              infos="Maximum 80 characters"
               name="title"
               section="homeNavigation"
-              edit={title}
-              error={titleError}
+              /*               edit={title} */
             />
 
             <Field
@@ -97,7 +99,7 @@ const HomeNavigation = () => {
               name="readTime"
               fieldType="select"
               section="HomeNavigation"
-              /* edit={readTime || null} */
+              edit={readingTime || undefined}
             />
 
             <Field
@@ -105,7 +107,7 @@ const HomeNavigation = () => {
               name="homeImage"
               section="homeModule"
               fieldType="uploader"
-              /* edit={imageTitle} */
+              /* edit={homeImgAlt || undefined} */
               infos="Image size: 320x568px - 500ko maximum"
             />
 
@@ -113,11 +115,11 @@ const HomeNavigation = () => {
               <>
                 <Field
                   placeholder="Alternative text for home image"
-                  name="altImage"
+                  name="altHomeImage"
                   infos="Maximum 80 characters"
                   maxlength="80"
-                  section="homeModule"
-                  /*  edit={altImage} */
+                  section="homeNavigation"
+                  edit={homeImgAlt || undefined}
                 />
               </>
             )}
@@ -131,25 +133,18 @@ const HomeNavigation = () => {
               infos="Image size: 56x56px - 500ko maximum"
             />
 
-            {isNavigationImage && (
+            {isNavImage && (
               <>
                 <Field
                   placeholder="Alternative text for home image"
-                  name="altImage"
+                  name="altNavImage"
                   infos="Maximum 80 characters"
                   maxlength="80"
-                  section="homeModule"
+                  section="homeNavigation"
+                  edit={navImgAlt || undefined}
                 />
               </>
             )}
-
-            <Field
-              placeholder="Color Content Style"
-              name="color"
-              fieldType="select"
-              section="HomeNavigation"
-              /* edit={lang || "fr"} */
-            />
           </>
         )}
       </SectionBox>

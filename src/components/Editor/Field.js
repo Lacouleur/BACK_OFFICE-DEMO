@@ -37,6 +37,12 @@ import { showErrorModal } from "../../store/actions/actionBarActions";
 import convertBytes from "../../helper/convertBytes";
 import { sizeOrFormatError } from "../../helper/errorMessages";
 import { setAltImage } from "../../store/actions/moduleActions";
+import {
+  setReadingTime,
+  addHomeTitle,
+  setHomeImageAlt,
+  setNavImageAlt,
+} from "../../store/actions/homeNavigationActions";
 
 const Field = ({
   type,
@@ -53,6 +59,7 @@ const Field = ({
   const dispatch = useDispatch();
   const [editCategory, setEditCategory] = useState();
   const [selectedLang, setSelectedLang] = useState();
+  const [selectedReadTime, setSelectedReadTime] = useState();
   const [fileTitle, setFileTitle] = useState("");
   const langList = [
     {
@@ -62,6 +69,45 @@ const Field = ({
     {
       label: "German",
       value: "de",
+    },
+  ];
+
+  const readingTimeList = [
+    {
+      label: "1 min",
+      value: 1,
+    },
+    {
+      label: "2 min",
+      value: 2,
+    },
+    {
+      label: "3 min",
+      value: 3,
+    },
+    {
+      label: "5 min",
+      value: 5,
+    },
+    {
+      label: "10 min",
+      value: 10,
+    },
+    {
+      label: "15 min",
+      value: 15,
+    },
+    {
+      label: "20 min",
+      value: 20,
+    },
+    {
+      label: "25 min",
+      value: 25,
+    },
+    {
+      label: "30 min",
+      value: 30,
     },
   ];
 
@@ -75,6 +121,10 @@ const Field = ({
 
   const { errorMessage } = actionBarState;
   const { categoriesList, status } = MainInformationState;
+
+  /*  useEffect(() => {
+         console.log("FILE TITLE", fileTitle); 
+  }, [fileTitle]); */
 
   // Next functions concern File Uploader fields
   useEffect(() => {
@@ -109,6 +159,7 @@ const Field = ({
 
   const handleChange = (event) => {
     const file = event.target.files[0];
+    console.log(file);
     if (
       file &&
       file.size < 500000 &&
@@ -117,7 +168,7 @@ const Field = ({
         file.type === "image/gif" ||
         file.type === "image/jpeg")
     ) {
-      dispatch(saveImage(file, moduleId));
+      dispatch(saveImage(name, file, moduleId));
       setFileTitle(file.name);
     } else {
       dispatch(showErrorModal(sizeOrFormatError(file)));
@@ -125,14 +176,47 @@ const Field = ({
     }
   };
 
+  // both switch below is about selectors fields
+  function valueSelector() {
+    switch (name) {
+      case "category":
+        return editCategory;
+
+      case "lang":
+        return selectedLang;
+
+      case "readTime":
+        return selectedReadTime;
+
+      default:
+        return null;
+    }
+  }
+
+  function optionSelector() {
+    switch (name) {
+      case "category":
+        return categoriesList;
+
+      case "lang":
+        return langList;
+
+      case "readTime":
+        return readingTimeList;
+
+      default:
+        return null;
+    }
+  }
+
   return (
     <FieldContainer>
       {fieldType && fieldType === "select" && (
-        <FieldBox langSelector>
+        <FieldBox>
           <Selector
             isDisabled={name === "lang" && !(status === "DRAFT" || !status)}
-            value={name === "lang" ? selectedLang : editCategory}
-            options={name === "lang" ? langList : categoriesList}
+            value={valueSelector(name)}
+            options={optionSelector(name)}
             classNamePrefix="select"
             placeholder={name}
             isClearable
@@ -145,6 +229,10 @@ const Field = ({
                 if (name === "lang") {
                   setSelectedLang(e);
                   dispatch(addLang(e.value));
+                }
+                if (name === "readTime") {
+                  setSelectedReadTime(e);
+                  dispatch(setReadingTime(e.value));
                 }
               } else if (name === "category") {
                 setEditCategory("");
@@ -215,11 +303,20 @@ const Field = ({
               if (name === "slug" && section === "mainInformation") {
                 dispatch(addSlug(e.target.value));
               }
+              if (name === "title" && section === "homeNavigation") {
+                dispatch(addHomeTitle(e.target.value));
+              }
               if (name === "title" && section === "seo") {
                 dispatch(addSeoTitle(e.target.value));
               }
               if (name === "altImage" && section === "imageModule") {
                 dispatch(setAltImage({ id: moduleId, value: e.target.value }));
+              }
+              if (name === "altHomeImage" && section === "homeNavigation") {
+                dispatch(setHomeImageAlt(e.target.value));
+              }
+              if (name === "altNavImage" && section === "homeNavigation") {
+                dispatch(setNavImageAlt(e.target.value));
               }
             }}
             defaultValue={edit ? `${edit}` : ""}

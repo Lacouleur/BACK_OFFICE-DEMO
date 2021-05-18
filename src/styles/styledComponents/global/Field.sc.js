@@ -10,22 +10,16 @@ export const FieldContainer = styled.div`
   margin: 16px 0 16px 0;
 `;
 
-export const langSelectorFieldBoxMixin = css`
-  &:hover {
-    & div:nth-of-type(2) {
-      visibility: visible;
-    }
-  }
-`;
-
 export const FieldBox = styled.div`
-  ${(props) => (props.langSelector ? langSelectorFieldBoxMixin : "")};
   width: ${(props) => props.styles?.width || "100%"};
   flex-direction: column;
   position: relative;
 
   &:hover {
     & div:nth-of-type(1) {
+      visibility: visible;
+    }
+    & div:nth-of-type(2) {
       visibility: visible;
     }
   }

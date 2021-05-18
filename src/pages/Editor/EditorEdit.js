@@ -54,6 +54,7 @@ const Editor = () => {
         <FormContainer>
           <MainInformation />
           <Seo />
+          <HomeNavigation />
           {modulesList?.map((module) => {
             switch (module.type) {
               case "text":{
@@ -84,8 +85,6 @@ const Editor = () => {
                 return null;
             }
             })}
-            
-          <HomeNavigation />
   
           {isOpen && articleId && <ModuleCreator setIsOpen={setIsOpen} />}
           <NewBlockButtonBox>

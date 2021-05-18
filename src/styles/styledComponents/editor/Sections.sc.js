@@ -14,8 +14,8 @@ export const CollapsedText = styled.p`
 
 const SectionBoxClosedMixin = css`
   height: 160px;
-  padding: 30px 30px 8px 30px;
   overflow: hidden;
+  padding: 30px;
   transition: height 0.3s ease;
 
   &:hover {
@@ -33,6 +33,7 @@ export const SectionBox = styled.div`
   ${(props) => (props.isOpen ? SectionBoxOpenMixin : SectionBoxClosedMixin)};
   position: relative;
   width: 100%;
+  padding: 30px;
   background-color: ${colors.mediumGrey};
   min-width: 900px;
   margin-bottom: 20px;
@@ -60,7 +61,7 @@ export const Gradient = styled.div`
   display: ${(props) => props.styles?.display};
   width: 100%;
   min-width: 900px;
-  height: 100%;
+  height: 160px;
   position: absolute;
   top: 0;
   left: 0;

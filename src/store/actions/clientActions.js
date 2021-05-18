@@ -1,5 +1,9 @@
 /* eslint-disable no-unused-vars */
-import { sendAuth, setToken } from "../../services/client/authClient";
+import {
+  deleteToken,
+  sendAuth,
+  setToken,
+} from "../../services/client/authClient";
 import {
   saveComponent,
   updateComponent,
@@ -38,15 +42,27 @@ import {
   showErrorModal,
 } from "./actionBarActions";
 import { nameSpaceError } from "../../helper/errorMessages";
+import { setHomeImageUuid, setNavImageUuid } from "./homeNavigationActions";
 
 export const CONTENT_LOADED = "CONTENT_LOADED";
 
 export function checkAndSend(type = "save", articleId = null) {
   return async (dispatch, getState) => {
-    const { seoReducer, mainInformationReducer, modulesReducer } = getState();
+    const {
+      seoReducer,
+      mainInformationReducer,
+      modulesReducer,
+      homeNavigationReducer,
+    } = getState();
     const { title: mainTitle, slug, category, lang } = mainInformationReducer;
     const { description, title: seoTitle } = seoReducer;
     const { modulesList } = modulesReducer;
+    const {
+      homeTitle,
+      readingTime,
+      homeImgAlt,
+      navImgAlt,
+    } = homeNavigationReducer;
 
     const slugError = !slug;
     const titleError = !mainTitle;
@@ -66,13 +82,17 @@ export function checkAndSend(type = "save", articleId = null) {
         title: mainTitle,
         slug,
         category: !category ? null : category,
+        /*     header: {
+          readingTime: readingTime || null,
+          title: homeTitle || null,
+          type: "header",
+        }, */
       };
     } else {
       values = {
         title: mainTitle,
         slug,
         category: !category ? null : category,
-        components: modulesList,
       };
     }
 
@@ -146,6 +166,7 @@ export function fetchContent(id) {
     try {
       const response = await getContent(id);
       if (response.status < 300 && response.status > 199) {
+        console.log(response.data);
         dispatch(contentLoaded(response.data));
         dispatch(setUpdatedAt(response.data.updatedAt));
         dispatch(setPublishedAt(response.data.publishedAt));
@@ -154,6 +175,10 @@ export function fetchContent(id) {
 
       return null;
     } catch (error) {
+      if (error.response.status === 401) {
+        console.log("error =>", error?.response?.data);
+        deleteToken();
+      }
       console.log("error =>", error?.response?.data);
       return null;
     }
@@ -421,14 +446,22 @@ export function publishAction(articleId, mode) {
   };
 }
 
-export function saveImage(image, moduleId) {
+export function saveImage(name, image, moduleId) {
   return async (dispatch) => {
     const formData = new FormData();
     formData.append("file", image);
     try {
       const response = await uploadImage(formData);
       if (response.status < 300 && response.status > 199) {
-        dispatch(setImageUuid({ id: moduleId, value: response.data }));
+        if (name === "image") {
+          dispatch(setImageUuid({ id: moduleId, value: response.data }));
+        }
+        if (name === "homeImage") {
+          dispatch(setHomeImageUuid(response.data));
+        }
+        if (name === "navigationImage") {
+          dispatch(setNavImageUuid(response.data));
+        }
       }
     } catch (error) {
       if (error?.response.status === 400) {

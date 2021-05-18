@@ -187,7 +187,7 @@ const Field = ({
               textOverflow: "ellipsis",
             }}
             placeholder={placeholder}
-            defaultValue={edit ? `${edit}` : ""}
+            defaultValue={edit ? `${edit}` : fileTitle}
             type="text"
             maxLength={maxlength}
             disabled

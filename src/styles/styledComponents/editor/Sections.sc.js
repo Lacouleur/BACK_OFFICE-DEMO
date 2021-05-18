@@ -61,7 +61,7 @@ export const Gradient = styled.div`
   display: ${(props) => props.styles?.display};
   width: 100%;
   min-width: 900px;
-  height: 160px;
+  height: 100%;
   position: absolute;
   top: 0;
   left: 0;

@@ -54,7 +54,7 @@ const Editor = () => {
         <FormContainer>
           <MainInformation />
           <Seo />
-          <HomeNavigation />
+          {/* <HomeNavigation /> */}
           {modulesList?.map((module) => {
             switch (module.type) {
               case "text":{

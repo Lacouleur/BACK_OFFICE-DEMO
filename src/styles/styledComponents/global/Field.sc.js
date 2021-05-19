@@ -138,6 +138,12 @@ export const Selector = styled(ReactSelect)`
       }
     }
 
+    &__value {
+      &-container {
+        padding-left: 20px;
+      }
+    }
+
     &__clear-indicator {
       color: ${colors.paleVioletTransp};
       &:hover {

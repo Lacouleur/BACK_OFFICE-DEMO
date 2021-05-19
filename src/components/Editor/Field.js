@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,7 +20,6 @@ import {
   FieldBox,
   FieldButton,
 } from "../../styles/styledComponents/global/Field.sc";
-import { Br } from "../../styles/styledComponents/modal/Modal.sc";
 import colors from "../../styles/core/colors";
 import exclamationIcon from "../../styles/assets/icons/exclamationGrey.svg";
 import exclamationVioletIcon from "../../styles/assets/icons/exclamation.svg";
@@ -34,7 +32,7 @@ import {
   TooltipText,
 } from "../../styles/styledComponents/contentList/Content.sc";
 import { showErrorModal } from "../../store/actions/actionBarActions";
-import convertBytes from "../../helper/convertBytes";
+/* import convertBytes from "../../helper/convertBytes"; */
 import { sizeOrFormatError } from "../../helper/errorMessages";
 import { setAltImage } from "../../store/actions/moduleActions";
 import {
@@ -115,19 +113,13 @@ const Field = ({
     ({ mainInformationReducer }) => mainInformationReducer
   );
 
-  const actionBarState = useSelector(
-    ({ actionBarReducer }) => actionBarReducer
-  );
-
-  const { errorMessage } = actionBarState;
   const { categoriesList, status } = MainInformationState;
-
-  /*  useEffect(() => {
-         console.log("FILE TITLE", fileTitle); 
-  }, [fileTitle]); */
 
   // Next functions concern File Uploader fields
   useEffect(() => {
+    if (edit) {
+      setFileTitle(edit);
+    }
     if (categoriesList.length === 0) {
       dispatch(fetchCategoriesList());
     }
@@ -150,16 +142,27 @@ const Field = ({
         return null;
       });
     }
+
+    if (!selectedReadTime) {
+      readingTimeList.map((option) => {
+        if (parseInt(edit, 10) === option.value) {
+          setSelectedReadTime(option);
+          return null;
+        }
+        return null;
+      });
+    }
   }, [edit]);
 
+  // below is about selectors fields
+
   const hiddenFileInput = React.useRef(null);
-  const handleClick = (event) => {
+  const handleClick = () => {
     hiddenFileInput.current.click();
   };
 
   const handleChange = (event) => {
     const file = event.target.files[0];
-    console.log(file);
     if (
       file &&
       file.size < 500000 &&
@@ -176,7 +179,6 @@ const Field = ({
     }
   };
 
-  // both switch below is about selectors fields
   function valueSelector() {
     switch (name) {
       case "category":
@@ -275,7 +277,7 @@ const Field = ({
               textOverflow: "ellipsis",
             }}
             placeholder={placeholder}
-            defaultValue={edit ? `${edit}` : fileTitle}
+            defaultValue={fileTitle}
             type="text"
             maxLength={maxlength}
             disabled

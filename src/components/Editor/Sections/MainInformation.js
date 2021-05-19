@@ -6,7 +6,7 @@ import {
   FormTitle,
   FieldTitle,
 } from "../../../styles/styledComponents/global/Titles.sc";
-import homeIcon from "../../../styles/assets/icons/home.svg";
+import infoIcon from "../../../styles/assets/icons/main-info.svg";
 import Field from "../Field";
 import {
   CollapsedText,
@@ -60,7 +60,7 @@ const MainInformation = () => {
       setIsOpen(false);
     }
 
-    if (isChanged) {
+    if (isChanged && articleId) {
       dispatch(checkAndSend("update", articleId));
     } else if (isChanged && !articleId) {
       dispatch(checkAndSend());
@@ -77,13 +77,14 @@ const MainInformation = () => {
       >
         {!isOpen && <Gradient />}
         <SectionTitle>
-          <TitleIcon src={homeIcon} />
+          <TitleIcon src={infoIcon} />
           <FormTitle>MAIN INFORMATION</FormTitle>
         </SectionTitle>
         {!isOpen && (
           <>
             <CollapsedText>{title}</CollapsedText>
             <CollapsedText>{slug}</CollapsedText>
+            <CollapsedText>{lang}</CollapsedText>
           </>
         )}
         {isOpen && (

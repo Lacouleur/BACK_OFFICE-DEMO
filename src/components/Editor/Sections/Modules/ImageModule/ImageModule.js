@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/heading-has-content */
 import React, { useRef, useEffect, useState } from "react";
 import PropTypes from "prop-types";
@@ -13,6 +12,7 @@ import {
   SectionBox,
   SectionTitle,
   Gradient,
+  Thumbnail,
 } from "../../../../../styles/styledComponents/editor/Sections.sc";
 import trashIcon from "../../../../../styles/assets/icons/trash.svg";
 import {
@@ -24,7 +24,6 @@ import CloseModal from "../../../../Modals/CloseModal";
 import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
 import { saveModule } from "../../../../../store/actions/clientActions";
 import Field from "../../../Field";
-import { Thumbnail } from "../../../../../styles/styledComponents/editor/modules/ImageModule.sc";
 
 const ImageModule = ({
   uuid,

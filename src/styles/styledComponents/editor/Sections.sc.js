@@ -9,7 +9,12 @@ export const SectionTitle = styled.div`
 export const ExampleSeo = styled.img``;
 
 export const CollapsedText = styled.p`
-  margin-top: 18px;
+  margin-top: 12px;
+  max-width: 250px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  min-height: 18px;
+  white-space: nowrap;
 `;
 
 const SectionBoxClosedMixin = css`
@@ -77,4 +82,38 @@ export const Gradient = styled.div`
 export const NewBlockButtonBox = styled.div`
   width: 100%;
   min-width: 900px;
+`;
+
+const HomeImageMixin = css`
+  top: 246px !important;
+`;
+
+const navPreviewMixin = css`
+  top: 40px !important;
+`;
+
+export const Thumbnail = styled.img`
+  ${(props) => (props.homeImage ? HomeImageMixin : "")};
+
+  position: absolute;
+  max-width: 150px;
+  max-height: 244px;
+  right: 30%;
+  top: 70px;
+  height: 100px;
+  box-shadow: 0px 0px 31px 2px ${colors.shadow};
+  background-color: hotpink;
+`;
+
+export const RoundThumbnail = styled.img`
+  ${(props) => (props.preview ? navPreviewMixin : "")};
+  position: absolute;
+  max-width: 150px;
+  max-height: 244px;
+  border-radius: 50%;
+  right: 30%;
+  bottom: 155px;
+  height: 100px;
+  box-shadow: 0px 0px 31px 2px ${colors.shadow};
+  background-color: hotpink;
 `;

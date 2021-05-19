@@ -1,19 +1,19 @@
-/* eslint-disable no-unused-vars */
 import React, { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
   TitleIcon,
   FormTitle,
-  FieldTitle,
 } from "../../../styles/styledComponents/global/Titles.sc";
 import homeIcon from "../../../styles/assets/icons/home.svg";
 import Field from "../Field";
 import {
   CollapsedText,
   Gradient,
+  RoundThumbnail,
   SectionBox,
   SectionTitle,
+  Thumbnail,
 } from "../../../styles/styledComponents/editor/Sections.sc";
 import { checkAndSend } from "../../../store/actions/clientActions";
 import useClickOutside from "../../../helper/cutomHooks/useClickOutside";
@@ -28,7 +28,9 @@ const HomeNavigation = () => {
   const { articleId } = useParams();
   const [isHomeImage, setIsHomeImage] = useState(false);
   const [isNavImage, setIsNavImage] = useState(false);
-  const [isNavigationImage, setIsNavigationImage] = useState(true);
+  /*   const [isNavigationImage, setIsNavigationImage] = useState(true); */
+  const [homeImgTitle, setHomeImgTitle] = useState(undefined);
+  const [navImgTitle, setNavImgTitle] = useState(undefined);
 
   const {
     homeTitle,
@@ -38,6 +40,8 @@ const HomeNavigation = () => {
     navImgUuid,
     navImgAlt,
     homeNavIsChanged,
+    homeImgUrls,
+    navImgUrls,
   } = homeNavigationState;
 
   useEffect(() => {
@@ -56,11 +60,12 @@ const HomeNavigation = () => {
 
   useEffect(() => {
     if (homeImgUuid) {
-      /*  setImageTitle(imageUuid.split("/")[1]); */
+      setHomeImgTitle(homeImgUuid.split("/")[1]);
       setIsHomeImage(true);
     }
+
     if (navImgUuid) {
-      /*    setImageTitle(imageUuid.split("/")[1]); */
+      setNavImgTitle(navImgUuid.split("/")[1]);
       setIsNavImage(true);
     }
   }, [homeNavIsChanged, homeImgUuid, navImgUuid]);
@@ -79,70 +84,94 @@ const HomeNavigation = () => {
         </SectionTitle>
         {!isOpen && (
           <>
-            <CollapsedText>Le titre collapsé</CollapsedText>
-            <CollapsedText>les infos collapsés</CollapsedText>
+            {navImgUrls && isNavImage && (
+              <RoundThumbnail preview src={navImgUrls.thumbnail.url} />
+            )}
+            <CollapsedText>{homeTitle || "section vide"}</CollapsedText>
+            <CollapsedText>
+              {readingTime ? `reading time : ${readingTime}min` : ""}
+            </CollapsedText>
+            <CollapsedText>
+              {homeImgTitle ? `Home image Title : ${homeImgTitle}` : ""}
+            </CollapsedText>
+            <CollapsedText>
+              {navImgTitle ? `Nav image Title : ${navImgTitle}` : ""}
+            </CollapsedText>
           </>
         )}
+
         {isOpen && (
           <>
+            {homeImgUrls && isHomeImage && (
+              <Thumbnail homeImage src={homeImgUrls.thumbnail.url} />
+            )}
+
+            {navImgUrls && isNavImage && (
+              <RoundThumbnail src={navImgUrls.thumbnail.url} />
+            )}
+
             <Field
               placeholder="Title (home)"
               maxlength="80"
               infos="Maximum 80 characters"
               name="title"
               section="homeNavigation"
-              /*               edit={title} */
+              edit={homeTitle || undefined}
             />
-
-            <Field
-              placeholder="Reading Time"
-              name="readTime"
-              fieldType="select"
-              section="HomeNavigation"
-              edit={readingTime || undefined}
-            />
-
-            <Field
-              placeholder="Home Image"
-              name="homeImage"
-              section="homeModule"
-              fieldType="uploader"
-              /* edit={homeImgAlt || undefined} */
-              infos="Image size: 320x568px - 500ko maximum"
-            />
-
-            {isHomeImage && (
+            {homeTitle && (
               <>
                 <Field
-                  placeholder="Alternative text for home image"
-                  name="altHomeImage"
-                  infos="Maximum 80 characters"
-                  maxlength="80"
-                  section="homeNavigation"
-                  edit={homeImgAlt || undefined}
+                  placeholder="Reading Time"
+                  name="readTime"
+                  infos="Average reading time."
+                  fieldType="select"
+                  section="HomeNavigation"
+                  edit={readingTime?.toString() || undefined}
                 />
-              </>
-            )}
 
-            <Field
-              placeholder="Navigation Image"
-              name="navigationImage"
-              section="homeModule"
-              fieldType="uploader"
-              /* edit={imageTitle} */
-              infos="Image size: 56x56px - 500ko maximum"
-            />
-
-            {isNavImage && (
-              <>
                 <Field
-                  placeholder="Alternative text for home image"
-                  name="altNavImage"
-                  infos="Maximum 80 characters"
-                  maxlength="80"
-                  section="homeNavigation"
-                  edit={navImgAlt || undefined}
+                  placeholder="Home Image"
+                  name="homeImage"
+                  section="homeModule"
+                  fieldType="uploader"
+                  edit={homeImgTitle || undefined}
+                  infos="Image size: 320x568px - 500ko maximum"
                 />
+
+                {isHomeImage && (
+                  <>
+                    <Field
+                      placeholder="Alternative text for home image"
+                      name="altHomeImage"
+                      infos="Maximum 80 characters"
+                      maxlength="80"
+                      section="homeNavigation"
+                      edit={homeImgAlt || undefined}
+                    />
+                  </>
+                )}
+
+                <Field
+                  placeholder="Navigation Image"
+                  name="navImage"
+                  section="homeModule"
+                  fieldType="uploader"
+                  edit={navImgTitle || undefined}
+                  infos="Image size: 56x56px - 500ko maximum"
+                />
+
+                {isNavImage && (
+                  <>
+                    <Field
+                      placeholder="Alternative text for home image"
+                      name="altNavImage"
+                      infos="Maximum 80 characters"
+                      maxlength="80"
+                      section="homeNavigation"
+                      edit={navImgAlt || undefined}
+                    />
+                  </>
+                )}
               </>
             )}
           </>

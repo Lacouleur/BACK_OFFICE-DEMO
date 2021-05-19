@@ -153,7 +153,6 @@ const modulesReducer = (state = initialState, action = {}) => {
       const { id, value } = action.payload;
       state.modulesList.find((module, index) => {
         if (module?.uuid === id) {
-          console.log(value);
           oldState.modulesList[index] = {
             ...module,
             image: {

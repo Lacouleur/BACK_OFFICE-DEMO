@@ -1,9 +1,8 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-return-assign */
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import PageContainer from "../../styles/styledComponents/global/PageContainer.sc";
@@ -20,7 +19,7 @@ import {
 } from "../../styles/styledComponents/editor/Sections.sc";
 import ActionBar from "../../components/Editor/actionBar/ActionBar";
 import ModuleCreator from "../../components/Editor/Sections/Modules/ModuleCreator";
-import { fetchContent, saveModule } from "../../store/actions/clientActions";
+import { fetchContent } from "../../store/actions/clientActions";
 import TextModule from "../../components/Editor/Sections/Modules/TextModule/TextModule";
 import ImageModule from "../../components/Editor/Sections/Modules/ImageModule/ImageModule";
 import { setArticleId } from "../../store/actions/commonsActions";
@@ -54,7 +53,7 @@ const Editor = () => {
         <FormContainer>
           <MainInformation />
           <Seo />
-          {/* <HomeNavigation /> */}
+          <HomeNavigation />
           {modulesList?.map((module) => {
             switch (module.type) {
               case "text":{

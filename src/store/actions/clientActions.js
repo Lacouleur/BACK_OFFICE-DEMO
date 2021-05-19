@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {
   deleteToken,
   sendAuth,
@@ -51,16 +50,17 @@ export function checkAndSend(type = "save", articleId = null) {
     const {
       seoReducer,
       mainInformationReducer,
-      modulesReducer,
       homeNavigationReducer,
     } = getState();
     const { title: mainTitle, slug, category, lang } = mainInformationReducer;
     const { description, title: seoTitle } = seoReducer;
-    const { modulesList } = modulesReducer;
+
     const {
       homeTitle,
       readingTime,
+      homeImgUuid,
       homeImgAlt,
+      navImgUuid,
       navImgAlt,
     } = homeNavigationReducer;
 
@@ -82,11 +82,23 @@ export function checkAndSend(type = "save", articleId = null) {
         title: mainTitle,
         slug,
         category: !category ? null : category,
-        /*     header: {
-          readingTime: readingTime || null,
-          title: homeTitle || null,
+        header: {
+          readingTime: readingTime || undefined,
+          title: homeTitle || undefined,
           type: "header",
-        }, */
+          image: homeImgUuid
+            ? {
+                uuid: homeImgUuid || undefined,
+                alt: homeImgAlt || undefined,
+              }
+            : undefined,
+        },
+        thumbnail: navImgUuid
+          ? {
+              uuid: navImgUuid || undefined,
+              alt: navImgAlt || undefined,
+            }
+          : undefined,
       };
     } else {
       values = {
@@ -132,7 +144,7 @@ export function checkAndSend(type = "save", articleId = null) {
 
       // update
       if (type === "update") {
-        console.log("UPDATING");
+        console.log("UPDATING", values);
         try {
           const result = await update(values, articleId, lang);
 
@@ -166,7 +178,7 @@ export function fetchContent(id) {
     try {
       const response = await getContent(id);
       if (response.status < 300 && response.status > 199) {
-        console.log(response.data);
+        /* console.log(response.data); */
         dispatch(contentLoaded(response.data));
         dispatch(setUpdatedAt(response.data.updatedAt));
         dispatch(setPublishedAt(response.data.publishedAt));
@@ -175,7 +187,7 @@ export function fetchContent(id) {
 
       return null;
     } catch (error) {
-      if (error.response.status === 401) {
+      if (error?.response?.status === 401) {
         console.log("error =>", error?.response?.data);
         deleteToken();
       }
@@ -333,8 +345,6 @@ export function saveModule(uuid, request = "save") {
         return null;
       });
 
-      console.log(isNewModule);
-
       if (isNewModule) {
         try {
           const response = await saveComponent(articleId, values);
@@ -454,12 +464,13 @@ export function saveImage(name, image, moduleId) {
       const response = await uploadImage(formData);
       if (response.status < 300 && response.status > 199) {
         if (name === "image") {
+          console.log("RESPONSE", response.data);
           dispatch(setImageUuid({ id: moduleId, value: response.data }));
         }
         if (name === "homeImage") {
           dispatch(setHomeImageUuid(response.data));
         }
-        if (name === "navigationImage") {
+        if (name === "navImage") {
           dispatch(setNavImageUuid(response.data));
         }
       }

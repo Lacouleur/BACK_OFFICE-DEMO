@@ -62,7 +62,8 @@ export const FieldTitle = styled.h3`
 `;
 
 export const TitleIcon = styled.img`
-  width: 20px;
+  max-width: 20px;
+  max-height: 20px;
   margin-right: 20px;
 `;
 

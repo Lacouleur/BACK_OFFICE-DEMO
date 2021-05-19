@@ -15,7 +15,7 @@ import ActionBar from "../../components/Editor/actionBar/ActionBar";
 
 
 
-const EditorEdit = () => {
+const EditorCreate = () => {
   const history = useHistory();
   const MainInformationState = useSelector(
     ({ mainInformationReducer }) => mainInformationReducer
@@ -43,4 +43,4 @@ const EditorEdit = () => {
   );
 };
 
-export default EditorEdit;
+export default EditorCreate;

@@ -6,32 +6,57 @@ import {
   SET_HOME_IMAGE_ALT,
   SET_NAV_IMAGE_UUID,
   SET_NAV_IMAGE_ALT,
+  SET_POSTED,
+  CONTENT_LOADED,
 } from "../constants";
 
 const initialState = {
   homeTitle: "",
-  readingTime: null,
-  homeImgUuid: "",
-  homeImgAlt: "",
+  readingTime: undefined,
+  homeImgUuid: undefined,
+  homeImgAlt: undefined,
   navImgUuid: "",
   navImgAlt: "",
   homeNavIsChanged: false,
+  homeImgUrls: undefined,
+  navImgUrls: undefined,
 };
 
 const homeNavigationReducer = (state = initialState, action = {}) => {
   const oldState = { ...state };
 
   switch (action.type) {
+    case CONTENT_LOADED: {
+      const { payload } = action;
+      return {
+        ...oldState,
+        homeTitle: payload?.header?.title || "",
+        readingTime: payload?.header?.readingTime || undefined,
+        homeImgUuid: payload?.header?.image?.uuid || "",
+        homeImgAlt: payload?.header?.image?.alt || "",
+        navImgUuid: payload?.thumbnail?.uuid || "",
+        navImgAlt: payload?.thumbnail?.alt || "",
+        homeImgUrls: payload?.header?.image?.urls || undefined,
+        navImgUrls: payload?.thumbnail?.urls || undefined,
+      };
+    }
+
+    case SET_POSTED: {
+      return {
+        ...oldState,
+        homeNavIsChanged: false,
+      };
+    }
+
     case SET_READING_TIME: {
       return {
+        ...oldState,
         readingTime: action.payload,
         homeNavIsChanged: true,
-        ...oldState,
       };
     }
 
     case ADD_HOME_TITLE: {
-      console.log(action.payload);
       return {
         ...oldState,
         homeTitle: action.payload,
@@ -42,13 +67,13 @@ const homeNavigationReducer = (state = initialState, action = {}) => {
     case SET_HOME_IMAGE_UUID: {
       return {
         ...oldState,
-        homeImgUuid: action.payload,
+        homeImgUuid: action.payload.uuid,
+        homeImgUrls: action.payload.urls,
         homeNavIsChanged: true,
       };
     }
 
     case SET_HOME_IMAGE_ALT: {
-      console.log("HOME_IMAGE_ALT", action.payload);
       return {
         ...oldState,
         homeImgAlt: action.payload,
@@ -59,13 +84,13 @@ const homeNavigationReducer = (state = initialState, action = {}) => {
     case SET_NAV_IMAGE_UUID: {
       return {
         ...oldState,
-        navImgUuid: action.payload,
+        navImgUuid: action.payload.uuid,
+        navImgUrls: action.payload.urls,
         homeNavIsChanged: true,
       };
     }
 
     case SET_NAV_IMAGE_ALT: {
-      console.log("NAV_IMAGE_ALT", action.payload);
       return {
         ...oldState,
         navImgAlt: action.payload,

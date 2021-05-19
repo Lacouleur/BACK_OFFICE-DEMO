@@ -136,7 +136,7 @@ const ActionBar = () => {
     }
   }, [updatedAt, programmedAt, publishedAt]);
 
-  useEffect(() => {
+  function setButtonContent() {
     if (status === "PUBLISHED" && modified) {
       setActionButtonContent("UPDATE");
       setIsDeleteButton(false);
@@ -147,7 +147,17 @@ const ActionBar = () => {
       setActionButtonContent("PUBLISH");
       setIsDeleteButton(true);
     }
+  }
+
+  useEffect(() => {
+    setButtonContent();
   }, [MainInformationState]);
+
+  useEffect(() => {
+    if (isOpenPublishModal === false) {
+      setButtonContent();
+    }
+  }, [isOpenPublishModal]);
 
   function handleSubmit() {
     if (!isEditing && contentIsChanged) {

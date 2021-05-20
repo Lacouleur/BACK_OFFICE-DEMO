@@ -90,6 +90,7 @@ export function checkAndSend(type = "save", articleId = null) {
             ? {
                 uuid: homeImgUuid || undefined,
                 alt: homeImgAlt || undefined,
+                source: "FTV-internal",
               }
             : undefined,
         },
@@ -97,6 +98,7 @@ export function checkAndSend(type = "save", articleId = null) {
           ? {
               uuid: navImgUuid || undefined,
               alt: navImgAlt || undefined,
+              source: "FTV-internal",
             }
           : undefined,
       };
@@ -451,7 +453,7 @@ export function publishAction(articleId, mode) {
       }
     } catch (error) {
       dispatch(showErrorModal(true));
-      console.log(error);
+      console.log(error.response.data);
     }
   };
 }

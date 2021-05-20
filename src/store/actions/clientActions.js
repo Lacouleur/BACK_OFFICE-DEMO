@@ -82,18 +82,20 @@ export function checkAndSend(type = "save", articleId = null) {
         title: mainTitle,
         slug,
         category: !category ? null : category,
-        header: {
-          readingTime: readingTime || undefined,
-          title: homeTitle || undefined,
-          type: "header",
-          image: homeImgUuid
-            ? {
-                uuid: homeImgUuid || undefined,
-                alt: homeImgAlt || undefined,
-                source: "FTV-internal",
-              }
-            : undefined,
-        },
+        header: homeTitle
+          ? {
+              readingTime: readingTime || undefined,
+              title: homeTitle || undefined,
+              type: "header",
+              image: homeImgUuid
+                ? {
+                    uuid: homeImgUuid || undefined,
+                    alt: homeImgAlt || undefined,
+                    source: "FTV-internal",
+                  }
+                : undefined,
+            }
+          : undefined,
         thumbnail: navImgUuid
           ? {
               uuid: navImgUuid || undefined,
@@ -330,7 +332,7 @@ export function saveModule(uuid, request = "save") {
                 type,
                 image: {
                   alt: image.alt,
-                  source: image.source,
+                  source: image.source || "FTV intenal",
                   uuid: image.uuid,
                 },
                 order,

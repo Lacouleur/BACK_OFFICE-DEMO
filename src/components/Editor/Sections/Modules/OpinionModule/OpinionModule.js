@@ -194,7 +194,7 @@ const OpinionModule = ({
                   <CheckMark src={checkIcon} />
                 </CheckBox>
               </CheckboxContainer>
-              <p>Don&apos;t show results</p>
+              <p>Show results</p>
             </QuestionLabel>
           </QuestionSettingboxOne>
         </QuestionSettingContainer>

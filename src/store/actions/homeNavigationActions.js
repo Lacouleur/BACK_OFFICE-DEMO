@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import {
   SET_READING_TIME,
   ADD_HOME_TITLE,

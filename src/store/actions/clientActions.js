@@ -182,7 +182,7 @@ export function fetchContent(id) {
     try {
       const response = await getContent(id);
       if (response.status < 300 && response.status > 199) {
-        /* console.log(response.data); */
+        console.log(response.data);
         dispatch(contentLoaded(response.data));
         dispatch(setUpdatedAt(response.data.updatedAt));
         dispatch(setPublishedAt(response.data.publishedAt));
@@ -341,6 +341,33 @@ export function saveModule(uuid, request = "save") {
 
               break;
             }
+            case "opinion": {
+              const {
+                type,
+                answers,
+                showPercentage,
+                order,
+                showResponse,
+                showRight,
+                explanation,
+                question,
+              } = module;
+
+              values = {
+                uuid,
+                type,
+                explanation: explanation || null,
+                question,
+                showPercentage,
+                showResponse,
+                showRight,
+                answers,
+                order,
+              };
+              isNewModule = true;
+
+              break;
+            }
 
             default:
               return null;
@@ -396,6 +423,42 @@ export function saveModule(uuid, request = "save") {
                   source: image.source,
                   uuid: image.uuid,
                 },
+                order,
+              };
+              isChanged = true;
+
+              break;
+            }
+            case "opinion": {
+              const {
+                type,
+                answers,
+                showPercentage,
+                order,
+                showResponse,
+                showRight,
+                explanation,
+                question,
+              } = module;
+
+              const formatedAnswers = [];
+              answers.map((answer) => {
+                formatedAnswers.push({
+                  right: answer.right,
+                  text: answer.text,
+                  uuid: answer.uuid,
+                });
+                return null;
+              });
+
+              values = {
+                type,
+                explanation: explanation || null,
+                question,
+                showPercentage,
+                showResponse,
+                showRight,
+                answers: formatedAnswers,
                 order,
               };
               isChanged = true;

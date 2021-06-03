@@ -10,6 +10,15 @@ import {
   SHOW_CLOSE_MODAL,
   SET_MODULE_POSTED,
   SET_ALT_IMAGE,
+  SET_OPINION_SHOW_RESPONSE,
+  SET_OPINION_SHOW_RIGHT_ANSWER,
+  SET_OPINION_SHOW_PERCENT,
+  SET_OPINION_EXPLAIN,
+  SET_OPINION_QUESTION,
+  SET_OPINION_RIGHT_ANSWER,
+  SET_OPINION_TEXT_ANSWER,
+  DELETE_OPINION_ANSWER,
+  CREATE_OPINION_NEW_ANSWER,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -21,6 +30,7 @@ const modulesReducer = (state = initialState, action = {}) => {
   const oldState = { ...state };
 
   switch (action.type) {
+    // COMMON TO MODULES
     case SET_NEW_MODULE: {
       const { payload } = action;
       switch (payload) {
@@ -55,6 +65,41 @@ const modulesReducer = (state = initialState, action = {}) => {
                   urls: {},
                 },
                 type: "image",
+                order: state.modulesList.length + 1,
+                uuid: `${uuidv4()}`,
+                isPostedModule: false,
+                isChanged: false,
+                isNewModule: true,
+                isOpenCloseModal: false,
+              },
+            ],
+          };
+        }
+        case "opinion": {
+          return {
+            ...oldState,
+            modulesList: [
+              ...oldState.modulesList,
+              {
+                answers: [
+                  {
+                    right: false,
+                    uuid: `${uuidv4()}`,
+                    text: "",
+                  },
+                  {
+                    right: false,
+                    uuid: `${uuidv4()}`,
+                    text: "",
+                  },
+                ],
+
+                type: "opinion",
+                question: "",
+                showPercentage: false,
+                showResponse: false,
+                showRight: false,
+                explanation: null,
                 order: state.modulesList.length + 1,
                 uuid: `${uuidv4()}`,
                 isPostedModule: false,
@@ -109,6 +154,43 @@ const modulesReducer = (state = initialState, action = {}) => {
       };
     }
 
+    case CONTENT_LOADED: {
+      const { components } = action.payload;
+      components.map((module) => {
+        oldState.modulesList = [
+          ...oldState.modulesList,
+          {
+            ...module,
+            isNewModule: false,
+            isPostedModule: true,
+            isChanged: false,
+            isOpenCloseModal: false,
+          },
+        ];
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case SHOW_CLOSE_MODAL: {
+      const { id, value } = action.payload;
+      state.modulesList.map((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            isOpenCloseModal: value,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    // TEXT MODULES
     case SET_VALUE_TEXTMODULE: {
       const { id, value } = action.payload;
       state.modulesList.find((module, index) => {
@@ -127,6 +209,7 @@ const modulesReducer = (state = initialState, action = {}) => {
       };
     }
 
+    // IMAGE MODULES
     case SET_IMAGE_UUID: {
       const { id, value } = action.payload;
       state.modulesList.find((module, index) => {
@@ -173,41 +256,191 @@ const modulesReducer = (state = initialState, action = {}) => {
       };
     }
 
-    case CONTENT_LOADED: {
-      const { components } = action.payload;
-      components.map((module) => {
-        oldState.modulesList = [
-          ...oldState.modulesList,
-          {
-            ...module,
-            isNewModule: false,
-            isPostedModule: true,
-            isChanged: false,
-            isOpenCloseModal: false,
-          },
-        ];
-      });
-      return {
-        ...oldState,
-      };
-    }
-
-    case SHOW_CLOSE_MODAL: {
+    // QUESTION MODULES
+    case SET_OPINION_SHOW_PERCENT: {
       const { id, value } = action.payload;
-      state.modulesList.map((module, index) => {
+      state.modulesList.find((module, index) => {
         if (module?.uuid === id) {
           oldState.modulesList[index] = {
             ...module,
-            isOpenCloseModal: value,
+            showPercentage: value,
+            isChanged: true,
           };
         }
         return null;
       });
-
       return {
         ...oldState,
       };
     }
+
+    case SET_OPINION_SHOW_RESPONSE: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            showResponse: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_OPINION_SHOW_RIGHT_ANSWER: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            showRight: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_OPINION_EXPLAIN: {
+      const { id, value } = action.payload;
+
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            explanation: value,
+            isChanged: true,
+          };
+        }
+
+        return null;
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_OPINION_QUESTION: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            question: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_OPINION_RIGHT_ANSWER: {
+      const { moduleId, answerId, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === moduleId) {
+          oldState.modulesList[index] = {
+            ...module,
+            isChanged: true,
+          };
+          module.answers.find((answer, answerIndex) => {
+            if (answer?.uuid === answerId) {
+              oldState.modulesList[index].answers[answerIndex] = {
+                ...answer,
+                right: value,
+              };
+            }
+          });
+        }
+        return null;
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_OPINION_TEXT_ANSWER: {
+      const { moduleId, answerId, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === moduleId) {
+          oldState.modulesList[index] = {
+            ...module,
+            isChanged: true,
+          };
+          module.answers.find((answer, answerIndex) => {
+            if (answer?.uuid === answerId) {
+              oldState.modulesList[index].answers[answerIndex] = {
+                ...answer,
+                text: value,
+              };
+            }
+          });
+        }
+        return null;
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case DELETE_OPINION_ANSWER: {
+      const { moduleId, answerId } = action.payload;
+
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === moduleId) {
+          oldState.modulesList[index] = {
+            ...module,
+            isChanged: true,
+          };
+          module.answers.find((answer, answerIndex) => {
+            if (answer?.uuid === answerId) {
+              if (oldState.modulesList[index].answers.length > 2) {
+                oldState.modulesList[index].answers.splice(answerIndex, 1);
+              }
+            }
+          });
+        }
+        return null;
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case CREATE_OPINION_NEW_ANSWER: {
+      const moduleId = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === moduleId) {
+          oldState.modulesList[index] = {
+            ...module,
+            isChanged: true,
+            answers: [
+              ...module.answers,
+              {
+                right: false,
+                uuid: `${uuidv4()}`,
+                text: "",
+              },
+            ],
+          };
+        }
+        return null;
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    // CLEANING
 
     case CLEAN_CONTENT_STATE: {
       return {

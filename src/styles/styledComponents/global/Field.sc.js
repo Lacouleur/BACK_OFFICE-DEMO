@@ -173,8 +173,9 @@ export const TextArea = styled(TextareaAutosize)`
   color: ${colors.white};
   font-family: Arial, Helvetica, sans-serif;
   padding: 16px;
+  outline: none;
 `;
-
+/* 
 export const TextAreaStyles = styled.div`
   &.textArea {
     -webkit-appearance: none;
@@ -185,7 +186,7 @@ export const TextAreaStyles = styled.div`
     min-height: 56px;
     font-size: 16px;
     line-height: 24px;
-    background-color: ${colors.darkGrey};
+    background-color: hotpink;
     border: none;
     padding: 0 20px;
     color: ${(props) => props.color};
@@ -196,8 +197,12 @@ export const TextAreaStyles = styled.div`
     color: ${colors.white};
     font-family: Arial, Helvetica, sans-serif;
     padding: 16px;
+
+    & :focus {
+      outline: none !important;
+    }
   }
-`;
+`; */
 
 export const FieldErrorBox = styled.div`
   width: 100%;

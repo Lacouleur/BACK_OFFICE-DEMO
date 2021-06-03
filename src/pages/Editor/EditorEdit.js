@@ -29,6 +29,7 @@ import {
 } from "../../store/actions/mainInformationActions";
 import colors from "../../styles/core/colors";
 import HomeNavigation from "../../components/Editor/Sections/HomeNavigation";
+import OpinionModule from "../../components/Editor/Sections/Modules/OpinionModule/OpinionModule";
 
 
 
@@ -79,6 +80,22 @@ const Editor = () => {
                     isOpenCloseModal={module.isOpenCloseModal}
                     isNewModule={module.isNewModule}
                   />
+                );}
+                case "opinion":{
+                    return (
+                      <OpinionModule 
+                        key={module.uuid}
+                        uuid={module.uuid}
+                        isChanged={module.isChanged}
+                        isOpenCloseModal={module.isOpenCloseModal}
+                        isNewModule={module.isNewModule}
+                        question={module.question}
+                        showPercentage={module.showPercentage}
+                        showResponse={module.showResponse}
+                        showRight={module.showRight}
+                        explanation={module.explanation}
+                        answers={module.answers}
+                      />
                 );}
                 default :
                 return null;

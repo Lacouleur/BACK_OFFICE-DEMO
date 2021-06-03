@@ -34,7 +34,12 @@ import {
 import { showErrorModal } from "../../store/actions/actionBarActions";
 /* import convertBytes from "../../helper/convertBytes"; */
 import { sizeOrFormatError } from "../../helper/errorMessages";
-import { setAltImage } from "../../store/actions/moduleActions";
+import {
+  setAltImage,
+  setOpinionExplain,
+  setOpinionQuestion,
+  setOpinionTextAnswer,
+} from "../../store/actions/moduleActions";
 import {
   setReadingTime,
   addHomeTitle,
@@ -53,6 +58,7 @@ const Field = ({
   section,
   edit,
   moduleId,
+  answerId,
 }) => {
   const dispatch = useDispatch();
   const [editCategory, setEditCategory] = useState();
@@ -260,6 +266,11 @@ const Field = ({
             if (name === "description" && section === "seo") {
               dispatch(addSeoDescription(e.target.value));
             }
+            if (name === "explanation" && section === "opinion") {
+              dispatch(
+                setOpinionExplain({ id: moduleId, value: e.target.value })
+              );
+            }
           }}
         />
       )}
@@ -320,6 +331,20 @@ const Field = ({
               if (name === "altNavImage" && section === "homeNavigation") {
                 dispatch(setNavImageAlt(e.target.value));
               }
+              if (name === "question" && section === "opinion") {
+                dispatch(
+                  setOpinionQuestion({ id: moduleId, value: e.target.value })
+                );
+              }
+              if (name === "answer" && section === "opinion") {
+                dispatch(
+                  setOpinionTextAnswer({
+                    moduleId,
+                    answerId,
+                    value: e.target.value,
+                  })
+                );
+              }
             }}
             defaultValue={edit ? `${edit}` : ""}
             styles={
@@ -375,6 +400,7 @@ Field.defaultProps = {
   section: undefined,
   edit: undefined,
   moduleId: undefined,
+  answerId: undefined,
 };
 
 Field.propTypes = {
@@ -388,6 +414,7 @@ Field.propTypes = {
   section: PropTypes.string,
   edit: PropTypes.string,
   moduleId: PropTypes.string,
+  answerId: PropTypes.string,
 };
 
 export default Field;

@@ -21,7 +21,7 @@ import {
   DraftJsWrapper,
   ModuleContainer,
   Delete,
-} from "../../../../../styles/styledComponents/editor/modules/TextModule.sc";
+} from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import {
   setValueTextModule,
   showCloseModal,
@@ -31,6 +31,7 @@ import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
 import { saveModule } from "../../../../../store/actions/clientActions";
 import colors from "../../../../../styles/core/colors";
 import HTMLconverter from "../../../../../helper/Editor/HTMLconverter";
+import emojisList from "./emojisList";
 
 const TextModule = ({
   text,
@@ -157,9 +158,6 @@ const TextModule = ({
               ],
               inline: {
                 inDropdown: false,
-                className: undefined,
-                component: undefined,
-                dropdownClassName: undefined,
                 options: ["bold", "italic", "underline", "strikethrough"],
                 strikethrough: {
                   icon: hilighterIcon,
@@ -175,6 +173,9 @@ const TextModule = ({
               },
               link: { inDropdown: true, defaultTargetOption: "_self" },
               history: { inDropdown: false },
+              emoji: {
+                emojis: emojisList,
+              },
             }}
           />
         </DraftJsWrapper>

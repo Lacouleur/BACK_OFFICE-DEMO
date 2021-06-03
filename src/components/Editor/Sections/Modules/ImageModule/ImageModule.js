@@ -18,7 +18,7 @@ import trashIcon from "../../../../../styles/assets/icons/trash.svg";
 import {
   ModuleContainer,
   Delete,
-} from "../../../../../styles/styledComponents/editor/modules/TextModule.sc";
+} from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import { showCloseModal } from "../../../../../store/actions/moduleActions";
 import CloseModal from "../../../../Modals/CloseModal";
 import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";

@@ -11,7 +11,7 @@ import {
   SectionTitle,
 } from "../../../../styles/styledComponents/editor/Sections.sc";
 import textIcon from "../../../../styles/assets/icons/text.svg";
-import quizIcon from "../../../../styles/assets/icons/quiz.svg";
+import quizzIcon from "../../../../styles/assets/icons/quizz-dark.svg";
 import imageIcon from "../../../../styles/assets/icons/image-black.svg";
 import crossIcon from "../../../../styles/assets/icons/cross-white.svg";
 import {
@@ -27,7 +27,7 @@ import keyGenerator from "../../../../helper/keyGenerator";
 const ModuleCreator = ({ setIsOpen }) => {
   const DefaultModules = [
     { type: "text", icon: textIcon },
-    { type: "question", icon: quizIcon },
+    { type: "opinion", icon: quizzIcon },
     { type: "image", icon: imageIcon },
   ];
 

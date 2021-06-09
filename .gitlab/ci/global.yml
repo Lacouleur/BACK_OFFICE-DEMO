@@ -19,14 +19,17 @@
 .variables_integ:
   variables:
     PHX_ENV_WORKFLOW: integration
+    PHX_ENV_TARGET_PREFIX: integ-
 
 .variables_preprod:
   variables:
     PHX_ENV_WORKFLOW: preproduction
+    PHX_ENV_TARGET_PREFIX: preprod-
 
 .variables_prod:
   variables:
     PHX_ENV_WORKFLOW: production
+    PHX_ENV_TARGET_PREFIX: ""
 
 # GENERAL BUILD
 .build:
@@ -75,4 +78,4 @@
     - touch $PHX_IMAGE_CWD/.nexusignore
     - tar -X $PHX_IMAGE_CWD/.nexusignore -C $PHX_IMAGE_CWD/build -zcf ~/$PHX_PROJECT_ARCHIVE .
     - curl -s -H "Authorization"":"" ${NEXUS_AUTHORIZATION}" --upload-file ~/$PHX_PROJECT_ARCHIVE
-      $NEXUS_URL/$NEXUS_ROOT_REPOSITORY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/$REPO_ROOT/${PHX_ENV_TARGET}-${CI_COMMIT_REF_NAME}/$PHX_PROJECT_ARCHIVE
+      $NEXUS_URL/$NEXUS_ROOT_REPOSITORY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/$REPO_ROOT/${PHX_ENV_TARGET_PREFIX}${CI_COMMIT_REF_NAME}/$PHX_PROJECT_ARCHIVE

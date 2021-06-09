@@ -14,8 +14,6 @@
 .workflow_prod:
   only:
     - tags
-  except:
-    - branches    
 
 # ENVIRONMENTS
 .variables_integ:

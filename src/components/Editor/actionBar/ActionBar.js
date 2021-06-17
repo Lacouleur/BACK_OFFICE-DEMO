@@ -65,12 +65,7 @@ const ActionBar = () => {
 
   const { homeNavIsChanged } = homeNavigationState;
 
-  const {
-    isManifesto,
-    manifestoId,
-    isModifiedManifesto,
-    isPublishedManifesto,
-  } = manifestoState;
+  const { isManifesto, manifestoId, isPublishedManifesto } = manifestoState;
 
   const {
     updatedAt,

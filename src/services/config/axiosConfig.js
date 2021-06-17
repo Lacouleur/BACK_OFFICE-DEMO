@@ -1,9 +1,7 @@
 import axios from "axios";
-import { baseUrl, hostUrl } from "./clientConfig";
 
 const axiosConfig = axios.create({
-  baseURL: baseUrl,
-  hostUrl,
+  baseURL: BASE_URL,
 });
 
 axiosConfig.defaults.withCredentials = true;

@@ -10,11 +10,11 @@ import {
   SET_ERROR_SLUG,
   CONTENT_LOADED,
   SET_ERROR_POSTING,
-  CLEAN_CONTENT_STATE,
   SET_ARTICLE_ID,
   SET_STATUS,
   SET_MODIFIED,
   ADD_LANG,
+  CLEAN_CONTENT_STATE,
 } from "../constants";
 
 const initialState = {
@@ -30,9 +30,12 @@ const initialState = {
   slugError: false,
   regexSlugError: false,
   postingError: false,
-  isPosted: false,
+  isPosted: true,
   isChanged: false,
   options: [],
+  isManifesto: false,
+  manifestoId: null,
+  manifestoLang: "fr",
 };
 
 const mainInformationReducer = (state = initialState, action = {}) => {
@@ -42,6 +45,8 @@ const mainInformationReducer = (state = initialState, action = {}) => {
     case ADD_TITLE: {
       if (action.payload && action.payload.length > 0) {
         oldState.titleError = false;
+      } else {
+        oldState.titleError = true;
       }
       return { ...oldState, title: action.payload, isChanged: true };
     }
@@ -50,7 +55,8 @@ const mainInformationReducer = (state = initialState, action = {}) => {
       oldState.postingError = false;
       if (action.payload && action.payload.length > 0) {
         oldState.slugError = false;
-        oldState.slugError = false;
+      } else {
+        oldState.slugError = true;
       }
       if (verifySlug(action.payload)) {
         oldState.regexSlugError = false;
@@ -140,7 +146,6 @@ const mainInformationReducer = (state = initialState, action = {}) => {
       if (action.payload.language === "german") {
         lang = "de";
       }
-
       return {
         ...oldState,
         title: action.payload?.title ?? "",
@@ -153,23 +158,11 @@ const mainInformationReducer = (state = initialState, action = {}) => {
       };
     }
 
-    case CLEAN_CONTENT_STATE:
+    case CLEAN_CONTENT_STATE: {
       return {
-        articleId: "",
-        title: "",
-        slug: "",
-        lang: "",
-        status: "",
-        categoriesList: [],
-        category: null,
-        titleError: false,
-        slugError: false,
-        regexSlugError: false,
-        postingError: false,
-        isPosted: false,
-        isChanged: false,
-        options: [],
+        state,
       };
+    }
 
     default:
       return state;

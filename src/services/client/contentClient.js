@@ -1,8 +1,9 @@
-import axios from "axios";
+/* eslint-disable no-param-reassign */
+import axiosConfig from "../config/axiosConfig";
 import { getToken } from "./authClient";
 
 export function getContentList(page = 1, limit = 20) {
-  return axios.get(`${BASE_URL}/contents?limit=${limit}&page=${page}`, {
+  return axiosConfig.get(`/contents?limit=${limit}&page=${page}`, {
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
@@ -10,7 +11,30 @@ export function getContentList(page = 1, limit = 20) {
 }
 
 export function getContent(id) {
-  return axios.get(`${BASE_URL}/contents/${id}`, {
+  return axiosConfig.get(`/contents/${id}`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}
+
+export function getManifesto(lang) {
+  return axiosConfig.get(`/manifest?lang=${lang}`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}
+
+export function postManifesto(values, lang) {
+  let string = "";
+  if (lang) {
+    string = `?language=${lang}`;
+  }
+  return axiosConfig({
+    method: "post",
+    url: `/manifest${string}`,
+    data: values,
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
@@ -22,9 +46,9 @@ export function postContent(values, lang) {
   if (lang) {
     string = `?language=${lang}`;
   }
-  return axios({
+  return axiosConfig({
     method: "post",
-    url: `${BASE_URL}/contents${string}`,
+    url: `/contents${string}`,
     data: values,
     headers: {
       Authorization: `Bearer ${getToken()}`,
@@ -32,14 +56,25 @@ export function postContent(values, lang) {
   });
 }
 
-export function update(values, articleId, lang) {
+export function updateManifesto(values, manifestoId) {
+  return axiosConfig({
+    method: "put",
+    url: `/manifest/${manifestoId}`,
+    data: values,
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}
+
+export function updateContent(values, articleId, lang) {
   let string = "";
   if (lang) {
     string = `?language=${lang}`;
   }
-  return axios({
+  return axiosConfig({
     method: "put",
-    url: `${BASE_URL}/contents/${articleId}${string}`,
+    url: `/contents/${articleId}${string}`,
     data: values,
     headers: {
       Authorization: `Bearer ${getToken()}`,
@@ -48,15 +83,19 @@ export function update(values, articleId, lang) {
 }
 
 export async function getCategories() {
-  return axios.get(`${BASE_URL}/categories`, {
+  return axiosConfig.get(`/categories`, {
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
   });
 }
 
-export async function deleteComponent(id, uuid) {
-  return axios.delete(`${BASE_URL}/contents/${id}/components/${uuid}`, {
+export async function deleteComponent(id, uuid, manifesto = false) {
+  const url = manifesto
+    ? `/manifest/${id}/components/${uuid}`
+    : `/contents/${id}/components/${uuid}`;
+
+  return axiosConfig.delete(`${url}`, {
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
@@ -64,19 +103,23 @@ export async function deleteComponent(id, uuid) {
 }
 
 export async function deleteContent(id) {
-  return axios({
+  return axiosConfig({
     method: "put",
-    url: `${BASE_URL}/contents/${id}/archive`,
+    url: `/contents/${id}/archive`,
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
   });
 }
 
-export async function updateComponent(articleId, values, uuid) {
-  return axios({
+export async function updateComponent(id, values, uuid, manifesto = false) {
+  const url = manifesto
+    ? `/manifest/${id}/components/${uuid}`
+    : `/contents/${id}/components/${uuid}`;
+
+  return axiosConfig({
     method: "put",
-    url: `${BASE_URL}/contents/${articleId}/components/${uuid}`,
+    url: `${url}`,
     data: values,
     headers: {
       Authorization: `Bearer ${getToken()}`,
@@ -84,10 +127,14 @@ export async function updateComponent(articleId, values, uuid) {
   });
 }
 
-export async function saveComponent(articleId, values) {
-  return axios({
+export async function saveComponent(articleId, values, manifesto = false) {
+  const url = manifesto
+    ? `/manifest/${articleId}/components`
+    : `/contents/${articleId}/components`;
+
+  return axiosConfig({
     method: "post",
-    url: `${BASE_URL}/contents/${articleId}/components`,
+    url: `${url}`,
     data: values,
     headers: {
       Authorization: `Bearer ${getToken()}`,
@@ -95,10 +142,14 @@ export async function saveComponent(articleId, values) {
   });
 }
 
-export async function publishManager(articleId, action) {
-  return axios({
+export async function publishManager(id, action, manifesto) {
+  const url = manifesto
+    ? `/manifest/${id}/${action}`
+    : `/contents/${id}/${action}`;
+
+  return axiosConfig({
     method: "put",
-    url: `${BASE_URL}/contents/${articleId}/${action}`,
+    url: `${url}`,
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },
@@ -108,9 +159,9 @@ export async function publishManager(articleId, action) {
 // eslint-disable-next-line no-unused-vars
 export async function uploadImage(data) {
   /*   return `${uuidv4()}`; */
-  return axios({
+  return axiosConfig({
     method: "post",
-    url: `${BASE_URL}/images`,
+    url: `/images`,
     headers: {
       Authorization: `Bearer ${getToken()}`,
       "Content-Type": "application/json",

@@ -46,6 +46,7 @@ import {
   setHomeImageAlt,
   setNavImageAlt,
 } from "../../store/actions/homeNavigationActions";
+import langList from "../../helper/langList";
 
 const Field = ({
   type,
@@ -65,16 +66,6 @@ const Field = ({
   const [selectedLang, setSelectedLang] = useState();
   const [selectedReadTime, setSelectedReadTime] = useState();
   const [fileTitle, setFileTitle] = useState("");
-  const langList = [
-    {
-      label: "French",
-      value: "fr",
-    },
-    {
-      label: "German",
-      value: "de",
-    },
-  ];
 
   const readingTimeList = [
     {
@@ -126,7 +117,7 @@ const Field = ({
     if (edit) {
       setFileTitle(edit);
     }
-    if (categoriesList.length === 0) {
+    if (categoriesList?.length === 0) {
       dispatch(fetchCategoriesList());
     }
 

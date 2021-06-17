@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import PageContainer from "../styles/styledComponents/global/PageContainer.sc";
 import {
@@ -10,6 +10,12 @@ import Button from "../styles/styledComponents/global/Buttons/Buttons.sc";
 
 const Error404 = () => {
   const history = useHistory();
+
+  useEffect(() => {
+    setTimeout(() => {
+      history.push("/");
+    }, 2000);
+  }, []);
   return (
     <PageContainer position="absolute">
       <Container404>

@@ -9,12 +9,15 @@ import {
   deleteComponent,
   getCategories,
   getContent,
+  getManifesto,
   getContentList,
   postContent,
-  update,
   publishManager,
   deleteContent,
   uploadImage,
+  postManifesto,
+  updateContent,
+  updateManifesto,
 } from "../../services/client/contentClient";
 import {
   setErrorPosting,
@@ -33,6 +36,11 @@ import {
   setModified,
   setStatus,
 } from "./mainInformationActions";
+import {
+  setManifestoId,
+  setManifestolang,
+  setManifestoStatus,
+} from "./manifestoActions";
 import { closeModule, setImageUuid, setModulePosted } from "./moduleActions";
 import {
   setUpdatedAt,
@@ -150,7 +158,7 @@ export function checkAndSend(type = "save", articleId = null) {
       if (type === "update") {
         console.log("UPDATING", values);
         try {
-          const result = await update(values, articleId, lang);
+          const result = await updateContent(values, articleId, lang);
 
           if (result.status < 300 && result.status > 199) {
             dispatch(setErrorSpecial(false));
@@ -177,6 +185,135 @@ export function checkAndSend(type = "save", articleId = null) {
   };
 }
 
+export function saveManifesto(lang) {
+  console.warn("SAVE MANIFESTO", lang);
+  return async (dispatch, getState) => {
+    const { mainInformationReducer } = getState();
+    const { title: mainTitle } = mainInformationReducer;
+
+    const titleError = !mainTitle;
+
+    if (titleError) {
+      dispatch(setErrorTitle(true));
+    }
+
+    let values = {};
+
+    values = {
+      title: mainTitle,
+    };
+
+    if (!titleError && lang) {
+      try {
+        const response = await postManifesto(values, lang);
+        if (response.status < 300 && response.status > 199) {
+          dispatch(setManifestoId(response.data));
+          dispatch(setPosted(true));
+          console.log(
+            `Patrick, i've posted the new manifesto and the server return =>`,
+            response.data
+          );
+        }
+      } catch (error) {
+        dispatch(showErrorModal(true));
+        console.error(
+          `Patrick, i've fail posting the new manifesto and the server return =>`,
+          error?.response?.data
+        );
+      }
+    }
+  };
+}
+
+export function actulalizeManifesto(manifestoId) {
+  console.warn("UPDATE MANIFESTO", manifestoId);
+  return async (dispatch, getState) => {
+    const {
+      seoReducer,
+      mainInformationReducer,
+      homeNavigationReducer,
+    } = getState();
+    const { title: mainTitle } = mainInformationReducer;
+    const { description, title: seoTitle } = seoReducer;
+
+    const {
+      homeTitle,
+      readingTime,
+      homeImgUuid,
+      homeImgAlt,
+      navImgUuid,
+      navImgAlt,
+    } = homeNavigationReducer;
+
+    let values = {};
+
+    values = {
+      title: mainTitle,
+      header: homeTitle
+        ? {
+            readingTime: readingTime || undefined,
+            title: homeTitle || undefined,
+            type: "header",
+            image: homeImgUuid
+              ? {
+                  uuid: homeImgUuid || undefined,
+                  alt: homeImgAlt || undefined,
+                  source: "FTV-internal",
+                }
+              : undefined,
+          }
+        : undefined,
+      thumbnail: navImgUuid
+        ? {
+            uuid: navImgUuid || undefined,
+            alt: navImgAlt || undefined,
+            source: "FTV-internal",
+          }
+        : undefined,
+    };
+
+    if (seoTitle || description) {
+      values.seo = {};
+      const { seo } = values;
+      if (seoTitle) {
+        seo.title = seoTitle;
+      }
+      if (description) {
+        seo.description = description;
+      }
+    }
+
+    try {
+      const response = await updateManifesto(values, manifestoId);
+      if (response.status < 300 && response.status > 199) {
+        dispatch(setErrorSpecial(false));
+        dispatch(setPosted(true));
+        dispatch(setModified(true));
+        dispatch(setManifestoStatus("UNPUBLISHED"));
+        console.log(
+          `Patrick, i've updated the manifesto and the server return =>`,
+          response.data
+        );
+      }
+    } catch (error) {
+      console.error(
+        `Patrick, i've fail to update the manifesto and the server return =>`,
+        error?.response?.data
+      );
+      if (error.response.status === 409) {
+        dispatch(setErrorPosting(true));
+        dispatch(setPosted(false));
+      } else {
+        console.log("error =>", error?.response?.data);
+        dispatch(showErrorModal(true));
+        dispatch(setPosted(false));
+      }
+      return null;
+    }
+    return null;
+  };
+}
+
 export function fetchContent(id) {
   return async (dispatch) => {
     try {
@@ -198,6 +335,38 @@ export function fetchContent(id) {
       console.log("error =>", error?.response?.data);
       return null;
     }
+  };
+}
+
+export function fetchManifesto(lang) {
+  console.log("FETCHING MANIFESTO", lang);
+  return async (dispatch) => {
+    if (lang) {
+      try {
+        const response = await getManifesto(lang);
+        if (response.status < 300 && response.status > 199) {
+          const fetchedLang =
+            response.data[0].language === "german" ? "de" : "fr";
+
+          if (fetchedLang === lang) {
+            dispatch(setManifestoStatus("PUBLISHED"));
+            dispatch(setManifestolang(fetchedLang));
+            dispatch(contentLoaded(response.data[0]));
+          } else {
+            dispatch(setManifestoId(""));
+          }
+        }
+        return null;
+      } catch (error) {
+        if (error?.response?.status === 401) {
+          console.log("error =>", error?.response?.data);
+          deleteToken();
+        }
+        console.log("error =>", error?.response?.data);
+        return null;
+      }
+    }
+    return null;
   };
 }
 
@@ -279,9 +448,18 @@ export function fetchCategoriesList() {
 
 export function deleteModule(articleId, moduleId) {
   console.warn("DELETE", moduleId);
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const { manifestoReducer } = getState();
+    const { isManifesto, manifestoId } = manifestoReducer;
     try {
-      const response = await deleteComponent(articleId, moduleId);
+      let response = null;
+
+      if (isManifesto) {
+        response = await deleteComponent(manifestoId, moduleId, isManifesto);
+      } else {
+        response = await deleteComponent(articleId, moduleId);
+      }
+
       if (response.status < 300 && response.status > 199) {
         dispatch(setUpdatedAt("create"));
         dispatch(closeModule(moduleId));
@@ -295,7 +473,7 @@ export function deleteModule(articleId, moduleId) {
       dispatch(showErrorModal(true));
       console.error(
         `Patrick, i've fail deleting the module id:${moduleId} and the server return =>`,
-        error.response.data
+        error?.response?.data
       );
     }
   };
@@ -303,9 +481,14 @@ export function deleteModule(articleId, moduleId) {
 
 export function saveModule(uuid, request = "save") {
   return async (dispatch, getState) => {
-    const { mainInformationReducer, modulesReducer } = getState();
+    const {
+      mainInformationReducer,
+      modulesReducer,
+      manifestoReducer,
+    } = getState();
     const { articleId } = mainInformationReducer;
     const { modulesList } = modulesReducer;
+    const { isManifesto, manifestoId } = manifestoReducer;
     let values = {};
     let isNewModule = false;
 
@@ -378,7 +561,14 @@ export function saveModule(uuid, request = "save") {
 
       if (isNewModule) {
         try {
-          const response = await saveComponent(articleId, values);
+          let response = null;
+
+          if (isManifesto) {
+            response = await saveComponent(manifestoId, values, isManifesto);
+          } else {
+            response = await saveComponent(articleId, values);
+          }
+
           if (response.status < 300 && response.status > 199) {
             dispatch(setModulePosted(uuid));
             dispatch(setModified(true));
@@ -391,14 +581,14 @@ export function saveModule(uuid, request = "save") {
           dispatch(showErrorModal(true));
           console.log(
             `Patrick, i've try to SAVE the ${values.type}-module (id:${uuid})but i get an ERROR. The error is=>`,
-            error.response.data
+            error?.response?.data
           );
         }
       }
     }
 
     if (request === "update") {
-      console.warn("UPDATING MODULE");
+      console.warn("UPDATING MODULE", uuid);
       let isChanged = false;
 
       modulesList.find((module) => {
@@ -475,7 +665,19 @@ export function saveModule(uuid, request = "save") {
 
       if (isChanged) {
         try {
-          const response = await updateComponent(articleId, values, uuid);
+          let response = null;
+
+          if (isManifesto) {
+            response = await updateComponent(
+              manifestoId,
+              values,
+              uuid,
+              isManifesto
+            );
+          } else {
+            response = await updateComponent(articleId, values, uuid);
+          }
+
           if (response.status < 300 && response.status > 199) {
             dispatch(setUpdatedAt("create"));
             dispatch(setModulePosted(uuid));
@@ -489,7 +691,7 @@ export function saveModule(uuid, request = "save") {
           dispatch(showErrorModal(true));
           console.error(
             `Patrick, i've try to update the ${values.type}-module (id:${uuid})but i get an ERROR. The error is=>`,
-            error.response.data
+            error?.response?.data
           );
         }
       }
@@ -498,7 +700,10 @@ export function saveModule(uuid, request = "save") {
 }
 
 export function publishAction(articleId, mode) {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const { manifestoReducer } = getState();
+    const { isManifesto, manifestoId } = manifestoReducer;
+
     let actionName = "";
     if (mode === "UPDATE") {
       actionName = "PUBLISH";
@@ -506,19 +711,31 @@ export function publishAction(articleId, mode) {
       actionName = mode;
     }
     try {
-      const response = await publishManager(articleId, actionName);
+      const response = await publishManager(
+        isManifesto ? manifestoId : articleId,
+        actionName,
+        isManifesto
+      );
       if (response.status < 300 && response.status > 199) {
-        if (actionName === "PUBLISH") {
-          dispatch(setStatus("PUBLISHED"));
-          dispatch(setModified(false));
+        if (!isManifesto) {
+          if (actionName === "PUBLISH") {
+            dispatch(setStatus("PUBLISHED"));
+            dispatch(setModified(false));
+          }
+          if (actionName === "UNPUBLISH") {
+            dispatch(setStatus("UNPUBLISHED"));
+          }
         }
-        if (actionName === "UNPUBLISH") {
-          dispatch(setStatus("UNPUBLISHED"));
+        if (isManifesto) {
+          if (actionName === "PUBLISH") {
+            dispatch(setManifestoStatus("PUBLISHED"));
+            dispatch(setModified(false));
+          }
         }
       }
     } catch (error) {
       dispatch(showErrorModal(true));
-      console.log(error.response.data);
+      console.log(error?.response?.data);
     }
   };
 }

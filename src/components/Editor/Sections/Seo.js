@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -17,7 +17,10 @@ import {
 } from "../../../styles/styledComponents/editor/Sections.sc";
 import exampleSeoImg from "../../../styles/assets/icons/exampleSeo.svg";
 import { ExampleBox } from "../../../styles/styledComponents/editor/Seo.sc";
-import { checkAndSend } from "../../../store/actions/clientActions";
+import {
+  actulalizeManifesto,
+  checkAndSend,
+} from "../../../store/actions/clientActions";
 import useClickOutside from "../../../helper/cutomHooks/useClickOutside";
 
 const Seo = () => {
@@ -26,17 +29,30 @@ const Seo = () => {
   const MainInformationState = useSelector(
     ({ mainInformationReducer }) => mainInformationReducer
   );
-  const { articleId } = MainInformationState;
+  const manifestoState = useSelector(
+    ({ manifestoReducer }) => manifestoReducer
+  );
+
   const { title: seoTitle, description, isChanged } = seoState;
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
 
+  const { articleId } = MainInformationState;
+  const { manifestoId, isManifesto } = manifestoState;
+
   function onClickOutside() {
     setIsOpen(false);
     if (isChanged) {
-      dispatch(checkAndSend("update", articleId));
+      if (!isManifesto) {
+        dispatch(checkAndSend("update", articleId));
+      }
+
+      if (isManifesto && manifestoId) {
+        dispatch(actulalizeManifesto(manifestoId));
+      }
     }
   }
+
   useClickOutside(seoRef, onClickOutside);
 
   return (

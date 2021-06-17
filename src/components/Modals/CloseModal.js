@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import useClickOutside from "../../helper/cutomHooks/useClickOutside";
 import { deleteModule } from "../../store/actions/clientActions";
 import { showCloseModal } from "../../store/actions/moduleActions";
 import crossIcon from "../../styles/assets/icons/cross-white.svg";
@@ -18,12 +19,22 @@ const CloseModal = ({ moduleId, moduleRef, articleId }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    modal.current.scrollIntoView({ behavior: "smooth" });
+    modal.current.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "nearest",
+    });
   }, []);
 
+  function onClickOutside() {
+    dispatch(showCloseModal({ value: false, id: moduleId }));
+  }
+
+  useClickOutside(modal, onClickOutside);
+
   return (
-    <ModalContainer ref={modal}>
-      <ModalBox>
+    <ModalContainer>
+      <ModalBox closeModal ref={modal}>
         <Message>If you remove this module, content will be lost.</Message>
         <Cross
           src={crossIcon}
@@ -40,7 +51,11 @@ const CloseModal = ({ moduleId, moduleRef, articleId }) => {
               border: "1px solid white",
             }}
             onClick={() => {
-              moduleRef?.current.scrollIntoView({ behavior: "smooth" });
+              moduleRef?.current.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+                inline: "nearest",
+              });
               dispatch(showCloseModal({ value: false, id: moduleId }));
             }}
           >
@@ -49,7 +64,11 @@ const CloseModal = ({ moduleId, moduleRef, articleId }) => {
           <Button
             type="button"
             onClick={() => {
-              moduleRef?.current.scrollIntoView({ behavior: "smooth" });
+              moduleRef?.current.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+                inline: "nearest",
+              });
               dispatch(showCloseModal({ value: false, id: moduleId }));
               dispatch(deleteModule(articleId, moduleId));
             }}

@@ -77,19 +77,24 @@ const OpinionModule = ({
 
   useEffect(() => {
     if (isNewModule) {
-      opinionModuleRef.current.scrollIntoView({ behavior: "smooth" });
+      opinionModuleRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "nearest",
+      });
       setIsOpen(true);
     }
-    dispatch(showCloseModal(false));
   }, [isNewModule]);
 
   function onClickOutside() {
-    setIsOpen(false);
-    if (isChanged && isNewModule) {
-      dispatch(saveModule(uuid, "save"));
-    }
-    if (isChanged && !isNewModule) {
-      dispatch(saveModule(uuid, "update"));
+    if (!isOpenCloseModal) {
+      setIsOpen(false);
+      if (isChanged && isNewModule) {
+        dispatch(saveModule(uuid, "save"));
+      }
+      if (isChanged && !isNewModule) {
+        dispatch(saveModule(uuid, "update"));
+      }
     }
   }
   useClickOutside(opinionModuleRef, onClickOutside);

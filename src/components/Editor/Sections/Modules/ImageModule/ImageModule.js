@@ -36,12 +36,12 @@ const ImageModule = ({
 }) => {
   const dispatch = useDispatch();
   const imageModuleRef = useRef(null);
-  const [imageTitle, setImageTitle] = useState(undefined);
   const mainInformationState = useSelector(
     ({ mainInformationReducer }) => mainInformationReducer
   );
 
   const { articleId } = mainInformationState;
+  const [imageTitle, setImageTitle] = useState(undefined);
   const [isOpen, setIsOpen] = useState(false);
   const [isImage, setIsImage] = useState(false);
 
@@ -54,21 +54,22 @@ const ImageModule = ({
 
   useEffect(() => {
     if (isNewModule) {
-      imageModuleRef.current.scrollIntoView({ behavior: "smooth" });
       setIsOpen(true);
     }
-    dispatch(showCloseModal(false));
   }, [isNewModule]);
 
   function onClickOutside() {
-    setIsOpen(false);
-    if (isChanged && isNewModule) {
-      dispatch(saveModule(uuid, "save"));
-    }
-    if (isChanged && !isNewModule) {
-      dispatch(saveModule(uuid, "update"));
+    if (!isOpenCloseModal) {
+      setIsOpen(false);
+      if (isChanged && isNewModule) {
+        dispatch(saveModule(uuid, "save"));
+      }
+      if (isChanged && !isNewModule) {
+        dispatch(saveModule(uuid, "update"));
+      }
     }
   }
+
   useClickOutside(imageModuleRef, onClickOutside);
 
   return (

@@ -6,6 +6,7 @@ import {
   SET_IS_OPEN_PUBLISH_MODAL,
   SHOW_ERROR_MODAL,
   SET_IS_OPEN_ARCHIVE_MODAL,
+  SHOW_CLOSE_MODAL,
 } from "../constants";
 
 import {} from "../actions/actionBarActions";
@@ -17,7 +18,10 @@ const initialState = {
   isOpenPublishModal: false,
   isOpenErrorModal: false,
   isOpenArchiveModal: false,
+  isOpenCloseModal: false,
   errorMessage: null,
+  isModalOpen: false,
+  aModuleIsOpen: false,
 };
 
 const actionBarReducer = (state = initialState, action = {}) => {
@@ -65,6 +69,7 @@ const actionBarReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         isOpenPublishModal: action.payload,
+        isModalOpen: action.payload,
       };
     }
 
@@ -74,6 +79,7 @@ const actionBarReducer = (state = initialState, action = {}) => {
           ...oldState,
           isOpenErrorModal: true,
           errorMessage: action.payload,
+          isModalOpen: action.payload,
         };
       }
       return {
@@ -87,6 +93,15 @@ const actionBarReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         isOpenArchiveModal: action.payload,
+        isModalOpen: action.payload,
+      };
+    }
+
+    case SHOW_CLOSE_MODAL: {
+      return {
+        ...oldState,
+        isOpenCloseModal: action.payload,
+        isModalOpen: action.payload.value,
       };
     }
 

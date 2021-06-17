@@ -1,3 +1,4 @@
+import { setIsOpenPublishModal } from "../../../../store/actions/actionBarActions";
 import colors from "../../../core/colors";
 
 export const createNewContent = {
@@ -6,6 +7,8 @@ export const createNewContent = {
   display: "flex",
   justifyContent: "space-evenly",
   alignItems: "center",
+  position: "absolute",
+  left: "75%",
 };
 
 export const loginButton = {
@@ -22,4 +25,12 @@ export const loginButton = {
     marginTop: "auto",
     pointerEvents: "none",
   },
+};
+
+export const editManifesto = {
+  background: colors.darkGrey,
+  border: `solid 1px ${colors.paleViolet}`,
+  fontColor: `${colors.paleViolet} !important`,
+  position: "absolute",
+  left: "18%",
 };

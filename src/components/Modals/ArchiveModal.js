@@ -24,7 +24,11 @@ const ArchiveModal = ({ articleId }) => {
   };
 
   useEffect(() => {
-    modal.current.scrollIntoView({ behavior: "smooth" });
+    modal.current.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "nearest",
+    });
   }, []);
 
   function onClickOutside() {

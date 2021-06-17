@@ -14,12 +14,19 @@ import {
   SectionBox,
   SectionTitle,
 } from "../../../styles/styledComponents/editor/Sections.sc";
-import { checkAndSend } from "../../../store/actions/clientActions";
+import {
+  checkAndSend,
+  saveManifesto,
+  actulalizeManifesto,
+} from "../../../store/actions/clientActions";
 import useClickOutside from "../../../helper/cutomHooks/useClickOutside";
 
 const MainInformation = () => {
   const mainInformationState = useSelector(
     ({ mainInformationReducer }) => mainInformationReducer
+  );
+  const manifestoState = useSelector(
+    ({ manifestoReducer }) => manifestoReducer
   );
   const dispatch = useDispatch();
   const mainInformationRef = useRef();
@@ -38,6 +45,8 @@ const MainInformation = () => {
     isChanged,
   } = mainInformationState;
 
+  const { isManifesto, manifestoId, selectedManifestoLang } = manifestoState;
+
   function slugMessage() {
     let message = "";
     if (postingError) {
@@ -51,19 +60,44 @@ const MainInformation = () => {
   }
 
   useEffect(() => {
-    // eslint-disable-next-line no-unused-expressions
-    articleId ? setIsOpen(false) : setIsOpen(true);
-  }, [articleId]);
-
-  function onClickOutside() {
-    if (title && slug && !slugError && !regexSlugError && !postingError) {
-      setIsOpen(false);
+    if (!isManifesto) {
+      if (articleId) {
+        setIsOpen(false);
+      } else {
+        setIsOpen(true);
+      }
     }
 
-    if (isChanged && articleId) {
-      dispatch(checkAndSend("update", articleId));
-    } else if (isChanged && !articleId) {
-      dispatch(checkAndSend());
+    if (isManifesto) {
+      if (manifestoId) {
+        setIsOpen(false);
+      } else {
+        setIsOpen(true);
+      }
+    }
+  }, [articleId, manifestoId]);
+
+  function onClickOutside() {
+    if (isManifesto) {
+      if (title && !titleError) {
+        setIsOpen(false);
+        if (isChanged && !manifestoId) {
+          dispatch(saveManifesto(selectedManifestoLang.value));
+        } else if (isChanged && manifestoId) {
+          dispatch(actulalizeManifesto(manifestoId));
+        }
+      }
+    }
+
+    if (!isManifesto) {
+      if (title && slug && !slugError && !regexSlugError && !postingError) {
+        setIsOpen(false);
+      }
+      if (isChanged && articleId) {
+        dispatch(checkAndSend("update", articleId));
+      } else if (isChanged && !articleId) {
+        dispatch(checkAndSend());
+      }
     }
   }
   useClickOutside(mainInformationRef, onClickOutside);
@@ -80,16 +114,21 @@ const MainInformation = () => {
           <TitleIcon src={infoIcon} />
           <FormTitle>MAIN INFORMATION</FormTitle>
         </SectionTitle>
-        {!isOpen && (
+        {!isOpen && !isManifesto && (
           <>
             <CollapsedText>{title}</CollapsedText>
             <CollapsedText>{slug}</CollapsedText>
             <CollapsedText>{lang}</CollapsedText>
           </>
         )}
+        {!isOpen && isManifesto && (
+          <>
+            <CollapsedText>{title}</CollapsedText>
+          </>
+        )}
         {isOpen && (
           <>
-            <FieldTitle>Title and slug URL</FieldTitle>
+            {!isManifesto && <FieldTitle>Title and slug URL</FieldTitle>}
             <Field
               placeholder="Title (internal)"
               maxlength="40"
@@ -101,28 +140,35 @@ const MainInformation = () => {
               edit={title}
               error={titleError}
             />
-            <Field
-              placeholder="slug URL"
-              infos={slugError ? "Content need a slug." : `${slugMessage()}`}
-              name="slug"
-              section="mainInformation"
-              edit={slug}
-              error={regexSlugError || postingError || slugError}
-            />
-            <Field
-              placeholder="Category"
-              name="category"
-              fieldType="select"
-              section="mainInformation"
-              edit={category || null}
-            />
-            <Field
-              placeholder="Language"
-              name="lang"
-              fieldType="select"
-              section="mainInformation"
-              edit={lang || "fr"}
-            />
+            {!isManifesto && (
+              <>
+                <Field
+                  placeholder="slug URL"
+                  infos={
+                    slugError ? "Content need a slug." : `${slugMessage()}`
+                  }
+                  name="slug"
+                  section="mainInformation"
+                  edit={slug}
+                  error={regexSlugError || postingError || slugError}
+                />
+                <Field
+                  placeholder="Category"
+                  name="category"
+                  fieldType="select"
+                  section="mainInformation"
+                  edit={category || null}
+                />
+
+                <Field
+                  placeholder="Language"
+                  name="lang"
+                  fieldType="select"
+                  section="mainInformation"
+                  edit={lang || "fr"}
+                />
+              </>
+            )}
           </>
         )}
       </SectionBox>

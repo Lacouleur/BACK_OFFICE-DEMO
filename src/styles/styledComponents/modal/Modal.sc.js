@@ -16,7 +16,7 @@ export const ModalBox = styled.div`
   background-color: ${colors.mediumGrey};
   position: relative;
   transform: translate(-50%);
-  margin-top: 170px;
+  margin-top: ${(props) => (props.closeModal ? "0" : "170px")};
   margin-left: 50%;
   height: 260px;
   width: 807px;

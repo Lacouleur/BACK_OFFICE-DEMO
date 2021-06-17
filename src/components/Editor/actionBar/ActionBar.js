@@ -55,6 +55,23 @@ const ActionBar = () => {
   const seoState = useSelector(({ seoReducer }) => seoReducer);
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
 
+  const homeNavigationState = useSelector(
+    ({ homeNavigationReducer }) => homeNavigationReducer
+  );
+
+  const manifestoState = useSelector(
+    ({ manifestoReducer }) => manifestoReducer
+  );
+
+  const { homeNavIsChanged } = homeNavigationState;
+
+  const {
+    isManifesto,
+    manifestoId,
+    isModifiedManifesto,
+    isPublishedManifesto,
+  } = manifestoState;
+
   const {
     updatedAt,
     programmedAt,
@@ -90,22 +107,7 @@ const ActionBar = () => {
   const [isArticleError, setIsArticleError] = useState("");
   const selectOptions = [{ value: "UNPUBLISH", label: "UNPUBLISH" }];
 
-  useEffect(() => {
-    if (
-      titleError ||
-      slugError ||
-      regexSlugError ||
-      postingError ||
-      !slug ||
-      !title
-    ) {
-      setIsArticleError(true);
-    } else {
-      setIsArticleError(false);
-    }
-  }, [titleError, slugError, regexSlugError, postingError, title, slug]);
-
-  useEffect(() => {
+  function ModifiedModulesWatcher() {
     const modifiedModules = [];
     modulesList.map((module) => {
       if (module.isChanged) {
@@ -114,15 +116,44 @@ const ActionBar = () => {
       }
       return null;
     });
-
-    if (seoChanged || MainInformationChanged || modifiedModules.length > 0) {
+    if (
+      seoChanged ||
+      MainInformationChanged ||
+      homeNavIsChanged ||
+      modifiedModules.length > 0
+    ) {
       setContentIsChanged(true);
     } else {
       setContentIsChanged(false);
     }
-  }, [seoChanged, MainInformationChanged, modulesState]);
+  }
 
-  useEffect(() => {
+  function FieldsErrorWatcher() {
+    if (!isManifesto) {
+      if (
+        titleError ||
+        slugError ||
+        regexSlugError ||
+        postingError ||
+        !slug ||
+        !title
+      ) {
+        setIsArticleError(true);
+      } else {
+        setIsArticleError(false);
+      }
+    }
+
+    if (isManifesto) {
+      if (titleError || !title) {
+        setIsArticleError(true);
+      } else {
+        setIsArticleError(false);
+      }
+    }
+  }
+
+  function timeWatcher() {
     const createUpdateDate = new Date(updatedAt);
     setUpdateDate(buildDate(createUpdateDate));
 
@@ -134,20 +165,38 @@ const ActionBar = () => {
       const createPublishedDate = new Date(publishedAt);
       setPublishedDate(buildDate(createPublishedDate));
     }
-  }, [updatedAt, programmedAt, publishedAt]);
+  }
 
   function setButtonContent() {
-    if (status === "PUBLISHED" && modified) {
-      setActionButtonContent("UPDATE");
-      setIsDeleteButton(false);
-    } else if (status === "PUBLISHED" && !modified) {
-      setActionButtonContent("UNPUBLISH");
-      setIsDeleteButton(false);
-    } else {
-      setActionButtonContent("PUBLISH");
-      setIsDeleteButton(true);
+    if (!isManifesto) {
+      if (status === "PUBLISHED" && modified) {
+        setActionButtonContent("UPDATE");
+        setIsDeleteButton(false);
+      } else if (status === "PUBLISHED" && !modified) {
+        setActionButtonContent("UNPUBLISH");
+        setIsDeleteButton(false);
+      } else {
+        setActionButtonContent("PUBLISH");
+        setIsDeleteButton(true);
+      }
+    }
+
+    if (isManifesto) {
+      setActionButtonContent(manifestoId ? "UPDATE" : "PUBLISH");
     }
   }
+
+  useEffect(() => {
+    ModifiedModulesWatcher();
+  }, [seoChanged, MainInformationChanged, modulesState, homeNavIsChanged]);
+
+  useEffect(() => {
+    FieldsErrorWatcher();
+  }, [titleError, slugError, regexSlugError, postingError, title, slug]);
+
+  useEffect(() => {
+    timeWatcher();
+  }, [updatedAt, programmedAt, publishedAt]);
 
   useEffect(() => {
     setButtonContent();
@@ -177,109 +226,135 @@ const ActionBar = () => {
   }
 
   return (
-    <ActionBarContainer>
-      {isOpenErrorModal && <ErrorModal />}
-      {isOpenPublishModal && (
-        <PublishModal actionName={actionButtonContent} articleId={articleId} />
-      )}
-      {isOpenArchiveModal && <ArchiveModal articleId={articleId} />}
-      <ButtonsContainer>
-        <Button
-          type="button"
-          styles={backButton}
-          onClick={() => history.push("/dashboard")}
-        >
-          <BackIcon src={backArrow} />
-          <BackText>BACK</BackText>
-        </Button>
-        <Button
-          onClick={() => {
-            if (isEditing) {
-              handleSubmit();
-            }
-          }}
-          styles={
-            contentIsChanged && !isArticleError ? saveButton : saveButtonDisable
-          }
-          type="button"
-        >
-          {contentIsChanged ? "save" : "saved"}
-        </Button>
-      </ButtonsContainer>
-      <StatusContainer>
-        {isEditing && (
-          <LastSavedText>
-            <LastSavedBox>
-              <LastSavedText>Last Saved</LastSavedText>
-              <LastSavedText>{`${updateDate}`}</LastSavedText>
-            </LastSavedBox>
-          </LastSavedText>
-        )}
-
-        {programmedAt && (
-          <>
-            <Separator />
-            <ProgrammedBox>
-              <ColorDot background={`${colors.deepBlue}`} />
-              <ProgrammedText>Will be published</ProgrammedText>
-              <ProgrammedText>{`${programmedDate}`}</ProgrammedText>
-            </ProgrammedBox>
-          </>
-        )}
-        {publishedAt && status === "PUBLISHED" && (
-          <>
-            <Separator />
-            <StatusBox>
-              <ColorDot background={`${colors.green}`} />
-              <StatusText>Published</StatusText>
-              <StatusText>{`${publishedDate}`}</StatusText>
-            </StatusBox>
-          </>
-        )}
-      </StatusContainer>
-      <ActionsContainer>
-        <ActionIcon src={eyeIcon} />
-        {isDeleteButton ? (
-          <ArchiveBox role="button">
-            <ActionIcon
-              src={trashIcon}
-              onClick={() => dispatch(setIsOpenArchiveModal(true))}
-            />
-          </ArchiveBox>
-        ) : (
-          <ArchiveBox role="button">
-            <ActionIcon src={trashGreyIcon} />
-            <Tooltip archive>
-              <TooltipText>A published content cannot be archived</TooltipText>
-            </Tooltip>
-          </ArchiveBox>
-        )}
-        <PublishButton
-          isActive={!!(articleId && !contentIsChanged)}
-          type="button"
-          onClick={() => {
-            if (articleId) {
-              dispatch(setIsOpenPublishModal(true));
-            }
-          }}
-        >
-          {actionButtonContent}
-        </PublishButton>
-        {status === "PUBLISHED" && modified && !contentIsChanged && (
-          <Selector
-            placeholder=""
-            classNamePrefix="select"
-            options={selectOptions}
-            onChange={(e) => {
-              if (e?.value === "UNPUBLISH") {
-                setActionButtonContent(e?.value);
-                dispatch(setIsOpenPublishModal(true));
-              }
-            }}
+    <>
+      <ActionBarContainer>
+        {isOpenErrorModal && <ErrorModal />}
+        {isOpenPublishModal && (
+          <PublishModal
+            actionName={actionButtonContent}
+            articleId={isManifesto ? manifestoId : articleId}
           />
         )}
-      </ActionsContainer>
-    </ActionBarContainer>
+        {isOpenArchiveModal && <ArchiveModal articleId={articleId} />}
+        <ButtonsContainer>
+          <Button
+            type="button"
+            styles={backButton}
+            onClick={() => history.push("/dashboard")}
+          >
+            <BackIcon src={backArrow} />
+            <BackText>BACK</BackText>
+          </Button>
+          <Button
+            onClick={() => {
+              if (isEditing) {
+                handleSubmit();
+              }
+            }}
+            styles={
+              contentIsChanged && !isArticleError
+                ? saveButton
+                : saveButtonDisable
+            }
+            type="button"
+          >
+            {contentIsChanged && !isArticleError ? "save" : "saved"}
+          </Button>
+        </ButtonsContainer>
+        <StatusContainer>
+          {isEditing && (
+            <LastSavedText>
+              <LastSavedBox>
+                <LastSavedText>Last Saved</LastSavedText>
+                <LastSavedText>{`${updateDate}`}</LastSavedText>
+              </LastSavedBox>
+            </LastSavedText>
+          )}
+
+          {programmedAt && (
+            <>
+              <Separator />
+              <ProgrammedBox>
+                <ColorDot background={`${colors.deepBlue}`} />
+                <ProgrammedText>Will be published</ProgrammedText>
+                <ProgrammedText>{`${programmedDate}`}</ProgrammedText>
+              </ProgrammedBox>
+            </>
+          )}
+          {publishedAt && status === "PUBLISHED" && (
+            <>
+              <Separator />
+              <StatusBox>
+                <ColorDot background={`${colors.green}`} />
+                <StatusText>Published</StatusText>
+                <StatusText>{`${publishedDate}`}</StatusText>
+              </StatusBox>
+            </>
+          )}
+        </StatusContainer>
+        <ActionsContainer>
+          <ActionIcon src={eyeIcon} />
+          {isDeleteButton ? (
+            <ArchiveBox role="button">
+              <ActionIcon
+                src={trashIcon}
+                onClick={() => dispatch(setIsOpenArchiveModal(true))}
+              />
+            </ArchiveBox>
+          ) : (
+            <ArchiveBox role="button">
+              <ActionIcon src={trashGreyIcon} />
+              <Tooltip archive>
+                <TooltipText>
+                  A published content cannot be archived
+                </TooltipText>
+              </Tooltip>
+            </ArchiveBox>
+          )}
+          {isManifesto && (
+            <PublishButton
+              isActive={
+                !!(manifestoId && !isPublishedManifesto && !contentIsChanged)
+              }
+              type="button"
+              onClick={() => {
+                if (manifestoId) {
+                  dispatch(setIsOpenPublishModal(true));
+                }
+              }}
+            >
+              {actionButtonContent}
+            </PublishButton>
+          )}
+          {!isManifesto && (
+            <PublishButton
+              isActive={!!(articleId && !contentIsChanged)}
+              type="button"
+              onClick={() => {
+                if (articleId) {
+                  dispatch(setIsOpenPublishModal(true));
+                }
+              }}
+            >
+              {actionButtonContent}
+            </PublishButton>
+          )}
+          {status === "PUBLISHED" && modified && !contentIsChanged && (
+            <Selector
+              placeholder=""
+              classNamePrefix="select"
+              options={selectOptions}
+              onChange={(e) => {
+                if (e?.value === "UNPUBLISH") {
+                  setActionButtonContent(e?.value);
+                  dispatch(setIsOpenPublishModal(true));
+                }
+              }}
+            />
+          )}
+        </ActionsContainer>
+      </ActionBarContainer>
+    </>
   );
 };
 

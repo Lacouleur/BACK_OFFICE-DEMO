@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useRef, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useClickOutside from "../../helper/cutomHooks/useClickOutside";
 import { setIsOpenPublishModal } from "../../store/actions/actionBarActions";
 import { publishAction } from "../../store/actions/clientActions";
@@ -16,12 +16,26 @@ const PublishModal = ({ actionName, articleId }) => {
   const modal = useRef(null);
   const dispatch = useDispatch();
 
+  const manifestoState = useSelector(
+    ({ manifestoReducer }) => manifestoReducer
+  );
+  const { isManifesto, manifestoId } = manifestoState;
+
   function handlePublish() {
-    dispatch(publishAction(articleId, actionName));
+    if (!isManifesto) {
+      dispatch(publishAction(articleId, actionName));
+    }
+    if (isManifesto) {
+      dispatch(publishAction(manifestoId, actionName));
+    }
   }
 
   useEffect(() => {
-    modal.current.scrollIntoView({ behavior: "smooth" });
+    modal.current.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "nearest",
+    });
   }, []);
 
   function onClickOutside() {

@@ -12,6 +12,8 @@ import Error404 from "./pages/404";
 import PrivateRoute from "./services/routes/PrivatesRoutes";
 import EditorCreate from "./pages/Editor/EditorCreate";
 import EditorEdit from "./pages/Editor/EditorEdit";
+import EditorManifesto from "./pages/Editor/EditorManifesto";
+import EditorCreateManifesto from "./pages/Editor/EditorCreateManifesto";
 import combineReducers from "./store/combineReducers";
 import logMiddleware from "./store/logMiddleware";
 
@@ -30,6 +32,16 @@ const rootComponent = (
         </Route>
         <PrivateRoute path="/dashboard" exact component={Home} />
         <PrivateRoute path="/editor" exact component={EditorCreate} />
+        <PrivateRoute
+          path="/create-manifesto/:lang"
+          exact
+          component={EditorCreateManifesto}
+        />
+        <PrivateRoute
+          path="/manifesto/:lang"
+          exact
+          component={EditorManifesto}
+        />
         <PrivateRoute path="/editor/:articleId" exact component={EditorEdit} />
         <Route path="*">
           <Error404 />

@@ -2,7 +2,7 @@
 /* eslint-disable no-return-assign */
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {  useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import PageContainer from "../../styles/styledComponents/global/PageContainer.sc";
@@ -11,7 +11,7 @@ import Seo from "../../components/Editor/Sections/Seo";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import plus from "../../styles/assets/icons/plus.svg";
 import { createNewContent } from "../../styles/styledComponents/global/Buttons/CustomButtons.sc";
-import { IconCreat } from "../../styles/styledComponents/contentList/ContentList.sc";
+import { IconCreat, TitleBox } from "../../styles/styledComponents/contentList/ContentList.sc";
 import {
   Form,
   FormContainer,
@@ -20,37 +20,43 @@ import {
 } from "../../styles/styledComponents/editor/Sections.sc";
 import ActionBar from "../../components/Editor/actionBar/ActionBar";
 import ModuleCreator from "../../components/Editor/Sections/Modules/ModuleCreator";
-import { fetchContent } from "../../store/actions/clientActions";
+import { fetchManifesto } from "../../store/actions/clientActions";
 import TextModule from "../../components/Editor/Sections/Modules/TextModule/TextModule";
 import ImageModule from "../../components/Editor/Sections/Modules/ImageModule/ImageModule";
-import { setArticleId } from "../../store/actions/commonsActions";
 import {
   setErrorSlug,
   setErrorTitle,
 } from "../../store/actions/mainInformationActions";
-import {
-  setIsManifesto,
-} from "../../store/actions/manifestoActions";
 import colors from "../../styles/core/colors";
 import HomeNavigation from "../../components/Editor/Sections/HomeNavigation";
 import OpinionModule from "../../components/Editor/Sections/Modules/OpinionModule/OpinionModule";
+import { ManifestoLang, ManifestoTitle } from "../../styles/styledComponents/global/Titles.sc";
+import { setIsManifesto } from "../../store/actions/manifestoActions";
+import keyGenerator from "../../helper/keyGenerator";
+import setCurrentLang from "../../helper/setCurrentLang"
 
-
-
-const Editor = () => {
+const EditorManifesto = () => {
   const dispatch = useDispatch();
-  const { articleId } = useParams();
+  const { lang } = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
-  const actionBarState = useSelector(({ actionBarReducer }) => actionBarReducer);
-
   const { modulesList } = modulesState;
-  const { isOpenCloseModal } = actionBarState;
+  const manifestoState = useSelector(
+    ({ manifestoReducer}) => manifestoReducer
+  );
+  const actionBarState = useSelector(({ actionBarReducer }) => actionBarReducer);
+ const {manifestoId, selectedManifestoLang } = manifestoState;
+ const { isOpenCloseModal } = actionBarState;
 
   useEffect(() => {
-      dispatch(setIsManifesto(false))
-      dispatch(fetchContent(articleId));
-      dispatch(setArticleId(articleId));
+    dispatch(setIsManifesto(true));
+    if (!selectedManifestoLang) {
+      setCurrentLang(dispatch, lang)
+      }; 
+
+    if (!manifestoId && lang) {
+      dispatch(fetchManifesto(lang));
+    }
   }, []);
 
   return (
@@ -60,26 +66,30 @@ const Editor = () => {
         <ActionBar />
         <FormContainer>
           {isOpenCloseModal?.value && <HideContent />}
+          <TitleBox>
+            <ManifestoTitle>MANIFESTO</ManifestoTitle>
+            <ManifestoLang>{selectedManifestoLang?.label}</ManifestoLang>
+          </TitleBox>
           <MainInformation />
           <Seo />
           <HomeNavigation />
           {modulesList?.map((module) => {
             switch (module.type) {
-              case "text":{
+           case "text":{
                 return (
                   <TextModule
-                    key={module.uuid}
+                    key={keyGenerator(module.uuid)}
                     text={module.text}
                     uuid={module.uuid}
                     isChanged={module.isChanged}
                     isOpenCloseModal={module.isOpenCloseModal}
                     isNewModule={module.isNewModule}
                   />
-                );}
+                );} 
               case "image":{
                 return (
                   <ImageModule
-                    key={module.uuid}
+                    key={keyGenerator(module.uuid)}
                     uuid={module.uuid}
                     thumbnail={module?.image?.urls?.thumbnail?.url || undefined}
                     imageUuid={module.image.uuid}
@@ -88,11 +98,11 @@ const Editor = () => {
                     isOpenCloseModal={module.isOpenCloseModal}
                     isNewModule={module.isNewModule}
                   />
-                );}
+                );}  
                 case "opinion":{
                     return (
                       <OpinionModule 
-                        key={module.uuid}
+                        key={keyGenerator(module.uuid)}
                         uuid={module.uuid}
                         isChanged={module.isChanged}
                         isOpenCloseModal={module.isOpenCloseModal}
@@ -110,7 +120,7 @@ const Editor = () => {
             }
             })}
   
-          {isOpen && articleId && <ModuleCreator setIsOpen={setIsOpen} />}
+          {isOpen && <ModuleCreator setIsOpen={setIsOpen} />}
           <NewBlockButtonBox>
             <Button
               type="button"
@@ -123,7 +133,8 @@ const Editor = () => {
               ...createNewContent,
               marginLeft: "auto",
               maginRight: "0",
-              background: `${colors.paleViolet}`
+              background: `${colors.paleViolet}`,
+              position: "absolute",
             }}
             >
               <IconCreat src={plus} />
@@ -137,4 +148,4 @@ const Editor = () => {
   );
 };
 
-export default Editor;
+export default EditorManifesto;

@@ -6,6 +6,7 @@ import authReducer from "./reducer/authReducer";
 import modulesReducer from "./reducer/modulesReducer";
 import actionBarReducer from "./reducer/actionBarReducer";
 import homeNavigationReducer from "./reducer/homeNavigationReducer";
+import manifestoReducer from "./reducer/manifestoReducer";
 
 export default combineReducers({
   mainInformationReducer,
@@ -15,4 +16,5 @@ export default combineReducers({
   authReducer,
   modulesReducer,
   actionBarReducer,
+  manifestoReducer,
 });

@@ -50,31 +50,17 @@ const TextModule = ({
   const [isOpen, setIsOpen] = useState(false);
   const [editorState, setEditorState] = useState();
 
-  useEffect(() => {
-    if (isNewModule) {
-      textModuleRef.current.scrollIntoView({ behavior: "smooth" });
-      textEditorRef?.current?.focus();
-      setIsOpen(true);
-    }
-    dispatch(showCloseModal(false));
-  }, [isNewModule]);
-
-  useEffect(() => {
-    function setContent() {
+  function setContent() {
+    if (!editorState) {
       if (text) {
         const converted = HTMLconverter(editorState, "from", text);
         const stateWithContent = EditorState.createWithContent(converted);
-        return stateWithContent;
+        setEditorState(stateWithContent);
+      } else {
+        const stateEmpty = EditorState.createEmpty();
+        setEditorState(stateEmpty);
       }
-      const stateEmpty = EditorState.createEmpty();
-      return stateEmpty;
-    }
-
-    if (!editorState) {
-      setEditorState(setContent());
-    }
-
-    if (editorState) {
+    } else {
       const newValue = HTMLconverter(editorState);
       if (newValue !== text) {
         dispatch(
@@ -85,6 +71,32 @@ const TextModule = ({
         );
       }
     }
+  }
+
+  function watchNewModules() {
+    if (isNewModule) {
+      textModuleRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "nearest",
+      });
+      textEditorRef?.current?.focus();
+      setIsOpen(true);
+    }
+  }
+
+  useEffect(() => {
+    watchNewModules();
+  }, [isNewModule]);
+
+  useEffect(() => {
+    if (isOpenCloseModal) {
+      setIsOpen(true);
+    }
+  }, [isOpenCloseModal]);
+
+  useEffect(() => {
+    setContent();
   }, [editorState]);
 
   function onEditorStateChange(e) {
@@ -92,12 +104,14 @@ const TextModule = ({
   }
 
   function onClickOutside() {
-    setIsOpen(false);
-    if (isChanged && isNewModule) {
-      dispatch(saveModule(uuid, "save"));
-    }
-    if (isChanged && !isNewModule) {
-      dispatch(saveModule(uuid, "update"));
+    if (!isOpenCloseModal) {
+      setIsOpen(false);
+      if (isChanged && isNewModule) {
+        dispatch(saveModule(uuid, "save"));
+      }
+      if (isChanged && !isNewModule) {
+        dispatch(saveModule(uuid, "update"));
+      }
     }
   }
 

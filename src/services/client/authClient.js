@@ -1,9 +1,9 @@
-import axios from "axios";
+import axiosConfig from "../config/axiosConfig";
 
 export const sendAuth = (data) => {
-  return axios({
+  return axiosConfig({
     method: "post",
-    url: `${BASE_URL}/auth/login`,
+    url: `/auth/login`,
     data,
   });
 };

@@ -5,7 +5,6 @@ import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import "./styles/css/index.css";
 import { createStore, compose, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
-import axios from "axios";
 import thunk from "redux-thunk";
 import Home from "./pages/Home";
 import Auth from "./pages/Auth";
@@ -23,8 +22,6 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const enhancers = composeEnhancers(applyMiddleware(logMiddleware, thunk));
 
 const store = createStore(combineReducers, enhancers);
-
-axios.defaults.withCredentials = true;
 
 const rootComponent = (
   <Provider store={store}>

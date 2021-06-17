@@ -15,13 +15,21 @@ import {
   SectionTitle,
   Thumbnail,
 } from "../../../styles/styledComponents/editor/Sections.sc";
-import { checkAndSend } from "../../../store/actions/clientActions";
+import {
+  actulalizeManifesto,
+  checkAndSend,
+} from "../../../store/actions/clientActions";
 import useClickOutside from "../../../helper/cutomHooks/useClickOutside";
 
 const HomeNavigation = () => {
   const homeNavigationState = useSelector(
     ({ homeNavigationReducer }) => homeNavigationReducer
   );
+
+  const manifestoState = useSelector(
+    ({ manifestoReducer }) => manifestoReducer
+  );
+
   const dispatch = useDispatch();
   const HomeNavigationRef = useRef();
   const [isOpen, setIsOpen] = useState(false);
@@ -44,21 +52,9 @@ const HomeNavigation = () => {
     navImgUrls,
   } = homeNavigationState;
 
-  useEffect(() => {
-    // eslint-disable-next-line no-unused-expressions
-    articleId ? setIsOpen(false) : setIsOpen(true);
-  }, [articleId]);
+  const { manifestoId, isManifesto } = manifestoState;
 
-  function onClickOutside() {
-    setIsOpen(false);
-
-    if (homeNavIsChanged) {
-      dispatch(checkAndSend("update", articleId));
-    }
-  }
-  useClickOutside(HomeNavigationRef, onClickOutside);
-
-  useEffect(() => {
+  function getTitleAndSplit() {
     if (homeImgUuid) {
       setHomeImgTitle(homeImgUuid.split("/")[1]);
       setIsHomeImage(true);
@@ -68,6 +64,42 @@ const HomeNavigation = () => {
       setNavImgTitle(navImgUuid.split("/")[1]);
       setIsNavImage(true);
     }
+  }
+
+  function onClickOutside() {
+    setIsOpen(false);
+    if (homeNavIsChanged) {
+      if (!isManifesto) {
+        dispatch(checkAndSend("update", articleId));
+      }
+
+      if (isManifesto && manifestoId) {
+        dispatch(actulalizeManifesto(manifestoId));
+      }
+    }
+  }
+  useClickOutside(HomeNavigationRef, onClickOutside);
+
+  useEffect(() => {
+    if (!isManifesto) {
+      if (articleId) {
+        setIsOpen(false);
+      } else {
+        setIsOpen(true);
+      }
+    }
+
+    if (isManifesto) {
+      if (manifestoId) {
+        setIsOpen(false);
+      } else {
+        setIsOpen(true);
+      }
+    }
+  }, [articleId, manifestoId]);
+
+  useEffect(() => {
+    getTitleAndSplit();
   }, [homeNavIsChanged, homeImgUuid, navImgUuid]);
 
   return (

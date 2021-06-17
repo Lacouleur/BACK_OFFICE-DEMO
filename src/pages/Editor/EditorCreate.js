@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-return-assign */
 import React, {  useEffect } from "react";
-import {useSelector } from "react-redux";
+import {useDispatch, useSelector } from "react-redux";
 import { useHistory} from "react-router-dom";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
@@ -12,10 +12,12 @@ import {
   FormContainer,
 } from "../../styles/styledComponents/editor/Sections.sc";
 import ActionBar from "../../components/Editor/actionBar/ActionBar";
+import { setIsManifesto } from "../../store/actions/manifestoActions";
 
 
 
 const EditorCreate = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const MainInformationState = useSelector(
     ({ mainInformationReducer }) => mainInformationReducer
@@ -24,6 +26,7 @@ const EditorCreate = () => {
   const {isPosted, articleId } = MainInformationState;
 
   useEffect(() => {
+    dispatch(setIsManifesto(false))
     if (isPosted) {
       history.push(`/editor/${articleId}`)
     }

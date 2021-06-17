@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { H1 } from "../../styles/styledComponents/global/Titles.sc";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import Content from "./Content";
@@ -10,6 +10,7 @@ import {
   ContentSectionBox,
   TitleBox,
   ListBox,
+  ManifestoLangSelector,
 } from "../../styles/styledComponents/contentList/ContentList.sc";
 
 import { createNewContent } from "../../styles/styledComponents/global/Buttons/CustomButtons.sc";
@@ -19,12 +20,17 @@ import keyGenerator from "../../helper/keyGenerator";
 
 import { fetchContentsList } from "../../store/actions/clientActions";
 import { cleanContentState } from "../../store/actions/commonsActions";
+import { selectManifestoLang } from "../../store/actions/manifestoActions";
+import langList from "../../helper/langList";
 
 const ContentList = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const contentsState = useSelector(
     ({ contentListReducer }) => contentListReducer
   );
+
+  const langSelector = React.useRef(null);
 
   const { contentsList } = contentsState;
 
@@ -38,6 +44,16 @@ const ContentList = () => {
       <ContentSectionBox>
         <TitleBox>
           <H1> CONTENT LIST</H1>
+          <ManifestoLangSelector
+            ref={langSelector}
+            placeholder="Manifesto"
+            classNamePrefix="select"
+            options={langList}
+            onChange={(lang) => {
+              dispatch(selectManifestoLang(lang));
+              history.push(`/create-manifesto/${lang.value}`);
+            }}
+          />
           <Link to="/editor">
             <Button styles={createNewContent}>
               <IconCreat src={plus} />

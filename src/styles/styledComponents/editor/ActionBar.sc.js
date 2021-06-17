@@ -170,7 +170,9 @@ const publishButtonEnabled = css`
 `;
 
 export const PublishButton = styled.button`
-  ${(props) => (props.isActive ? publishButtonEnabled : publishButtonDisable)};
+  ${(props) => {
+    return props.isActive ? publishButtonEnabled : publishButtonDisable;
+  }};
   width: 118px;
   height: 43px;
   background-color: ${colors.darkGrey};

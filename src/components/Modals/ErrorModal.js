@@ -22,7 +22,11 @@ const ErrorModal = () => {
   const { errorMessage } = ActionBarState;
 
   useEffect(() => {
-    modal.current.scrollIntoView({ behavior: "smooth" });
+    modal.current.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "nearest",
+    });
   }, []);
 
   function onClickOutside() {

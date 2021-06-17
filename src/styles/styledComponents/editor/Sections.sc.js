@@ -21,7 +21,8 @@ const SectionBoxClosedMixin = css`
   height: 160px;
   overflow: hidden;
   padding: 30px;
-  transition: height 0.3s ease;
+  border-bottom: 0px solid ${colors.paleViolet};
+  transition: all 0.3s ease;
 
   &:hover {
     height: 200px;
@@ -32,6 +33,7 @@ const SectionBoxOpenMixin = css`
   height: 100%;
   padding: 30px;
   overflow: visible;
+  border-bottom: 2px solid ${colors.paleViolet};
 `;
 
 export const SectionBox = styled.div`
@@ -77,11 +79,16 @@ export const Gradient = styled.div`
     rgba(56, 56, 56, 0.8) 0%,
     rgba(149, 149, 149, 0) 100%
   );
+
+  &:hover {
+    border-bottom: 2px solid ${colors.paleViolet};
+  }
 `;
 
 export const NewBlockButtonBox = styled.div`
   width: 100%;
   min-width: 900px;
+  position: relative;
 `;
 
 const HomeImageMixin = css`
@@ -102,7 +109,6 @@ export const Thumbnail = styled.img`
   top: 70px;
   height: 100px;
   box-shadow: 0px 0px 31px 2px ${colors.shadow};
-  background-color: hotpink;
 `;
 
 export const RoundThumbnail = styled.img`
@@ -115,5 +121,17 @@ export const RoundThumbnail = styled.img`
   bottom: 155px;
   height: 100px;
   box-shadow: 0px 0px 31px 2px ${colors.shadow};
-  background-color: hotpink;
+`;
+
+export const HideContent = styled.div`
+  background-color: #1b182190;
+  z-index: 98;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  opacity: 0.7;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
 `;

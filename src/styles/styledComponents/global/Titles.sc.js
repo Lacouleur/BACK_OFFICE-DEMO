@@ -73,3 +73,26 @@ export const PageTitleBox = styled.div`
   height: 36px;
   margin: 150px 0 24px 5%;
 `;
+
+export const ManifestoTitle = styled.div`
+  height: 26px;
+  font-family: Arial;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 22px;
+  line-height: 24px;
+  text-transform: uppercase;
+  margin: 32px 0;
+`;
+
+export const ManifestoLang = styled.div`
+  width: 90%;
+  height: 26px;
+  font-family: Arial;
+  color: ${colors.paleViolet};
+  font-style: normal;
+  font-size: 16px;
+  line-height: 24px;
+  text-transform: uppercase;
+  margin: 32px 16px;
+`;

@@ -35,7 +35,11 @@ const ModuleCreator = ({ setIsOpen }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    moduleRef.current.scrollIntoView();
+    moduleRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "nearest",
+    });
   }, []);
 
   return (

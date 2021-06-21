@@ -1,8 +1,7 @@
 import axios from "axios";
 
-//axios.defaults.withCredentials = true;
-
 const axiosConfig = axios.create({
+  withCredentials: true,
   baseURL: BASE_URL,
 });
 

@@ -20,6 +20,11 @@ import {
   actulalizeManifesto,
 } from "../../../store/actions/clientActions";
 import useClickOutside from "../../../helper/cutomHooks/useClickOutside";
+import {
+  getToken,
+  isValidToken,
+  parseJwt,
+} from "../../../services/client/tokenStuff";
 
 const MainInformation = () => {
   const mainInformationState = useSelector(

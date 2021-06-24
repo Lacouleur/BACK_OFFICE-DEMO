@@ -32,8 +32,6 @@ import HomeNavigation from "../../components/Editor/Sections/HomeNavigation";
 import OpinionModule from "../../components/Editor/Sections/Modules/OpinionModule/OpinionModule";
 import { ManifestoLang, ManifestoTitle } from "../../styles/styledComponents/global/Titles.sc";
 import { setIsManifesto } from "../../store/actions/manifestoActions";
-import keyGenerator from "../../helper/keyGenerator";
-import setCurrentLang from "../../helper/setCurrentLang"
 
 const EditorManifesto = () => {
   const dispatch = useDispatch();
@@ -45,18 +43,12 @@ const EditorManifesto = () => {
     ({ manifestoReducer}) => manifestoReducer
   );
   const actionBarState = useSelector(({ actionBarReducer }) => actionBarReducer);
- const {manifestoId, selectedManifestoLang } = manifestoState;
+ const {selectedManifestoLang } = manifestoState;
  const { isOpenCloseModal } = actionBarState;
 
   useEffect(() => {
     dispatch(setIsManifesto(true));
-    if (!selectedManifestoLang) {
-      setCurrentLang(dispatch, lang)
-      }; 
-
-    if (!manifestoId && lang) {
-      dispatch(fetchManifesto(lang));
-    }
+    dispatch(fetchManifesto(lang));
   }, []);
 
   return (
@@ -75,10 +67,10 @@ const EditorManifesto = () => {
           <HomeNavigation />
           {modulesList?.map((module) => {
             switch (module.type) {
-           case "text":{
+              case "text":{
                 return (
                   <TextModule
-                    key={keyGenerator(module.uuid)}
+                    key={module.uuid}
                     text={module.text}
                     uuid={module.uuid}
                     isChanged={module.isChanged}
@@ -89,7 +81,7 @@ const EditorManifesto = () => {
               case "image":{
                 return (
                   <ImageModule
-                    key={keyGenerator(module.uuid)}
+                    key={module.uuid}
                     uuid={module.uuid}
                     thumbnail={module?.image?.urls?.thumbnail?.url || undefined}
                     imageUuid={module.image.uuid}
@@ -102,7 +94,7 @@ const EditorManifesto = () => {
                 case "opinion":{
                     return (
                       <OpinionModule 
-                        key={keyGenerator(module.uuid)}
+                        key={module.uuid}
                         uuid={module.uuid}
                         isChanged={module.isChanged}
                         isOpenCloseModal={module.isOpenCloseModal}

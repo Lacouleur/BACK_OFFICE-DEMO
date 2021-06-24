@@ -112,13 +112,11 @@ const Field = ({
 
   const { categoriesList, status } = MainInformationState;
 
-  // Next functions concern File Uploader fields
-  useEffect(() => {
+  // Next functions concern File Select fields
+
+  function onEdit() {
     if (edit) {
       setFileTitle(edit);
-    }
-    if (categoriesList?.length === 0) {
-      dispatch(fetchCategoriesList());
     }
 
     if (categoriesList && edit) {
@@ -149,10 +147,19 @@ const Field = ({
         return null;
       });
     }
+  }
+
+  useEffect(() => {
+    if (categoriesList?.length === 0 || !categoriesList) {
+      dispatch(fetchCategoriesList());
+    }
+  }, []);
+
+  useEffect(() => {
+    onEdit();
   }, [edit]);
 
-  // below is about selectors fields
-
+  // Next functions concern File Uploader fields
   const hiddenFileInput = React.useRef(null);
   const handleClick = () => {
     hiddenFileInput.current.click();

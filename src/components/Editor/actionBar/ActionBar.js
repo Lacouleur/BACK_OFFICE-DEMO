@@ -65,7 +65,12 @@ const ActionBar = () => {
 
   const { homeNavIsChanged } = homeNavigationState;
 
-  const { isManifesto, manifestoId, isPublishedManifesto } = manifestoState;
+  const {
+    isManifesto,
+    manifestoId,
+    isPublishedManifesto,
+    manifestoLang,
+  } = manifestoState;
 
   const {
     updatedAt,
@@ -88,6 +93,7 @@ const ActionBar = () => {
     articleId,
     modified,
     status,
+    lang,
   } = MainInformationState;
 
   const isEditing = !!articleId;
@@ -99,6 +105,7 @@ const ActionBar = () => {
   const [contentIsChanged, setContentIsChanged] = useState(false);
   const [actionButtonContent, setActionButtonContent] = useState("");
   const [isDeleteButton, setIsDeleteButton] = useState(false);
+  const [isPreviewButton, setIsPreviewButton] = useState(false);
   const [isArticleError, setIsArticleError] = useState("");
   const selectOptions = [{ value: "UNPUBLISH", label: "UNPUBLISH" }];
 
@@ -178,6 +185,7 @@ const ActionBar = () => {
 
     if (isManifesto) {
       setActionButtonContent(manifestoId ? "UPDATE" : "PUBLISH");
+      setIsDeleteButton(false);
     }
   }
 
@@ -196,6 +204,19 @@ const ActionBar = () => {
   useEffect(() => {
     setButtonContent();
   }, [MainInformationState]);
+
+  useEffect(() => {
+    if (!isManifesto && lang && slug && articleId) {
+      setIsPreviewButton(true);
+      return;
+    }
+
+    if (isManifesto && manifestoLang && manifestoId) {
+      setIsPreviewButton(true);
+      return;
+    }
+    setIsPreviewButton(false);
+  }, [articleId, lang, slug, isManifesto, manifestoLang, manifestoId]);
 
   useEffect(() => {
     if (isOpenPublishModal === false) {
@@ -288,7 +309,27 @@ const ActionBar = () => {
           )}
         </StatusContainer>
         <ActionsContainer>
-          <ActionIcon src={eyeIcon} />
+          {isPreviewButton && (
+            <ActionIcon
+              src={eyeIcon}
+              onClick={() => {
+                if (!isManifesto) {
+                  window.open(
+                    `${PREVIEW_URL}/${lang}/content/${slug}`,
+                    "_blank"
+                  );
+                }
+
+                if (isManifesto) {
+                  window.open(
+                    `${PREVIEW_URL}/${manifestoLang}/manifest`,
+                    "_blank"
+                  );
+                }
+              }}
+            />
+          )}
+
           {isDeleteButton ? (
             <ArchiveBox role="button">
               <ActionIcon

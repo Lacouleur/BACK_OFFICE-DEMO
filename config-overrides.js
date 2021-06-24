@@ -7,12 +7,21 @@ module.exports = function override(config) {
   }
   config.plugins.push(
     new webpack.DefinePlugin({
-      HOST_URL: JSON.stringify(process.env.HOST_URL||'http://localhost:3001'),
+      HOST_URL: JSON.stringify(process.env.HOST_URL || "http://localhost:3001"),
     })
   );
   config.plugins.push(
     new webpack.DefinePlugin({
-      BASE_URL: JSON.stringify(process.env.BASE_URL||'http://localhost:3011/api'),
+      BASE_URL: JSON.stringify(
+        process.env.BASE_URL || "http://localhost:3011/api"
+      ),
+    })
+  );
+  config.plugins.push(
+    new webpack.DefinePlugin({
+      PREVIEW_URL: JSON.stringify(
+        process.env.PREVIEW_URL || "http://localhost:3002"
+      ),
     })
   );
   return config;

@@ -49,11 +49,12 @@ function HTMLconverter(editorState, mode = "to", data = "") {
     },
     htmlToEntity: (nodeName, node, createEntity) => {
       if (nodeName === "a") {
-        return createEntity("LINK", "MUTABLE", {
+        return createEntity("LINK", "UNMUTABLE", {
           url: node.href,
           targetOption: node.target,
         });
       }
+
       return null;
     },
   };

@@ -403,6 +403,9 @@ export function fetchContentsList(page) {
 
       return null;
     } catch (error) {
+      /*       if ((error.response.status = 401)) {
+        dispatch();
+      } */
       console.log("error =>", error?.response?.data);
       return null;
     }

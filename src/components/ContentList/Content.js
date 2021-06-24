@@ -37,6 +37,7 @@ const Content = ({
   id,
   categoryLabel,
   title,
+  slug,
   lang,
   status,
   updatedAt,
@@ -69,7 +70,15 @@ const Content = ({
       />
 
       <IconActionBox>
-        <IconAction src={eye} />
+        <IconAction
+          src={eye}
+          onClick={() => {
+            window.open(
+              `${PREVIEW_URL}/${lang.slice(0, 2)}/content/${slug}`,
+              "_blank"
+            );
+          }}
+        />
         {status !== "PUBLISHED" ? (
           <ArchiveBox role="button">
             <ActionIcon
@@ -125,6 +134,7 @@ Content.propTypes = {
   publishScheduledAt: PropTypes.string,
   publishedAt: PropTypes.string,
   modified: PropTypes.bool.isRequired,
+  slug: PropTypes.string.isRequired,
 };
 
 export default Content;

@@ -35,7 +35,6 @@ const initialState = {
   options: [],
   isManifesto: false,
   manifestoId: null,
-  manifestoLang: "fr",
 };
 
 const mainInformationReducer = (state = initialState, action = {}) => {

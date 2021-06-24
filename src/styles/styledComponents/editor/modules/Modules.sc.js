@@ -44,7 +44,7 @@ export const DraftJsWrapper = styled.div`
     min-height: 300px;
     max-height: 65vh;
     border-radius: 0 0 3px 3px;
-    padding: 9px;
+    padding: 9px 18px 9px 9px;
     font-size: 16px;
     ${(props) =>
       props.isOpen ? DraftJsContainerOpenMixin : DraftJsContainerClosedMixin};
@@ -72,7 +72,7 @@ export const DraftJsWrapper = styled.div`
     }
 
     &:hover {
-      overflow: auto;
+      overflow: overlay;
     }
   }
 `;

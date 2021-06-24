@@ -206,8 +206,8 @@ const OpinionModule = ({
 
         <Field
           placeholder="Question"
-          maxlength="61"
-          infos="Maximum 61 characters"
+          maxlength="70"
+          infos="Maximum 70 characters"
           name="question"
           section="opinion"
           moduleId={uuid}
@@ -221,8 +221,8 @@ const OpinionModule = ({
               <AnswerContainer key={answer.uuid}>
                 <Field
                   placeholder="Answer"
-                  maxlength="34"
-                  infos="Maximum 34 characters"
+                  maxlength="60"
+                  infos="Maximum 60 characters"
                   name="answer"
                   section="opinion"
                   moduleId={uuid}

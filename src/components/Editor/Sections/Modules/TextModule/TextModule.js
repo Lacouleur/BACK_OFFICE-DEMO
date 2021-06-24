@@ -124,6 +124,11 @@ const TextModule = ({
     },
   };
 
+  // Functrion to avoid "mailto params" to be escaped
+  function processLink(link) {
+    return link;
+  }
+
   return (
     <ModuleContainer onClick={() => setIsOpen(true)} ref={textModuleRef}>
       {isOpenCloseModal && (
@@ -185,7 +190,12 @@ const TextModule = ({
                 inDropdown: true,
                 options: ["unordered", "ordered"],
               },
-              link: { inDropdown: true, defaultTargetOption: "_self" },
+              link: {
+                inDropdown: true,
+                defaultTargetOption: "_self",
+                linkCallback: processLink,
+                trailingWhitespace: false,
+              },
               history: { inDropdown: false },
               emoji: {
                 emojis: emojisList,

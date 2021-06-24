@@ -18,13 +18,14 @@ import { loginButton } from "../styles/styledComponents/global/Buttons/CustomBut
 import PageContainer from "../styles/styledComponents/global/PageContainer.sc";
 import Error from "../components/Notifications/Error";
 import { logUser } from "../store/actions/clientActions";
-import { getToken } from "../services/client/authClient";
+import { getRefreshToken, getToken } from "../services/client/tokenStuff";
 
 const Auth = () => {
   const authState = useSelector(({ authReducer }) => authReducer);
   const { mailFieldError, passwordFieldError, authError } = authState;
   const dispatch = useDispatch();
   const history = useHistory();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const redirectTo = (link) => {
@@ -34,7 +35,7 @@ const Auth = () => {
   };
 
   useEffect(() => {
-    if (getToken()) {
+    if (getToken() && getRefreshToken()) {
       history.push("/dashboard");
     }
   }, []);

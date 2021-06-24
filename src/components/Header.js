@@ -9,7 +9,7 @@ import {
 } from "../styles/styledComponents/nav/Header.sc";
 import phoenixLogo from "../styles/assets/logos/phoenix-logo.svg";
 import burger from "../styles/assets/icons/burger.svg";
-import { getToken, deleteToken } from "../services/client/authClient";
+import { getToken, deleteToken } from "../services/client/tokenStuff";
 
 const Header = ({ position }) => {
   const [isConnected] = useState(!!getToken());

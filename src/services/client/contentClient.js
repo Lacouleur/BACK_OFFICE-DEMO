@@ -1,6 +1,27 @@
 /* eslint-disable no-param-reassign */
 import axiosConfig from "../config/axiosConfig";
-import { getToken } from "./authClient";
+import { getRefreshToken, getToken } from "./tokenStuff";
+
+export const refreshMyToken = () => {
+  console.log("REFRESH", getRefreshToken());
+  console.log("TOKEN", getToken());
+  return axiosConfig({
+    method: "put",
+    url: `/auth/refresh-token`,
+    data: { refreshToken: getRefreshToken() },
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+};
+
+export const sendAuth = (data) => {
+  return axiosConfig({
+    method: "post",
+    url: `/auth/login`,
+    data,
+  });
+};
 
 export function getContentList(page = 1, limit = 20) {
   return axiosConfig.get(`/contents?limit=${limit}&page=${page}`, {

@@ -7,6 +7,7 @@ import {
   addSlug,
   addCategory,
   addLang,
+  setColorStyle,
 } from "../../store/actions/mainInformationActions";
 import { addSeoDescription, addSeoTitle } from "../../store/actions/seoActions";
 import {
@@ -65,6 +66,7 @@ const Field = ({
   const [editCategory, setEditCategory] = useState();
   const [selectedLang, setSelectedLang] = useState();
   const [selectedReadTime, setSelectedReadTime] = useState();
+  const [selectedColorStyle, setSelectedColorStyle] = useState();
   const [fileTitle, setFileTitle] = useState("");
 
   const readingTimeList = [
@@ -106,6 +108,17 @@ const Field = ({
     },
   ];
 
+  const colorStyleList = [
+    {
+      label: "Blue",
+      value: 1,
+    },
+    {
+      label: "Yellow",
+      value: 2,
+    },
+  ];
+
   const MainInformationState = useSelector(
     ({ mainInformationReducer }) => mainInformationReducer
   );
@@ -142,6 +155,17 @@ const Field = ({
       readingTimeList.map((option) => {
         if (parseInt(edit, 10) === option.value) {
           setSelectedReadTime(option);
+          return null;
+        }
+        return null;
+      });
+    }
+
+    if (!selectedColorStyle) {
+      colorStyleList.map((option) => {
+        if (edit === option.value) {
+          console.log("EGALE");
+          setSelectedColorStyle(option);
           return null;
         }
         return null;
@@ -194,6 +218,9 @@ const Field = ({
       case "readTime":
         return selectedReadTime;
 
+      case "colorStyle":
+        return selectedColorStyle;
+
       default:
         return null;
     }
@@ -210,10 +237,15 @@ const Field = ({
       case "readTime":
         return readingTimeList;
 
+      case "colorStyle":
+        return colorStyleList;
+
       default:
         return null;
     }
   }
+
+  console.log("selectedColorStyle", selectedColorStyle);
 
   return (
     <FieldContainer>
@@ -225,7 +257,7 @@ const Field = ({
             options={optionSelector(name)}
             classNamePrefix="select"
             placeholder={name}
-            isClearable
+            isClearable={!(name === "lang" || name === "colorStyle")}
             onChange={(e) => {
               if (e?.value) {
                 if (name === "category") {
@@ -239,6 +271,10 @@ const Field = ({
                 if (name === "readTime") {
                   setSelectedReadTime(e);
                   dispatch(setReadingTime(e.value));
+                }
+                if (name === "colorStyle") {
+                  setSelectedColorStyle(e);
+                  dispatch(setColorStyle(e.value));
                 }
               } else if (name === "category") {
                 setEditCategory("");

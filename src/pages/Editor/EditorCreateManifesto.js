@@ -16,7 +16,6 @@ import { setIsManifesto} from "../../store/actions/manifestoActions";
 import { TitleBox } from "../../styles/styledComponents/contentList/ContentList.sc";
 import { ManifestoLang, ManifestoTitle } from "../../styles/styledComponents/global/Titles.sc";
 import { fetchManifesto } from "../../store/actions/clientActions";
-import setCurrentLang from "../../helper/setCurrentLang";
 
 const EditorCreateManifesto = () => {
   const dispatch = useDispatch();
@@ -28,17 +27,11 @@ const EditorCreateManifesto = () => {
     ({ manifestoReducer }) => manifestoReducer
   );
 
-  const {manifestoId, selectedManifestoLang, manifestoLang, isManifesto } = manifestoState;
+  const {manifestoId, manifestoLang, isManifesto } = manifestoState;
 
   useEffect(() => { 
-    
-    if (!selectedManifestoLang) {
-      setCurrentLang(dispatch, lang)
-      }; 
-    
-    if(!isManifesto) {
-      dispatch(setIsManifesto(true))
-    }
+
+    dispatch(setIsManifesto(true))
 
     if(!manifestoId) {
       dispatch(fetchManifesto(lang));
@@ -62,7 +55,7 @@ const EditorCreateManifesto = () => {
         <FormContainer>
           <TitleBox>
             <ManifestoTitle>MANIFESTO</ManifestoTitle>
-            <ManifestoLang>{selectedManifestoLang?.label}</ManifestoLang>
+            <ManifestoLang>{lang}</ManifestoLang>
           </TitleBox>
           <MainInformation />
         </FormContainer>

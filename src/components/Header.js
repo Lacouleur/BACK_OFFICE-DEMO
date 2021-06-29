@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import {
   BurgerMenu,
   DisconectButton,
@@ -14,6 +15,7 @@ import { getToken, deleteToken } from "../services/client/tokenStuff";
 const Header = ({ position }) => {
   const [isConnected] = useState(!!getToken());
   const history = useHistory();
+  const dispatch = useDispatch();
 
   return (
     <HeaderContainer position={position}>
@@ -22,7 +24,7 @@ const Header = ({ position }) => {
           <BurgerMenu src={burger} />
           <DisconectButton
             onClick={() => {
-              deleteToken();
+              deleteToken(dispatch);
               history.push("/");
             }}
           />

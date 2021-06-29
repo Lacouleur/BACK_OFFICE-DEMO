@@ -1,9 +1,5 @@
-import {
-  deleteToken,
-  isValidToken,
-  setRefreshToken,
-  setToken,
-} from "../../services/client/tokenStuff";
+import { deleteToken, setToken } from "../../services/client/tokenStuff";
+import { isValidToken } from "../../services/client/refreshToken";
 import {
   sendAuth,
   saveComponent,
@@ -53,17 +49,22 @@ import {
 import { nameSpaceError } from "../../helper/errorMessages";
 import { setHomeImageUuid, setNavImageUuid } from "./homeNavigationActions";
 
-export const CONTENT_LOADED = "CONTENT_LOADED";
-
 export function checkAndSend(type = "save", articleId = null) {
-  if (isValidToken()) {
-    return async (dispatch, getState) => {
+  return async (dispatch, getState) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
       const {
         seoReducer,
         mainInformationReducer,
         homeNavigationReducer,
       } = getState();
-      const { title: mainTitle, slug, category, lang } = mainInformationReducer;
+      const {
+        title: mainTitle,
+        slug,
+        category,
+        lang,
+        colorStyle,
+      } = mainInformationReducer;
       const { description, title: seoTitle } = seoReducer;
 
       const {
@@ -93,6 +94,7 @@ export function checkAndSend(type = "save", articleId = null) {
           title: mainTitle,
           slug,
           category: !category ? null : category,
+          theme: colorStyle,
           header: homeTitle
             ? {
                 readingTime: readingTime || undefined,
@@ -120,6 +122,7 @@ export function checkAndSend(type = "save", articleId = null) {
           title: mainTitle,
           slug,
           category: !category ? null : category,
+          theme: colorStyle,
         };
       }
 
@@ -185,17 +188,18 @@ export function checkAndSend(type = "save", articleId = null) {
         }
       }
       return null;
-    };
-  }
-  return null;
+    }
+    return null;
+  };
 }
 
 export function saveManifesto(lang) {
   console.warn("SAVE MANIFESTO", lang);
-  if (isValidToken()) {
-    return async (dispatch, getState) => {
+  return async (dispatch, getState) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
       const { mainInformationReducer } = getState();
-      const { title: mainTitle } = mainInformationReducer;
+      const { title: mainTitle, colorStyle } = mainInformationReducer;
 
       const titleError = !mainTitle;
 
@@ -207,6 +211,7 @@ export function saveManifesto(lang) {
 
       values = {
         title: mainTitle,
+        theme: colorStyle,
       };
 
       if (!titleError && lang) {
@@ -215,6 +220,8 @@ export function saveManifesto(lang) {
           if (response.status < 300 && response.status > 199) {
             dispatch(setManifestoId(response.data));
             dispatch(setPosted(true));
+            dispatch(setManifestoStatus("UNPUBLISHED"));
+
             console.log(
               `Patrick, i've posted the new manifesto and the server return =>`,
               response.data
@@ -228,21 +235,22 @@ export function saveManifesto(lang) {
           );
         }
       }
-    };
-  }
-  return null;
+    }
+    return null;
+  };
 }
 
 export function actulalizeManifesto(manifestoId) {
   console.warn("UPDATE MANIFESTO", manifestoId);
-  if (isValidToken()) {
-    return async (dispatch, getState) => {
+  return async (dispatch, getState) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
       const {
         seoReducer,
         mainInformationReducer,
         homeNavigationReducer,
       } = getState();
-      const { title: mainTitle } = mainInformationReducer;
+      const { title: mainTitle, colorStyle } = mainInformationReducer;
       const { description, title: seoTitle } = seoReducer;
 
       const {
@@ -258,6 +266,7 @@ export function actulalizeManifesto(manifestoId) {
 
       values = {
         title: mainTitle,
+        theme: colorStyle,
         header: homeTitle
           ? {
               readingTime: readingTime || undefined,
@@ -320,14 +329,16 @@ export function actulalizeManifesto(manifestoId) {
         return null;
       }
       return null;
-    };
-  }
-  return null;
+    }
+    return null;
+  };
 }
 
 export function fetchContent(id) {
-  if (isValidToken()) {
-    return async (dispatch) => {
+  console.warn("FETCH CONTENT", id);
+  return async (dispatch) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
       try {
         const response = await getContent(id);
         if (response.status < 300 && response.status > 199) {
@@ -342,20 +353,21 @@ export function fetchContent(id) {
       } catch (error) {
         if (error?.response?.status === 401) {
           console.log("error =>", error?.response?.data);
-          deleteToken();
+          deleteToken(dispatch);
         }
         console.log("error =>", error?.response?.data);
         return null;
       }
-    };
-  }
-  return null;
+    }
+    return null;
+  };
 }
 
 export function fetchManifesto(lang) {
   console.log("FETCHING MANIFESTO", lang);
-  if (isValidToken()) {
-    return async (dispatch) => {
+  return async (dispatch) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
       if (lang) {
         try {
           const response = await getManifesto(lang);
@@ -375,22 +387,23 @@ export function fetchManifesto(lang) {
         } catch (error) {
           if (error?.response?.status === 401) {
             console.log("error =>", error?.response?.data);
-            deleteToken();
+            deleteToken(dispatch);
           }
           console.log("error =>", error?.response?.data);
           return null;
         }
       }
       return null;
-    };
-  }
-  return null;
+    }
+    return null;
+  };
 }
 
 export function archiveContent(articleId, redirectTo) {
   console.warn("DELETE", articleId);
-  if (isValidToken()) {
-    return async (dispatch) => {
+  return async (dispatch) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
       try {
         const response = await deleteContent(articleId);
         if (response.status < 300 && response.status > 199) {
@@ -407,64 +420,66 @@ export function archiveContent(articleId, redirectTo) {
           error?.response?.data
         );
       }
-    };
-  }
-  return null;
+    }
+    return null;
+  };
 }
 
 export function fetchContentsList(page) {
-  if (isValidToken()) {
-    return async (dispatch) => {
+  console.warn("FETCH CONTENT LIST");
+  return async (dispatch) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
       try {
         const response = await getContentList(page);
         if (response.status < 300 && response.status > 199) {
           dispatch(setContentsList(response.data.contents));
           dispatch(setPagination(response.data));
         }
+        console.log(response);
 
         return null;
       } catch (error) {
         console.log("error =>", error?.response?.data);
-        if (error?.response?.status === 401) {
-          deleteToken();
-        }
+        console.log("error =>", error);
+        /*     if (error?.response?.status === 401) {
+          deleteToken(dispatch);
+        } */
 
         return null;
       }
-    };
-  }
-  return null;
+    }
+    return null;
+  };
 }
 
 export function logUser(redirectTo) {
-  if (isValidToken()) {
-    return async (dispatch, getState) => {
-      const { authReducer } = getState();
-      const data = {
-        email: authReducer.mail,
-        password: authReducer.password,
-      };
-      try {
-        const response = await sendAuth(data);
-        if (response.status < 300 && response.status > 199) {
-          setToken(response.data);
-          redirectTo("/dashboard");
-        }
-        dispatch(setErrorAuth(true));
-        return false;
-      } catch (error) {
-        dispatch(setErrorAuth(true));
-        console.log("error =>", error?.response?.data);
-        return false;
-      }
+  return async (dispatch, getState) => {
+    const { authReducer } = getState();
+    const data = {
+      email: authReducer.mail,
+      password: authReducer.password,
     };
-  }
-  return null;
+    try {
+      const response = await sendAuth(data);
+      if (response.status < 300 && response.status > 199) {
+        setToken(response.data);
+        redirectTo("/dashboard");
+      }
+      dispatch(setErrorAuth(true));
+      return false;
+    } catch (error) {
+      dispatch(setErrorAuth(true));
+      console.log("error =>", error?.response?.data);
+      return false;
+    }
+  };
 }
 
 export function fetchCategoriesList() {
-  if (isValidToken()) {
-    return async (dispatch) => {
+  return async (dispatch) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
       try {
         const response = await getCategories();
         if (response.status < 300 && response.status > 199) {
@@ -474,19 +489,20 @@ export function fetchCategoriesList() {
       } catch (error) {
         if (error?.response?.status === 401) {
           console.log("error =>", error?.response?.data);
-          deleteToken();
+          deleteToken(dispatch);
         }
         return null;
       }
-    };
-  }
-  return null;
+    }
+    return null;
+  };
 }
 
 export function deleteModule(articleId, moduleId) {
   console.warn("DELETE", moduleId);
-  if (isValidToken()) {
-    return async (dispatch, getState) => {
+  return async (dispatch, getState) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
       const { manifestoReducer } = getState();
       const { isManifesto, manifestoId } = manifestoReducer;
       try {
@@ -502,6 +518,9 @@ export function deleteModule(articleId, moduleId) {
           dispatch(setUpdatedAt("create"));
           dispatch(closeModule(moduleId));
           dispatch(setModified(true));
+          if (isManifesto) {
+            dispatch(setManifestoStatus("UNPUBLISHED"));
+          }
           console.log(
             `Patrick, i've deleted the module id:${moduleId} and the server return =>`,
             response
@@ -514,14 +533,15 @@ export function deleteModule(articleId, moduleId) {
           error?.response?.data
         );
       }
-    };
-  }
-  return null;
+    }
+    return null;
+  };
 }
 
 export function saveModule(uuid, request = "save") {
-  if (isValidToken()) {
-    return async (dispatch, getState) => {
+  return async (dispatch, getState) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
       const {
         mainInformationReducer,
         modulesReducer,
@@ -613,6 +633,10 @@ export function saveModule(uuid, request = "save") {
             if (response.status < 300 && response.status > 199) {
               dispatch(setModulePosted(uuid));
               dispatch(setModified(true));
+              if (isManifesto) {
+                dispatch(setManifestoStatus("UNPUBLISHED"));
+              }
+
               console.log(
                 `Patrick, i've SAVED the ${values.type}-module (id:${uuid}) with succes. The API return =>`,
                 response
@@ -723,6 +747,10 @@ export function saveModule(uuid, request = "save") {
               dispatch(setUpdatedAt("create"));
               dispatch(setModulePosted(uuid));
               dispatch(setModified(true));
+              if (isManifesto) {
+                dispatch(setManifestoStatus("UNPUBLISHED"));
+              }
+
               console.log(
                 `Patrick, i've updated the ${values.type}-module (id:${uuid}) with succes. The API return =>`,
                 response
@@ -737,14 +765,15 @@ export function saveModule(uuid, request = "save") {
           }
         }
       }
-    };
-  }
-  return null;
+    }
+    return null;
+  };
 }
 
 export function publishAction(articleId, mode) {
-  if (isValidToken()) {
-    return async (dispatch, getState) => {
+  return async (dispatch, getState) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
       const { manifestoReducer } = getState();
       const { isManifesto, manifestoId } = manifestoReducer;
 
@@ -781,14 +810,15 @@ export function publishAction(articleId, mode) {
         dispatch(showErrorModal(true));
         console.log(error?.response?.data);
       }
-    };
-  }
-  return null;
+    }
+    return null;
+  };
 }
 
 export function saveImage(name, image, moduleId) {
-  if (isValidToken()) {
-    return async (dispatch) => {
+  return async (dispatch) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
       const formData = new FormData();
       formData.append("file", image);
       try {
@@ -811,7 +841,7 @@ export function saveImage(name, image, moduleId) {
         }
         showErrorModal(true);
       }
-    };
-  }
-  return null;
+    }
+    return null;
+  };
 }

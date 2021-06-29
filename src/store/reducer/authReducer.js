@@ -1,5 +1,10 @@
 import { verifyField } from "../../helper/auth/verifyFields";
-import { SET_PASSWORD, SET_MAIL, SET_ERROR_AUTH } from "../constants";
+import {
+  SET_PASSWORD,
+  SET_MAIL,
+  SET_ERROR_AUTH,
+  CLEAN_AUTH_STATE,
+} from "../constants";
 
 const initialState = {
   password: "",
@@ -34,6 +39,12 @@ const authReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         authError: action.payload,
+      };
+    }
+
+    case CLEAN_AUTH_STATE: {
+      return {
+        ...initialState,
       };
     }
     default:

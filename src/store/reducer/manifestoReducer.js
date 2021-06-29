@@ -1,7 +1,6 @@
 import {
   CONTENT_LOADED,
   SET_IS_MANIFESTO,
-  SELECT_MANIFESTO_LANG,
   SET_MANIFESTO_ID,
   SET_MANIFESTO_LANG,
   CLEAN_CONTENT_STATE,
@@ -12,7 +11,6 @@ const initialState = {
   manifestoId: "",
   isManifesto: "",
   manifestoLang: "",
-  selectedManifestoLang: undefined,
   isPublishedManifesto: false,
   isModifiedManifesto: false,
 };
@@ -39,13 +37,6 @@ const manifestoReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         manifestoId: action.payload,
-      };
-    }
-
-    case SELECT_MANIFESTO_LANG: {
-      return {
-        ...oldState,
-        selectedManifestoLang: action.payload,
       };
     }
 

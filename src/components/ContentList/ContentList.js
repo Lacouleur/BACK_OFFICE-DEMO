@@ -20,9 +20,7 @@ import keyGenerator from "../../helper/keyGenerator";
 
 import { fetchContentsList } from "../../store/actions/clientActions";
 import { cleanContentState } from "../../store/actions/commonsActions";
-import { selectManifestoLang } from "../../store/actions/manifestoActions";
 import langList from "../../helper/langList";
-import { isValidToken } from "../../services/client/tokenStuff";
 
 const ContentList = () => {
   const history = useHistory();
@@ -38,7 +36,6 @@ const ContentList = () => {
   useEffect(() => {
     dispatch(fetchContentsList());
     dispatch(cleanContentState());
-    isValidToken();
   }, []);
 
   return (
@@ -52,7 +49,6 @@ const ContentList = () => {
             classNamePrefix="select"
             options={langList}
             onChange={(lang) => {
-              dispatch(selectManifestoLang(lang));
               history.push(`/create-manifesto/${lang.value}`);
             }}
           />

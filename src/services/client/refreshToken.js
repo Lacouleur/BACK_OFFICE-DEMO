@@ -32,7 +32,7 @@ export const isValidToken = async (dispatch) => {
       currentTimeInSeconds > tokenExpire &&
       currentTimeInSeconds < refreshTokenExpire
     ) {
-      console.warn("YpassParLà");
+      console.warn("REFRESHING TOKEN");
       try {
         const response = await refreshMyToken();
         if (response.status < 300 && response.status > 199) {
@@ -52,7 +52,6 @@ export const isValidToken = async (dispatch) => {
       deleteToken(dispatch);
       return false;
     } else {
-      console.log("TOKEN STILL VALID");
       return true;
     }
   } else {

@@ -2,7 +2,7 @@
 /* eslint-disable no-return-assign */
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import PageContainer from "../../styles/styledComponents/global/PageContainer.sc";
@@ -43,12 +43,15 @@ const EditorManifesto = () => {
     ({ manifestoReducer}) => manifestoReducer
   );
   const actionBarState = useSelector(({ actionBarReducer }) => actionBarReducer);
- const {selectedManifestoLang } = manifestoState;
+ const { manifestoId } = manifestoState;
  const { isOpenCloseModal } = actionBarState;
 
   useEffect(() => {
     dispatch(setIsManifesto(true));
-    dispatch(fetchManifesto(lang));
+    if (!manifestoId) {
+      dispatch(fetchManifesto(lang));
+    }
+
   }, []);
 
   return (
@@ -60,7 +63,7 @@ const EditorManifesto = () => {
           {isOpenCloseModal?.value && <HideContent />}
           <TitleBox>
             <ManifestoTitle>MANIFESTO</ManifestoTitle>
-            <ManifestoLang>{selectedManifestoLang?.label}</ManifestoLang>
+            <ManifestoLang>{lang}</ManifestoLang>
           </TitleBox>
           <MainInformation />
           <Seo />

@@ -171,7 +171,7 @@ const publishButtonEnabled = css`
 
 export const PublishButton = styled.button`
   ${(props) => {
-    return props.isActive ? publishButtonEnabled : publishButtonDisable;
+    return props.disabled ? publishButtonDisable : publishButtonEnabled;
   }};
   width: 118px;
   height: 43px;

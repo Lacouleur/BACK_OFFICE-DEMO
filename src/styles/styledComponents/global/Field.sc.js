@@ -175,34 +175,21 @@ export const TextArea = styled(TextareaAutosize)`
   padding: 16px;
   outline: none;
 `;
-/* 
-export const TextAreaStyles = styled.div`
-  &.textArea {
-    -webkit-appearance: none;
-    width: 100%;
-    max-width: 100%;
-    min-width: 100%;
-    height: auto;
-    min-height: 56px;
-    font-size: 16px;
-    line-height: 24px;
-    background-color: hotpink;
-    border: none;
-    padding: 0 20px;
-    color: ${(props) => props.color};
-    border-top-right-radius: 5px;
-    border-top-left-radius: 5px;
-    font-size: 16px;
-    line-height: 24px;
-    color: ${colors.white};
-    font-family: Arial, Helvetica, sans-serif;
-    padding: 16px;
 
-    & :focus {
-      outline: none !important;
-    }
-  }
-`; */
+export const VisualiseColorStyle = styled.div`
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid ${colors.white};
+  background-color: ${(props) => (props.color === 1 ? "#000065" : "#FFC700")};
+  margin-left: 18px;
+  box-shadow: 1px 1px 10px 3px ${colors.darkGrey};
+`;
+
+export const ColorFieldBox = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 export const FieldErrorBox = styled.div`
   width: 100%;

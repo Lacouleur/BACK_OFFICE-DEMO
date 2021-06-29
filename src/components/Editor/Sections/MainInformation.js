@@ -21,10 +21,9 @@ import {
 } from "../../../store/actions/clientActions";
 import useClickOutside from "../../../helper/cutomHooks/useClickOutside";
 import {
-  getToken,
-  isValidToken,
-  parseJwt,
-} from "../../../services/client/tokenStuff";
+  ColorFieldBox,
+  VisualiseColorStyle,
+} from "../../../styles/styledComponents/global/Field.sc";
 
 const MainInformation = () => {
   const mainInformationState = useSelector(
@@ -42,6 +41,7 @@ const MainInformation = () => {
     title,
     slug,
     lang,
+    colorStyle,
     category,
     regexSlugError,
     slugError,
@@ -50,7 +50,7 @@ const MainInformation = () => {
     isChanged,
   } = mainInformationState;
 
-  const { isManifesto, manifestoId, selectedManifestoLang } = manifestoState;
+  const { isManifesto, manifestoId } = manifestoState;
 
   function slugMessage() {
     let message = "";
@@ -87,7 +87,7 @@ const MainInformation = () => {
       if (title && !titleError) {
         setIsOpen(false);
         if (isChanged && !manifestoId) {
-          dispatch(saveManifesto(selectedManifestoLang.value));
+          dispatch(saveManifesto(lang));
         } else if (isChanged && manifestoId) {
           dispatch(actulalizeManifesto(manifestoId));
         }
@@ -174,6 +174,18 @@ const MainInformation = () => {
                 />
               </>
             )}
+
+            {/*    <ColorFieldBox>
+              <Field
+                placeholder="Color Theme"
+                name="colorStyle"
+                fieldType="select"
+                section="mainInformation"
+                edit={colorStyle || 1}
+              />
+
+              <VisualiseColorStyle color={colorStyle || 1} />
+            </ColorFieldBox> */}
           </>
         )}
       </SectionBox>

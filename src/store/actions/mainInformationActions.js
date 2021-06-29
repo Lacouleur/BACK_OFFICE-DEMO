@@ -8,6 +8,7 @@ import {
   SET_STATUS,
   SET_MODIFIED,
   ADD_LANG,
+  SET_COLOR_STYLE,
 } from "../constants";
 
 export const addTitle = (payload) => ({
@@ -52,5 +53,10 @@ export const setModified = (payload) => ({
 
 export const addLang = (payload) => ({
   type: ADD_LANG,
+  payload,
+});
+
+export const setColorStyle = (payload) => ({
+  type: SET_COLOR_STYLE,
   payload,
 });

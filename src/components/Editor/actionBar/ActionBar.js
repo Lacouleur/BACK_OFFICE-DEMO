@@ -263,9 +263,7 @@ const ActionBar = () => {
           </Button>
           <Button
             onClick={() => {
-              if (isEditing) {
-                handleSubmit();
-              }
+              handleSubmit();
             }}
             styles={
               contentIsChanged && !isArticleError
@@ -349,8 +347,8 @@ const ActionBar = () => {
           )}
           {isManifesto && (
             <PublishButton
-              isActive={
-                !!(manifestoId && !isPublishedManifesto && !contentIsChanged)
+              disabled={
+                !(manifestoId && !isPublishedManifesto && !contentIsChanged)
               }
               type="button"
               onClick={() => {
@@ -364,7 +362,7 @@ const ActionBar = () => {
           )}
           {!isManifesto && (
             <PublishButton
-              isActive={!!(articleId && !contentIsChanged)}
+              disabled={!(articleId && !contentIsChanged)}
               type="button"
               onClick={() => {
                 if (articleId) {

@@ -120,11 +120,12 @@ export const Selector = styled(ReactSelect)`
 
     &__menu {
       height: 56px;
-      margin-top: 0px;
+      margin-top: 0;
       background-color: ${colors.darkGrey};
       border: none;
       box-shadow: none;
       border-radius: 0;
+      z-index: 101;
     }
 
     &__option {

@@ -181,7 +181,7 @@ const Field = ({
 
   useEffect(() => {
     onEdit();
-  }, [edit]);
+  }, [edit, categoriesList]);
 
   // Next functions concern File Uploader fields
   const hiddenFileInput = React.useRef(null);
@@ -244,8 +244,6 @@ const Field = ({
         return null;
     }
   }
-
-  console.log("selectedColorStyle", selectedColorStyle);
 
   return (
     <FieldContainer>

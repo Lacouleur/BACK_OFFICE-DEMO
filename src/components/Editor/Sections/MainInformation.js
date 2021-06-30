@@ -175,7 +175,7 @@ const MainInformation = () => {
               </>
             )}
 
-            {/*    <ColorFieldBox>
+            <ColorFieldBox>
               <Field
                 placeholder="Color Theme"
                 name="colorStyle"
@@ -185,7 +185,7 @@ const MainInformation = () => {
               />
 
               <VisualiseColorStyle color={colorStyle || 1} />
-            </ColorFieldBox> */}
+            </ColorFieldBox>
           </>
         )}
       </SectionBox>

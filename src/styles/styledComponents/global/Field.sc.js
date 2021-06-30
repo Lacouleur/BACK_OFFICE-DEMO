@@ -177,6 +177,19 @@ export const TextArea = styled(TextareaAutosize)`
   outline: none;
 `;
 
+export const PreviewColorStyle = styled.div`
+  position: absolute;
+  top: 26px;
+  left: 230px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid ${colors.white};
+  background-color: ${(props) => (props.color === 1 ? "#000065" : "#FFC700")};
+  margin-left: 18px;
+  box-shadow: 1px 1px 10px 3px ${colors.darkGrey};
+`;
+
 export const VisualiseColorStyle = styled.div`
   width: 30px;
   height: 30px;

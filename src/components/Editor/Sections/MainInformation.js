@@ -23,6 +23,7 @@ import useClickOutside from "../../../helper/cutomHooks/useClickOutside";
 import {
   ColorFieldBox,
   VisualiseColorStyle,
+  PreviewColorStyle,
 } from "../../../styles/styledComponents/global/Field.sc";
 
 const MainInformation = () => {
@@ -122,6 +123,7 @@ const MainInformation = () => {
         {!isOpen && !isManifesto && (
           <>
             <CollapsedText>{title}</CollapsedText>
+            <PreviewColorStyle color={colorStyle || 1} />
             <CollapsedText>{slug}</CollapsedText>
             <CollapsedText>{lang}</CollapsedText>
           </>

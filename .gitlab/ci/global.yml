@@ -50,12 +50,11 @@
 
   script:
     - echo $NEXUS_PASSWD | docker login registry.ftven.net -u $NEXUS_USERNAME --password-stdin
-    - docker build --build-arg PHX_BACK_API_BASE_URL=$PHX_BACK_API_BASE_URL --build-arg PHX_BACK_HOST_URL=$PHX_BACK_HOST_URL --pull --tag $PHX_IMAGE_COMMIT-$PHX_ENV_TARGET .
+    - docker build --build-arg PHX_BACK_API_BASE_URL=$PHX_BACK_API_BASE_URL --build-arg PHX_BACK_HOST_URL=$PHX_BACK_HOST_URL --build-arg PHX_PREVIEW_WEB_BASE_URL=$PHX_PREVIEW_WEB_BASE_URL --pull --tag $PHX_IMAGE_COMMIT-$PHX_ENV_TARGET .
     - docker push $PHX_IMAGE_COMMIT-$PHX_ENV_TARGET
 
 # GENERAL DEPLOY
 .deploy:
-
   image: $PHX_IMAGE_COMMIT-$PHX_ENV_TARGET
 
   stage: deploy

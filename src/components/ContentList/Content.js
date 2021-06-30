@@ -73,8 +73,12 @@ const Content = ({
         <IconAction
           src={eye}
           onClick={() => {
+            let language = lang.slice(0, 2);
+            if (language === "ge") {
+              language = "de";
+            }
             window.open(
-              `${PREVIEW_URL}/${lang.slice(0, 2)}/content/${slug}`,
+              `${PREVIEW_URL}/${language.slice(0, 2)}/content/${slug}`,
               "_blank"
             );
           }}

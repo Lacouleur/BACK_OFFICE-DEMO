@@ -155,6 +155,7 @@ export const ActionsContainer = styled.div`
 
 export const ActionIcon = styled.img`
   width: 31px;
+  cursor: pointer;
 `;
 
 export const HoverBox = styled.div``;

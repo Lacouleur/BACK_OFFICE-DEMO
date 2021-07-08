@@ -576,7 +576,7 @@ export function saveModule(uuid, request = "save") {
                   type,
                   image: {
                     alt: image.alt,
-                    source: image.source || "FTV intenal",
+                    source: "FTV-internal",
                     uuid: image.uuid,
                   },
                   order,
@@ -675,7 +675,7 @@ export function saveModule(uuid, request = "save") {
                   type,
                   image: {
                     alt: image.alt,
-                    source: image.source,
+                    source: "FTV-internal",
                     uuid: image.uuid,
                   },
                   order,

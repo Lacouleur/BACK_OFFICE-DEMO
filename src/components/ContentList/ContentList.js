@@ -21,17 +21,22 @@ import keyGenerator from "../../helper/keyGenerator";
 import { fetchContentsList } from "../../store/actions/clientActions";
 import { cleanContentState } from "../../store/actions/commonsActions";
 import langList from "../../helper/langList";
+import DuplicateModal from "../Modals/DuplicateModal";
+import ErrorModal from "../Modals/ErrorModal";
 
 const ContentList = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const contentsState = useSelector(
+  const langSelector = React.useRef(null);
+  const contentsListState = useSelector(
     ({ contentListReducer }) => contentListReducer
   );
 
-  const langSelector = React.useRef(null);
-
-  const { contentsList } = contentsState;
+  const actionBarState = useSelector(
+    ({ actionBarReducer }) => actionBarReducer
+  );
+  const { contentsList, isOpenDuplicateModal } = contentsListState;
+  const { isOpenErrorModal } = actionBarState;
 
   useEffect(() => {
     dispatch(fetchContentsList());
@@ -40,7 +45,9 @@ const ContentList = () => {
 
   return (
     <>
+      {isOpenDuplicateModal.value && <DuplicateModal />}
       <ContentSectionBox>
+        {isOpenErrorModal && <ErrorModal />}
         <TitleBox>
           <H1> CONTENT LIST</H1>
           <ManifestoLangSelector
@@ -75,6 +82,7 @@ const ContentList = () => {
                 lang={content.language}
                 updatedAt={content.updatedAt}
                 key={keyGenerator(content._id)}
+                modulesList={content.components}
               />
             );
           })}

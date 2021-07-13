@@ -16,14 +16,12 @@ export const H2 = styled.h2`
 `;
 
 export const MainTitleBox = styled.div`
+  margin: ${(props) => props.margin || "auto"};
   width: 392px;
   height: 90px;
   margin-bottom: 19px;
   color: ${colors.white};
   white-space: nowrap;
-  ${media.mobile`
-  width: 288px;
-  `};
 `;
 
 export const TitleArrow = styled.img`

@@ -1,7 +1,18 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import colors from "../../../core/colors";
 
+const disabledMixin = css`
+  background-color: ${colors.lightGrey}!important;
+
+  &:hover {
+    opacity: 0.8 !important;
+    cursor: not-allowed !important;
+    box-shadow: 0px 0px 10px 1px ${colors.mediumGrey}!important;
+  }
+`;
+
 const Button = styled.button`
+  ${(props) => (props.disabled ? disabledMixin : "")};
   background-color: ${(props) =>
     props.styles?.background || `${colors.paleViolet}`};
   color: ${(props) => props.styles?.fontColor || `${colors.black}`};

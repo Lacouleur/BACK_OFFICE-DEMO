@@ -7,6 +7,11 @@ import {
   parseJwt,
   setToken,
 } from "./tokenStuff";
+import {
+  consoleError,
+  consoleSucces,
+  consoleTitle,
+} from "../../helper/consoleStyles";
 
 export const isValidToken = async (dispatch) => {
   const token = getToken();
@@ -32,30 +37,35 @@ export const isValidToken = async (dispatch) => {
       currentTimeInSeconds > tokenExpire &&
       currentTimeInSeconds < refreshTokenExpire
     ) {
-      console.warn("REFRESHING TOKEN");
+      console.log("%cREFRESHING TOKEN", `${consoleTitle}`);
       try {
         const response = await refreshMyToken();
         if (response.status < 300 && response.status > 199) {
           setToken(response.data);
-          console.warn("Token refreshed");
+          console.log("%cToken refreshed", `${consoleSucces}`);
           return true;
         }
       } catch (error) {
-        console.log("RefreshToken fail, error =>", error?.response?.data);
+        console.log(
+          "%cRefreshToken fail, error =>",
+          `${consoleError}`,
+          error?.response?.data
+        );
         deleteToken(dispatch);
         return false;
       }
     } else if (currentTimeInSeconds > refreshTokenExpire) {
-      console.log({ currentTimeInSeconds });
-      console.log({ refreshTokenExpire });
-      console.log("Refresh token has expired, please relog");
+      console.log(
+        "%cRefresh token has expired, please relog",
+        `${consoleError}`
+      );
       deleteToken(dispatch);
       return false;
     } else {
       return true;
     }
   } else {
-    console.log("missing token, please relog");
+    console.log("%cMissing token, please relog", `${consoleError}`);
     deleteToken(dispatch);
     dispatch(cleanAuthState());
     return false;

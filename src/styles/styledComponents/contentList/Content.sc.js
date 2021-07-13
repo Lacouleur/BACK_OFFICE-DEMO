@@ -152,10 +152,11 @@ export const Title = styled.div`
 `;
 
 export const IconActionBox = styled.div`
+  cursor: pointer;
   display: flex;
   flex-direction: row;
   width: 200px;
-  padding: 0 34px 0 42px;
+  padding: 0 20px 0 20px;
   justify-content: space-between;
 `;
 

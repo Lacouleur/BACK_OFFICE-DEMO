@@ -3,13 +3,11 @@ import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
-  BurgerMenu,
   DisconectButton,
   HeaderContainer,
   MainLogo,
 } from "../styles/styledComponents/nav/Header.sc";
 import phoenixLogo from "../styles/assets/logos/phoenix-logo.svg";
-import burger from "../styles/assets/icons/burger.svg";
 import { getToken, deleteToken } from "../services/client/tokenStuff";
 
 const Header = ({ position }) => {
@@ -21,7 +19,6 @@ const Header = ({ position }) => {
     <HeaderContainer position={position}>
       {isConnected && (
         <>
-          <BurgerMenu src={burger} />
           <DisconectButton
             onClick={() => {
               deleteToken(dispatch);

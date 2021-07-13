@@ -18,7 +18,7 @@ export const ModalBox = styled.div`
   transform: translate(-50%);
   margin-top: ${(props) => (props.closeModal ? "0" : "170px")};
   margin-left: 50%;
-  height: 260px;
+  height: ${(props) => props.height || "260px"};
   width: 807px;
 `;
 
@@ -54,5 +54,97 @@ export const Cross = styled.img`
 
   &:hover {
     transform: rotate(90deg);
+  }
+`;
+
+export const DuplicateTitle = styled.h2`
+  font-size: 20px;
+  line-height: 24px;
+  text-transform: uppercase;
+  max-width: 90%;
+  margin-left: 27px;
+  padding-top: 27px;
+  margin-bottom: 18px;
+`;
+
+export const Text = styled.p`
+  margin-left: 27px;
+`;
+
+export const ChoiceContainer = styled.div`
+  margin: 18px 0 0 27px;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const OptionBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 18px;
+`;
+
+export const Separator = styled.span`
+  display: block;
+  height: 1px;
+  background: ${colors.paleViolet};
+  width: calc(100% - 2 * 27px);
+  margin: 0 27px;
+`;
+
+export const TradContainer = styled.div`
+  height: 130px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 18px 300px 18px 27px;
+`;
+
+// Checkbox
+export const CheckboxContainer = styled.div`
+  display: inline-block;
+  vertical-align: middle;
+`;
+
+export const Icon = styled.div`
+  width: 10px;
+  height: 10px;
+  background: ${colors.paleViolet};
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
+// Hide checkbox visually but remain accessible to screen readers.
+// Source: https://polished.js.org/docs/#hidevisually
+export const HiddenCheckbox = styled.input.attrs({ type: "checkbox" })`
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+`;
+
+export const StyledCheckbox = styled.div`
+  position: relative;
+  width: 18px;
+  height: 18px;
+  background: transparent;
+  border-radius: 50%;
+  border: 2px solid ${colors.paleViolet};
+  transition: all 150ms;
+
+  ${HiddenCheckbox}:focus + & {
+    box-shadow: 0 0 0 3px pink;
+  }
+
+  ${Icon} {
+    visibility: ${(props) => (props.checked ? "visible" : "hidden")};
   }
 `;

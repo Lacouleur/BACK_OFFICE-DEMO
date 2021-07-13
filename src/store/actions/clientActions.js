@@ -16,6 +16,8 @@ import {
   postManifesto,
   updateContent,
   updateManifesto,
+  duplicateContent,
+  translateContent,
 } from "../../services/client/contentClient";
 import {
   setErrorPosting,
@@ -46,8 +48,14 @@ import {
   setPublishedAt,
   showErrorModal,
 } from "./actionBarActions";
-import { nameSpaceError } from "../../helper/errorMessages";
+import { alreadyTranslated, nameSpaceError } from "../../helper/errorMessages";
 import { setHomeImageUuid, setNavImageUuid } from "./homeNavigationActions";
+import {
+  consoleError,
+  consoleInfo,
+  consoleSucces,
+  consoleTitle,
+} from "../../helper/consoleStyles";
 
 export function checkAndSend(type = "save", articleId = null) {
   return async (dispatch, getState) => {
@@ -140,7 +148,7 @@ export function checkAndSend(type = "save", articleId = null) {
       if (!slugError && !titleError) {
         // post
         if (type === "save") {
-          console.log("SAVING");
+          console.log("%cSAVING CONTENT", `${consoleTitle}`);
           try {
             const response = await postContent(values, lang);
             if (response.status < 300 && response.status > 199) {
@@ -154,7 +162,11 @@ export function checkAndSend(type = "save", articleId = null) {
               dispatch(setErrorPosting(true));
               dispatch(setPosted(false));
             } else {
-              console.log("error =>", error?.response?.data);
+              console.log(
+                "%cError =>",
+                `${consoleError}`,
+                error?.response?.data
+              );
               dispatch(showErrorModal(true));
             }
           }
@@ -162,7 +174,7 @@ export function checkAndSend(type = "save", articleId = null) {
 
         // update
         if (type === "update") {
-          console.log("UPDATING", values);
+          console.log("%cUPDATING CONTENT", `${consoleTitle}`);
           try {
             const result = await updateContent(values, articleId, lang);
 
@@ -179,7 +191,11 @@ export function checkAndSend(type = "save", articleId = null) {
               dispatch(setErrorPosting(true));
               dispatch(setPosted(false));
             } else {
-              console.log("error =>", error?.response?.data);
+              console.log(
+                "%cError =>",
+                `${consoleError}`,
+                error?.response?.data
+              );
               dispatch(showErrorModal(true));
               dispatch(setPosted(false));
             }
@@ -194,7 +210,7 @@ export function checkAndSend(type = "save", articleId = null) {
 }
 
 export function saveManifesto(lang) {
-  console.warn("SAVE MANIFESTO", lang);
+  console.log("%cSAVING MANIFESTO", `${consoleTitle}`, lang);
   return async (dispatch, getState) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
@@ -223,16 +239,14 @@ export function saveManifesto(lang) {
             dispatch(setManifestoStatus("UNPUBLISHED"));
 
             console.log(
-              `Patrick, i've posted the new manifesto and the server return =>`,
+              `%cPosted manifesto`,
+              `${consoleSucces}`,
               response.data
             );
           }
         } catch (error) {
           dispatch(showErrorModal(true));
-          console.error(
-            `Patrick, i've fail posting the new manifesto and the server return =>`,
-            error?.response?.data
-          );
+          console.log("%cError =>", `${consoleError}`, error?.response?.data);
         }
       }
     }
@@ -241,7 +255,7 @@ export function saveManifesto(lang) {
 }
 
 export function actulalizeManifesto(manifestoId) {
-  console.warn("UPDATE MANIFESTO", manifestoId);
+  console.log("%cUPDATING MANIFESTO", `${consoleTitle}`, manifestoId);
   return async (dispatch, getState) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
@@ -309,20 +323,22 @@ export function actulalizeManifesto(manifestoId) {
           dispatch(setModified(true));
           dispatch(setManifestoStatus("UNPUBLISHED"));
           console.log(
-            `Patrick, i've updated the manifesto and the server return =>`,
+            `%cUpdated Manifesto =>`,
+            `${consoleSucces}`,
             response.data
           );
         }
       } catch (error) {
-        console.error(
-          `Patrick, i've fail to update the manifesto and the server return =>`,
+        console.log(
+          "%cError while updating",
+          `${consoleError}`,
           error?.response?.data
         );
         if (error.response.status === 409) {
           dispatch(setErrorPosting(true));
           dispatch(setPosted(false));
         } else {
-          console.log("error =>", error?.response?.data);
+          console.log("%cError =>", `${consoleError}`, error?.response?.data);
           dispatch(showErrorModal(true));
           dispatch(setPosted(false));
         }
@@ -335,14 +351,14 @@ export function actulalizeManifesto(manifestoId) {
 }
 
 export function fetchContent(id) {
-  console.warn("FETCH CONTENT", id);
+  console.log("%cFETCHING CONTENT =>", `${consoleTitle}`, id);
   return async (dispatch) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
       try {
         const response = await getContent(id);
         if (response.status < 300 && response.status > 199) {
-          console.log(response.data);
+          console.log("%cFetched content =>", `${consoleInfo}`, response.data);
           dispatch(contentLoaded(response.data));
           dispatch(setUpdatedAt(response.data.updatedAt));
           dispatch(setPublishedAt(response.data.publishedAt));
@@ -352,10 +368,10 @@ export function fetchContent(id) {
         return null;
       } catch (error) {
         if (error?.response?.status === 401) {
-          console.log("error =>", error?.response?.data);
+          console.log("%cError =>", `${consoleError}`, error?.response?.data);
           deleteToken(dispatch);
         }
-        console.log("error =>", error?.response?.data);
+        console.log("%cError =>", `${consoleError}`, error?.response?.data);
         return null;
       }
     }
@@ -364,7 +380,7 @@ export function fetchContent(id) {
 }
 
 export function fetchManifesto(lang) {
-  console.log("FETCHING MANIFESTO", lang);
+  console.log("%cFETCHING MANIFESTO", `${consoleTitle}`, lang);
   return async (dispatch) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
@@ -386,10 +402,10 @@ export function fetchManifesto(lang) {
           return null;
         } catch (error) {
           if (error?.response?.status === 401) {
-            console.log("error =>", error?.response?.data);
+            console.log("%cError =>", `${consoleError}`, error?.response?.data);
             deleteToken(dispatch);
           }
-          console.log("error =>", error?.response?.data);
+          console.log("%cError =>", `${consoleError}`, error?.response?.data);
           return null;
         }
       }
@@ -400,7 +416,7 @@ export function fetchManifesto(lang) {
 }
 
 export function archiveContent(articleId, redirectTo) {
-  console.warn("DELETE", articleId);
+  console.log("%cDELETING", `${consoleTitle}`, articleId);
   return async (dispatch) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
@@ -409,14 +425,16 @@ export function archiveContent(articleId, redirectTo) {
         if (response.status < 300 && response.status > 199) {
           redirectTo("/dashboard");
           console.log(
-            `Article Deleted, id:${articleId} and the server return =>`,
+            `%cArticle Deleted, id:${articleId} =>`,
+            `${consoleSucces}`,
             response
           );
         }
       } catch (error) {
         dispatch(showErrorModal(true));
-        console.error(
-          `Delete fail, id:${articleId} and the server return =>`,
+        console.log(
+          `%cError while deleting id:${articleId} =>`,
+          `${consoleError}`,
           error?.response?.data
         );
       }
@@ -426,7 +444,7 @@ export function archiveContent(articleId, redirectTo) {
 }
 
 export function fetchContentsList(page) {
-  console.warn("FETCH CONTENT LIST");
+  console.log("%cFETCHING CONTENT LIST", `${consoleTitle}`);
   return async (dispatch) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
@@ -436,16 +454,15 @@ export function fetchContentsList(page) {
           dispatch(setContentsList(response.data.contents));
           dispatch(setPagination(response.data));
         }
-        console.log(response);
+        console.log(
+          "%c Fetched content list =>",
+          `${consoleInfo}`,
+          response.data
+        );
 
         return null;
       } catch (error) {
-        console.log("error =>", error?.response?.data);
-        console.log("error =>", error);
-        /*     if (error?.response?.status === 401) {
-          deleteToken(dispatch);
-        } */
-
+        console.log("%cError =>", `${consoleError}`, error?.response?.data);
         return null;
       }
     }
@@ -454,6 +471,7 @@ export function fetchContentsList(page) {
 }
 
 export function logUser(redirectTo) {
+  console.log("%cLOGING USER", `${consoleTitle}`);
   return async (dispatch, getState) => {
     const { authReducer } = getState();
     const data = {
@@ -463,6 +481,7 @@ export function logUser(redirectTo) {
     try {
       const response = await sendAuth(data);
       if (response.status < 300 && response.status > 199) {
+        console.log("%cUser logged=>", `${consoleSucces}`);
         setToken(response.data);
         redirectTo("/dashboard");
       }
@@ -470,7 +489,7 @@ export function logUser(redirectTo) {
       return false;
     } catch (error) {
       dispatch(setErrorAuth(true));
-      console.log("error =>", error?.response?.data);
+      console.log("%cerror =>", `${consoleError}`, error?.response?.data);
       return false;
     }
   };
@@ -488,7 +507,7 @@ export function fetchCategoriesList() {
         return null;
       } catch (error) {
         if (error?.response?.status === 401) {
-          console.log("error =>", error?.response?.data);
+          console.log("%cError =>", `${consoleError}`, error?.response?.data);
           deleteToken(dispatch);
         }
         return null;
@@ -499,7 +518,7 @@ export function fetchCategoriesList() {
 }
 
 export function deleteModule(articleId, moduleId) {
-  console.warn("DELETE", moduleId);
+  console.log("%cDELETING MODULE", `${consoleTitle}`);
   return async (dispatch, getState) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
@@ -522,14 +541,16 @@ export function deleteModule(articleId, moduleId) {
             dispatch(setManifestoStatus("UNPUBLISHED"));
           }
           console.log(
-            `Patrick, i've deleted the module id:${moduleId} and the server return =>`,
+            `%cDeleted module id:${moduleId} =>`,
+            `${consoleSucces}`,
             response
           );
         }
       } catch (error) {
         dispatch(showErrorModal(true));
-        console.error(
-          `Patrick, i've fail deleting the module id:${moduleId} and the server return =>`,
+        console.log(
+          `%cError, fail deleting the module id:${moduleId} =>`,
+          `${consoleError}`,
           error?.response?.data
         );
       }
@@ -554,7 +575,7 @@ export function saveModule(uuid, request = "save") {
       let isNewModule = false;
 
       if (request === "save") {
-        console.log("SAVING MODULE");
+        console.log("%cSAVING MODULE", `${consoleTitle}`, uuid);
         modulesList.find((module) => {
           if (module.uuid === uuid && module.isNewModule) {
             switch (module.type) {
@@ -576,7 +597,7 @@ export function saveModule(uuid, request = "save") {
                   type,
                   image: {
                     alt: image.alt,
-                    source: "FTV-internal",
+                    source: "FTV intenal",
                     uuid: image.uuid,
                   },
                   order,
@@ -638,14 +659,16 @@ export function saveModule(uuid, request = "save") {
               }
 
               console.log(
-                `Patrick, i've SAVED the ${values.type}-module (id:${uuid}) with succes. The API return =>`,
+                `%cSAVED, ${values.type}-module (id:${uuid}) =>`,
+                `${consoleSucces}`,
                 response
               );
             }
           } catch (error) {
             dispatch(showErrorModal(true));
             console.log(
-              `Patrick, i've try to SAVE the ${values.type}-module (id:${uuid})but i get an ERROR. The error is=>`,
+              `%cError, ${values.type}-module (id:${uuid})=>`,
+              `${consoleError}`,
               error?.response?.data
             );
           }
@@ -653,7 +676,7 @@ export function saveModule(uuid, request = "save") {
       }
 
       if (request === "update") {
-        console.warn("UPDATING MODULE", uuid);
+        console.log("%cUPDATING MODULE", `${consoleTitle}`, uuid);
         let isChanged = false;
 
         modulesList.find((module) => {
@@ -752,14 +775,16 @@ export function saveModule(uuid, request = "save") {
               }
 
               console.log(
-                `Patrick, i've updated the ${values.type}-module (id:${uuid}) with succes. The API return =>`,
+                `%cUpdated, ${values.type}-module (id:${uuid}) =>`,
+                `${consoleSucces}`,
                 response
               );
             }
           } catch (error) {
             dispatch(showErrorModal(true));
-            console.error(
-              `Patrick, i've try to update the ${values.type}-module (id:${uuid})but i get an ERROR. The error is=>`,
+            console.log(
+              `%cError, ${values.type}-module (id:${uuid}) =>`,
+              `${consoleError}`,
               error?.response?.data
             );
           }
@@ -771,6 +796,7 @@ export function saveModule(uuid, request = "save") {
 }
 
 export function publishAction(articleId, mode) {
+  console.log("%cPUBLISHING", `${consoleTitle}`, articleId);
   return async (dispatch, getState) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
@@ -808,7 +834,7 @@ export function publishAction(articleId, mode) {
         }
       } catch (error) {
         dispatch(showErrorModal(true));
-        console.log(error?.response?.data);
+        console.log("%cError =>", `${consoleError}`, error?.response?.data);
       }
     }
     return null;
@@ -816,6 +842,7 @@ export function publishAction(articleId, mode) {
 }
 
 export function saveImage(name, image, moduleId) {
+  console.log("%cSAVING IMAGE", `${consoleTitle}`, moduleId);
   return async (dispatch) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
@@ -825,7 +852,7 @@ export function saveImage(name, image, moduleId) {
         const response = await uploadImage(formData);
         if (response.status < 300 && response.status > 199) {
           if (name === "image") {
-            console.log("RESPONSE", response.data);
+            console.log("%cRESPONSE", `${consoleInfo}`, response.data);
             dispatch(setImageUuid({ id: moduleId, value: response.data }));
           }
           if (name === "homeImage") {
@@ -836,10 +863,68 @@ export function saveImage(name, image, moduleId) {
           }
         }
       } catch (error) {
+        console.log(`%cError =>`, `${consoleError}`, error?.response?.data);
         if (error?.response.status === 400) {
-          dispatch(showErrorModal(nameSpaceError()));
+          dispatch(showErrorModal({ value: true, message: nameSpaceError() }));
         }
         showErrorModal(true);
+      }
+    }
+    return null;
+  };
+}
+
+export function duplicateArticle(articleId) {
+  console.log("%cDUPLICATION", `${consoleTitle}`, articleId);
+  return async (dispatch) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
+      try {
+        const response = await duplicateContent(articleId);
+        if (response.status < 300 && response.status > 199) {
+          dispatch(fetchContentsList());
+          console.log("%cContent Duplicated", `${consoleSucces}`);
+        }
+      } catch (error) {
+        console.log(`%cError =>`, `${consoleError}`, error?.response?.data);
+        dispatch(
+          showErrorModal({ value: true, message: error?.response?.data })
+        );
+      }
+    }
+    return null;
+  };
+}
+
+export function translateArticle(articleId, lang, history) {
+  console.log("%cTRANSLATING ARTICLE", `${consoleTitle}`, articleId);
+  return async (dispatch) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
+      try {
+        const response = await translateContent(articleId, lang);
+        if (response.status < 300 && response.status > 199) {
+          console.log(
+            "%cContent Duplicated for translation",
+            `${consoleSucces}`
+          );
+          dispatch(fetchContentsList());
+        }
+      } catch (error) {
+        console.log("%cError =>", `${consoleError}`, error?.response?.data);
+        if (error?.response?.status === 409) {
+          dispatch(
+            showErrorModal({
+              value: true,
+              message: alreadyTranslated(
+                error?.response?.data,
+                articleId,
+                history,
+                dispatch
+              ),
+            })
+          );
+        }
       }
     }
     return null;

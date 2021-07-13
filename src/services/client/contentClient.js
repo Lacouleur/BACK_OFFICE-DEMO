@@ -166,7 +166,6 @@ export async function publishManager(id, action, manifesto) {
 
 // eslint-disable-next-line no-unused-vars
 export async function uploadImage(data) {
-  /*   return `${uuidv4()}`; */
   return axiosConfig({
     method: "post",
     url: `/images`,
@@ -175,5 +174,25 @@ export async function uploadImage(data) {
       "Content-Type": "application/json",
     },
     data,
+  });
+}
+
+export async function duplicateContent(articleId) {
+  return axiosConfig({
+    method: "post",
+    url: `/contents/${articleId}/duplicate`,
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}
+
+export async function translateContent(articleId, lang) {
+  return axiosConfig({
+    method: "post",
+    url: `/contents/${articleId}/translations/${lang}`,
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
   });
 }

@@ -60,6 +60,7 @@ export const ManifestoLangSelector = styled(ReactSelect)`
       opacity: 0.8;
 
       &:hover {
+        cursor: pointer;
         border: 1px solid ${colors.paleViolet};
         opacity: 1;
         box-shadow: 0px 0px 10px 1px ${colors.paleVioletTransp};

@@ -156,6 +156,7 @@ export function checkAndSend(type = "save", articleId = null) {
               dispatch(setPosted(true));
               dispatch(setUpdatedAt("create"));
               dispatch(setModified(true));
+              console.log("%cContent saved", `${consoleSucces}`);
             }
           } catch (error) {
             if (error.response.status === 409) {
@@ -183,6 +184,7 @@ export function checkAndSend(type = "save", articleId = null) {
               dispatch(setPosted(true));
               dispatch(setUpdatedAt("create"));
               dispatch(setModified(true));
+              console.log("%cContent updated", `${consoleSucces}`);
             }
 
             return null;
@@ -338,7 +340,6 @@ export function actulalizeManifesto(manifestoId) {
           dispatch(setErrorPosting(true));
           dispatch(setPosted(false));
         } else {
-          console.log("%cError =>", `${consoleError}`, error?.response?.data);
           dispatch(showErrorModal(true));
           dispatch(setPosted(false));
         }

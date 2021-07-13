@@ -164,7 +164,6 @@ const Field = ({
     if (!selectedColorStyle) {
       colorStyleList.map((option) => {
         if (edit === option.value) {
-          console.log("EGALE");
           setSelectedColorStyle(option);
           return null;
         }
@@ -202,7 +201,9 @@ const Field = ({
       dispatch(saveImage(name, file, moduleId));
       setFileTitle(file.name);
     } else {
-      dispatch(showErrorModal(sizeOrFormatError(file)));
+      dispatch(
+        showErrorModal({ value: true, message: sizeOrFormatError(file) })
+      );
       setFileTitle("");
     }
   };

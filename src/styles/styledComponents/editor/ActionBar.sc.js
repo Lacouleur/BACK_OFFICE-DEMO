@@ -132,8 +132,6 @@ export const StatusText = styled.div`
 export const ArchiveBox = styled.div`
   position: relative;
   display: flex;
-  margin-left: 10%;
-  margin-right: 10%;
   position: relative;
 
   &:hover {
@@ -150,7 +148,7 @@ export const ActionsContainer = styled.div`
   right: 15%;
   width: 20%;
   min-width: 300px;
-  justify-content: flex-end;
+  justify-content: space-between;
 `;
 
 export const ActionIcon = styled.img`

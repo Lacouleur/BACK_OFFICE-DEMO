@@ -75,11 +75,12 @@ const actionBarReducer = (state = initialState, action = {}) => {
 
     case SHOW_ERROR_MODAL: {
       if (typeof action.payload !== "boolean") {
+        const { value, message } = action.payload;
         return {
           ...oldState,
           isOpenErrorModal: true,
-          errorMessage: action.payload,
-          isModalOpen: action.payload,
+          errorMessage: message,
+          isModalOpen: value,
         };
       }
       return {

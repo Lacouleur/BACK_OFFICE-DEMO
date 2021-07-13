@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -19,7 +19,6 @@ import isEven from "../../helper/isEven";
 import colors from "../../styles/core/colors";
 import trashIcon from "../../styles/assets/icons/trash.svg";
 import greyTrashIcon from "../../styles/assets/icons/trash-grey.svg";
-import darkTrashIcon from "../../styles/assets/icons/trash-dark.svg";
 import eye from "../../styles/assets/icons/eye.svg";
 import copy from "../../styles/assets/icons/copy.svg";
 import pen from "../../styles/assets/icons/pen.svg";
@@ -31,6 +30,11 @@ import {
   ArchiveBox,
 } from "../../styles/styledComponents/editor/ActionBar.sc";
 import { setIsOpenArchiveModal } from "../../store/actions/actionBarActions";
+import { watchOpinionModules } from "../../helper/actionBarHelper";
+import statIconGreen from "../../styles/assets/icons/opinion-green.svg";
+import statIconGrey from "../../styles/assets/icons/opinion-grey.svg";
+import { duplicateArticle } from "../../store/actions/clientActions";
+import { setIsOpenDuplicateModal } from "../../store/actions/contentListActions";
 
 const Content = ({
   number,
@@ -44,10 +48,16 @@ const Content = ({
   publishScheduledAt,
   publishedAt,
   modified,
+  modulesList,
 }) => {
   const even = isEven(number);
   const updateDate = buildDate(new Date(updatedAt));
   const dispatch = useDispatch();
+  const [isOpinionModules, setIsOpinionModules] = useState(false);
+
+  useEffect(() => {
+    setIsOpinionModules(watchOpinionModules(modulesList));
+  }, [modulesList.length]);
 
   return (
     <LineContentBox
@@ -59,7 +69,7 @@ const Content = ({
       <CategoryName>{categoryLabel}</CategoryName>
       <TitleDateBox>
         <Title>{title}</Title>
-        <UpdatedDate>{updateDate}</UpdatedDate>
+        <UpdatedDate>{`Last save: ${updateDate}`}</UpdatedDate>
       </TitleDateBox>
       <Status
         status={status}
@@ -83,6 +93,14 @@ const Content = ({
             );
           }}
         />
+        {!isOpinionModules ? (
+          <IconAction src={statIconGrey} />
+        ) : (
+          <Link to={`/opinion-results/${id}`} target="_blank">
+            <IconAction src={statIconGreen} />
+          </Link>
+        )}
+
         {status !== "PUBLISHED" ? (
           <ArchiveBox role="button">
             <ActionIcon
@@ -92,13 +110,18 @@ const Content = ({
           </ArchiveBox>
         ) : (
           <ArchiveBox role="button">
-            <ActionIcon src={even ? greyTrashIcon : darkTrashIcon} />
+            <ActionIcon src={greyTrashIcon} />
             <Tooltip>
               <TooltipText>A published content cannot be archived</TooltipText>
             </Tooltip>
           </ArchiveBox>
         )}
-        <IconAction src={copy} />
+        <IconAction
+          src={copy}
+          onClick={() => {
+            dispatch(setIsOpenDuplicateModal({ value: true, id, lang }));
+          }}
+        />
       </IconActionBox>
       <Link
         to={{
@@ -139,6 +162,7 @@ Content.propTypes = {
   publishedAt: PropTypes.string,
   modified: PropTypes.bool.isRequired,
   slug: PropTypes.string.isRequired,
+  modulesList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 export default Content;

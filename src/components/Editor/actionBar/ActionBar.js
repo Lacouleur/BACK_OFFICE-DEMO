@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ActionBarContainer,
@@ -28,6 +28,8 @@ import backArrow from "../../../styles/assets/icons/arrow-left.svg";
 import Button from "../../../styles/styledComponents/global/Buttons/Buttons.sc";
 import colors from "../../../styles/core/colors";
 import eyeIcon from "../../../styles/assets/icons/eye.svg";
+import statIconGreen from "../../../styles/assets/icons/opinion-green.svg";
+import statIconGrey from "../../../styles/assets/icons/opinion-grey.svg";
 import trashIcon from "../../../styles/assets/icons/trash.svg";
 import trashGreyIcon from "../../../styles/assets/icons/trash-grey.svg";
 import { checkAndSend, saveModule } from "../../../store/actions/clientActions";
@@ -43,6 +45,7 @@ import {
   Tooltip,
   TooltipText,
 } from "../../../styles/styledComponents/contentList/Content.sc";
+import { watchOpinionModules } from "../../../helper/actionBarHelper";
 
 const ActionBar = () => {
   const dispatch = useDispatch();
@@ -107,7 +110,9 @@ const ActionBar = () => {
   const [isDeleteButton, setIsDeleteButton] = useState(false);
   const [isPreviewButton, setIsPreviewButton] = useState(false);
   const [isArticleError, setIsArticleError] = useState("");
+  const [isOpinionModules, setIsOpinionModules] = useState(false);
   const selectOptions = [{ value: "UNPUBLISH", label: "UNPUBLISH" }];
+  const opinionLink = React.useRef(null);
 
   function ModifiedModulesWatcher() {
     const modifiedModules = [];
@@ -118,6 +123,7 @@ const ActionBar = () => {
       }
       return null;
     });
+
     if (
       seoChanged ||
       MainInformationChanged ||
@@ -206,6 +212,10 @@ const ActionBar = () => {
   }, [MainInformationState]);
 
   useEffect(() => {
+    setIsOpinionModules(watchOpinionModules(modulesList));
+  }, [modulesList.length]);
+
+  useEffect(() => {
     if (!isManifesto && lang && slug && articleId) {
       setIsPreviewButton(true);
       return;
@@ -224,7 +234,7 @@ const ActionBar = () => {
     }
   }, [isOpenPublishModal]);
 
-  function handleSubmit() {
+  /*   function handleSubmit() {
     if (!isEditing && contentIsChanged) {
       dispatch(checkAndSend());
     }
@@ -239,7 +249,7 @@ const ActionBar = () => {
         return null;
       });
     }
-  }
+  } */
 
   return (
     <>
@@ -262,9 +272,6 @@ const ActionBar = () => {
             <BackText>BACK</BackText>
           </Button>
           <Button
-            onClick={() => {
-              handleSubmit();
-            }}
             styles={
               contentIsChanged && !isArticleError
                 ? saveButton
@@ -307,6 +314,25 @@ const ActionBar = () => {
           )}
         </StatusContainer>
         <ActionsContainer>
+          <ActionIcon
+            src={
+              isOpinionModules && !contentIsChanged
+                ? statIconGreen
+                : statIconGrey
+            }
+            onClick={() => {
+              if (isOpinionModules && !contentIsChanged) {
+                opinionLink.current.click();
+              }
+            }}
+          />
+          <Link
+            ref={opinionLink}
+            to={`/opinion-results/${articleId}`}
+            target="_blank"
+            style={{ display: "none" }}
+          />
+
           {isPreviewButton && (
             <ActionIcon
               src={eyeIcon}

@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import Home from "./pages/Home";
 import Auth from "./pages/Auth";
+import Results from "./pages/Results";
 import Error404 from "./pages/404";
 import PrivateRoute from "./services/routes/PrivatesRoutes";
 import EditorCreate from "./pages/Editor/EditorCreate";
@@ -43,6 +44,11 @@ const rootComponent = (
           component={EditorManifesto}
         />
         <PrivateRoute path="/editor/:articleId" exact component={EditorEdit} />
+        <PrivateRoute
+          path="/opinion-results/:articleId"
+          exact
+          component={Results}
+        />
         <Route path="*">
           <Error404 />
         </Route>

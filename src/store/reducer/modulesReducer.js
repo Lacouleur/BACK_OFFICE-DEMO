@@ -60,7 +60,7 @@ const modulesReducer = (state = initialState, action = {}) => {
               {
                 image: {
                   alt: null,
-                  source: null,
+                  source: "FTV-internal",
                   uuid: null,
                   urls: {},
                 },

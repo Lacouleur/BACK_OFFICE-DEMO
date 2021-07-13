@@ -519,7 +519,7 @@ export function fetchCategoriesList() {
 }
 
 export function deleteModule(articleId, moduleId) {
-  console.log("%cDELETING MODULE", `${consoleTitle}`);
+  console.log("%cDELETING MODULE", `${consoleTitle}`, moduleId);
   return async (dispatch, getState) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {

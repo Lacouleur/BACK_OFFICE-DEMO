@@ -12,7 +12,7 @@ import {
   FormContainer,
 } from "../../styles/styledComponents/editor/Sections.sc";
 import ActionBar from "../../components/Editor/actionBar/ActionBar";
-import { setIsManifesto} from "../../store/actions/manifestoActions";
+import { setIsManifesto, setManifestolang} from "../../store/actions/manifestoActions";
 import { TitleBox } from "../../styles/styledComponents/contentList/ContentList.sc";
 import { ManifestoLang, ManifestoTitle } from "../../styles/styledComponents/global/Titles.sc";
 import { fetchManifesto } from "../../store/actions/clientActions";
@@ -27,11 +27,12 @@ const EditorCreateManifesto = () => {
     ({ manifestoReducer }) => manifestoReducer
   );
 
-  const {manifestoId, manifestoLang, isManifesto } = manifestoState;
+  const {manifestoId, manifestoLang } = manifestoState;
 
   useEffect(() => { 
 
     dispatch(setIsManifesto(true))
+    dispatch(setManifestolang(lang))
 
     if(!manifestoId) {
       dispatch(fetchManifesto(lang));

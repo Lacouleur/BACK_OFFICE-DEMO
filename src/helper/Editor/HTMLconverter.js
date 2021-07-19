@@ -44,9 +44,11 @@ function HTMLconverter(editorState, mode = "to", data = "") {
     },
     htmlToEntity: (nodeName, node, createEntity) => {
       if (nodeName === "a") {
-        console.dir(node);
-        return createEntity("LINK", "UNMUTABLE", {
-          url: node.href,
+        // We use node.pathname instead of .href (as mentioned in the doc) because of an issue from the lib. This issue append "HOST_URL" to the href. please check regularly if problem is solved : https://github.com/facebook/draft-js/issues/2311
+        // console.log("node.pathname", node.pathname.substring(1));
+        // console.log("node.href", node.href);
+        return createEntity("LINK", "MUTABLE", {
+          url: node?.pathname?.substring(1),
           targetOption: node.target,
         });
       }

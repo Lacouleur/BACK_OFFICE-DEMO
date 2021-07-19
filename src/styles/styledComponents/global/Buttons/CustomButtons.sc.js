@@ -1,9 +1,8 @@
-import { setIsOpenPublishModal } from "../../../../store/actions/actionBarActions";
 import colors from "../../../core/colors";
 
 export const createNewContent = {
   width: "230px",
-  marginLeft: "40px",
+  marginLeft: "32px",
   display: "flex",
   justifyContent: "space-evenly",
   alignItems: "center",

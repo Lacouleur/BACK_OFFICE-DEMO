@@ -4,10 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import useClickOutside from "../../helper/cutomHooks/useClickOutside";
 import { setIsOpenArchiveModal } from "../../store/actions/actionBarActions";
-import {
-  archiveContent,
-  fetchContentsList,
-} from "../../store/actions/clientActions";
+import { archiveContent } from "../../store/actions/clientActions";
 import crossIcon from "../../styles/assets/icons/cross-white.svg";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import {
@@ -75,7 +72,7 @@ const ArchiveModal = ({ id }) => {
               dispatch(setIsOpenArchiveModal(false));
 
               // Only contentList can't pass id props so we use it to know if the delete come from contentlist or from content itself
-              if (!id) {
+              if (id) {
                 dispatch(archiveContent(articleId, redirectTo));
               }
               if (!id) {

@@ -44,8 +44,6 @@ const ContentList = () => {
     dispatch(cleanContentState());
   }, []);
 
-  console.log(isOpenArchiveModal);
-
   return (
     <>
       {isOpenDuplicateModal.value && <DuplicateModal />}
@@ -91,8 +89,8 @@ const ContentList = () => {
             );
           })}
         </ListBox>
+        <Pagination />
       </ContentSectionBox>
-      <Pagination />
     </>
   );
 };

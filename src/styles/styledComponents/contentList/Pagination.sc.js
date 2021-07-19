@@ -33,7 +33,7 @@ export const PageListLi = styled.li`
 export const PageListArrow = styled.img`
   visibility: ${(props) => props.hide};
   height: 16px;
-  margin: 0 30px;
+  margin: ${(props) => (props.right ? "0 0 0 30px" : "0 30px")};
   align-self: center;
   cursor: pointer;
   transform: ${(props) => (props.right ? "rotate(180deg)" : "")};

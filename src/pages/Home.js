@@ -6,7 +6,7 @@ import PageContainer from "../styles/styledComponents/global/PageContainer.sc";
 
 const Home = () => {
   return (
-    <PageContainer position="absolute">
+    <PageContainer position="relative">
       <Header />
       <ContentList />
       <Footer position="fixed" />

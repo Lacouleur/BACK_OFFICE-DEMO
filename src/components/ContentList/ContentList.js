@@ -22,6 +22,7 @@ import { fetchContentsList } from "../../store/actions/clientActions";
 import { cleanContentState } from "../../store/actions/commonsActions";
 import langList from "../../helper/langList";
 import DuplicateModal from "../Modals/DuplicateModal";
+import ArchiveModal from "../Modals/ArchiveModal";
 import ErrorModal from "../Modals/ErrorModal";
 
 const ContentList = () => {
@@ -36,16 +37,19 @@ const ContentList = () => {
     ({ actionBarReducer }) => actionBarReducer
   );
   const { contentsList, isOpenDuplicateModal } = contentsListState;
-  const { isOpenErrorModal } = actionBarState;
+  const { isOpenErrorModal, isOpenArchiveModal } = actionBarState;
 
   useEffect(() => {
     dispatch(fetchContentsList());
     dispatch(cleanContentState());
   }, []);
 
+  console.log(isOpenArchiveModal);
+
   return (
     <>
       {isOpenDuplicateModal.value && <DuplicateModal />}
+      {isOpenArchiveModal && <ArchiveModal />}
       <ContentSectionBox>
         {isOpenErrorModal && <ErrorModal />}
         <TitleBox>

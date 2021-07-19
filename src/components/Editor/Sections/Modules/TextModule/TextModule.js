@@ -62,6 +62,8 @@ const TextModule = ({
     } else {
       const newValue = HTMLconverter(editorState);
       if (newValue !== text) {
+        console.log("NEWVALUE", newValue);
+        console.log("TEXT", text);
         dispatch(
           setValueTextModule({
             id: uuid,
@@ -183,7 +185,7 @@ const TextModule = ({
               },
               blockType: {
                 inDropdown: true,
-                options: ["H2", "H3", "H4", "Blockquote"],
+                options: ["Normal", "H2", "H3", "H4", "Blockquote"],
               },
               list: {
                 inDropdown: true,

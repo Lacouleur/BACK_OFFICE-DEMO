@@ -33,7 +33,6 @@ import { setIsOpenArchiveModal } from "../../store/actions/actionBarActions";
 import { watchOpinionModules } from "../../helper/actionBarHelper";
 import statIconGreen from "../../styles/assets/icons/opinion-green.svg";
 import statIconGrey from "../../styles/assets/icons/opinion-grey.svg";
-import { duplicateArticle } from "../../store/actions/clientActions";
 import { setIsOpenDuplicateModal } from "../../store/actions/contentListActions";
 
 const Content = ({
@@ -105,7 +104,14 @@ const Content = ({
           <ArchiveBox role="button">
             <ActionIcon
               src={trashIcon}
-              onClick={() => dispatch(setIsOpenArchiveModal(true))}
+              onClick={() =>
+                dispatch(
+                  setIsOpenArchiveModal({
+                    value: true,
+                    id,
+                  })
+                  // eslint-disable-next-line prettier/prettier
+                )}
             />
           </ArchiveBox>
         ) : (

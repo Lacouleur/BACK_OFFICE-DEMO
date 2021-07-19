@@ -416,34 +416,6 @@ export function fetchManifesto(lang) {
   };
 }
 
-export function archiveContent(articleId, redirectTo) {
-  console.log("%cDELETING", `${consoleTitle}`, articleId);
-  return async (dispatch) => {
-    const tokenIsValid = await isValidToken(dispatch);
-    if (tokenIsValid) {
-      try {
-        const response = await deleteContent(articleId);
-        if (response.status < 300 && response.status > 199) {
-          redirectTo("/dashboard");
-          console.log(
-            `%cArticle Deleted, id:${articleId} =>`,
-            `${consoleSucces}`,
-            response
-          );
-        }
-      } catch (error) {
-        dispatch(showErrorModal(true));
-        console.log(
-          `%cError while deleting id:${articleId} =>`,
-          `${consoleError}`,
-          error?.response?.data
-        );
-      }
-    }
-    return null;
-  };
-}
-
 export function fetchContentsList(page) {
   console.log("%cFETCHING CONTENT LIST", `${consoleTitle}`);
   return async (dispatch) => {
@@ -465,6 +437,44 @@ export function fetchContentsList(page) {
       } catch (error) {
         console.log("%cError =>", `${consoleError}`, error?.response?.data);
         return null;
+      }
+    }
+    return null;
+  };
+}
+
+export function archiveContent(articleId, redirectTo, fromList = false) {
+  console.log("%cDELETING", `${consoleTitle}`, articleId);
+  return async (dispatch) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
+      try {
+        const response = await deleteContent(articleId);
+        if (response.status < 300 && response.status > 199) {
+          if (!fromList) {
+            redirectTo("/dashboard");
+            console.log(
+              `%cArticle Deleted, id:${articleId} =>`,
+              `${consoleSucces}`,
+              response
+            );
+          }
+          if (fromList) {
+            dispatch(fetchContentsList());
+            console.log(
+              `%cArticle Deleted, id:${articleId} =>`,
+              `${consoleSucces}`,
+              response
+            );
+          }
+        }
+      } catch (error) {
+        dispatch(showErrorModal(true));
+        console.log(
+          `%cError while deleting id:${articleId} =>`,
+          `${consoleError}`,
+          error?.response?.data
+        );
       }
     }
     return null;

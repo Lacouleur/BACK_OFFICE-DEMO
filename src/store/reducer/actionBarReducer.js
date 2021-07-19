@@ -22,6 +22,7 @@ const initialState = {
   errorMessage: null,
   isModalOpen: false,
   aModuleIsOpen: false,
+  articleToDelete: "",
 };
 
 const actionBarReducer = (state = initialState, action = {}) => {
@@ -91,6 +92,15 @@ const actionBarReducer = (state = initialState, action = {}) => {
     }
 
     case SET_IS_OPEN_ARCHIVE_MODAL: {
+      if (typeof action.payload !== "boolean") {
+        const { value, id } = action.payload;
+        return {
+          ...oldState,
+          isOpenArchiveModal: value,
+          articleToDelete: id,
+          isModalOpen: value,
+        };
+      }
       return {
         ...oldState,
         isOpenArchiveModal: action.payload,

@@ -51,6 +51,7 @@ const Results = () => {
           question: module.question,
           participantsCount: module.participantsCount,
           answers: module.answers,
+          showRight: module.showRight,
         });
       }
       return null;
@@ -59,7 +60,11 @@ const Results = () => {
   }
 
   function percentage(partialValue, totalValue) {
-    return Math.floor((100 * partialValue) / totalValue);
+    const calc = Math.floor((100 * partialValue) / totalValue);
+    if (Number.isNaN(calc)) {
+      return "0";
+    }
+    return calc;
   }
 
   useEffect(() => {
@@ -121,7 +126,7 @@ const Results = () => {
                               })`}
                             </LightText>
                           </PercentBox>
-                          {answer.text !== "" && (
+                          {answer.text !== "" && question.showRight && (
                             <IconBox>
                               <IsRightIcon
                                 src={answer.right ? checkIcon : crossIcon}

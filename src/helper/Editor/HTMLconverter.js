@@ -24,19 +24,14 @@ function HTMLconverter(editorState, mode = "to", data = "") {
       }
       return null;
     },
-    entityToHTML: (entity, originalText) => {
+    entityToHTML: (entity) => {
       if (entity.type === "LINK") {
-        return (
-          <a
-            href={entity.data.url}
-            target={entity.data.targetOption}
-            rel="noreferrer"
-          >
-            {originalText}
-          </a>
-        );
+        return {
+          start: `<a href="${entity.data.url}" target="${entity.data.targetOption}" rel="noreferrer">`,
+          end: "</a>",
+        };
       }
-      return originalText;
+      return null;
     },
   };
 
@@ -49,6 +44,7 @@ function HTMLconverter(editorState, mode = "to", data = "") {
     },
     htmlToEntity: (nodeName, node, createEntity) => {
       if (nodeName === "a") {
+        console.dir(node);
         return createEntity("LINK", "UNMUTABLE", {
           url: node.href,
           targetOption: node.target,

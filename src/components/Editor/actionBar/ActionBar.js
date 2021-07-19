@@ -261,7 +261,7 @@ const ActionBar = () => {
             articleId={isManifesto ? manifestoId : articleId}
           />
         )}
-        {isOpenArchiveModal && <ArchiveModal articleId={articleId} />}
+        {isOpenArchiveModal && <ArchiveModal id={articleId} />}
         <ButtonsContainer>
           <Button
             type="button"

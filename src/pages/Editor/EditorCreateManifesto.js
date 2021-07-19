@@ -27,7 +27,7 @@ const EditorCreateManifesto = () => {
     ({ manifestoReducer }) => manifestoReducer
   );
 
-  const {manifestoId, manifestoLang, isManifesto } = manifestoState;
+  const {manifestoId, manifestoLang } = manifestoState;
 
   useEffect(() => { 
 

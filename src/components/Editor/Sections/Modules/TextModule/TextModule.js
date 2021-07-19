@@ -53,6 +53,7 @@ const TextModule = ({
     if (!editorState) {
       if (text) {
         const converted = HTMLconverter(editorState, "from", text);
+
         const stateWithContent = EditorState.createWithContent(converted);
         setEditorState(stateWithContent);
       } else {
@@ -62,8 +63,6 @@ const TextModule = ({
     } else {
       const newValue = HTMLconverter(editorState);
       if (newValue !== text) {
-        console.log("NEWVALUE", newValue);
-        console.log("TEXT", text);
         dispatch(
           setValueTextModule({
             id: uuid,
@@ -193,9 +192,10 @@ const TextModule = ({
               },
               link: {
                 inDropdown: true,
-                defaultTargetOption: "_self",
+                defaultTargetOption: "_blank",
                 linkCallback: processLink,
                 trailingWhitespace: false,
+                showOpenOptionOnHover: true,
               },
               history: { inDropdown: false },
               emoji: {

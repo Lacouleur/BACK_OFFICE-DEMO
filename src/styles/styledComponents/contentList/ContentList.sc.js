@@ -21,13 +21,9 @@ export const TitleBox = styled.div`
 
 export const ListBox = styled.div`
   flex-direction: column;
-  min-height: 500px;
-  max-height: 1110px;
-  height: 70vh;
   width: 100%;
   padding: 30px;
   background-color: ${colors.mediumGrey};
-  overflow: scroll;
 `;
 
 export const IconCreat = styled.img`

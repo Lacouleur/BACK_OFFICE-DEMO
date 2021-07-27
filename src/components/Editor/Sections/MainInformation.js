@@ -51,7 +51,7 @@ const MainInformation = () => {
     isChanged,
   } = mainInformationState;
 
-  const { isManifesto, manifestoId } = manifestoState;
+  const { isManifesto, manifestoId, manifestoLang } = manifestoState;
 
   function slugMessage() {
     let message = "";
@@ -88,7 +88,7 @@ const MainInformation = () => {
       if (title && !titleError) {
         setIsOpen(false);
         if (isChanged && !manifestoId) {
-          dispatch(saveManifesto(lang));
+          dispatch(saveManifesto(manifestoLang));
         } else if (isChanged && manifestoId) {
           dispatch(actulalizeManifesto(manifestoId));
         }
@@ -183,10 +183,10 @@ const MainInformation = () => {
                 name="colorStyle"
                 fieldType="select"
                 section="mainInformation"
-                edit={colorStyle || 1}
+                edit={colorStyle?.toString() || "1"}
               />
 
-              <VisualiseColorStyle color={colorStyle || 1} />
+              <VisualiseColorStyle color={colorStyle || "1"} />
             </ColorFieldBox>
           </>
         )}

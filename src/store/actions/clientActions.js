@@ -97,12 +97,18 @@ export function checkAndSend(type = "save", articleId = null) {
 
       let values = {};
 
+      let theme = colorStyle;
+
+      if (typeof colorStyle === "string") {
+        theme = parseInt(colorStyle, 10);
+      }
+
       if (type === "update") {
         values = {
           title: mainTitle,
           slug,
           category: !category ? null : category,
-          theme: colorStyle,
+          theme,
           header: homeTitle
             ? {
                 readingTime: readingTime || undefined,
@@ -226,10 +232,15 @@ export function saveManifesto(lang) {
       }
 
       let values = {};
+      let theme = colorStyle;
+
+      if (typeof colorStyle === "string") {
+        theme = parseInt(colorStyle, 10);
+      }
 
       values = {
         title: mainTitle,
-        theme: colorStyle,
+        theme,
       };
 
       if (!titleError && lang) {
@@ -277,12 +288,17 @@ export function actulalizeManifesto(manifestoId) {
         navImgUuid,
         navImgAlt,
       } = homeNavigationReducer;
+      let theme = colorStyle;
+
+      if (typeof colorStyle === "string") {
+        theme = parseInt(colorStyle, 10);
+      }
 
       let values = {};
 
       values = {
         title: mainTitle,
-        theme: colorStyle,
+        theme,
         header: homeTitle
           ? {
               readingTime: readingTime || undefined,
@@ -391,6 +407,12 @@ export function fetchManifesto(lang) {
           if (response.status < 300 && response.status > 199) {
             const fetchedLang =
               response.data[0].language === "german" ? "de" : "fr";
+
+            console.log(
+              "%cManifesto fetched =>",
+              `${consoleInfo}`,
+              response.data
+            );
 
             if (fetchedLang === lang) {
               dispatch(setManifestoStatus("PUBLISHED"));

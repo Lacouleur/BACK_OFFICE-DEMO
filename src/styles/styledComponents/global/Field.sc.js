@@ -195,7 +195,7 @@ export const VisualiseColorStyle = styled.div`
   height: 30px;
   border-radius: 50%;
   border: 1px solid ${colors.white};
-  background-color: ${(props) => (props.color === 1 ? "#000065" : "#FFC700")};
+  background-color: ${(props) => (props.color === "1" ? "#000065" : "#FFC700")};
   margin-left: 18px;
   box-shadow: 1px 1px 10px 3px ${colors.darkGrey};
 `;

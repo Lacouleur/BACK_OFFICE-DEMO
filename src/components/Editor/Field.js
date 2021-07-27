@@ -111,11 +111,11 @@ const Field = ({
   const colorStyleList = [
     {
       label: "Blue",
-      value: 1,
+      value: "1",
     },
     {
       label: "Yellow",
-      value: 2,
+      value: "2",
     },
   ];
 

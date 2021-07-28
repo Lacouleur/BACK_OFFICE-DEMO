@@ -234,23 +234,6 @@ const ActionBar = () => {
     }
   }, [isOpenPublishModal]);
 
-  /*   function handleSubmit() {
-    if (!isEditing && contentIsChanged) {
-      dispatch(checkAndSend());
-    }
-
-    if (isEditing && contentIsChanged) {
-      dispatch(checkAndSend("update", articleId));
-
-      modulesList?.map((module) => {
-        if (module.isChanged) {
-          dispatch(saveModule(module.uuid, "update"));
-        }
-        return null;
-      });
-    }
-  } */
-
   return (
     <>
       <ActionBarContainer>
@@ -326,12 +309,23 @@ const ActionBar = () => {
               }
             }}
           />
-          <Link
-            ref={opinionLink}
-            to={`/opinion-results/${articleId}`}
-            target="_blank"
-            style={{ display: "none" }}
-          />
+          {!isManifesto && (
+            <Link
+              ref={opinionLink}
+              to={`/opinion-results/${articleId}`}
+              target="_blank"
+              style={{ display: "none" }}
+            />
+          )}
+
+          {isManifesto && (
+            <Link
+              ref={opinionLink}
+              to={`/opinion-results/manifesto/${manifestoLang}/${manifestoId}`}
+              target="_blank"
+              style={{ display: "none" }}
+            />
+          )}
 
           {isPreviewButton && (
             <ActionIcon

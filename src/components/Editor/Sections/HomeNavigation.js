@@ -175,8 +175,8 @@ const HomeNavigation = () => {
                     <Field
                       placeholder="Alternative text for home image"
                       name="altHomeImage"
-                      infos="Maximum 80 characters"
-                      maxlength="80"
+                      infos="Maximum 120 characters"
+                      maxlength="120"
                       section="homeNavigation"
                       edit={homeImgAlt || undefined}
                     />
@@ -197,8 +197,8 @@ const HomeNavigation = () => {
                     <Field
                       placeholder="Alternative text for home image"
                       name="altNavImage"
-                      infos="Maximum 80 characters"
-                      maxlength="80"
+                      infos="Maximum 120 characters"
+                      maxlength="120"
                       section="homeNavigation"
                       edit={navImgAlt || undefined}
                     />

@@ -31,31 +31,55 @@ import backArrow from "../styles/assets/icons/arrow-left.svg";
 import { BackIcon } from "../styles/styledComponents/editor/ActionBar.sc";
 import checkIcon from "../styles/assets/icons/check-circle-green.svg";
 import crossIcon from "../styles/assets/icons/cross-circle-red.svg";
-import { fetchContent } from "../store/actions/clientActions";
+import { fetchContent, fetchManifesto } from "../store/actions/clientActions";
 
 const Results = () => {
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
   const [data, setData] = useState([]);
   const dispatch = useDispatch();
-  const { articleId } = useParams();
+  const { articleId, manifestoId, manifestoLang } = useParams();
   const history = useHistory();
 
   const { modulesList } = modulesState;
 
+  const manifestoState = useSelector(
+    ({ manifestoReducer }) => manifestoReducer
+  );
+
+  const { manifestoData } = manifestoState;
+
   function getData() {
     const storedData = [];
-    modulesList.map((module) => {
-      if (module.type === "opinion") {
-        storedData.push({
-          id: module.uuid,
-          question: module.question,
-          participantsCount: module.participantsCount,
-          answers: module.answers,
-          showRight: module.showRight,
-        });
-      }
-      return null;
-    });
+    if (articleId) {
+      modulesList.map((module) => {
+        if (module.type === "opinion") {
+          storedData.push({
+            id: module.uuid,
+            question: module.question,
+            participantsCount: module.participantsCount,
+            answers: module.answers,
+            showRight: module.showRight,
+          });
+        }
+        return null;
+      });
+    }
+
+    if (manifestoData.components) {
+      manifestoData.components.map((module) => {
+        if (module.type === "opinion") {
+          storedData.push({
+            id: module.uuid,
+            question: module.question,
+            participantsCount: module.participantsCount,
+            answers: module.answers,
+            showRight: module.showRight,
+          });
+        }
+        return null;
+      });
+    }
+
     setData(storedData);
   }
 
@@ -69,10 +93,16 @@ const Results = () => {
 
   useEffect(() => {
     getData();
-  }, [modulesList]);
+  }, [modulesList, manifestoData]);
 
   useEffect(() => {
-    dispatch(fetchContent(articleId));
+    if (!manifestoId) {
+      dispatch(fetchContent(articleId));
+    }
+
+    if (manifestoId) {
+      dispatch(fetchManifesto(manifestoLang));
+    }
   }, []);
 
   return (

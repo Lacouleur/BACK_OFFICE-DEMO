@@ -49,6 +49,11 @@ const rootComponent = (
           exact
           component={Results}
         />
+        <PrivateRoute
+          path="/opinion-results/manifesto/:manifestoLang/:manifestoId"
+          exact
+          component={Results}
+        />
         <Route path="*">
           <Error404 />
         </Route>

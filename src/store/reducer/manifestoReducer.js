@@ -13,6 +13,7 @@ const initialState = {
   manifestoLang: "",
   isPublishedManifesto: false,
   isModifiedManifesto: false,
+  manifestoData: [],
 };
 
 const manifestoReducer = (state = initialState, action = {}) => {
@@ -23,6 +24,7 @@ const manifestoReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         manifestoId: action.payload?._id ?? null,
+        manifestoData: action.payload,
       };
     }
 

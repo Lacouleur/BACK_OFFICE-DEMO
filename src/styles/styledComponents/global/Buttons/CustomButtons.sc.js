@@ -7,7 +7,7 @@ export const createNewContent = {
   justifyContent: "space-evenly",
   alignItems: "center",
   position: "absolute",
-  left: "75%",
+  left: "auto",
 };
 
 export const loginButton = {

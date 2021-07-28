@@ -113,8 +113,8 @@ const ImageModule = ({
             <Field
               placeholder="Alternative text for the image"
               name="altImage"
-              infos="Maximum 80 characters"
-              maxlength="80"
+              infos="Maximum 120 characters"
+              maxlength="120"
               section="imageModule"
               moduleId={uuid}
               edit={altImage}

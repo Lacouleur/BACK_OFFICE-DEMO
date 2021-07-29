@@ -32,6 +32,7 @@ import { BackIcon } from "../styles/styledComponents/editor/ActionBar.sc";
 import checkIcon from "../styles/assets/icons/check-circle-green.svg";
 import crossIcon from "../styles/assets/icons/cross-circle-red.svg";
 import { fetchContent, fetchManifesto } from "../store/actions/clientActions";
+import { cleanContentState } from "../store/actions/commonsActions";
 
 const Results = () => {
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
@@ -52,7 +53,7 @@ const Results = () => {
     const storedData = [];
     if (articleId) {
       modulesList.map((module) => {
-        if (module.type === "opinion") {
+        if (module.type === "opinion" && articleId) {
           storedData.push({
             id: module.uuid,
             question: module.question,
@@ -65,7 +66,7 @@ const Results = () => {
       });
     }
 
-    if (manifestoData.components) {
+    if (manifestoData.components && manifestoId) {
       manifestoData.components.map((module) => {
         if (module.type === "opinion") {
           storedData.push({
@@ -79,7 +80,7 @@ const Results = () => {
         return null;
       });
     }
-
+    console.log("storedData", storedData);
     setData(storedData);
   }
 
@@ -121,7 +122,10 @@ const Results = () => {
           <H1>OPINIONS RESULTS</H1>
           <Button
             styles={modifyButton}
-            onClick={() => history.push(`/editor/${articleId}`)}
+            onClick={() => {
+              dispatch(cleanContentState());
+              history.push(`/editor/${articleId}`);
+            }}
           >
             Modify
             <ButtonIcon src={pen} />

@@ -168,6 +168,11 @@ const publishButtonEnabled = css`
   border-bottom: 1px solid ${colors.paleViolet};
 `;
 
+export const PublishButtonBox = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
 export const PublishButton = styled.button`
   ${(props) => {
     return props.disabled ? publishButtonDisable : publishButtonEnabled;

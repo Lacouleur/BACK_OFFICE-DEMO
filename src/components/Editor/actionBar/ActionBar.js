@@ -22,17 +22,17 @@ import {
   ActionIcon,
   ButtonsContainer,
   PublishButton,
+  PublishButtonBox,
   ArchiveBox,
 } from "../../../styles/styledComponents/editor/ActionBar.sc";
 import backArrow from "../../../styles/assets/icons/arrow-left.svg";
 import Button from "../../../styles/styledComponents/global/Buttons/Buttons.sc";
 import colors from "../../../styles/core/colors";
-import eyeIcon from "../../../styles/assets/icons/eye.svg";
+import eyeIcon from "../../../styles/assets/icons/eye-circle-green.svg";
 import statIconGreen from "../../../styles/assets/icons/opinion-green.svg";
 import statIconGrey from "../../../styles/assets/icons/opinion-grey.svg";
 import trashIcon from "../../../styles/assets/icons/trash.svg";
 import trashGreyIcon from "../../../styles/assets/icons/trash-grey.svg";
-import { checkAndSend, saveModule } from "../../../store/actions/clientActions";
 import buildDate from "../../../helper/buildDate";
 import PublishModal from "../../Modals/PublishModal";
 import {
@@ -365,47 +365,49 @@ const ActionBar = () => {
               </Tooltip>
             </ArchiveBox>
           )}
-          {isManifesto && (
-            <PublishButton
-              disabled={
-                !(manifestoId && !isPublishedManifesto && !contentIsChanged)
-              }
-              type="button"
-              onClick={() => {
-                if (manifestoId) {
-                  dispatch(setIsOpenPublishModal(true));
+          <PublishButtonBox>
+            {isManifesto && (
+              <PublishButton
+                disabled={
+                  !(manifestoId && !isPublishedManifesto && !contentIsChanged)
                 }
-              }}
-            >
-              {actionButtonContent}
-            </PublishButton>
-          )}
-          {!isManifesto && (
-            <PublishButton
-              disabled={!(articleId && !contentIsChanged)}
-              type="button"
-              onClick={() => {
-                if (articleId) {
-                  dispatch(setIsOpenPublishModal(true));
-                }
-              }}
-            >
-              {actionButtonContent}
-            </PublishButton>
-          )}
-          {status === "PUBLISHED" && modified && !contentIsChanged && (
-            <Selector
-              placeholder=""
-              classNamePrefix="select"
-              options={selectOptions}
-              onChange={(e) => {
-                if (e?.value === "UNPUBLISH") {
-                  setActionButtonContent(e?.value);
-                  dispatch(setIsOpenPublishModal(true));
-                }
-              }}
-            />
-          )}
+                type="button"
+                onClick={() => {
+                  if (manifestoId) {
+                    dispatch(setIsOpenPublishModal(true));
+                  }
+                }}
+              >
+                {actionButtonContent}
+              </PublishButton>
+            )}
+            {!isManifesto && (
+              <PublishButton
+                disabled={!(articleId && !contentIsChanged)}
+                type="button"
+                onClick={() => {
+                  if (articleId) {
+                    dispatch(setIsOpenPublishModal(true));
+                  }
+                }}
+              >
+                {actionButtonContent}
+              </PublishButton>
+            )}
+            {status === "PUBLISHED" && modified && !contentIsChanged && (
+              <Selector
+                placeholder=""
+                classNamePrefix="select"
+                options={selectOptions}
+                onChange={(e) => {
+                  if (e?.value === "UNPUBLISH") {
+                    setActionButtonContent(e?.value);
+                    dispatch(setIsOpenPublishModal(true));
+                  }
+                }}
+              />
+            )}
+          </PublishButtonBox>
         </ActionsContainer>
       </ActionBarContainer>
     </>

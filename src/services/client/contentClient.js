@@ -2,6 +2,12 @@
 import axiosConfig from "../config/axiosConfig";
 import { getToken } from "./tokenStuff";
 
+/* const headers = {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  }
+ */
 export const sendAuth = (data) => {
   return axiosConfig({
     method: "post",

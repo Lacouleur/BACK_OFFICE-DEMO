@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable import/prefer-default-export */
 export function watchOpinionModules(modulesList) {
   const opinionModules = [];

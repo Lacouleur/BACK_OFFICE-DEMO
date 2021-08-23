@@ -24,10 +24,8 @@ import {
 import colors from "../../styles/core/colors";
 import exclamationIcon from "../../styles/assets/icons/exclamationGrey.svg";
 import exclamationVioletIcon from "../../styles/assets/icons/exclamation.svg";
-import {
-  fetchCategoriesList,
-  saveImage,
-} from "../../store/actions/clientActions";
+import { fetchCategoriesList } from "../../store/actions/thunk/ArticlesActions.thunk";
+import { saveImage } from "../../store/actions/thunk/ModulesActions.thunk";
 import {
   Tooltip,
   TooltipText,

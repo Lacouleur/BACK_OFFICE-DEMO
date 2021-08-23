@@ -5,6 +5,7 @@ import {
   SET_IS_OPEN_PUBLISH_MODAL,
   SHOW_ERROR_MODAL,
   SET_IS_OPEN_ARCHIVE_MODAL,
+  SHOW_HIDE_MODAL,
 } from "../constants";
 
 export const setUpdatedAt = (payload) => ({
@@ -34,5 +35,10 @@ export const showErrorModal = (payload) => ({
 
 export const setIsOpenArchiveModal = (payload) => ({
   type: SET_IS_OPEN_ARCHIVE_MODAL,
+  payload,
+});
+
+export const showHideModal = (payload) => ({
+  type: SHOW_HIDE_MODAL,
   payload,
 });

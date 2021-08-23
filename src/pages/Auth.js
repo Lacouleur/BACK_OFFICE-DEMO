@@ -17,7 +17,7 @@ import Button from "../styles/styledComponents/global/Buttons/Buttons.sc";
 import { loginButton } from "../styles/styledComponents/global/Buttons/CustomButtons.sc";
 import PageContainer from "../styles/styledComponents/global/PageContainer.sc";
 import Error from "../components/Notifications/Error";
-import { logUser } from "../store/actions/clientActions";
+import { logUser } from "../store/actions/thunk/ActionBarActions.thunk";
 import { getRefreshToken, getToken } from "../services/client/tokenStuff";
 
 const Auth = () => {

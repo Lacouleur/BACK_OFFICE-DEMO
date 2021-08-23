@@ -59,3 +59,13 @@ export function alreadyTranslated(message, articleId, history, dispatch) {
     </>
   );
 }
+
+export function NoDeleteOpinionIfPublished() {
+  return (
+    <>
+      <p>
+        You can not delete an opinion component of an already published content
+      </p>
+    </>
+  );
+}

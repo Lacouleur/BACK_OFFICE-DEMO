@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -17,10 +17,8 @@ import {
 } from "../../../styles/styledComponents/editor/Sections.sc";
 import exampleSeoImg from "../../../styles/assets/icons/exampleSeo.svg";
 import { ExampleBox } from "../../../styles/styledComponents/editor/Seo.sc";
-import {
-  actulalizeManifesto,
-  checkAndSend,
-} from "../../../store/actions/clientActions";
+import { actualizeManifesto } from "../../../store/actions/thunk/ManifestoActions.thunk";
+import { checkAndSend } from "../../../store/actions/thunk/ArticlesActions.thunk";
 import useClickOutside from "../../../helper/cutomHooks/useClickOutside";
 
 const Seo = () => {
@@ -48,7 +46,7 @@ const Seo = () => {
       }
 
       if (isManifesto && manifestoId) {
-        dispatch(actulalizeManifesto(manifestoId));
+        dispatch(actualizeManifesto(manifestoId));
       }
     }
   }

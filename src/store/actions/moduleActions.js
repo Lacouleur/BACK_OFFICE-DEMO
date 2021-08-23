@@ -15,6 +15,7 @@ import {
   CREATE_OPINION_NEW_ANSWER,
   DELETE_OPINION_ANSWER,
   SET_OPINION_SHOW_RIGHT_ANSWER,
+  SET_IS_VISIBLE,
 } from "../constants";
 
 export const setNewModule = (payload) => ({
@@ -94,5 +95,10 @@ export const createOpinionNewAnswer = (payload) => ({
 
 export const deleteOpinionAnswer = (payload) => ({
   type: DELETE_OPINION_ANSWER,
+  payload,
+});
+
+export const setIsVisible = (payload) => ({
+  type: SET_IS_VISIBLE,
   payload,
 });

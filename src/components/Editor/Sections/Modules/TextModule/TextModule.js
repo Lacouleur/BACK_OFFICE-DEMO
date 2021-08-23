@@ -54,7 +54,6 @@ const TextModule = ({
     if (!editorState) {
       if (text) {
         const converted = HTMLconverter(editorState, "from", text);
-
         const stateWithContent = EditorState.createWithContent(converted);
         setEditorState(stateWithContent);
       } else {

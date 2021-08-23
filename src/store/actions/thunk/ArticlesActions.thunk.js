@@ -269,12 +269,7 @@ export function archiveContent(articleId, redirectTo, fromList = false) {
           }
         }
       } catch (error) {
-        dispatch(showErrorModal(true));
-        console.log(
-          `%cError while deleting id:${articleId} =>`,
-          `${consoleError}`,
-          error?.response?.data
-        );
+        ErrorCaseClient(dispatch, error?.response?.data);
       }
     }
     return null;

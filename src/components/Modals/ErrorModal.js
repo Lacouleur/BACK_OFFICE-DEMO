@@ -49,15 +49,20 @@ const ErrorModal = () => {
     <ModalContainer height="200vh">
       <ModalBox
         ref={modal}
-        height={messages && messages.length > 3 ? "25%" : "200px"}
+        height={messages && messages.length > 3 ? "27%" : "200px"}
       >
         {errorMessage && (
-          <Message> Please check the following errors and try again :</Message>
+          <Message>
+            Please check or report the following errors before trying again :
+          </Message>
         )}
         {errorMessage &&
           messages &&
-          messages.map((error) => {
-            return <Message key={error.message}>{error.message}</Message>;
+          messages.map((error, index) => {
+            if (index < 5) {
+              return <Message key={error.message}>{error.message}</Message>;
+            }
+            return null;
           })}
         {!errorMessage && (
           <Message>

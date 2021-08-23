@@ -101,7 +101,7 @@ const modulesReducer = (state = initialState, action = {}) => {
                 type: "opinion",
                 question: "",
                 showPercentage: false,
-                showResponse: false,
+                showResponse: true,
                 showRight: false,
                 explanation: null,
                 order: state.modulesList.length + 1,

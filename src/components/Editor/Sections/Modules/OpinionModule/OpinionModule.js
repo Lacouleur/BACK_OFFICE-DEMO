@@ -58,11 +58,7 @@ import trashIconGreyNoCircle from "../../../../../styles/assets/icons/trash-grey
 import trashIcon from "../../../../../styles/assets/icons/trash.svg";
 import eyeIcon from "../../../../../styles/assets/icons/eye-circle-green.svg";
 import eyeUnabled from "../../../../../styles/assets/icons/eye-circle-green-unabled.svg";
-import {
-  showErrorModal,
-  showHideModal,
-} from "../../../../../store/actions/actionBarActions";
-import { NoDeleteOpinionIfPublished } from "../../../../../helper/errorMessages";
+import { showHideModal } from "../../../../../store/actions/actionBarActions";
 
 const OpinionModule = ({
   uuid,
@@ -132,6 +128,16 @@ const OpinionModule = ({
 
       <SectionBox isOpen={isOpen}>
         <ActionIcons>
+          {status === "DRAFT" && (
+            <>
+              <Delete
+                src={trashIcon}
+                onClick={() => {
+                  dispatch(showCloseModal({ value: true, id: uuid }));
+                }}
+              />
+            </>
+          )}
           <Hide
             src={isVisible ? eyeIcon : eyeUnabled}
             onClick={() => {
@@ -142,21 +148,6 @@ const OpinionModule = ({
               } else {
                 dispatch(
                   showHideModal({ value: true, id: uuid, type: "show" })
-                );
-              }
-            }}
-          />
-          <Delete
-            src={trashIcon}
-            onClick={() => {
-              if (status !== "PUBLISHED") {
-                dispatch(showCloseModal({ value: true, id: uuid }));
-              } else {
-                dispatch(
-                  showErrorModal({
-                    value: true,
-                    message: NoDeleteOpinionIfPublished(),
-                  })
                 );
               }
             }}

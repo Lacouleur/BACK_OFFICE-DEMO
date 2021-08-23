@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import useClickOutside from "../../helper/cutomHooks/useClickOutside";
@@ -14,6 +14,7 @@ import {
 const ErrorModal = () => {
   const modal = useRef(null);
   const dispatch = useDispatch();
+  const [messages, setMessages] = useState();
 
   const ActionBarState = useSelector(
     ({ actionBarReducer }) => actionBarReducer
@@ -21,7 +22,16 @@ const ErrorModal = () => {
 
   const { errorMessage } = ActionBarState;
 
+  function setErrorsList() {
+    if (Array.isArray(errorMessage)) {
+      setMessages(errorMessage);
+    } else {
+      setMessages([{ message: errorMessage }]);
+    }
+  }
+
   useEffect(() => {
+    setErrorsList();
     modal.current.scrollIntoView({
       behavior: "smooth",
       block: "center",
@@ -37,8 +47,18 @@ const ErrorModal = () => {
 
   return (
     <ModalContainer height="200vh">
-      <ModalBox ref={modal}>
-        {errorMessage && <Message>{errorMessage}</Message>}
+      <ModalBox
+        ref={modal}
+        height={messages && messages.length > 3 ? "25%" : "200px"}
+      >
+        {errorMessage && (
+          <Message> Please check the following errors and try again :</Message>
+        )}
+        {errorMessage &&
+          messages &&
+          messages.map((error) => {
+            return <Message key={error.message}>{error.message}</Message>;
+          })}
         {!errorMessage && (
           <Message>
             Oups, something went wrong.

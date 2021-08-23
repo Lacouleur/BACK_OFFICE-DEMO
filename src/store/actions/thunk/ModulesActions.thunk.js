@@ -18,6 +18,7 @@ import {
 } from "../../../helper/consoleStyles";
 import { setHomeImageUuid, setNavImageUuid } from "../homeNavigationActions";
 import { nameSpaceError } from "../../../helper/errorMessages";
+import ErrorCaseClient from "../../../helper/ErrorCaseClient";
 
 export function deleteModule(articleId, moduleId) {
   console.log("%cDELETING MODULE", `${consoleTitle}`, moduleId);
@@ -49,12 +50,7 @@ export function deleteModule(articleId, moduleId) {
           );
         }
       } catch (error) {
-        dispatch(showErrorModal(true));
-        console.log(
-          `%cError, fail deleting the module id:${moduleId} =>`,
-          `${consoleError}`,
-          error?.response?.data
-        );
+        ErrorCaseClient(dispatch, error?.response?.data);
       }
     }
     return null;
@@ -171,11 +167,10 @@ export function saveModule(uuid, request = "save") {
               );
             }
           } catch (error) {
-            dispatch(showErrorModal(true));
+            ErrorCaseClient(dispatch, error?.response?.data);
             console.log(
-              `%cError, ${values.type}-module (id:${uuid})=>`,
-              `${consoleError}`,
-              error?.response?.data
+              `%cError, ${values.type}-module (id:${uuid})`,
+              `${consoleError}`
             );
           }
         }
@@ -291,17 +286,15 @@ export function saveModule(uuid, request = "save") {
               );
             }
           } catch (error) {
-            dispatch(showErrorModal(true));
+            ErrorCaseClient(dispatch, error?.response?.data);
             console.log(
-              `%cError, ${values.type}-module (id:${uuid}) =>`,
-              `${consoleError}`,
-              error?.response?.data
+              `%cError, ${values.type}-module (id:${uuid})`,
+              `${consoleError}`
             );
           }
         }
       }
     }
-    return null;
   };
 }
 
@@ -327,11 +320,11 @@ export function saveImage(name, image, moduleId) {
           }
         }
       } catch (error) {
-        console.log(`%cError =>`, `${consoleError}`, error?.response?.data);
         if (error?.response.status === 400) {
           dispatch(showErrorModal({ value: true, message: nameSpaceError() }));
+        } else {
+          ErrorCaseClient(dispatch, error?.response?.data);
         }
-        showErrorModal(true);
       }
     }
     return null;

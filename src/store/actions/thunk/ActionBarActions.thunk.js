@@ -17,6 +17,7 @@ import {
   consoleTitle,
 } from "../../../helper/consoleStyles";
 import { fetchContentsList } from "./ArticlesActions.thunk";
+import ErrorCaseClient from "../../../helper/ErrorCaseClient";
 
 export function logUser(redirectTo) {
   console.log("%cLOGING USER", `${consoleTitle}`);
@@ -81,8 +82,7 @@ export function publishAction(articleId, mode) {
           }
         }
       } catch (error) {
-        dispatch(showErrorModal(true));
-        console.log("%cError =>", `${consoleError}`, error?.response?.data);
+        ErrorCaseClient(dispatch, error?.response?.data);
       }
     }
     return null;
@@ -101,13 +101,10 @@ export function duplicateArticle(articleId) {
           console.log("%cContent Duplicated", `${consoleSucces}`);
         }
       } catch (error) {
-        console.log(`%cError =>`, `${consoleError}`, error?.response?.data);
-        dispatch(
-          showErrorModal({ value: true, message: error?.response?.data })
-        );
+        ErrorCaseClient(dispatch, error?.response?.data);
       }
+      return null;
     }
-    return null;
   };
 }
 

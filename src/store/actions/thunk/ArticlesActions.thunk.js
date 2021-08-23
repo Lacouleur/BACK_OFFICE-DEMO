@@ -35,6 +35,7 @@ import {
   consoleTitle,
 } from "../../../helper/consoleStyles";
 import { setContentsList, setPagination } from "../contentListActions";
+import ErrorCaseClient from "../../../helper/ErrorCaseClient";
 
 export function checkAndSend(type = "save", articleId = null) {
   return async (dispatch, getState) => {
@@ -148,49 +149,39 @@ export function checkAndSend(type = "save", articleId = null) {
               dispatch(setErrorPosting(true));
               dispatch(setPosted(false));
             } else {
-              console.log(
-                "%cError =>",
-                `${consoleError}`,
-                error?.response?.data
-              );
-              dispatch(showErrorModal(true));
+              ErrorCaseClient(dispatch, error.response.data);
             }
-          }
-        }
-
-        // update
-        if (type === "update") {
-          console.log("%cUPDATING CONTENT", `${consoleTitle}`);
-          try {
-            const result = await updateContent(values, articleId, lang);
-
-            if (result.status < 300 && result.status > 199) {
-              dispatch(setErrorSpecial(false));
-              dispatch(setPosted(true));
-              dispatch(setUpdatedAt("create"));
-              dispatch(setModified(true));
-              console.log("%cContent updated", `${consoleSucces}`);
-            }
-
-            return null;
-          } catch (error) {
-            if (error.response.status === 409) {
-              dispatch(setErrorPosting(true));
-              dispatch(setPosted(false));
-            } else {
-              console.log(
-                "%cError =>",
-                `${consoleError}`,
-                error?.response?.data
-              );
-              dispatch(showErrorModal(true));
-              dispatch(setPosted(false));
-            }
-            return null;
+            console.log("%cError =>", `${consoleError}`, error?.response?.data);
+            dispatch(showErrorModal(true));
           }
         }
       }
-      return null;
+
+      // update
+      if (type === "update") {
+        console.log("%cUPDATING CONTENT", `${consoleTitle}`);
+        try {
+          const result = await updateContent(values, articleId, lang);
+
+          if (result.status < 300 && result.status > 199) {
+            dispatch(setErrorSpecial(false));
+            dispatch(setPosted(true));
+            dispatch(setUpdatedAt("create"));
+            dispatch(setModified(true));
+            console.log("%cContent updated", `${consoleSucces}`);
+          }
+
+          return null;
+        } catch (error) {
+          if (error.response.status === 409) {
+            dispatch(setErrorPosting(true));
+            dispatch(setPosted(false));
+          } else {
+            ErrorCaseClient(dispatch, error?.response?.data);
+          }
+          return null;
+        }
+      }
     }
     return null;
   };

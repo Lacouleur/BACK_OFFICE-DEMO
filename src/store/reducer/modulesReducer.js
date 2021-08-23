@@ -19,6 +19,7 @@ import {
   SET_OPINION_TEXT_ANSWER,
   DELETE_OPINION_ANSWER,
   CREATE_OPINION_NEW_ANSWER,
+  SET_IS_VISIBLE,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -48,6 +49,7 @@ const modulesReducer = (state = initialState, action = {}) => {
                 isChanged: true,
                 isNewModule: true,
                 isOpenCloseModal: false,
+                isVisible: true,
               },
             ],
           };
@@ -71,6 +73,7 @@ const modulesReducer = (state = initialState, action = {}) => {
                 isChanged: true,
                 isNewModule: true,
                 isOpenCloseModal: false,
+                isVisible: true,
               },
             ],
           };
@@ -94,6 +97,7 @@ const modulesReducer = (state = initialState, action = {}) => {
                   },
                 ],
 
+                isVisible: true,
                 type: "opinion",
                 question: "",
                 showPercentage: false,
@@ -150,6 +154,24 @@ const modulesReducer = (state = initialState, action = {}) => {
       });
       return {
         isOpenCloseModal: false,
+        ...oldState,
+      };
+    }
+
+    case SET_IS_VISIBLE: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            isVisible: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
         ...oldState,
       };
     }

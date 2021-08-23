@@ -32,6 +32,8 @@ import {
   AddAnswerBox,
   AddAnswerIcon,
   AddAnswerText,
+  Hide,
+  ActionIcons,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import {
   setOpinionExplain,
@@ -44,15 +46,23 @@ import {
   deleteOpinionAnswer,
 } from "../../../../../store/actions/moduleActions";
 import CloseModal from "../../../../Modals/CloseModal";
+import HideModal from "../../../../Modals/HideModal";
 import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
-import { saveModule } from "../../../../../store/actions/clientActions";
+import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.thunk";
 import Field from "../../../Field";
 import quizzIcon from "../../../../../styles/assets/icons/quizz.svg";
 import checkIcon from "../../../../../styles/assets/icons/check.svg";
 import plusIcon from "../../../../../styles/assets/icons/plus-violet-in-cirlce.svg";
 import trashIconViolet from "../../../../../styles/assets/icons/trash-violet-no-circle.svg";
-import trashIconGrey from "../../../../../styles/assets/icons/trash-grey-no-circle.svg";
+import trashIconGreyNoCircle from "../../../../../styles/assets/icons/trash-grey-no-circle.svg";
 import trashIcon from "../../../../../styles/assets/icons/trash.svg";
+import eyeIcon from "../../../../../styles/assets/icons/eye-circle-green.svg";
+import eyeUnabled from "../../../../../styles/assets/icons/eye-circle-green-unabled.svg";
+import {
+  showErrorModal,
+  showHideModal,
+} from "../../../../../store/actions/actionBarActions";
+import { NoDeleteOpinionIfPublished } from "../../../../../helper/errorMessages";
 
 const OpinionModule = ({
   uuid,
@@ -65,15 +75,22 @@ const OpinionModule = ({
   showRight,
   explanation,
   answers,
+  isVisible,
 }) => {
   const dispatch = useDispatch();
   const opinionModuleRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const actionBarState = useSelector(
+    ({ actionBarReducer }) => actionBarReducer
+  );
+
   const mainInformationState = useSelector(
     ({ mainInformationReducer }) => mainInformationReducer
   );
-  const [isOpen, setIsOpen] = useState(false);
 
-  const { articleId } = mainInformationState;
+  const { articleId, status } = mainInformationState;
+  const { hideModal } = actionBarState;
 
   useEffect(() => {
     if (isNewModule) {
@@ -109,15 +126,43 @@ const OpinionModule = ({
         />
       )}
 
+      {hideModal?.isOpen && hideModal?.moduleId === uuid && <HideModal />}
+
       {!isOpen && <Gradient />}
 
       <SectionBox isOpen={isOpen}>
-        <Delete
-          src={trashIcon}
-          onClick={() => {
-            dispatch(showCloseModal({ value: true, id: uuid }));
-          }}
-        />
+        <ActionIcons>
+          <Hide
+            src={isVisible ? eyeIcon : eyeUnabled}
+            onClick={() => {
+              if (isVisible) {
+                dispatch(
+                  showHideModal({ value: true, id: uuid, type: "hide" })
+                );
+              } else {
+                dispatch(
+                  showHideModal({ value: true, id: uuid, type: "show" })
+                );
+              }
+            }}
+          />
+          <Delete
+            src={trashIcon}
+            onClick={() => {
+              if (status !== "PUBLISHED") {
+                dispatch(showCloseModal({ value: true, id: uuid }));
+              } else {
+                dispatch(
+                  showErrorModal({
+                    value: true,
+                    message: NoDeleteOpinionIfPublished(),
+                  })
+                );
+              }
+            }}
+          />
+        </ActionIcons>
+
         <SectionTitle>
           <TitleIcon src={quizzIcon} />
           <FormTitle>Opinion module</FormTitle>
@@ -239,7 +284,11 @@ const OpinionModule = ({
                         })
                         // eslint-disable-next-line prettier/prettier
                       )}
-                    src={answers.length > 2 ? trashIconViolet : trashIconGrey}
+                    src={
+                      answers.length > 2
+                        ? trashIconViolet
+                        : trashIconGreyNoCircle
+                    }
                     unactive={answers.length > 2}
                   />
                 </IconBox>
@@ -295,6 +344,7 @@ const OpinionModule = ({
 
 OpinionModule.defaultProps = {
   explanation: null,
+  isVisible: true,
 };
 
 OpinionModule.propTypes = {
@@ -307,6 +357,7 @@ OpinionModule.propTypes = {
   showResponse: PropTypes.bool.isRequired,
   showRight: PropTypes.bool.isRequired,
   explanation: PropTypes.string,
+  isVisible: PropTypes.bool,
   answers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 export default OpinionModule;

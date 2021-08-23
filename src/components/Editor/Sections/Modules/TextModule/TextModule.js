@@ -20,6 +20,8 @@ import {
   DraftJsWrapper,
   ModuleContainer,
   Delete,
+  Hide,
+  ActionIcons,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import {
   setValueTextModule,
@@ -27,10 +29,11 @@ import {
 } from "../../../../../store/actions/moduleActions";
 import CloseModal from "../../../../Modals/CloseModal";
 import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
-import { saveModule } from "../../../../../store/actions/clientActions";
+import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.thunk";
 import colors from "../../../../../styles/core/colors";
 import HTMLconverter from "../../../../../helper/Editor/HTMLconverter";
 import emojisList from "./emojisList";
+import eyeIcon from "../../../../../styles/assets/icons/eye-circle-green.svg";
 
 const TextModule = ({
   text,
@@ -142,12 +145,17 @@ const TextModule = ({
       {!isOpen && <Gradient />}
 
       <SectionBox isOpen={isOpen}>
-        <Delete
-          src={trashIcon}
-          onClick={() => {
-            dispatch(showCloseModal({ value: true, id: uuid }));
-          }}
-        />
+        <ActionIcons>
+          <Hide src={eyeIcon} />
+          <Delete
+            src={trashIcon}
+            onClick={() => {
+              if (status !== "PUBLISHED") {
+                dispatch(showCloseModal({ value: true, id: uuid }));
+              }
+            }}
+          />
+        </ActionIcons>
 
         <SectionTitle>
           <TitleIcon src={textIcon} />

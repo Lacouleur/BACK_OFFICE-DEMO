@@ -31,7 +31,11 @@ import backArrow from "../styles/assets/icons/arrow-left.svg";
 import { BackIcon } from "../styles/styledComponents/editor/ActionBar.sc";
 import checkIcon from "../styles/assets/icons/check-circle-green.svg";
 import crossIcon from "../styles/assets/icons/cross-circle-red.svg";
-import { fetchContent, fetchManifesto } from "../store/actions/clientActions";
+import { fetchContent } from "../store/actions/thunk/ArticlesActions.thunk";
+import { fetchManifesto } from "../store/actions/thunk/ManifestoActions.thunk";
+import eyeIcon from "../styles/assets/icons/eye-white.svg";
+import eyeIconDisabled from "../styles/assets/icons/eye-white-disabled.svg";
+import { IsVisibleIcon } from "../styles/styledComponents/editor/modules/Modules.sc";
 import { cleanContentState } from "../store/actions/commonsActions";
 
 const Results = () => {
@@ -60,6 +64,7 @@ const Results = () => {
             participantsCount: module.participantsCount,
             answers: module.answers,
             showRight: module.showRight,
+            isVisible: module.isVisible,
           });
         }
         return null;
@@ -75,6 +80,7 @@ const Results = () => {
             participantsCount: module.participantsCount,
             answers: module.answers,
             showRight: module.showRight,
+            isVisible: module.isVisible,
           });
         }
         return null;
@@ -93,10 +99,12 @@ const Results = () => {
   }
 
   useEffect(() => {
+    setData([]);
     getData();
   }, [modulesList, manifestoData]);
 
   useEffect(() => {
+    setData([]);
     if (!manifestoId) {
       dispatch(fetchContent(articleId));
     }
@@ -136,6 +144,9 @@ const Results = () => {
           return (
             <Section key={question.id} isOpen>
               <FormTitle>{question.question || "Empty question"}</FormTitle>
+              <IsVisibleIcon
+                src={question.isVisible ? eyeIcon : eyeIconDisabled}
+              />
               {question.question !== "" && (
                 <>
                   <TotalInfo>{`Total = ${question.participantsCount} answers`}</TotalInfo>

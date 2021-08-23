@@ -20,7 +20,7 @@ import {
 } from "../../styles/styledComponents/editor/Sections.sc";
 import ActionBar from "../../components/Editor/actionBar/ActionBar";
 import ModuleCreator from "../../components/Editor/Sections/Modules/ModuleCreator";
-import { fetchManifesto } from "../../store/actions/clientActions";
+import { fetchManifesto } from "../../store/actions/thunk/ManifestoActions.thunk";
 import TextModule from "../../components/Editor/Sections/Modules/TextModule/TextModule";
 import ImageModule from "../../components/Editor/Sections/Modules/ImageModule/ImageModule";
 import {
@@ -79,6 +79,7 @@ const EditorManifesto = () => {
                     isChanged={module.isChanged}
                     isOpenCloseModal={module.isOpenCloseModal}
                     isNewModule={module.isNewModule}
+                    isVisible={module.isVisible}
                   />
                 );} 
               case "image":{
@@ -92,6 +93,7 @@ const EditorManifesto = () => {
                     isChanged={module.isChanged}
                     isOpenCloseModal={module.isOpenCloseModal}
                     isNewModule={module.isNewModule}
+                    isVisible={module.isVisible}
                   />
                 );}  
                 case "opinion":{
@@ -108,6 +110,7 @@ const EditorManifesto = () => {
                         showRight={module.showRight}
                         explanation={module.explanation}
                         answers={module.answers}
+                        isVisible={module.isVisible}
                       />
                 );}
                 default :

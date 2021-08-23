@@ -6,7 +6,7 @@ import { setIsOpenDuplicateModal } from "../../store/actions/contentListActions"
 import {
   duplicateArticle,
   translateArticle,
-} from "../../store/actions/clientActions";
+} from "../../store/actions/thunk/ActionBarActions.thunk";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import {
   DuplicateTitle,

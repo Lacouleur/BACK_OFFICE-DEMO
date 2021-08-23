@@ -14,11 +14,11 @@ import {
   SectionBox,
   SectionTitle,
 } from "../../../styles/styledComponents/editor/Sections.sc";
+import { checkAndSend } from "../../../store/actions/thunk/ArticlesActions.thunk";
 import {
-  checkAndSend,
   saveManifesto,
-  actulalizeManifesto,
-} from "../../../store/actions/clientActions";
+  actualizeManifesto,
+} from "../../../store/actions/thunk/ManifestoActions.thunk";
 import useClickOutside from "../../../helper/cutomHooks/useClickOutside";
 import {
   ColorFieldBox,
@@ -90,7 +90,7 @@ const MainInformation = () => {
         if (isChanged && !manifestoId) {
           dispatch(saveManifesto(manifestoLang));
         } else if (isChanged && manifestoId) {
-          dispatch(actulalizeManifesto(manifestoId));
+          dispatch(actualizeManifesto(manifestoId));
         }
       }
     }
@@ -186,7 +186,7 @@ const MainInformation = () => {
                 edit={colorStyle?.toString() || "1"}
               />
 
-              <VisualiseColorStyle color={colorStyle || "1"} />
+              <VisualiseColorStyle color={colorStyle?.toString() || "1"} />
             </ColorFieldBox>
           </>
         )}

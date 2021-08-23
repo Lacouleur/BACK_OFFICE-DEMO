@@ -9,7 +9,7 @@ import {
 import arrow from "../../styles/assets/icons/arrow-left.svg";
 import keyGenerator from "../../helper/keyGenerator";
 import colors from "../../styles/core/colors";
-import { fetchContentsList } from "../../store/actions/clientActions";
+import { fetchContentsList } from "../../store/actions/thunk/ArticlesActions.thunk";
 
 const Pagination = () => {
   const contentState = useSelector(

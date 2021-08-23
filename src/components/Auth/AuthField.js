@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import colors from "../../styles/core/colors";
 import exclamationIcon from "../../styles/assets/icons/exclamation.svg";
-import eyeIcon from "../../styles/assets/icons/eye.svg";
+import eyeIcon from "../../styles/assets/icons/eye-circle-green.svg";
 import {
   FieldStyle,
   FieldContainer,

@@ -18,12 +18,15 @@ import trashIcon from "../../../../../styles/assets/icons/trash.svg";
 import {
   ModuleContainer,
   Delete,
+  Hide,
+  ActionIcons,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import { showCloseModal } from "../../../../../store/actions/moduleActions";
 import CloseModal from "../../../../Modals/CloseModal";
 import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
-import { saveModule } from "../../../../../store/actions/clientActions";
+import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.thunk";
 import Field from "../../../Field";
+import eyeIcon from "../../../../../styles/assets/icons/eye-circle-green.svg";
 
 const ImageModule = ({
   uuid,
@@ -85,12 +88,17 @@ const ImageModule = ({
       {!isOpen && <Gradient />}
 
       <SectionBox isOpen={isOpen}>
-        <Delete
-          src={trashIcon}
-          onClick={() => {
-            dispatch(showCloseModal({ value: true, id: uuid }));
-          }}
-        />
+        <ActionIcons>
+          <Hide src={eyeIcon} />
+          <Delete
+            src={trashIcon}
+            onClick={() => {
+              if (status !== "PUBLISHED") {
+                dispatch(showCloseModal({ value: true, id: uuid }));
+              }
+            }}
+          />
+        </ActionIcons>
 
         <SectionTitle>
           <TitleIcon src={imageIcon} />

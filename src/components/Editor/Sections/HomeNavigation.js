@@ -15,10 +15,8 @@ import {
   SectionTitle,
   Thumbnail,
 } from "../../../styles/styledComponents/editor/Sections.sc";
-import {
-  actulalizeManifesto,
-  checkAndSend,
-} from "../../../store/actions/clientActions";
+import { checkAndSend } from "../../../store/actions/thunk/ArticlesActions.thunk";
+import { actualizeManifesto } from "../../../store/actions/thunk/ManifestoActions.thunk";
 import useClickOutside from "../../../helper/cutomHooks/useClickOutside";
 
 const HomeNavigation = () => {
@@ -74,7 +72,7 @@ const HomeNavigation = () => {
       }
 
       if (isManifesto && manifestoId) {
-        dispatch(actulalizeManifesto(manifestoId));
+        dispatch(actualizeManifesto(manifestoId));
       }
     }
   }

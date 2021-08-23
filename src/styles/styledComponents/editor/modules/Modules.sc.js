@@ -77,14 +77,36 @@ export const DraftJsWrapper = styled.div`
   }
 `;
 
+export const ActionIcons = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 200px;
+  position: absolute;
+  width: 80px;
+  justify-content: space-between;
+  right: 30px;
+  top: 30px;
+`;
+
+export const IsVisibleIcon = styled.img`
+  position: absolute;
+  right: 30px;
+  z-index: 21;
+  width: 31px;
+  height: 31px;
+`;
+
+export const Hide = styled.img`
+  z-index: 21;
+  width: 31px;
+  height: 31px;
+`;
+
 export const Delete = styled.img`
   z-index: 21;
   width: 31px;
   height: 31px;
   transition: 0.3s;
-  position: absolute;
-  right: 76px;
-  top: 30px;
 
   &:hover {
     transform: rotate(90deg);

@@ -3,7 +3,7 @@ import React, { useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useClickOutside from "../../helper/cutomHooks/useClickOutside";
 import { setIsOpenPublishModal } from "../../store/actions/actionBarActions";
-import { publishAction } from "../../store/actions/clientActions";
+import { publishAction } from "../../store/actions/thunk/ActionBarActions.thunk";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import {
   Message,

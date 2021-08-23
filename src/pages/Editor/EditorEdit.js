@@ -20,7 +20,7 @@ import {
 } from "../../styles/styledComponents/editor/Sections.sc";
 import ActionBar from "../../components/Editor/actionBar/ActionBar";
 import ModuleCreator from "../../components/Editor/Sections/Modules/ModuleCreator";
-import { fetchContent } from "../../store/actions/clientActions";
+import { fetchContent } from "../../store/actions/thunk/ArticlesActions.thunk";
 import TextModule from "../../components/Editor/Sections/Modules/TextModule/TextModule";
 import ImageModule from "../../components/Editor/Sections/Modules/ImageModule/ImageModule";
 import { setArticleId } from "../../store/actions/commonsActions";
@@ -103,6 +103,7 @@ const Editor = () => {
                         showRight={module.showRight}
                         explanation={module.explanation}
                         answers={module.answers}
+                        isVisible={module.isVisible}
                       />
                 );}
                 default :

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import useClickOutside from "../../helper/cutomHooks/useClickOutside";
 import { setIsOpenArchiveModal } from "../../store/actions/actionBarActions";
-import { archiveContent } from "../../store/actions/clientActions";
+import { archiveContent } from "../../store/actions/thunk/ArticlesActions.thunk";
 import crossIcon from "../../styles/assets/icons/cross-white.svg";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import {

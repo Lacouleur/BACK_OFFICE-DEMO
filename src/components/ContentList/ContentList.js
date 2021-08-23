@@ -12,13 +12,10 @@ import {
   ListBox,
   ManifestoLangSelector,
 } from "../../styles/styledComponents/contentList/ContentList.sc";
-
 import { createNewContent } from "../../styles/styledComponents/global/Buttons/CustomButtons.sc";
 import Pagination from "./Pagination";
-
 import keyGenerator from "../../helper/keyGenerator";
-
-import { fetchContentsList } from "../../store/actions/clientActions";
+import { fetchContentsList } from "../../store/actions/thunk/ArticlesActions.thunk";
 import { cleanContentState } from "../../store/actions/commonsActions";
 import langList from "../../helper/langList";
 import DuplicateModal from "../Modals/DuplicateModal";

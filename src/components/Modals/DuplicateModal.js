@@ -25,6 +25,7 @@ import {
 } from "../../styles/styledComponents/modal/Modal.sc";
 import { Selector } from "../../styles/styledComponents/global/Field.sc";
 import langList from "../../helper/langList";
+import colors from "../../styles/core/colors";
 
 const DuplicateModal = () => {
   const modal = useRef(null);
@@ -32,7 +33,7 @@ const DuplicateModal = () => {
   const history = useHistory();
   const checkTrad = useRef(null);
   const dispatch = useDispatch();
-  const [simpleChecked, setSimpleChecked] = useState(false);
+  const [simpleChecked, setSimpleChecked] = useState(true);
   const [tradChecked, setTradChecked] = useState(false);
   const [selectedLang, setSelectedLang] = useState();
 

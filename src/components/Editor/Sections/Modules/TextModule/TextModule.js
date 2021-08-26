@@ -20,7 +20,6 @@ import {
   DraftJsWrapper,
   ModuleContainer,
   Delete,
-  Hide,
   ActionIcons,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import {
@@ -33,7 +32,6 @@ import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.th
 import colors from "../../../../../styles/core/colors";
 import HTMLconverter from "../../../../../helper/Editor/HTMLconverter";
 import emojisList from "./emojisList";
-import eyeIcon from "../../../../../styles/assets/icons/eye-circle-green.svg";
 
 const TextModule = ({
   text,
@@ -56,7 +54,6 @@ const TextModule = ({
     if (!editorState) {
       if (text) {
         const converted = HTMLconverter(editorState, "from", text);
-
         const stateWithContent = EditorState.createWithContent(converted);
         setEditorState(stateWithContent);
       } else {
@@ -146,7 +143,6 @@ const TextModule = ({
 
       <SectionBox isOpen={isOpen}>
         <ActionIcons>
-          <Hide src={eyeIcon} />
           <Delete
             src={trashIcon}
             onClick={() => {

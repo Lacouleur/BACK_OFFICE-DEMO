@@ -17,6 +17,7 @@ import {
   FormContainer,
   HideContent,
   NewBlockButtonBox,
+  Separator,
 } from "../../styles/styledComponents/editor/Sections.sc";
 import ActionBar from "../../components/Editor/actionBar/ActionBar";
 import ModuleCreator from "../../components/Editor/Sections/Modules/ModuleCreator";
@@ -63,6 +64,9 @@ const Editor = () => {
           <MainInformation />
           <Seo />
           <HomeNavigation />
+          {modulesList?.length > 0 && (
+            <Separator />
+          )}
           {modulesList?.map((module) => {
             switch (module.type) {
               case "text":{

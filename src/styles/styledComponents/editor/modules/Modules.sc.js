@@ -79,10 +79,9 @@ export const DraftJsWrapper = styled.div`
 
 export const ActionIcons = styled.div`
   display: flex;
-  flex-direction: row;
-  width: 200px;
-  position: absolute;
+  flex-direction: row-reverse;
   width: 80px;
+  position: absolute;
   justify-content: space-between;
   right: 30px;
   top: 30px;

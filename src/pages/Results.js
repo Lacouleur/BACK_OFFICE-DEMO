@@ -86,7 +86,6 @@ const Results = () => {
         return null;
       });
     }
-    console.log("storedData", storedData);
     setData(storedData);
   }
 

@@ -135,3 +135,10 @@ export const HideContent = styled.div`
   left: 0;
   bottom: 0;
 `;
+
+export const Separator = styled.div`
+  margin: 40px auto;
+  height: 2px;
+  background-color: ${colors.mediumGrey};
+  width: 80%;
+`;

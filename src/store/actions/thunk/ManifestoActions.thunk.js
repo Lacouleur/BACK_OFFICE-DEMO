@@ -30,6 +30,7 @@ import {
   consoleTitle,
 } from "../../../helper/consoleStyles";
 import { deleteToken } from "../../../services/client/tokenStuff";
+import ErrorCaseClient from "../../../helper/ErrorCaseClient";
 
 export function actualizeManifesto(manifestoId) {
   console.log("%cUPDATING MANIFESTO", `${consoleTitle}`, manifestoId);
@@ -120,7 +121,7 @@ export function actualizeManifesto(manifestoId) {
           dispatch(setErrorPosting(true));
           dispatch(setPosted(false));
         } else {
-          dispatch(showErrorModal(true));
+          ErrorCaseClient(dispatch, error?.response?.data);
           dispatch(setPosted(false));
         }
         return null;
@@ -214,8 +215,7 @@ export function saveManifesto(lang) {
             );
           }
         } catch (error) {
-          dispatch(showErrorModal(true));
-          console.log("%cError =>", `${consoleError}`, error?.response?.data);
+          ErrorCaseClient(dispatch, error?.response?.data);
         }
       }
     }

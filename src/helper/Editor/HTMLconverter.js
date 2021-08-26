@@ -24,12 +24,17 @@ function HTMLconverter(editorState, mode = "to", data = "") {
       }
       return null;
     },
-    entityToHTML: (entity) => {
+    entityToHTML: (entity, originalText) => {
       if (entity.type === "LINK") {
-        return {
-          start: `<a href="${entity.data.url}" target="${entity.data.targetOption}" rel="noreferrer">`,
-          end: "</a>",
-        };
+        return (
+          <a
+            href={entity.data.url}
+            target={entity.data.targetOption}
+            rel="noreferrer"
+          >
+            {originalText}
+          </a>
+        );
       }
       return null;
     },
@@ -44,11 +49,10 @@ function HTMLconverter(editorState, mode = "to", data = "") {
     },
     htmlToEntity: (nodeName, node, createEntity) => {
       if (nodeName === "a") {
-        // We use node.pathname instead of .href (as mentioned in the doc) because of an issue from the lib. This issue append "HOST_URL" to the href. please check regularly if problem is solved : https://github.com/facebook/draft-js/issues/2311
-        // console.log("node.pathname", node.pathname.substring(1));
-        // console.log("node.href", node.href);
-        return createEntity("LINK", "MUTABLE", {
-          url: node?.pathname?.substring(1),
+        console.log("node.pathname", node.pathname.substring(1));
+        /* console.log("node.href", node.href); */
+        return createEntity("LINK", "UNMUTABLE", {
+          url: `${node?.href}`,
           targetOption: node.target,
         });
       }
@@ -64,6 +68,7 @@ function HTMLconverter(editorState, mode = "to", data = "") {
     return result;
   }
   if (mode === "from") {
+    console.log("TYPIQUE", data);
     const result = convertFromHTML(fromHtmlOptions)(data);
     return result;
   }

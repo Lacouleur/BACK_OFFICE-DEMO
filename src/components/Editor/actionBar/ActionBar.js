@@ -38,6 +38,7 @@ import PublishModal from "../../Modals/PublishModal";
 import {
   setIsOpenPublishModal,
   setIsOpenArchiveModal,
+  setIsOpenscheduleModal,
 } from "../../../store/actions/actionBarActions";
 import ErrorModal from "../../Modals/ErrorModal";
 import ArchiveModal from "../../Modals/ArchiveModal";
@@ -46,6 +47,7 @@ import {
   TooltipText,
 } from "../../../styles/styledComponents/contentList/Content.sc";
 import { watchOpinionModules } from "../../../helper/actionBarHelper";
+import ScheduleModal from "../../Modals/ScheduleModal";
 
 const ActionBar = () => {
   const dispatch = useDispatch();
@@ -82,6 +84,7 @@ const ActionBar = () => {
     isOpenPublishModal,
     isOpenErrorModal,
     isOpenArchiveModal,
+    isOpenScheduleModal,
   } = actionBarState;
 
   const { isChanged: seoChanged } = seoState;
@@ -111,7 +114,10 @@ const ActionBar = () => {
   const [isPreviewButton, setIsPreviewButton] = useState(false);
   const [isArticleError, setIsArticleError] = useState("");
   const [isOpinionModules, setIsOpinionModules] = useState(false);
-  const selectOptions = [{ value: "UNPUBLISH", label: "UNPUBLISH" }];
+  const selectOptions = [
+    { value: "PUBLISH", label: "PUBLISH" },
+    { value: "UNPUBLISH", label: "UNPUBLISH" },
+  ];
   const opinionLink = React.useRef(null);
 
   function ModifiedModulesWatcher() {
@@ -184,7 +190,7 @@ const ActionBar = () => {
         setActionButtonContent("UNPUBLISH");
         setIsDeleteButton(false);
       } else {
-        setActionButtonContent("PUBLISH");
+        setActionButtonContent("PROGRAM");
         setIsDeleteButton(true);
       }
     }
@@ -245,6 +251,7 @@ const ActionBar = () => {
           />
         )}
         {isOpenArchiveModal && <ArchiveModal id={articleId} />}
+        {isOpenScheduleModal && <ScheduleModal id={articleId} />}
         <ButtonsContainer>
           <Button
             type="button"
@@ -385,21 +392,25 @@ const ActionBar = () => {
               <PublishButton
                 disabled={!(articleId && !contentIsChanged)}
                 type="button"
-                onClick={() => {
+                onClick={(e) => {
                   if (articleId) {
-                    dispatch(setIsOpenPublishModal(true));
+                    dispatch(setIsOpenscheduleModal(true));
                   }
                 }}
               >
                 {actionButtonContent}
               </PublishButton>
             )}
-            {status === "PUBLISHED" && modified && !contentIsChanged && (
+            {articleId && !contentIsChanged && (
               <Selector
                 placeholder=""
                 classNamePrefix="select"
                 options={selectOptions}
                 onChange={(e) => {
+                  if (e?.value === "PUBLISH") {
+                    setActionButtonContent(e?.value);
+                    dispatch(setIsOpenPublishModal(true));
+                  }
                   if (e?.value === "UNPUBLISH") {
                     setActionButtonContent(e?.value);
                     dispatch(setIsOpenPublishModal(true));

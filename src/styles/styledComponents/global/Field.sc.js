@@ -102,7 +102,7 @@ export const Selector = styled(ReactSelect)`
     props.isDisabled ? unactiveSelectorMixin : activeSelectorMixin};
   & .select {
     &__indicator &__dropdown-indicator {
-      border-color: transparent transparent red;
+      border-color: none;
     }
 
     &__control {

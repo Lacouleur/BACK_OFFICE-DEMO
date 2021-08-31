@@ -24,17 +24,13 @@ function HTMLconverter(editorState, mode = "to", data = "") {
       }
       return null;
     },
-    entityToHTML: (entity, originalText) => {
+    entityToHTML: (entity) => {
       if (entity.type === "LINK") {
-        return (
-          <a
-            href={entity.data.url}
-            target={entity.data.targetOption}
-            rel="noreferrer"
-          >
-            {originalText}
-          </a>
-        );
+        // This object structure is important to avoid this text éditor to replace ' by html entities in links. If you modify this, please check links in editor before. ex: I'm a link
+        return {
+          start: `<a href="${entity.data.url}" target="${entity.data.targetOption}" rel="noreferrer">`,
+          end: "</a>",
+        };
       }
       return null;
     },
@@ -49,8 +45,6 @@ function HTMLconverter(editorState, mode = "to", data = "") {
     },
     htmlToEntity: (nodeName, node, createEntity) => {
       if (nodeName === "a") {
-        console.log("node.pathname", node.pathname.substring(1));
-        /* console.log("node.href", node.href); */
         return createEntity("LINK", "UNMUTABLE", {
           url: `${node?.href}`,
           targetOption: node.target,
@@ -68,7 +62,6 @@ function HTMLconverter(editorState, mode = "to", data = "") {
     return result;
   }
   if (mode === "from") {
-    console.log("TYPIQUE", data);
     const result = convertFromHTML(fromHtmlOptions)(data);
     return result;
   }

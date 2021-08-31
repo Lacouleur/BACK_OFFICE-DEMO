@@ -1,14 +1,10 @@
 import PropTypes from "prop-types";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import useClickOutside from "../../helper/cutomHooks/useClickOutside";
-import {
-  setIsOpenArchiveModal,
-  setIsOpenscheduleModal,
-} from "../../store/actions/actionBarActions";
-import { archiveContent } from "../../store/actions/thunk/ArticlesActions.thunk";
+import { setIsOpenscheduleModal } from "../../store/actions/actionBarActions";
 import crossIcon from "../../styles/assets/icons/cross-white.svg";
+import clearIcon from "../../styles/assets/icons/cross-white-light.svg";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import {
   Message,
@@ -16,22 +12,19 @@ import {
   ModalContainer,
   Cross,
   ButtonsBox,
+  DatePicker,
+  DateContainer,
+  DatePickerIcon,
 } from "../../styles/styledComponents/modal/Modal.sc";
 
 const scheduleModal = ({ id }) => {
   const modal = useRef(null);
   const dispatch = useDispatch();
-  const history = useHistory();
-  const redirectTo = (link) => {
-    history.push(link);
-  };
+  const [date, setDate] = useState(new Date());
 
   const ActionBarState = useSelector(
     ({ actionBarReducer }) => actionBarReducer
   );
-
-  const { articleToDelete } = ActionBarState;
-  const articleId = id || articleToDelete;
 
   useEffect(() => {
     modal.current.scrollIntoView({
@@ -50,11 +43,20 @@ const scheduleModal = ({ id }) => {
   return (
     <ModalContainer height="200vh">
       <ModalBox ref={modal}>
-        <Message>Im the Schedule modal :)</Message>
+        <Message>Please, pick a date :)</Message>
         <Cross
           src={crossIcon}
           onClick={() => dispatch(setIsOpenscheduleModal(false))}
         />
+        <DateContainer>
+          <DatePicker
+            value={date}
+            onChange={setDate}
+            disableClock
+            calendarIcon={false}
+            clearIcon={<DatePickerIcon src={clearIcon} />}
+          />
+        </DateContainer>
         <ButtonsBox>
           <Button
             type="button"

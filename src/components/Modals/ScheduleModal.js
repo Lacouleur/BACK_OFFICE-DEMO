@@ -19,6 +19,7 @@ import {
   DatePicker,
   DateContainer,
   DatePickerIcon,
+  MessageSmall,
 } from "../../styles/styledComponents/modal/Modal.sc";
 import { schedulePublication } from "../../store/actions/thunk/ActionBarActions.thunk";
 
@@ -30,7 +31,9 @@ const scheduleModal = () => {
   const { isScheduled } = ActionBarState;
   const modal = useRef(null);
   const dispatch = useDispatch();
-  const [date, setDate] = useState(new Date(isScheduled) || new Date());
+  const [date, setDate] = useState(
+    isScheduled ? new Date(isScheduled) : new Date()
+  );
   const { articleId } = useParams();
   const actualDate = new Date();
 
@@ -62,6 +65,10 @@ const scheduleModal = () => {
           src={crossIcon}
           onClick={() => dispatch(setIsOpenScheduleModal(false))}
         />
+        <MessageSmall>
+          The selected date must be at least 5 minutes later than the current
+          date.
+        </MessageSmall>
         <DateContainer>
           <DatePicker
             value={date}
@@ -70,12 +77,13 @@ const scheduleModal = () => {
             calendarIcon={false}
             clearIcon={<DatePickerIcon src={clearIcon} />}
             minDate={
-              isScheduled
+              isScheduled || !date
                 ? new Date(actualDate.getTime() + 5 * 60000)
                 : new Date(date.getTime() + 5 * 60000)
             }
           />
         </DateContainer>
+
         <ButtonsBox>
           <Button
             type="button"

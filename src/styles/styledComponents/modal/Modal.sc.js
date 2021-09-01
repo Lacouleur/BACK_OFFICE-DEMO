@@ -32,6 +32,12 @@ export const Message = styled.p`
   padding-top: 27px;
 `;
 
+export const MessageSmall = styled.p`
+  font-size: 12px;
+  max-width: 90%;
+  margin: 12px 27px;
+`;
+
 export const Br = styled.br`
   margin-top: 12px;
 `;
@@ -151,7 +157,7 @@ export const StyledCheckbox = styled.div`
 `;
 
 export const DateContainer = styled.div`
-  margin: 32px 27px;
+  margin: 12px 27px;
 `;
 
 export const DatePicker = styled(DateTimePicker)`
@@ -178,7 +184,9 @@ export const DatePicker = styled(DateTimePicker)`
       &__minute {
         color: ${colors.paleViolet};
       }
-
+      &__leadingZero {
+        color: ${colors.paleViolet};
+      }
       &__hour {
         color: ${colors.paleViolet};
       }

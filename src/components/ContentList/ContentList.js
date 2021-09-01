@@ -67,13 +67,14 @@ const ContentList = () => {
         </TitleBox>
         <ListBox>
           {contentsList.map((content, index) => {
+            /* content.publishScheduledAt = "2021-08-30T07:58:00.613Z"; */
             return (
               <Content
                 number={index}
                 id={content._id}
                 status={content.state}
                 slug={content.slug}
-                programmedAt={content.publishScheduledAt}
+                publishScheduledAt={content.publishScheduledAt}
                 publishedAt={content.publishedAt}
                 categoryLabel={content.category?.label}
                 modified={content.modified}

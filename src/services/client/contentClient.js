@@ -213,3 +213,13 @@ export async function scheduleContentPublication(articleId, date) {
     },
   });
 }
+
+export async function cancelContentPublication(articleId) {
+  return axiosConfig({
+    method: "delete",
+    url: `/contents/${articleId}/publish/schedule`,
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}

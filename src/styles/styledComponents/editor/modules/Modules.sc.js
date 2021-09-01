@@ -99,6 +99,7 @@ export const Hide = styled.img`
   z-index: 21;
   width: 31px;
   height: 31px;
+  cursor: pointer;
 `;
 
 export const Delete = styled.img`
@@ -109,6 +110,7 @@ export const Delete = styled.img`
 
   &:hover {
     transform: rotate(90deg);
+    cursor: pointer;
   }
 `;
 

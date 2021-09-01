@@ -6,6 +6,7 @@ import {
   duplicateContent,
   translateContent,
   scheduleContentPublication,
+  cancelContentPublication,
 } from "../../../services/client/contentClient";
 import { setErrorAuth } from "../authActions";
 import { setModified, setStatus } from "../mainInformationActions";
@@ -104,6 +105,27 @@ export function schedulePublication(articleId, date) {
         if (response.status < 300 && response.status > 199) {
           dispatch(setIsScheduled(date));
           dispatch(setStatus("SCHEDULED"));
+        }
+      } catch (error) {
+        ErrorCaseClient(dispatch, error?.response?.data);
+      }
+    }
+    return null;
+  };
+}
+
+export function cancelScheduledPublication(articleId) {
+  console.log("%cPUBLISHING", `${consoleTitle}`, articleId);
+  return async (dispatch, getState) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
+      const { manifestoReducer } = getState();
+      const { status } = manifestoReducer;
+      try {
+        const response = await cancelContentPublication(articleId);
+        if (response.status < 300 && response.status > 199) {
+          dispatch(setIsScheduled(""));
+          dispatch(setStatus(status));
         }
       } catch (error) {
         ErrorCaseClient(dispatch, error?.response?.data);

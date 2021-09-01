@@ -172,16 +172,13 @@ const ActionBar = () => {
   function timeWatcher() {
     const createUpdateDate = new Date(updatedAt);
     setUpdateDate(buildDate(createUpdateDate));
-
     if (isScheduled) {
       const createProgrammedDate = new Date(isScheduled);
       setProgrammedDate(buildDate(createProgrammedDate));
       dispatch(setStatus("SCHEDULED"));
       setSelectOptions([
         { value: "PUBLISH", label: "PUBLISH" },
-        { value: "UNPUBLISH", label: "UNPUBLISH" },
         { value: "CANCEL", label: "CANCEL PUBLICATION" },
-        { value: "PROGRAM", label: "PROGRAM UPDATE" },
       ]);
     }
     if (publishedAt) {
@@ -202,13 +199,20 @@ const ActionBar = () => {
         return;
       }
       if (status === "PUBLISHED" && !modified) {
-        setSelectOptions([]);
-        setActionButtonContent("UNPUBLISH");
+        setSelectOptions([{ value: "UNPUBLISH", label: "UNPUBLISH" }]);
+        setActionButtonContent("PROGRAM");
+        setIsDeleteButton(false);
+        return;
+      }
+      if (status === "DRAFT" || status === "UNPUBLISHED") {
+        setSelectOptions([{ value: "PUBLISH", label: "PUBLISH" }]);
+        setActionButtonContent("PROGRAM");
         setIsDeleteButton(false);
         return;
       }
       if (status === "SCHEDULED") {
         setActionButtonContent("PROGRAM UPDATE");
+        setSelectOptions([{ value: "CANCEL", label: "CANCEL PUBLICATION" }]);
         setIsDeleteButton(false);
         return;
       }
@@ -447,6 +451,10 @@ const ActionBar = () => {
                   if (e?.value === "PROGRAM") {
                     setActionButtonContent(e?.value);
                     dispatch(setIsOpenScheduleModal(true));
+                  }
+                  if (e?.value === "CANCEL") {
+                    setActionButtonContent(e?.value);
+                    dispatch(setIsOpenPublishModal(true));
                   }
                 }}
               />

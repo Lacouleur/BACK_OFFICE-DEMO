@@ -5,6 +5,7 @@ import {
   publishManager,
   duplicateContent,
   translateContent,
+  scheduleContentPublication,
 } from "../../../services/client/contentClient";
 import { setErrorAuth } from "../authActions";
 import { setModified, setStatus } from "../mainInformationActions";
@@ -80,6 +81,28 @@ export function publishAction(articleId, mode) {
               dispatch(setModified(false));
             }
           }
+        }
+      } catch (error) {
+        ErrorCaseClient(dispatch, error?.response?.data);
+      }
+    }
+    return null;
+  };
+}
+
+export function schedulePublication(articleId, date) {
+  console.log("%cPUBLISHING", `${consoleTitle}`, articleId);
+
+  return async (dispatch) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
+      /*       const { manifestoReducer } = getState();
+      const { isManifesto, manifestoId } = manifestoReducer; */
+
+      try {
+        const response = await scheduleContentPublication(articleId, date);
+        if (response.status < 300 && response.status > 199) {
+          console.log("Schedule OK", response);
         }
       } catch (error) {
         ErrorCaseClient(dispatch, error?.response?.data);

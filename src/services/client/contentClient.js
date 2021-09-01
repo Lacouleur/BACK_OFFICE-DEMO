@@ -202,3 +202,14 @@ export async function translateContent(articleId, lang) {
     },
   });
 }
+
+export async function scheduleContentPublication(articleId, date) {
+  return axiosConfig({
+    method: "put",
+    url: `/contents/${articleId}/publish/schedule`,
+    data: { publicationDate: date },
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}

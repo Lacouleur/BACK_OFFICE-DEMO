@@ -9,6 +9,7 @@ import {
   SHOW_CLOSE_MODAL,
   SHOW_HIDE_MODAL,
   SET_IS_OPEN_SCHEDULE_MODAL,
+  SET_IS_SCHEDULED,
 } from "../constants";
 
 import {} from "../actions/actionBarActions";
@@ -30,6 +31,10 @@ const initialState = {
     isOpen: false,
     moduleId: "",
     type: "",
+  },
+  isScheduled: {
+    status: false,
+    date: "",
   },
 };
 
@@ -87,6 +92,16 @@ const actionBarReducer = (state = initialState, action = {}) => {
         ...oldState,
         isOpenScheduleModal: action.payload,
         isModalOpen: action.payload,
+      };
+    }
+
+    case SET_IS_SCHEDULED: {
+      return {
+        ...oldState,
+        isScheduled: {
+          status: action.payload.status || false,
+          date: action.payload.date || "",
+        },
       };
     }
 

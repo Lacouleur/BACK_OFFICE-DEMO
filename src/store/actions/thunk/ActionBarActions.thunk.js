@@ -10,7 +10,7 @@ import {
 import { setErrorAuth } from "../authActions";
 import { setModified, setStatus } from "../mainInformationActions";
 import { setManifestoStatus } from "../manifestoActions";
-import { showErrorModal } from "../actionBarActions";
+import { setIsScheduled, showErrorModal } from "../actionBarActions";
 import { alreadyTranslated } from "../../../helper/errorMessages";
 import {
   consoleError,
@@ -102,7 +102,8 @@ export function schedulePublication(articleId, date) {
       try {
         const response = await scheduleContentPublication(articleId, date);
         if (response.status < 300 && response.status > 199) {
-          console.log("Schedule OK", response);
+          dispatch(setIsScheduled(date));
+          dispatch(setStatus("SCHEDULED"));
         }
       } catch (error) {
         ErrorCaseClient(dispatch, error?.response?.data);

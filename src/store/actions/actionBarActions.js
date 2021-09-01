@@ -1,7 +1,6 @@
 import {
   SET_UPDATED_AT,
   SET_PUBLISHED,
-  SET_PROGRAMMED,
   SET_IS_OPEN_PUBLISH_MODAL,
   SHOW_ERROR_MODAL,
   SET_IS_OPEN_ARCHIVE_MODAL,
@@ -45,7 +44,7 @@ export const showHideModal = (payload) => ({
   payload,
 });
 
-export const setIsOpenscheduleModal = (payload) => ({
+export const setIsOpenScheduleModal = (payload) => ({
   type: SET_IS_OPEN_SCHEDULE_MODAL,
   payload,
 });

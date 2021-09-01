@@ -2,7 +2,6 @@ import {
   SET_UPDATED_AT,
   CLEAN_CONTENT_STATE,
   SET_PUBLISHED,
-  SET_PROGRAMMED,
   SET_IS_OPEN_PUBLISH_MODAL,
   SHOW_ERROR_MODAL,
   SET_IS_OPEN_ARCHIVE_MODAL,
@@ -32,10 +31,7 @@ const initialState = {
     moduleId: "",
     type: "",
   },
-  isScheduled: {
-    status: false,
-    date: "",
-  },
+  isScheduled: "",
 };
 
 const actionBarReducer = (state = initialState, action = {}) => {
@@ -67,18 +63,6 @@ const actionBarReducer = (state = initialState, action = {}) => {
         publishedAt: null,
       };
 
-    case SET_PROGRAMMED:
-      if (action.payload) {
-        return {
-          ...oldState,
-          programmedAt: action.payload,
-        };
-      }
-      return {
-        ...oldState,
-        programmedAt: null,
-      };
-
     case SET_IS_OPEN_PUBLISH_MODAL: {
       return {
         ...oldState,
@@ -98,10 +82,7 @@ const actionBarReducer = (state = initialState, action = {}) => {
     case SET_IS_SCHEDULED: {
       return {
         ...oldState,
-        isScheduled: {
-          status: action.payload.status || false,
-          date: action.payload.date || "",
-        },
+        isScheduled: action.payload || "",
       };
     }
 

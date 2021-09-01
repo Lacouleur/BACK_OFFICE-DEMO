@@ -8,6 +8,7 @@ import {
 } from "../../../services/client/contentClient";
 import { isValidToken } from "../../../services/client/refreshToken";
 import {
+  setIsScheduled,
   setProgrammedAt,
   setPublishedAt,
   setUpdatedAt,
@@ -199,7 +200,7 @@ export function fetchContent(id) {
           dispatch(contentLoaded(response.data));
           dispatch(setUpdatedAt(response.data.updatedAt));
           dispatch(setPublishedAt(response.data.publishedAt));
-          dispatch(setProgrammedAt(response.data.publishScheduledAt));
+          dispatch(setIsScheduled(response.data.publishScheduledAt || ""));
         }
 
         return null;

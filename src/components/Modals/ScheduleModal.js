@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import useClickOutside from "../../helper/cutomHooks/useClickOutside";
 import {
-  setIsOpenscheduleModal,
+  setIsOpenScheduleModal,
   setIsScheduled,
 } from "../../store/actions/actionBarActions";
 import crossIcon from "../../styles/assets/icons/cross-white.svg";
@@ -23,17 +23,18 @@ import {
 import { schedulePublication } from "../../store/actions/thunk/ActionBarActions.thunk";
 
 const scheduleModal = () => {
-  const modal = useRef(null);
-  const dispatch = useDispatch();
-  const [date, setDate] = useState(new Date());
-  const { articleId } = useParams();
-  const actualDate = new Date();
-
   const ActionBarState = useSelector(
     ({ actionBarReducer }) => actionBarReducer
   );
 
-  const { scheduledTime } = ActionBarState;
+  const { isScheduled } = ActionBarState;
+  const modal = useRef(null);
+  const dispatch = useDispatch();
+  const [date, setDate] = useState(new Date(isScheduled) || new Date());
+  const { articleId } = useParams();
+  const actualDate = new Date();
+
+  console.log("isSheduled", isScheduled);
 
   useEffect(() => {
     modal.current.scrollIntoView({
@@ -44,7 +45,7 @@ const scheduleModal = () => {
   }, []);
 
   function onClickOutside() {
-    dispatch(setIsOpenscheduleModal(false));
+    dispatch(setIsOpenScheduleModal(false));
   }
 
   useClickOutside(modal, onClickOutside);
@@ -59,7 +60,7 @@ const scheduleModal = () => {
         <Message>Please, pick a date :)</Message>
         <Cross
           src={crossIcon}
-          onClick={() => dispatch(setIsOpenscheduleModal(false))}
+          onClick={() => dispatch(setIsOpenScheduleModal(false))}
         />
         <DateContainer>
           <DatePicker
@@ -68,7 +69,11 @@ const scheduleModal = () => {
             disableClock
             calendarIcon={false}
             clearIcon={<DatePickerIcon src={clearIcon} />}
-            minDate={new Date(date.getTime() + 5 * 60000)}
+            minDate={
+              isScheduled
+                ? new Date(actualDate.getTime() + 5 * 60000)
+                : new Date(date.getTime() + 5 * 60000)
+            }
           />
         </DateContainer>
         <ButtonsBox>
@@ -80,7 +85,7 @@ const scheduleModal = () => {
               border: "1px solid white",
             }}
             onClick={() => {
-              dispatch(setIsOpenscheduleModal(false));
+              dispatch(setIsOpenScheduleModal(false));
             }}
           >
             CANCEL
@@ -92,9 +97,9 @@ const scheduleModal = () => {
             onClick={() => {
               if (date >= new Date(actualDate.getTime() + 5 * 60000)) {
                 dispatch(schedulePublication(articleId, date));
-                dispatch(setIsOpenscheduleModal(false));
+                dispatch(setIsOpenScheduleModal(false));
               } else {
-                dispatch(setIsOpenscheduleModal(false));
+                dispatch(setIsOpenScheduleModal(false));
               }
             }}
           >

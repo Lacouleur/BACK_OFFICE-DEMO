@@ -3,10 +3,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import useClickOutside from "../../helper/cutomHooks/useClickOutside";
-import {
-  setIsOpenScheduleModal,
-  setIsScheduled,
-} from "../../store/actions/actionBarActions";
+import { setIsOpenScheduleModal } from "../../store/actions/actionBarActions";
 import crossIcon from "../../styles/assets/icons/cross-white.svg";
 import clearIcon from "../../styles/assets/icons/cross-white-light.svg";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
@@ -36,8 +33,6 @@ const scheduleModal = () => {
   );
   const { articleId } = useParams();
   const actualDate = new Date();
-
-  console.log("isSheduled", isScheduled);
 
   useEffect(() => {
     modal.current.scrollIntoView({
@@ -69,6 +64,9 @@ const scheduleModal = () => {
           The selected date must be at least 5 minutes later than the current
           date.
         </MessageSmall>
+        {console.log("isScheduled ==>", isScheduled)}
+        {console.log("DATE ==>", date)}
+
         <DateContainer>
           <DatePicker
             value={date}
@@ -76,11 +74,7 @@ const scheduleModal = () => {
             disableClock
             calendarIcon={false}
             clearIcon={<DatePickerIcon src={clearIcon} />}
-            minDate={
-              isScheduled || !date
-                ? new Date(actualDate.getTime() + 5 * 60000)
-                : new Date(date.getTime() + 5 * 60000)
-            }
+            minDate={new Date(actualDate.getTime() + 5 * 60000)}
           />
         </DateContainer>
 
@@ -105,8 +99,6 @@ const scheduleModal = () => {
             onClick={() => {
               if (date >= new Date(actualDate.getTime() + 5 * 60000)) {
                 dispatch(schedulePublication(articleId, date));
-                dispatch(setIsOpenScheduleModal(false));
-              } else {
                 dispatch(setIsOpenScheduleModal(false));
               }
             }}

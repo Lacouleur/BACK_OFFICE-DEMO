@@ -199,8 +199,8 @@ const ActionBar = () => {
         return;
       }
       if (status === "PUBLISHED" && !modified) {
-        setSelectOptions([{ value: "UNPUBLISH", label: "UNPUBLISH" }]);
-        setActionButtonContent("PROGRAM");
+        setSelectOptions([]);
+        setActionButtonContent("UNPUBLISH");
         setIsDeleteButton(false);
         return;
       }
@@ -439,22 +439,12 @@ const ActionBar = () => {
                 classNamePrefix="select"
                 options={selectOptions}
                 onChange={(e) => {
-                  console.log("VALUE=>", e.value);
-                  if (e?.value === "PUBLISH") {
+                  if (e?.value !== "PROGRAM") {
                     setActionButtonContent(e?.value);
                     dispatch(setIsOpenPublishModal(true));
-                  }
-                  if (e?.value === "UNPUBLISH") {
-                    setActionButtonContent(e?.value);
-                    dispatch(setIsOpenPublishModal(true));
-                  }
-                  if (e?.value === "PROGRAM") {
+                  } else {
                     setActionButtonContent(e?.value);
                     dispatch(setIsOpenScheduleModal(true));
-                  }
-                  if (e?.value === "CANCEL") {
-                    setActionButtonContent(e?.value);
-                    dispatch(setIsOpenPublishModal(true));
                   }
                 }}
               />

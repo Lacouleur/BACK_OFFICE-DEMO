@@ -5,17 +5,13 @@ import { Editor } from "react-draft-wysiwyg";
 import "../../../../../styles/css/react-draft-wysiwyg.css";
 import { useDispatch, useSelector } from "react-redux";
 import hilighterIcon from "../../../../../styles/assets/icons/highlighter.svg";
-import {
-  TitleIcon,
-  FormTitle,
-} from "../../../../../styles/styledComponents/global/Titles.sc";
+import { FormTitle } from "../../../../../styles/styledComponents/global/Titles.sc";
 import {
   SectionBox,
   SectionTitle,
   Gradient,
 } from "../../../../../styles/styledComponents/editor/Sections.sc";
 import trashIcon from "../../../../../styles/assets/icons/trash.svg";
-import textIcon from "../../../../../styles/assets/icons/text-white.svg";
 import {
   DraftJsWrapper,
   ModuleContainer,
@@ -39,6 +35,7 @@ const TextModule = ({
   isChanged,
   isOpenCloseModal,
   isNewModule,
+  order,
 }) => {
   const dispatch = useDispatch();
   const textModuleRef = useRef(null);
@@ -154,8 +151,7 @@ const TextModule = ({
         </ActionIcons>
 
         <SectionTitle>
-          <TitleIcon src={textIcon} />
-          <FormTitle>Text module</FormTitle>
+          <FormTitle>{`${order}. text`}</FormTitle>
         </SectionTitle>
         {!isOpen && <Gradient />}
         <DraftJsWrapper isOpen={isOpen}>
@@ -219,5 +215,6 @@ TextModule.propTypes = {
   isChanged: PropTypes.bool.isRequired,
   isOpenCloseModal: PropTypes.bool.isRequired,
   isNewModule: PropTypes.bool.isRequired,
+  order: PropTypes.string.isRequired,
 };
 export default TextModule;

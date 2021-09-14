@@ -75,6 +75,7 @@ const Editor = () => {
                     key={module.uuid}
                     text={module.text}
                     uuid={module.uuid}
+                    order={module.order}
                     isChanged={module.isChanged}
                     isOpenCloseModal={module.isOpenCloseModal}
                     isNewModule={module.isNewModule}
@@ -85,6 +86,7 @@ const Editor = () => {
                   <ImageModule
                     key={module.uuid}
                     uuid={module.uuid}
+                    order={module.order}
                     thumbnail={module?.image?.urls?.thumbnail?.url || undefined}
                     imageUuid={module.image.uuid}
                     altImage={module.image.alt}
@@ -98,6 +100,7 @@ const Editor = () => {
                       <OpinionModule 
                         key={module.uuid}
                         uuid={module.uuid}
+                        order={module.order}
                         isChanged={module.isChanged}
                         isOpenCloseModal={module.isOpenCloseModal}
                         isNewModule={module.isNewModule}

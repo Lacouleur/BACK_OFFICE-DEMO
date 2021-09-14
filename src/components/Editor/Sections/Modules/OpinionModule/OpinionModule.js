@@ -3,10 +3,7 @@ import React, { useRef, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import "../../../../../styles/css/react-draft-wysiwyg.css";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  TitleIcon,
-  FormTitle,
-} from "../../../../../styles/styledComponents/global/Titles.sc";
+import { FormTitle } from "../../../../../styles/styledComponents/global/Titles.sc";
 import {
   SectionBox,
   SectionTitle,
@@ -50,7 +47,6 @@ import HideModal from "../../../../Modals/HideModal";
 import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
 import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.thunk";
 import Field from "../../../Field";
-import quizzIcon from "../../../../../styles/assets/icons/quizz.svg";
 import checkIcon from "../../../../../styles/assets/icons/check.svg";
 import plusIcon from "../../../../../styles/assets/icons/plus-violet-in-cirlce.svg";
 import trashIconViolet from "../../../../../styles/assets/icons/trash-violet-no-circle.svg";
@@ -72,6 +68,7 @@ const OpinionModule = ({
   explanation,
   answers,
   isVisible,
+  order,
 }) => {
   const dispatch = useDispatch();
   const opinionModuleRef = useRef(null);
@@ -155,8 +152,7 @@ const OpinionModule = ({
         </ActionIcons>
 
         <SectionTitle>
-          <TitleIcon src={quizzIcon} />
-          <FormTitle>Opinion module</FormTitle>
+          <FormTitle>{`${order}. text`}</FormTitle>
         </SectionTitle>
         {!isOpen && <Gradient />}
 
@@ -350,5 +346,6 @@ OpinionModule.propTypes = {
   explanation: PropTypes.string,
   isVisible: PropTypes.bool,
   answers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  order: PropTypes.string.isRequired,
 };
 export default OpinionModule;

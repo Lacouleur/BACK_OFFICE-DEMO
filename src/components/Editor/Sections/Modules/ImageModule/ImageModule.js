@@ -3,11 +3,7 @@ import React, { useRef, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import "../../../../../styles/css/react-draft-wysiwyg.css";
 import { useDispatch, useSelector } from "react-redux";
-import imageIcon from "../../../../../styles/assets/icons/image.svg";
-import {
-  TitleIcon,
-  FormTitle,
-} from "../../../../../styles/styledComponents/global/Titles.sc";
+import { FormTitle } from "../../../../../styles/styledComponents/global/Titles.sc";
 import {
   SectionBox,
   SectionTitle,
@@ -34,6 +30,7 @@ const ImageModule = ({
   isOpenCloseModal,
   isNewModule,
   thumbnail,
+  order,
 }) => {
   const dispatch = useDispatch();
   const imageModuleRef = useRef(null);
@@ -98,8 +95,7 @@ const ImageModule = ({
         </ActionIcons>
 
         <SectionTitle>
-          <TitleIcon src={imageIcon} />
-          <FormTitle>Image module</FormTitle>
+          <FormTitle>{`${order}. image`}</FormTitle>
         </SectionTitle>
         {!isOpen && <Gradient />}
         {thumbnail && <Thumbnail src={thumbnail} />}
@@ -145,5 +141,6 @@ ImageModule.propTypes = {
   isNewModule: PropTypes.bool.isRequired,
   altImage: PropTypes.string,
   thumbnail: PropTypes.string,
+  order: PropTypes.string.isRequired,
 };
 export default ImageModule;

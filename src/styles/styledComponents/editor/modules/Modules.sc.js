@@ -278,3 +278,27 @@ export const AddAnswerText = styled.p`
 export const AddAnswerIcon = styled.img`
   width: 32px;
 `;
+
+export const ArrowBox = styled.div`
+  position: absolute;
+  transform: translateY(-50%);
+  top: 50%;
+  right: -42px;
+  height: 68px;
+  width: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 98;
+`;
+
+export const Arrow = styled.img`
+  width: 30px;
+  z-index: 99;
+
+  &:hover {
+    width: 32px;
+    transition: 0.3 ease;
+  }
+`;

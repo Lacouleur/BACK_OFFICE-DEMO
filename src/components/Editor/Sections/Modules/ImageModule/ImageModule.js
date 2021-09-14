@@ -15,12 +15,19 @@ import {
   ModuleContainer,
   Delete,
   ActionIcons,
+  ArrowBox,
+  Arrow,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
-import { showCloseModal } from "../../../../../store/actions/moduleActions";
+import {
+  setOrder,
+  showCloseModal,
+} from "../../../../../store/actions/moduleActions";
 import CloseModal from "../../../../Modals/CloseModal";
 import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
 import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.thunk";
 import Field from "../../../Field";
+import upIcon from "../../../../../styles/assets/icons/arrow-up-green.svg";
+import downIcon from "../../../../../styles/assets/icons/arrow-down-green.svg";
 
 const ImageModule = ({
   uuid,
@@ -71,7 +78,7 @@ const ImageModule = ({
   useClickOutside(imageModuleRef, onClickOutside);
 
   return (
-    <ModuleContainer onClick={() => setIsOpen(true)} ref={imageModuleRef}>
+    <ModuleContainer ref={imageModuleRef}>
       {isOpenCloseModal && (
         <CloseModal
           moduleId={uuid}
@@ -79,17 +86,32 @@ const ImageModule = ({
           articleId={articleId}
         />
       )}
+      {/*     <ArrowBox onClick={() => setIsOpen(false)}> */}
+      <ArrowBox>
+        <Arrow
+          onClick={() => {
+            console.log("up");
+            dispatch(setOrder({ id: uuid, value: "up" }));
+          }}
+          src={upIcon}
+        />
+        <Arrow
+          onClick={() => {
+            console.log("down");
+            dispatch(setOrder({ id: uuid, value: "down" }));
+          }}
+          src={downIcon}
+        />
+      </ArrowBox>
 
       {!isOpen && <Gradient />}
 
-      <SectionBox isOpen={isOpen}>
+      <SectionBox onClick={() => setIsOpen(true)} isOpen={isOpen}>
         <ActionIcons>
           <Delete
             src={trashIcon}
             onClick={() => {
-              if (status !== "PUBLISHED") {
-                dispatch(showCloseModal({ value: true, id: uuid }));
-              }
+              dispatch(showCloseModal({ value: true, id: uuid }));
             }}
           />
         </ActionIcons>
@@ -141,6 +163,6 @@ ImageModule.propTypes = {
   isNewModule: PropTypes.bool.isRequired,
   altImage: PropTypes.string,
   thumbnail: PropTypes.string,
-  order: PropTypes.string.isRequired,
+  order: PropTypes.number.isRequired,
 };
 export default ImageModule;

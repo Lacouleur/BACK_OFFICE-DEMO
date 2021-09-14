@@ -31,6 +31,8 @@ import {
   AddAnswerText,
   Hide,
   ActionIcons,
+  ArrowBox,
+  Arrow,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import {
   setOpinionExplain,
@@ -41,6 +43,7 @@ import {
   showCloseModal,
   createOpinionNewAnswer,
   deleteOpinionAnswer,
+  setOrder,
 } from "../../../../../store/actions/moduleActions";
 import CloseModal from "../../../../Modals/CloseModal";
 import HideModal from "../../../../Modals/HideModal";
@@ -55,6 +58,8 @@ import trashIcon from "../../../../../styles/assets/icons/trash.svg";
 import eyeIcon from "../../../../../styles/assets/icons/eye-circle-green.svg";
 import eyeUnabled from "../../../../../styles/assets/icons/eye-circle-green-unabled.svg";
 import { showHideModal } from "../../../../../store/actions/actionBarActions";
+import upIcon from "../../../../../styles/assets/icons/arrow-up-green.svg";
+import downIcon from "../../../../../styles/assets/icons/arrow-down-green.svg";
 
 const OpinionModule = ({
   uuid,
@@ -110,7 +115,7 @@ const OpinionModule = ({
   useClickOutside(opinionModuleRef, onClickOutside);
 
   return (
-    <ModuleContainer onClick={() => setIsOpen(true)} ref={opinionModuleRef}>
+    <ModuleContainer ref={opinionModuleRef}>
       {isOpenCloseModal && (
         <CloseModal
           moduleId={uuid}
@@ -121,9 +126,26 @@ const OpinionModule = ({
 
       {hideModal?.isOpen && hideModal?.moduleId === uuid && <HideModal />}
 
+      <ArrowBox>
+        <Arrow
+          onClick={() => {
+            console.log("up");
+            dispatch(setOrder({ id: uuid, value: "up" }));
+          }}
+          src={upIcon}
+        />
+        <Arrow
+          onClick={() => {
+            console.log("down");
+            dispatch(setOrder({ id: uuid, value: "down" }));
+          }}
+          src={downIcon}
+        />
+      </ArrowBox>
+
       {!isOpen && <Gradient />}
 
-      <SectionBox isOpen={isOpen}>
+      <SectionBox onClick={() => setIsOpen(true)} isOpen={isOpen}>
         <ActionIcons>
           {status === "DRAFT" && (
             <>
@@ -152,7 +174,7 @@ const OpinionModule = ({
         </ActionIcons>
 
         <SectionTitle>
-          <FormTitle>{`${order}. text`}</FormTitle>
+          <FormTitle>{`${order}. opinion`}</FormTitle>
         </SectionTitle>
         {!isOpen && <Gradient />}
 
@@ -346,6 +368,6 @@ OpinionModule.propTypes = {
   explanation: PropTypes.string,
   isVisible: PropTypes.bool,
   answers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  order: PropTypes.string.isRequired,
+  order: PropTypes.number.isRequired,
 };
 export default OpinionModule;

@@ -17,8 +17,11 @@ import {
   ModuleContainer,
   Delete,
   ActionIcons,
+  ArrowBox,
+  Arrow,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import {
+  setOrder,
   setValueTextModule,
   showCloseModal,
 } from "../../../../../store/actions/moduleActions";
@@ -28,6 +31,8 @@ import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.th
 import colors from "../../../../../styles/core/colors";
 import HTMLconverter from "../../../../../helper/Editor/HTMLconverter";
 import emojisList from "./emojisList";
+import upIcon from "../../../../../styles/assets/icons/arrow-up-green.svg";
+import downIcon from "../../../../../styles/assets/icons/arrow-down-green.svg";
 
 const TextModule = ({
   text,
@@ -96,6 +101,10 @@ const TextModule = ({
     setContent();
   }, [editorState]);
 
+  useEffect(() => {
+    dispatch(saveModule(uuid, "update"));
+  }, [order]);
+
   function onEditorStateChange(e) {
     setEditorState(e);
   }
@@ -127,7 +136,7 @@ const TextModule = ({
   }
 
   return (
-    <ModuleContainer onClick={() => setIsOpen(true)} ref={textModuleRef}>
+    <ModuleContainer ref={textModuleRef}>
       {isOpenCloseModal && (
         <CloseModal
           moduleId={uuid}
@@ -136,9 +145,24 @@ const TextModule = ({
         />
       )}
 
+      <ArrowBox>
+        <Arrow
+          onClick={() => {
+            dispatch(setOrder({ id: uuid, value: "up" }));
+          }}
+          src={upIcon}
+        />
+        <Arrow
+          onClick={() => {
+            dispatch(setOrder({ id: uuid, value: "down" }));
+          }}
+          src={downIcon}
+        />
+      </ArrowBox>
+
       {!isOpen && <Gradient />}
 
-      <SectionBox isOpen={isOpen}>
+      <SectionBox isOpen={isOpen} onClick={() => setIsOpen(true)}>
         <ActionIcons>
           <Delete
             src={trashIcon}
@@ -215,6 +239,6 @@ TextModule.propTypes = {
   isChanged: PropTypes.bool.isRequired,
   isOpenCloseModal: PropTypes.bool.isRequired,
   isNewModule: PropTypes.bool.isRequired,
-  order: PropTypes.string.isRequired,
+  order: PropTypes.number.isRequired,
 };
 export default TextModule;

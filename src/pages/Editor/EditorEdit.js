@@ -35,6 +35,7 @@ import {
 import colors from "../../styles/core/colors";
 import HomeNavigation from "../../components/Editor/Sections/HomeNavigation";
 import OpinionModule from "../../components/Editor/Sections/Modules/OpinionModule/OpinionModule";
+import { setOrderChanged } from "../../store/actions/moduleActions";
 
 
 
@@ -45,14 +46,30 @@ const Editor = () => {
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
   const actionBarState = useSelector(({ actionBarReducer }) => actionBarReducer);
 
-  const { modulesList } = modulesState;
+  const { modulesList, orderChanged  } = modulesState;
   const { isOpenCloseModal } = actionBarState;
+
+  const listOfModules = [];
 
   useEffect(() => {
       dispatch(setIsManifesto(false))
       dispatch(fetchContent(articleId));
       dispatch(setArticleId(articleId));
+      listOfModules.push(modulesList);
   }, []);
+
+  useEffect(() => {
+    if(orderChanged) {
+      listOfModules.length= 0
+      console.log("orderChanged", orderChanged)
+      dispatch(fetchContent(articleId));
+      if (modulesList.length > 0) {
+        listOfModules.push(modulesList);
+      }
+ 
+    }
+
+}, [orderChanged]);
 
   return (
     <PageContainer position="relative">
@@ -64,10 +81,10 @@ const Editor = () => {
           <MainInformation />
           <Seo />
           <HomeNavigation />
-          {modulesList?.length > 0 && (
+          {listOfModules?.length > 0 && (
             <Separator />
           )}
-          {modulesList?.map((module) => {
+          {listOfModules?.map((module) => {
             switch (module.type) {
               case "text":{
                 return (

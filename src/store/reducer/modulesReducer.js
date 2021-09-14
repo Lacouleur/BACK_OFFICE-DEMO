@@ -20,10 +20,13 @@ import {
   DELETE_OPINION_ANSWER,
   CREATE_OPINION_NEW_ANSWER,
   SET_IS_VISIBLE,
+  SET_ORDER,
+  SET_ORDER_CHANGED,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
 const initialState = {
+  orderChanged: false,
   modulesList: [],
 };
 
@@ -270,6 +273,37 @@ const modulesReducer = (state = initialState, action = {}) => {
           };
         }
 
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_ORDER_CHANGED: {
+      oldState.orderChanged = action.payload;
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_ORDER: {
+      const { id, value } = action.payload;
+      console.log("PAYLOAD", action.payload);
+      console.log("VALUE", value);
+      state.modulesList.map((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            isChanged: true,
+            order:
+              value === "up"
+                ? oldState.modulesList[index].order + 1
+                : oldState.modulesList[index].order - 1,
+          };
+          oldState.orderChanged = true;
+        }
         return null;
       });
 

@@ -21,7 +21,7 @@ import {
   CREATE_OPINION_NEW_ANSWER,
   SET_IS_VISIBLE,
   SET_ORDER,
-  SET_ORDER_CHANGED,
+  EDIT_MODULES_LIST,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -281,8 +281,9 @@ const modulesReducer = (state = initialState, action = {}) => {
       };
     }
 
-    case SET_ORDER_CHANGED: {
-      oldState.orderChanged = action.payload;
+    case EDIT_MODULES_LIST: {
+      console.log("PAYLOAD", action.payload);
+      oldState.modulesList = action.payload;
       return {
         ...oldState,
       };

@@ -302,3 +302,9 @@ export const Arrow = styled.img`
     transition: 0.3 ease;
   }
 `;
+
+export const ModulesBoardDnd = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: hotpink;
+`;

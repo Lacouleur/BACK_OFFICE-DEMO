@@ -12,6 +12,7 @@
     "eslint-plugin-only-warn": "^1.0.2",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
+    "react-beautiful-dnd": "^13.1.0",
     "react-datetime-picker": "^3.4.0",
     "react-dom": "^17.0.1",
     "react-draft-wysiwyg": "^1.14.6",

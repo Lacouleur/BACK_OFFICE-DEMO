@@ -17,7 +17,7 @@ import {
   SET_OPINION_SHOW_RIGHT_ANSWER,
   SET_IS_VISIBLE,
   SET_ORDER,
-  SET_ORDER_CHANGED,
+  EDIT_MODULES_LIST,
 } from "../constants";
 
 export const setNewModule = (payload) => ({
@@ -110,7 +110,7 @@ export const setOrder = (payload) => ({
   payload,
 });
 
-export const setOrderChanged = (payload) => ({
-  type: SET_ORDER_CHANGED,
+export const editModulesList = (payload) => ({
+  type: EDIT_MODULES_LIST,
   payload,
 });

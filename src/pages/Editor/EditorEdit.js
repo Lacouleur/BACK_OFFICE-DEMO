@@ -1,8 +1,11 @@
+/* eslint-disable no-shadow */
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-return-assign */
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {  useParams } from "react-router-dom";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import PageContainer from "../../styles/styledComponents/global/PageContainer.sc";
@@ -35,8 +38,8 @@ import {
 import colors from "../../styles/core/colors";
 import HomeNavigation from "../../components/Editor/Sections/HomeNavigation";
 import OpinionModule from "../../components/Editor/Sections/Modules/OpinionModule/OpinionModule";
-import { setOrderChanged } from "../../store/actions/moduleActions";
-
+import { ModulesBoardDnd } from "../../styles/styledComponents/editor/modules/Modules.sc";
+import { editModulesList } from "../../store/actions/moduleActions";
 
 
 const Editor = () => {
@@ -46,30 +49,26 @@ const Editor = () => {
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
   const actionBarState = useSelector(({ actionBarReducer }) => actionBarReducer);
 
-  const { modulesList, orderChanged  } = modulesState;
+  const { modulesList } = modulesState;
   const { isOpenCloseModal } = actionBarState;
-
-  const listOfModules = [];
 
   useEffect(() => {
       dispatch(setIsManifesto(false))
       dispatch(fetchContent(articleId));
       dispatch(setArticleId(articleId));
-      listOfModules.push(modulesList);
   }, []);
 
-  useEffect(() => {
-    if(orderChanged) {
-      listOfModules.length= 0
-      console.log("orderChanged", orderChanged)
-      dispatch(fetchContent(articleId));
-      if (modulesList.length > 0) {
-        listOfModules.push(modulesList);
-      }
- 
-    }
-
-}, [orderChanged]);
+  function onDragEnd (result, modulesList) {
+    const {source, destination} = result;
+    console.log("Module List :", modulesList)
+    const copiedModules = [...modulesList];
+    const [removed] = copiedModules.splice(source.index, 1);
+    copiedModules.splice(destination.index, 0, removed);
+    dispatch(editModulesList([
+      ...copiedModules
+    ])
+    )
+  }
 
   return (
     <PageContainer position="relative">
@@ -81,60 +80,144 @@ const Editor = () => {
           <MainInformation />
           <Seo />
           <HomeNavigation />
-          {listOfModules?.length > 0 && (
+          {modulesList?.length > 0 && (
             <Separator />
           )}
-          {listOfModules?.map((module) => {
-            switch (module.type) {
-              case "text":{
-                return (
-                  <TextModule
-                    key={module.uuid}
-                    text={module.text}
-                    uuid={module.uuid}
-                    order={module.order}
-                    isChanged={module.isChanged}
-                    isOpenCloseModal={module.isOpenCloseModal}
-                    isNewModule={module.isNewModule}
-                  />
-                );}
-              case "image":{
-                return (
-                  <ImageModule
-                    key={module.uuid}
-                    uuid={module.uuid}
-                    order={module.order}
-                    thumbnail={module?.image?.urls?.thumbnail?.url || undefined}
-                    imageUuid={module.image.uuid}
-                    altImage={module.image.alt}
-                    isChanged={module.isChanged}
-                    isOpenCloseModal={module.isOpenCloseModal}
-                    isNewModule={module.isNewModule}
-                  />
-                );}
-                case "opinion":{
+          <DragDropContext
+            onDragEnd={result => onDragEnd(result, modulesList)}
+          > 
+            <Droppable droppableId={articleId}>
+              {(provided, snapshot) => {
+              return (
+                <ModulesBoardDnd
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                > 
+                  {modulesList?.map((module, index) => {
+                switch (module.type) {
+                  case "text":{
                     return (
-                      <OpinionModule 
+                      <Draggable
                         key={module.uuid}
-                        uuid={module.uuid}
-                        order={module.order}
-                        isChanged={module.isChanged}
-                        isOpenCloseModal={module.isOpenCloseModal}
-                        isNewModule={module.isNewModule}
-                        question={module.question}
-                        showPercentage={module.showPercentage}
-                        showResponse={module.showResponse}
-                        showRight={module.showRight}
-                        explanation={module.explanation}
-                        answers={module.answers}
-                        isVisible={module.isVisible}
-                      />
-                );}
-                default :
-                return null;
-            }
-            })}
+                        draggableId={module.uuid}
+                        index={index}
+                      > 
+                        {(provided, snapshot) => {
+                      return (
+                        <div 
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={{
+                            userSelect: "none",
+                            backgroundColor: snapshot.isDragging
+                              ? "#263B4A"
+                              : "#456C86",
+                            ...provided.draggableProps.style
+                          }}
+                        >
+                          <TextModule
+                            text={module.text}
+                            uuid={module.uuid}
+                            order={module.order}
+                            isChanged={module.isChanged}
+                            isOpenCloseModal={module.isOpenCloseModal}
+                            isNewModule={module.isNewModule}
+                          />
+                        </div>
+                      )}}
+                      </Draggable>
+                    );}
+                  case "image":{
+                    return (
+                      <Draggable
+                        key={module.uuid}
+                        draggableId={module.uuid}
+                        index={index}
+                      > 
+                        {(provided, snapshot) => {
+                    return (
+                      <div 
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        style={{
+                          userSelect: "none",
+                          backgroundColor: snapshot.isDragging
+                            ? "#263B4A"
+                            : "#456C86",
+                          ...provided.draggableProps.style
+                        }}
+                      >
+                        <ImageModule
+                          key={module.uuid}
+                          uuid={module.uuid}
+                          order={module.order}
+                          thumbnail={module?.image?.urls?.thumbnail?.url || undefined}
+                          imageUuid={module.image.uuid}
+                          altImage={module.image.alt}
+                          isChanged={module.isChanged}
+                          isOpenCloseModal={module.isOpenCloseModal}
+                          isNewModule={module.isNewModule}
+                        />
+                      </div>
+                      )}}
+                      </Draggable>
+                    );}
+                  case "opinion":{
+                    return (
+                      <Draggable
+                        key={module.uuid}
+                        draggableId={module.uuid}
+                        index={index}
+                      > 
+                        {(provided, snapshot) => {
+                    return (
+                      <div 
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        style={{
+                          userSelect: "none",
+                          backgroundColor: snapshot.isDragging
+                            ? "#263B4A"
+                            : "#456C86",
+                          ...provided.draggableProps.style
+                        }}
+                      >
+                        <OpinionModule 
+                          key={module.uuid}
+                          uuid={module.uuid}
+                          order={module.order}
+                          isChanged={module.isChanged}
+                          isOpenCloseModal={module.isOpenCloseModal}
+                          isNewModule={module.isNewModule}
+                          question={module.question}
+                          showPercentage={module.showPercentage}
+                          showResponse={module.showResponse}
+                          showRight={module.showRight}
+                          explanation={module.explanation}
+                          answers={module.answers}
+                          isVisible={module.isVisible}
+                        />
+                      </div>
+                      )}}
+                      </Draggable>
+                    );}
+                    default :
+                    return null;
+                }
+                })}
+                  {provided.placeholder}
+                </ModulesBoardDnd>
+                
+
+                )
+              }}
   
+            </Droppable>
+          </DragDropContext>
+
           {isOpen && articleId && <ModuleCreator setIsOpen={setIsOpen} />}
           <NewBlockButtonBox>
             <Button

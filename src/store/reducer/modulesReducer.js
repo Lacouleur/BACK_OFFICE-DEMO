@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable array-callback-return */
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -20,13 +21,12 @@ import {
   DELETE_OPINION_ANSWER,
   CREATE_OPINION_NEW_ANSWER,
   SET_IS_VISIBLE,
-  SET_ORDER,
+  SET_IS_CHANGED,
   EDIT_MODULES_LIST,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
 const initialState = {
-  orderChanged: false,
   modulesList: [],
 };
 
@@ -282,29 +282,23 @@ const modulesReducer = (state = initialState, action = {}) => {
     }
 
     case EDIT_MODULES_LIST: {
-      console.log("PAYLOAD", action.payload);
       oldState.modulesList = action.payload;
+      console.log(oldState);
       return {
         ...oldState,
       };
     }
 
-    case SET_ORDER: {
-      const { id, value } = action.payload;
-      console.log("PAYLOAD", action.payload);
-      console.log("VALUE", value);
-      state.modulesList.map((module, index) => {
+    case SET_IS_CHANGED: {
+      const id = action.payload;
+      state.modulesList.find((module, index) => {
         if (module?.uuid === id) {
           oldState.modulesList[index] = {
             ...module,
             isChanged: true,
-            order:
-              value === "up"
-                ? oldState.modulesList[index].order + 1
-                : oldState.modulesList[index].order - 1,
           };
-          oldState.orderChanged = true;
         }
+
         return null;
       });
 

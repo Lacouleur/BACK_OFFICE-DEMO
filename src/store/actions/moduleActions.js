@@ -16,7 +16,7 @@ import {
   DELETE_OPINION_ANSWER,
   SET_OPINION_SHOW_RIGHT_ANSWER,
   SET_IS_VISIBLE,
-  SET_ORDER,
+  SET_IS_CHANGED,
   EDIT_MODULES_LIST,
 } from "../constants";
 
@@ -105,8 +105,8 @@ export const closeModule = (payload) => ({
   payload,
 });
 
-export const setOrder = (payload) => ({
-  type: SET_ORDER,
+export const setIsChanged = (payload) => ({
+  type: SET_IS_CHANGED,
   payload,
 });
 

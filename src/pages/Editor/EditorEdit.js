@@ -39,7 +39,9 @@ import colors from "../../styles/core/colors";
 import HomeNavigation from "../../components/Editor/Sections/HomeNavigation";
 import OpinionModule from "../../components/Editor/Sections/Modules/OpinionModule/OpinionModule";
 import { ModulesBoardDnd } from "../../styles/styledComponents/editor/modules/Modules.sc";
-import { editModulesList } from "../../store/actions/moduleActions";
+import { editModulesList, setIsChanged } from "../../store/actions/moduleActions";
+import { saveModule } from "../../store/actions/thunk/ModulesActions.thunk";
+import { onDragEnd } from "../../helper/Editor/dragAndDrop";
 
 
 const Editor = () => {
@@ -48,6 +50,7 @@ const Editor = () => {
   const [isOpen, setIsOpen] = useState(false);
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
   const actionBarState = useSelector(({ actionBarReducer }) => actionBarReducer);
+  const [aModuleIsOpen, setAModuleIsOpen] =useState(false);
 
   const { modulesList } = modulesState;
   const { isOpenCloseModal } = actionBarState;
@@ -58,17 +61,6 @@ const Editor = () => {
       dispatch(setArticleId(articleId));
   }, []);
 
-  function onDragEnd (result, modulesList) {
-    const {source, destination} = result;
-    console.log("Module List :", modulesList)
-    const copiedModules = [...modulesList];
-    const [removed] = copiedModules.splice(source.index, 1);
-    copiedModules.splice(destination.index, 0, removed);
-    dispatch(editModulesList([
-      ...copiedModules
-    ])
-    )
-  }
 
   return (
     <PageContainer position="relative">
@@ -84,7 +76,7 @@ const Editor = () => {
             <Separator />
           )}
           <DragDropContext
-            onDragEnd={result => onDragEnd(result, modulesList)}
+            onDragEnd={result => onDragEnd(result, modulesList, dispatch)}
           > 
             <Droppable droppableId={articleId}>
               {(provided, snapshot) => {
@@ -96,8 +88,10 @@ const Editor = () => {
                   {modulesList?.map((module, index) => {
                 switch (module.type) {
                   case "text":{
+                    
                     return (
                       <Draggable
+                        isDragDisabled={aModuleIsOpen}
                         key={module.uuid}
                         draggableId={module.uuid}
                         index={index}
@@ -123,6 +117,7 @@ const Editor = () => {
                             isChanged={module.isChanged}
                             isOpenCloseModal={module.isOpenCloseModal}
                             isNewModule={module.isNewModule}
+                            setAModuleIsOpen={setAModuleIsOpen}
                           />
                         </div>
                       )}}
@@ -131,6 +126,7 @@ const Editor = () => {
                   case "image":{
                     return (
                       <Draggable
+                        isDragDisabled={aModuleIsOpen}
                         key={module.uuid}
                         draggableId={module.uuid}
                         index={index}
@@ -159,6 +155,7 @@ const Editor = () => {
                           isChanged={module.isChanged}
                           isOpenCloseModal={module.isOpenCloseModal}
                           isNewModule={module.isNewModule}
+                          setAModuleIsOpen={setAModuleIsOpen}
                         />
                       </div>
                       )}}
@@ -167,6 +164,7 @@ const Editor = () => {
                   case "opinion":{
                     return (
                       <Draggable
+                        isDragDisabled={aModuleIsOpen}
                         key={module.uuid}
                         draggableId={module.uuid}
                         index={index}
@@ -199,6 +197,7 @@ const Editor = () => {
                           explanation={module.explanation}
                           answers={module.answers}
                           isVisible={module.isVisible}
+                          setAModuleIsOpen={setAModuleIsOpen}
                         />
                       </div>
                       )}}

@@ -18,16 +18,11 @@ import {
   ArrowBox,
   Arrow,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
-import {
-  setOrder,
-  showCloseModal,
-} from "../../../../../store/actions/moduleActions";
+import { showCloseModal } from "../../../../../store/actions/moduleActions";
 import CloseModal from "../../../../Modals/CloseModal";
 import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
 import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.thunk";
 import Field from "../../../Field";
-import upIcon from "../../../../../styles/assets/icons/arrow-up-green.svg";
-import downIcon from "../../../../../styles/assets/icons/arrow-down-green.svg";
 
 const ImageModule = ({
   uuid,
@@ -38,6 +33,7 @@ const ImageModule = ({
   isNewModule,
   thumbnail,
   order,
+  setAModuleIsOpen,
 }) => {
   const dispatch = useDispatch();
   const imageModuleRef = useRef(null);
@@ -56,6 +52,10 @@ const ImageModule = ({
       setIsImage(true);
     }
   }, [isChanged, imageUuid]);
+
+  useEffect(() => {
+    setAModuleIsOpen(isOpen);
+  }, [isOpen]);
 
   useEffect(() => {
     if (isNewModule) {
@@ -86,23 +86,6 @@ const ImageModule = ({
           articleId={articleId}
         />
       )}
-      {/*     <ArrowBox onClick={() => setIsOpen(false)}> */}
-      <ArrowBox>
-        <Arrow
-          onClick={() => {
-            console.log("up");
-            dispatch(setOrder({ id: uuid, value: "up" }));
-          }}
-          src={upIcon}
-        />
-        <Arrow
-          onClick={() => {
-            console.log("down");
-            dispatch(setOrder({ id: uuid, value: "down" }));
-          }}
-          src={downIcon}
-        />
-      </ArrowBox>
 
       {!isOpen && <Gradient />}
 
@@ -164,5 +147,6 @@ ImageModule.propTypes = {
   altImage: PropTypes.string,
   thumbnail: PropTypes.string,
   order: PropTypes.number.isRequired,
+  setAModuleIsOpen: PropTypes.func.isRequired,
 };
 export default ImageModule;

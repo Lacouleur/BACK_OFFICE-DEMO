@@ -43,7 +43,6 @@ import {
   showCloseModal,
   createOpinionNewAnswer,
   deleteOpinionAnswer,
-  setOrder,
 } from "../../../../../store/actions/moduleActions";
 import CloseModal from "../../../../Modals/CloseModal";
 import HideModal from "../../../../Modals/HideModal";
@@ -58,8 +57,6 @@ import trashIcon from "../../../../../styles/assets/icons/trash.svg";
 import eyeIcon from "../../../../../styles/assets/icons/eye-circle-green.svg";
 import eyeUnabled from "../../../../../styles/assets/icons/eye-circle-green-unabled.svg";
 import { showHideModal } from "../../../../../store/actions/actionBarActions";
-import upIcon from "../../../../../styles/assets/icons/arrow-up-green.svg";
-import downIcon from "../../../../../styles/assets/icons/arrow-down-green.svg";
 
 const OpinionModule = ({
   uuid,
@@ -74,6 +71,7 @@ const OpinionModule = ({
   answers,
   isVisible,
   order,
+  setAModuleIsOpen,
 }) => {
   const dispatch = useDispatch();
   const opinionModuleRef = useRef(null);
@@ -101,6 +99,10 @@ const OpinionModule = ({
     }
   }, [isNewModule]);
 
+  useEffect(() => {
+    setAModuleIsOpen(isOpen);
+  }, [isOpen]);
+
   function onClickOutside() {
     if (!isOpenCloseModal) {
       setIsOpen(false);
@@ -125,23 +127,6 @@ const OpinionModule = ({
       )}
 
       {hideModal?.isOpen && hideModal?.moduleId === uuid && <HideModal />}
-
-      <ArrowBox>
-        <Arrow
-          onClick={() => {
-            console.log("up");
-            dispatch(setOrder({ id: uuid, value: "up" }));
-          }}
-          src={upIcon}
-        />
-        <Arrow
-          onClick={() => {
-            console.log("down");
-            dispatch(setOrder({ id: uuid, value: "down" }));
-          }}
-          src={downIcon}
-        />
-      </ArrowBox>
 
       {!isOpen && <Gradient />}
 
@@ -369,5 +354,6 @@ OpinionModule.propTypes = {
   isVisible: PropTypes.bool,
   answers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   order: PropTypes.number.isRequired,
+  setAModuleIsOpen: PropTypes.func.isRequired,
 };
 export default OpinionModule;

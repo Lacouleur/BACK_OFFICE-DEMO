@@ -21,7 +21,6 @@ import {
   Arrow,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import {
-  setOrder,
   setValueTextModule,
   showCloseModal,
 } from "../../../../../store/actions/moduleActions";
@@ -31,8 +30,6 @@ import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.th
 import colors from "../../../../../styles/core/colors";
 import HTMLconverter from "../../../../../helper/Editor/HTMLconverter";
 import emojisList from "./emojisList";
-import upIcon from "../../../../../styles/assets/icons/arrow-up-green.svg";
-import downIcon from "../../../../../styles/assets/icons/arrow-down-green.svg";
 
 const TextModule = ({
   text,
@@ -41,6 +38,7 @@ const TextModule = ({
   isOpenCloseModal,
   isNewModule,
   order,
+  setAModuleIsOpen,
 }) => {
   const dispatch = useDispatch();
   const textModuleRef = useRef(null);
@@ -88,6 +86,10 @@ const TextModule = ({
   }
 
   useEffect(() => {
+    setAModuleIsOpen(isOpen);
+  }, [isOpen]);
+
+  useEffect(() => {
     watchNewModules();
   }, [isNewModule]);
 
@@ -100,10 +102,6 @@ const TextModule = ({
   useEffect(() => {
     setContent();
   }, [editorState]);
-
-  useEffect(() => {
-    dispatch(saveModule(uuid, "update"));
-  }, [order]);
 
   function onEditorStateChange(e) {
     setEditorState(e);
@@ -144,21 +142,6 @@ const TextModule = ({
           articleId={articleId}
         />
       )}
-
-      <ArrowBox>
-        <Arrow
-          onClick={() => {
-            dispatch(setOrder({ id: uuid, value: "up" }));
-          }}
-          src={upIcon}
-        />
-        <Arrow
-          onClick={() => {
-            dispatch(setOrder({ id: uuid, value: "down" }));
-          }}
-          src={downIcon}
-        />
-      </ArrowBox>
 
       {!isOpen && <Gradient />}
 
@@ -240,5 +223,6 @@ TextModule.propTypes = {
   isOpenCloseModal: PropTypes.bool.isRequired,
   isNewModule: PropTypes.bool.isRequired,
   order: PropTypes.number.isRequired,
+  setAModuleIsOpen: PropTypes.func.isRequired,
 };
 export default TextModule;

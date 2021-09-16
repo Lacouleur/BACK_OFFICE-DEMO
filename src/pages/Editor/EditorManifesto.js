@@ -38,6 +38,7 @@ const EditorManifesto = () => {
   const dispatch = useDispatch();
   const { lang } = useParams();
   const [isOpen, setIsOpen] = useState(false);
+
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
   const { modulesList } = modulesState;
   const manifestoState = useSelector(
@@ -72,36 +73,112 @@ const EditorManifesto = () => {
           {modulesList?.length > 0 && (
             <Separator />
           )}
-          {modulesList?.map((module) => {
+          <DragDropContext
+            onDragEnd={result => onDragEnd(result, modulesList, dispatch)}
+          > 
+            <Droppable droppableId={articleId}>
+              {(provided, snapshot) => {
+              return (
+                <ModulesBoardDnd
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                > 
+                  {modulesList?.map((module) => {
             switch (module.type) {
               case "text":{
                 return (
-                  <TextModule
+                  <Draggable
+                    isDragDisabled={aModuleIsOpen}
                     key={module.uuid}
-                    text={module.text}
-                    uuid={module.uuid}
-                    isChanged={module.isChanged}
-                    isOpenCloseModal={module.isOpenCloseModal}
-                    isNewModule={module.isNewModule}
-                    isVisible={module.isVisible}
-                  />
-                );} 
+                    draggableId={module.uuid}
+                    index={index}
+                  > 
+                    {(provided, snapshot) => {
+                  return (
+                    <div 
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      style={{
+                        userSelect: "none",
+                        backgroundColor: snapshot.isDragging
+                          ? "#263B4A"
+                          : "#456C86",
+                        ...provided.draggableProps.style
+                      }}
+                    >
+                      <TextModule
+                        key={module.uuid}
+                        text={module.text}
+                        uuid={module.uuid}
+                        isChanged={module.isChanged}
+                        isOpenCloseModal={module.isOpenCloseModal}
+                        isNewModule={module.isNewModule}
+                        isVisible={module.isVisible}
+                      />
+                    </div>
+                      )}}
+                  </Draggable>
+                    );}
               case "image":{
                 return (
-                  <ImageModule
+                  <Draggable
+                    isDragDisabled={aModuleIsOpen}
                     key={module.uuid}
-                    uuid={module.uuid}
-                    thumbnail={module?.image?.urls?.thumbnail?.url || undefined}
-                    imageUuid={module.image.uuid}
-                    altImage={module.image.alt}
-                    isChanged={module.isChanged}
-                    isOpenCloseModal={module.isOpenCloseModal}
-                    isNewModule={module.isNewModule}
-                    isVisible={module.isVisible}
-                  />
-                );}  
+                    draggableId={module.uuid}
+                    index={index}
+                  > 
+                    {(provided, snapshot) => {
+                return (
+                  <div 
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    style={{
+                      userSelect: "none",
+                      backgroundColor: snapshot.isDragging
+                        ? "#263B4A"
+                        : "#456C86",
+                      ...provided.draggableProps.style
+                    }}
+                  >
+                    <ImageModule
+                      key={module.uuid}
+                      uuid={module.uuid}
+                      thumbnail={module?.image?.urls?.thumbnail?.url || undefined}
+                      imageUuid={module.image.uuid}
+                      altImage={module.image.alt}
+                      isChanged={module.isChanged}
+                      isOpenCloseModal={module.isOpenCloseModal}
+                      isNewModule={module.isNewModule}
+                      isVisible={module.isVisible}
+                    />
+                  </div>
+                      )}}
+                  </Draggable>
+                    );}
                 case "opinion":{
-                    return (
+                  return (
+                    <Draggable
+                      isDragDisabled={aModuleIsOpen}
+                      key={module.uuid}
+                      draggableId={module.uuid}
+                      index={index}
+                    > 
+                      {(provided, snapshot) => {
+                  return (
+                    <div 
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      style={{
+                        userSelect: "none",
+                        backgroundColor: snapshot.isDragging
+                          ? "#263B4A"
+                          : "#456C86",
+                        ...provided.draggableProps.style
+                      }}
+                    >
                       <OpinionModule 
                         key={module.uuid}
                         uuid={module.uuid}
@@ -115,12 +192,25 @@ const EditorManifesto = () => {
                         explanation={module.explanation}
                         answers={module.answers}
                         isVisible={module.isVisible}
+  
                       />
-                );}
-                default :
-                return null;
-            }
-            })}
+                    </div>
+                      )}}
+                    </Draggable>
+                    );}
+                    default :
+                    return null;
+                }
+                })}
+                  {provided.placeholder}
+                </ModulesBoardDnd>
+                
+
+                )
+              }}
+  
+            </Droppable>
+          </DragDropContext>
   
           {isOpen && <ModuleCreator setIsOpen={setIsOpen} />}
           <NewBlockButtonBox>

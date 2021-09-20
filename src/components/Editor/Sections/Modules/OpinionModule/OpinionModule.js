@@ -31,8 +31,6 @@ import {
   AddAnswerText,
   Hide,
   ActionIcons,
-  ArrowBox,
-  Arrow,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import {
   setOpinionExplain,

@@ -17,8 +17,6 @@ import {
   ModuleContainer,
   Delete,
   ActionIcons,
-  ArrowBox,
-  Arrow,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import {
   setValueTextModule,

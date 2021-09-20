@@ -15,8 +15,6 @@ import {
   ModuleContainer,
   Delete,
   ActionIcons,
-  ArrowBox,
-  Arrow,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import { showCloseModal } from "../../../../../store/actions/moduleActions";
 import CloseModal from "../../../../Modals/CloseModal";

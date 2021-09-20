@@ -38,9 +38,7 @@ import {
 import colors from "../../styles/core/colors";
 import HomeNavigation from "../../components/Editor/Sections/HomeNavigation";
 import OpinionModule from "../../components/Editor/Sections/Modules/OpinionModule/OpinionModule";
-import { ModulesBoardDnd } from "../../styles/styledComponents/editor/modules/Modules.sc";
-import { editModulesList, setIsChanged } from "../../store/actions/moduleActions";
-import { saveModule } from "../../store/actions/thunk/ModulesActions.thunk";
+import { HideOnDnd, ModulesBoardDnd } from "../../styles/styledComponents/editor/modules/Modules.sc";
 import { onDragEnd } from "../../helper/Editor/dragAndDrop";
 
 
@@ -51,6 +49,7 @@ const Editor = () => {
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
   const actionBarState = useSelector(({ actionBarReducer }) => actionBarReducer);
   const [aModuleIsOpen, setAModuleIsOpen] =useState(false);
+  const [isUsedDndArea, setIsUsedDnDArea] = useState(false)
 
   const { modulesList } = modulesState;
   const { isOpenCloseModal } = actionBarState;
@@ -68,6 +67,7 @@ const Editor = () => {
       <Form>
         <ActionBar />
         <FormContainer>
+          {isUsedDndArea && <HideOnDnd />}
           {isOpenCloseModal?.value && <HideContent />}
           <MainInformation />
           <Seo />
@@ -76,12 +76,17 @@ const Editor = () => {
             <Separator />
           )}
           <DragDropContext
-            onDragEnd={result => onDragEnd(result, modulesList, dispatch)}
+            onDragEnd={(result) => {
+              onDragEnd(result, modulesList, dispatch)
+              setIsUsedDnDArea(false)
+              }}
+            onDragStart={() => setIsUsedDnDArea(true)}
           > 
             <Droppable droppableId={articleId}>
-              {(provided, snapshot) => {
+              {(provided) => {
               return (
                 <ModulesBoardDnd
+                  isUsedDndArea={isUsedDndArea}
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                 > 

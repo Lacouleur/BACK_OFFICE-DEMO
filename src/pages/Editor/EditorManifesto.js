@@ -1,8 +1,11 @@
+/* eslint-disable no-shadow */
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-return-assign */
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import PageContainer from "../../styles/styledComponents/global/PageContainer.sc";
@@ -33,11 +36,15 @@ import HomeNavigation from "../../components/Editor/Sections/HomeNavigation";
 import OpinionModule from "../../components/Editor/Sections/Modules/OpinionModule/OpinionModule";
 import { ManifestoLang, ManifestoTitle } from "../../styles/styledComponents/global/Titles.sc";
 import { setIsManifesto } from "../../store/actions/manifestoActions";
+import { onDragEnd } from "../../helper/Editor/dragAndDrop";
+import { HideOnDnd, ModulesBoardDnd } from "../../styles/styledComponents/editor/modules/Modules.sc";
 
 const EditorManifesto = () => {
   const dispatch = useDispatch();
   const { lang } = useParams();
   const [isOpen, setIsOpen] = useState(false);
+  const [aModuleIsOpen, setAModuleIsOpen] =useState(false);
+  const [isUsedDndArea, setIsUsedDnDArea] = useState(false)
 
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
   const { modulesList } = modulesState;
@@ -62,6 +69,7 @@ const EditorManifesto = () => {
       <Form>
         <ActionBar />
         <FormContainer>
+          {isUsedDndArea && <HideOnDnd />}
           {isOpenCloseModal?.value && <HideContent />}
           <TitleBox>
             <ManifestoTitle>MANIFESTO</ManifestoTitle>
@@ -74,16 +82,21 @@ const EditorManifesto = () => {
             <Separator />
           )}
           <DragDropContext
-            onDragEnd={result => onDragEnd(result, modulesList, dispatch)}
+            onDragEnd={(result) => {
+              onDragEnd(result, modulesList, dispatch)
+              setIsUsedDnDArea(false)
+              }}
+            onDragStart={() => setIsUsedDnDArea(true)}
           > 
-            <Droppable droppableId={articleId}>
-              {(provided, snapshot) => {
+            <Droppable droppableId="droppableManifesto">
+              {(provided) => {
               return (
                 <ModulesBoardDnd
+                  isUsedDndArea={isUsedDndArea}
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                 > 
-                  {modulesList?.map((module) => {
+                  {modulesList?.map((module, index) => {
             switch (module.type) {
               case "text":{
                 return (
@@ -111,10 +124,12 @@ const EditorManifesto = () => {
                         key={module.uuid}
                         text={module.text}
                         uuid={module.uuid}
+                        order={module.order}
                         isChanged={module.isChanged}
                         isOpenCloseModal={module.isOpenCloseModal}
                         isNewModule={module.isNewModule}
                         isVisible={module.isVisible}
+                        setAModuleIsOpen={setAModuleIsOpen}
                       />
                     </div>
                       )}}
@@ -147,11 +162,13 @@ const EditorManifesto = () => {
                       uuid={module.uuid}
                       thumbnail={module?.image?.urls?.thumbnail?.url || undefined}
                       imageUuid={module.image.uuid}
+                      order={module.order}
                       altImage={module.image.alt}
                       isChanged={module.isChanged}
                       isOpenCloseModal={module.isOpenCloseModal}
                       isNewModule={module.isNewModule}
                       isVisible={module.isVisible}
+                      setAModuleIsOpen={setAModuleIsOpen}
                     />
                   </div>
                       )}}
@@ -188,11 +205,12 @@ const EditorManifesto = () => {
                         question={module.question}
                         showPercentage={module.showPercentage}
                         showResponse={module.showResponse}
+                        order={module.order}
                         showRight={module.showRight}
                         explanation={module.explanation}
                         answers={module.answers}
                         isVisible={module.isVisible}
-  
+                        setAModuleIsOpen={setAModuleIsOpen}
                       />
                     </div>
                       )}}

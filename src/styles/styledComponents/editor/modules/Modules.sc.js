@@ -279,32 +279,23 @@ export const AddAnswerIcon = styled.img`
   width: 32px;
 `;
 
-export const ArrowBox = styled.div`
-  position: absolute;
-  transform: translateY(-50%);
-  top: 50%;
-  right: -42px;
-  height: 68px;
-  width: 32px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 98;
-`;
-
-export const Arrow = styled.img`
-  width: 30px;
-  z-index: 99;
-
-  &:hover {
-    width: 32px;
-    transition: 0.3 ease;
-  }
+const IsInUseBoardDnDMixin = css`
+  background-color: ${colors.paleViolet};
 `;
 
 export const ModulesBoardDnd = styled.div`
-  width: 100%;
+  ${(props) => (props.isUsedDndArea ? IsInUseBoardDnDMixin : "")};
   height: 100%;
-  background-color: hotpink;
+  min-width: 900px;
+`;
+
+export const HideOnDnd = styled.div`
+  position: absolute;
+  height: 550px;
+  width: 100%;
+  min-width: 900px;
+  opacity: 0.8;
+  background-color: ${colors.mediumGrey};
+  top: 100px;
+  z-index: 99;
 `;

@@ -280,7 +280,7 @@ export const AddAnswerIcon = styled.img`
 `;
 
 const IsInUseBoardDnDMixin = css`
-  background-color: ${colors.paleViolet};
+  background-color: ${colors.matBlack};
 `;
 
 export const ModulesBoardDnd = styled.div`
@@ -289,13 +289,18 @@ export const ModulesBoardDnd = styled.div`
   min-width: 900px;
 `;
 
+const HideOnDndManifesto = css`
+  top: 250px !important;
+`;
+
 export const HideOnDnd = styled.div`
+  ${(props) => (props.isManifesto ? HideOnDndManifesto : "")};
   position: absolute;
   height: 550px;
   width: 100%;
   min-width: 900px;
   opacity: 0.8;
   background-color: ${colors.mediumGrey};
-  top: 100px;
+  top: 150px;
   z-index: 99;
 `;

@@ -9,6 +9,7 @@ import {
   SHOW_HIDE_MODAL,
   SET_IS_OPEN_SCHEDULE_MODAL,
   SET_IS_SCHEDULED,
+  SET_A_MODULE_IS_OPEN,
 } from "../constants";
 
 import {} from "../actions/actionBarActions";
@@ -152,15 +153,16 @@ const actionBarReducer = (state = initialState, action = {}) => {
       };
     }
 
+    case SET_A_MODULE_IS_OPEN: {
+      return {
+        ...oldState,
+        aModuleIsOpen: action.payload,
+      };
+    }
+
     case CLEAN_CONTENT_STATE:
       return {
-        updatedAt: "",
-        publishedAt: null,
-        programmedAt: null,
-        isOpenPublishModal: false,
-        isOpenErrorModal: false,
-        isOpenArchiveModal: false,
-        errorMessage: null,
+        ...oldState,
       };
 
     default:

@@ -54,7 +54,10 @@ import trashIconGreyNoCircle from "../../../../../styles/assets/icons/trash-grey
 import trashIcon from "../../../../../styles/assets/icons/trash.svg";
 import eyeIcon from "../../../../../styles/assets/icons/eye-circle-green.svg";
 import eyeUnabled from "../../../../../styles/assets/icons/eye-circle-green-unabled.svg";
-import { showHideModal } from "../../../../../store/actions/actionBarActions";
+import {
+  setAModuleIsOpen,
+  showHideModal,
+} from "../../../../../store/actions/actionBarActions";
 
 const OpinionModule = ({
   uuid,
@@ -69,7 +72,6 @@ const OpinionModule = ({
   answers,
   isVisible,
   order,
-  setAModuleIsOpen,
 }) => {
   const dispatch = useDispatch();
   const opinionModuleRef = useRef(null);
@@ -352,6 +354,5 @@ OpinionModule.propTypes = {
   isVisible: PropTypes.bool,
   answers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   order: PropTypes.number.isRequired,
-  setAModuleIsOpen: PropTypes.func.isRequired,
 };
 export default OpinionModule;

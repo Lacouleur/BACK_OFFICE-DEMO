@@ -43,7 +43,6 @@ const EditorManifesto = () => {
   const dispatch = useDispatch();
   const { lang } = useParams();
   const [isOpen, setIsOpen] = useState(false);
-  const [aModuleIsOpen, setAModuleIsOpen] =useState(false);
   const [isUsedDndArea, setIsUsedDnDArea] = useState(false)
 
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
@@ -52,8 +51,8 @@ const EditorManifesto = () => {
     ({ manifestoReducer}) => manifestoReducer
   );
   const actionBarState = useSelector(({ actionBarReducer }) => actionBarReducer);
- const { manifestoId } = manifestoState;
- const { isOpenCloseModal } = actionBarState;
+ const { manifestoId, isManifesto } = manifestoState;
+ const { isOpenCloseModal, aModuleIsOpen} = actionBarState;
 
   useEffect(() => {
     dispatch(setIsManifesto(true));
@@ -63,13 +62,15 @@ const EditorManifesto = () => {
 
   }, []);
 
+
   return (
     <PageContainer position="relative">
       <Header position="fixed" />
       <Form>
         <ActionBar />
         <FormContainer>
-          {isUsedDndArea && <HideOnDnd />}
+          <HideOnDnd isManifesto />
+          {isUsedDndArea && <HideOnDnd isManifesto />}
           {isOpenCloseModal?.value && <HideContent />}
           <TitleBox>
             <ManifestoTitle>MANIFESTO</ManifestoTitle>
@@ -129,7 +130,6 @@ const EditorManifesto = () => {
                         isOpenCloseModal={module.isOpenCloseModal}
                         isNewModule={module.isNewModule}
                         isVisible={module.isVisible}
-                        setAModuleIsOpen={setAModuleIsOpen}
                       />
                     </div>
                       )}}
@@ -168,7 +168,6 @@ const EditorManifesto = () => {
                       isOpenCloseModal={module.isOpenCloseModal}
                       isNewModule={module.isNewModule}
                       isVisible={module.isVisible}
-                      setAModuleIsOpen={setAModuleIsOpen}
                     />
                   </div>
                       )}}
@@ -210,7 +209,6 @@ const EditorManifesto = () => {
                         explanation={module.explanation}
                         answers={module.answers}
                         isVisible={module.isVisible}
-                        setAModuleIsOpen={setAModuleIsOpen}
                       />
                     </div>
                       )}}

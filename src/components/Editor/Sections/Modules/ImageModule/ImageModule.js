@@ -21,6 +21,7 @@ import CloseModal from "../../../../Modals/CloseModal";
 import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
 import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.thunk";
 import Field from "../../../Field";
+import { setAModuleIsOpen } from "../../../../../store/actions/actionBarActions";
 
 const ImageModule = ({
   uuid,
@@ -31,7 +32,6 @@ const ImageModule = ({
   isNewModule,
   thumbnail,
   order,
-  setAModuleIsOpen,
 }) => {
   const dispatch = useDispatch();
   const imageModuleRef = useRef(null);
@@ -145,6 +145,5 @@ ImageModule.propTypes = {
   altImage: PropTypes.string,
   thumbnail: PropTypes.string,
   order: PropTypes.number.isRequired,
-  setAModuleIsOpen: PropTypes.func.isRequired,
 };
 export default ImageModule;

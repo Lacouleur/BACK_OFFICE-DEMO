@@ -28,6 +28,7 @@ import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.th
 import colors from "../../../../../styles/core/colors";
 import HTMLconverter from "../../../../../helper/Editor/HTMLconverter";
 import emojisList from "./emojisList";
+import { setAModuleIsOpen } from "../../../../../store/actions/actionBarActions";
 
 const TextModule = ({
   text,
@@ -36,7 +37,6 @@ const TextModule = ({
   isOpenCloseModal,
   isNewModule,
   order,
-  setAModuleIsOpen,
 }) => {
   const dispatch = useDispatch();
   const textModuleRef = useRef(null);
@@ -221,6 +221,5 @@ TextModule.propTypes = {
   isOpenCloseModal: PropTypes.bool.isRequired,
   isNewModule: PropTypes.bool.isRequired,
   order: PropTypes.number.isRequired,
-  setAModuleIsOpen: PropTypes.func.isRequired,
 };
 export default TextModule;

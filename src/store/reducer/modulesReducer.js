@@ -23,6 +23,7 @@ import {
   SET_IS_VISIBLE,
   SET_IS_CHANGED,
   EDIT_MODULES_LIST,
+  SET_A_MODULE_IS_OPEN,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.

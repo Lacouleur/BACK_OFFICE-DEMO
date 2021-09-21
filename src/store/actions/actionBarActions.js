@@ -7,6 +7,7 @@ import {
   SHOW_HIDE_MODAL,
   SET_IS_OPEN_SCHEDULE_MODAL,
   SET_IS_SCHEDULED,
+  SET_A_MODULE_IS_OPEN,
 } from "../constants";
 
 export const setUpdatedAt = (payload) => ({
@@ -51,5 +52,10 @@ export const setIsOpenScheduleModal = (payload) => ({
 
 export const setIsScheduled = (payload) => ({
   type: SET_IS_SCHEDULED,
+  payload,
+});
+
+export const setAModuleIsOpen = (payload) => ({
+  type: SET_A_MODULE_IS_OPEN,
   payload,
 });

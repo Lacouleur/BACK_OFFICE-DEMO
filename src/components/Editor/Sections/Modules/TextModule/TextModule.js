@@ -5,17 +5,13 @@ import { Editor } from "react-draft-wysiwyg";
 import "../../../../../styles/css/react-draft-wysiwyg.css";
 import { useDispatch, useSelector } from "react-redux";
 import hilighterIcon from "../../../../../styles/assets/icons/highlighter.svg";
-import {
-  TitleIcon,
-  FormTitle,
-} from "../../../../../styles/styledComponents/global/Titles.sc";
+import { FormTitle } from "../../../../../styles/styledComponents/global/Titles.sc";
 import {
   SectionBox,
   SectionTitle,
   Gradient,
 } from "../../../../../styles/styledComponents/editor/Sections.sc";
 import trashIcon from "../../../../../styles/assets/icons/trash.svg";
-import textIcon from "../../../../../styles/assets/icons/text-white.svg";
 import {
   DraftJsWrapper,
   ModuleContainer,
@@ -32,6 +28,7 @@ import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.th
 import colors from "../../../../../styles/core/colors";
 import HTMLconverter from "../../../../../helper/Editor/HTMLconverter";
 import emojisList from "./emojisList";
+import { setAModuleIsOpen } from "../../../../../store/actions/actionBarActions";
 
 const TextModule = ({
   text,
@@ -39,6 +36,7 @@ const TextModule = ({
   isChanged,
   isOpenCloseModal,
   isNewModule,
+  order,
 }) => {
   const dispatch = useDispatch();
   const textModuleRef = useRef(null);
@@ -86,6 +84,10 @@ const TextModule = ({
   }
 
   useEffect(() => {
+    setAModuleIsOpen(isOpen);
+  }, [isOpen]);
+
+  useEffect(() => {
     watchNewModules();
   }, [isNewModule]);
 
@@ -130,7 +132,7 @@ const TextModule = ({
   }
 
   return (
-    <ModuleContainer onClick={() => setIsOpen(true)} ref={textModuleRef}>
+    <ModuleContainer ref={textModuleRef}>
       {isOpenCloseModal && (
         <CloseModal
           moduleId={uuid}
@@ -141,7 +143,7 @@ const TextModule = ({
 
       {!isOpen && <Gradient />}
 
-      <SectionBox isOpen={isOpen}>
+      <SectionBox isOpen={isOpen} onClick={() => setIsOpen(true)}>
         <ActionIcons>
           <Delete
             src={trashIcon}
@@ -154,8 +156,7 @@ const TextModule = ({
         </ActionIcons>
 
         <SectionTitle>
-          <TitleIcon src={textIcon} />
-          <FormTitle>Text module</FormTitle>
+          <FormTitle>{`${order}. text`}</FormTitle>
         </SectionTitle>
         {!isOpen && <Gradient />}
         <DraftJsWrapper isOpen={isOpen}>
@@ -219,5 +220,6 @@ TextModule.propTypes = {
   isChanged: PropTypes.bool.isRequired,
   isOpenCloseModal: PropTypes.bool.isRequired,
   isNewModule: PropTypes.bool.isRequired,
+  order: PropTypes.number.isRequired,
 };
 export default TextModule;

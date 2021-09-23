@@ -5,11 +5,13 @@ import {
   publishManager,
   duplicateContent,
   translateContent,
+  scheduleContentPublication,
+  cancelContentPublication,
 } from "../../../services/client/contentClient";
 import { setErrorAuth } from "../authActions";
 import { setModified, setStatus } from "../mainInformationActions";
 import { setManifestoStatus } from "../manifestoActions";
-import { showErrorModal } from "../actionBarActions";
+import { setIsScheduled, showErrorModal } from "../actionBarActions";
 import { alreadyTranslated } from "../../../helper/errorMessages";
 import {
   consoleError,
@@ -89,6 +91,50 @@ export function publishAction(articleId, mode) {
   };
 }
 
+export function schedulePublication(articleId, date) {
+  console.log("%cPUBLISHING", `${consoleTitle}`, articleId);
+
+  return async (dispatch) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
+      /*       const { manifestoReducer } = getState();
+      const { isManifesto, manifestoId } = manifestoReducer; */
+
+      try {
+        const response = await scheduleContentPublication(articleId, date);
+        if (response.status < 300 && response.status > 199) {
+          dispatch(setIsScheduled(date));
+          dispatch(setStatus("SCHEDULED"));
+        }
+      } catch (error) {
+        ErrorCaseClient(dispatch, error?.response?.data);
+      }
+    }
+    return null;
+  };
+}
+
+export function cancelScheduledPublication(articleId) {
+  console.log("%cPUBLISHING", `${consoleTitle}`, articleId);
+  return async (dispatch, getState) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
+      const { manifestoReducer } = getState();
+      const { status } = manifestoReducer;
+      try {
+        const response = await cancelContentPublication(articleId);
+        if (response.status < 300 && response.status > 199) {
+          dispatch(setIsScheduled(""));
+          dispatch(setStatus(status));
+        }
+      } catch (error) {
+        ErrorCaseClient(dispatch, error?.response?.data);
+      }
+    }
+    return null;
+  };
+}
+
 export function duplicateArticle(articleId) {
   console.log("%cDUPLICATION", `${consoleTitle}`, articleId);
   return async (dispatch) => {
@@ -105,6 +151,7 @@ export function duplicateArticle(articleId) {
       }
       return null;
     }
+    return null;
   };
 }
 

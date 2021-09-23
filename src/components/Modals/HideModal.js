@@ -23,7 +23,7 @@ const HideModal = () => {
 
   const { hideModal } = actionBarState;
 
-  const { type, moduleId, message } = hideModal;
+  const { type, moduleId } = hideModal;
 
   useEffect(() => {
     modal.current.scrollIntoView({

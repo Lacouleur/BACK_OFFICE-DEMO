@@ -1,11 +1,13 @@
 import {
   SET_UPDATED_AT,
   SET_PUBLISHED,
-  SET_PROGRAMMED,
   SET_IS_OPEN_PUBLISH_MODAL,
   SHOW_ERROR_MODAL,
   SET_IS_OPEN_ARCHIVE_MODAL,
   SHOW_HIDE_MODAL,
+  SET_IS_OPEN_SCHEDULE_MODAL,
+  SET_IS_SCHEDULED,
+  SET_A_MODULE_IS_OPEN,
 } from "../constants";
 
 export const setUpdatedAt = (payload) => ({
@@ -15,11 +17,6 @@ export const setUpdatedAt = (payload) => ({
 
 export const setPublishedAt = (payload) => ({
   type: SET_PUBLISHED,
-  payload,
-});
-
-export const setProgrammedAt = (payload) => ({
-  type: SET_PROGRAMMED,
   payload,
 });
 
@@ -40,5 +37,20 @@ export const setIsOpenArchiveModal = (payload) => ({
 
 export const showHideModal = (payload) => ({
   type: SHOW_HIDE_MODAL,
+  payload,
+});
+
+export const setIsOpenScheduleModal = (payload) => ({
+  type: SET_IS_OPEN_SCHEDULE_MODAL,
+  payload,
+});
+
+export const setIsScheduled = (payload) => ({
+  type: SET_IS_SCHEDULED,
+  payload,
+});
+
+export const setAModuleIsOpen = (payload) => ({
+  type: SET_A_MODULE_IS_OPEN,
   payload,
 });

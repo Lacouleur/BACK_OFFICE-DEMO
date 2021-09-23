@@ -99,6 +99,7 @@ export const Hide = styled.img`
   z-index: 21;
   width: 31px;
   height: 31px;
+  cursor: pointer;
 `;
 
 export const Delete = styled.img`
@@ -109,6 +110,7 @@ export const Delete = styled.img`
 
   &:hover {
     transform: rotate(90deg);
+    cursor: pointer;
   }
 `;
 
@@ -275,4 +277,30 @@ export const AddAnswerText = styled.p`
 
 export const AddAnswerIcon = styled.img`
   width: 32px;
+`;
+
+const IsInUseBoardDnDMixin = css`
+  background-color: ${colors.matBlack};
+`;
+
+export const ModulesBoardDnd = styled.div`
+  ${(props) => (props.isUsedDndArea ? IsInUseBoardDnDMixin : "")};
+  height: 100%;
+  min-width: 900px;
+`;
+
+const HideOnDndManifesto = css`
+  top: 250px !important;
+`;
+
+export const HideOnDnd = styled.div`
+  ${(props) => (props.isManifesto ? HideOnDndManifesto : "")};
+  position: absolute;
+  height: 550px;
+  width: 100%;
+  min-width: 900px;
+  opacity: 0.8;
+  background-color: ${colors.mediumGrey};
+  top: 150px;
+  z-index: 99;
 `;

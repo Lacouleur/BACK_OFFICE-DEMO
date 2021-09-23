@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import DateTimePicker from "react-datetime-picker";
 import colors from "../../core/colors";
 
 export const ModalContainer = styled.div`
@@ -29,6 +30,12 @@ export const Message = styled.p`
   max-width: 90%;
   margin-left: 27px;
   padding-top: 27px;
+`;
+
+export const MessageSmall = styled.p`
+  font-size: 12px;
+  max-width: 90%;
+  margin: 12px 27px;
 `;
 
 export const Br = styled.br`
@@ -147,4 +154,55 @@ export const StyledCheckbox = styled.div`
   ${Icon} {
     visibility: ${(props) => (props.checked ? "visible" : "hidden")};
   }
+`;
+
+export const DateContainer = styled.div`
+  margin: 12px 27px;
+`;
+
+export const DatePicker = styled(DateTimePicker)`
+  .react-datetime-picker__inputGroup__hour {
+    color: hotpink;
+  }
+  .react-datetime-picker {
+    &__wrapper {
+      height: 56px;
+      padding-left: 16px;
+    }
+
+    &__calendar {
+      z-index: 102;
+    }
+
+    &__inputGroup {
+      font-size: 16px;
+      line-height: 24px;
+
+      &__input {
+        color: ${colors.white};
+      }
+      &__minute {
+        color: ${colors.paleViolet};
+      }
+      &__leadingZero {
+        color: ${colors.paleViolet};
+      }
+      &__hour {
+        color: ${colors.paleViolet};
+      }
+    }
+  }
+  .react-calendar {
+    background-color: ${colors.lightGrey};
+    z-index: 202;
+
+    &__tile--now {
+      background-color: ${colors.paleViolet};
+    }
+  }
+`;
+
+export const DatePickerIcon = styled.img`
+  width: 12px;
+  margin-left: 16px;
 `;

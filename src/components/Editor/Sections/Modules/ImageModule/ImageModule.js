@@ -3,11 +3,7 @@ import React, { useRef, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import "../../../../../styles/css/react-draft-wysiwyg.css";
 import { useDispatch, useSelector } from "react-redux";
-import imageIcon from "../../../../../styles/assets/icons/image.svg";
-import {
-  TitleIcon,
-  FormTitle,
-} from "../../../../../styles/styledComponents/global/Titles.sc";
+import { FormTitle } from "../../../../../styles/styledComponents/global/Titles.sc";
 import {
   SectionBox,
   SectionTitle,
@@ -25,6 +21,7 @@ import CloseModal from "../../../../Modals/CloseModal";
 import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
 import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.thunk";
 import Field from "../../../Field";
+import { setAModuleIsOpen } from "../../../../../store/actions/actionBarActions";
 
 const ImageModule = ({
   uuid,
@@ -34,6 +31,7 @@ const ImageModule = ({
   isOpenCloseModal,
   isNewModule,
   thumbnail,
+  order,
 }) => {
   const dispatch = useDispatch();
   const imageModuleRef = useRef(null);
@@ -52,6 +50,10 @@ const ImageModule = ({
       setIsImage(true);
     }
   }, [isChanged, imageUuid]);
+
+  useEffect(() => {
+    setAModuleIsOpen(isOpen);
+  }, [isOpen]);
 
   useEffect(() => {
     if (isNewModule) {
@@ -74,7 +76,7 @@ const ImageModule = ({
   useClickOutside(imageModuleRef, onClickOutside);
 
   return (
-    <ModuleContainer onClick={() => setIsOpen(true)} ref={imageModuleRef}>
+    <ModuleContainer ref={imageModuleRef}>
       {isOpenCloseModal && (
         <CloseModal
           moduleId={uuid}
@@ -85,21 +87,18 @@ const ImageModule = ({
 
       {!isOpen && <Gradient />}
 
-      <SectionBox isOpen={isOpen}>
+      <SectionBox onClick={() => setIsOpen(true)} isOpen={isOpen}>
         <ActionIcons>
           <Delete
             src={trashIcon}
             onClick={() => {
-              if (status !== "PUBLISHED") {
-                dispatch(showCloseModal({ value: true, id: uuid }));
-              }
+              dispatch(showCloseModal({ value: true, id: uuid }));
             }}
           />
         </ActionIcons>
 
         <SectionTitle>
-          <TitleIcon src={imageIcon} />
-          <FormTitle>Image module</FormTitle>
+          <FormTitle>{`${order}. image`}</FormTitle>
         </SectionTitle>
         {!isOpen && <Gradient />}
         {thumbnail && <Thumbnail src={thumbnail} />}
@@ -145,5 +144,6 @@ ImageModule.propTypes = {
   isNewModule: PropTypes.bool.isRequired,
   altImage: PropTypes.string,
   thumbnail: PropTypes.string,
+  order: PropTypes.number.isRequired,
 };
 export default ImageModule;

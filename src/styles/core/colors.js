@@ -13,6 +13,7 @@ const colors = {
   shadow: "#121212",
   deepBlue: "#2958E5",
   green: "#03DAC5",
+  matBlack: "#1b1b1b",
 };
 
 export default colors;

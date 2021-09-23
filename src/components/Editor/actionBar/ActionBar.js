@@ -38,6 +38,7 @@ import PublishModal from "../../Modals/PublishModal";
 import {
   setIsOpenPublishModal,
   setIsOpenArchiveModal,
+  setIsOpenScheduleModal,
 } from "../../../store/actions/actionBarActions";
 import ErrorModal from "../../Modals/ErrorModal";
 import ArchiveModal from "../../Modals/ArchiveModal";
@@ -46,6 +47,8 @@ import {
   TooltipText,
 } from "../../../styles/styledComponents/contentList/Content.sc";
 import { watchOpinionModules } from "../../../helper/actionBarHelper";
+import ScheduleModal from "../../Modals/ScheduleModal";
+import { setStatus } from "../../../store/actions/mainInformationActions";
 
 const ActionBar = () => {
   const dispatch = useDispatch();
@@ -77,11 +80,12 @@ const ActionBar = () => {
 
   const {
     updatedAt,
-    programmedAt,
     publishedAt,
     isOpenPublishModal,
     isOpenErrorModal,
     isOpenArchiveModal,
+    isOpenScheduleModal,
+    isScheduled,
   } = actionBarState;
 
   const { isChanged: seoChanged } = seoState;
@@ -111,7 +115,11 @@ const ActionBar = () => {
   const [isPreviewButton, setIsPreviewButton] = useState(false);
   const [isArticleError, setIsArticleError] = useState("");
   const [isOpinionModules, setIsOpinionModules] = useState(false);
-  const selectOptions = [{ value: "UNPUBLISH", label: "UNPUBLISH" }];
+  const [selectOptions, setSelectOptions] = useState([
+    { value: "PUBLISH", label: "PUBLISH" },
+    { value: "UNPUBLISH", label: "UNPUBLISH" },
+  ]);
+
   const opinionLink = React.useRef(null);
 
   function ModifiedModulesWatcher() {
@@ -164,10 +172,14 @@ const ActionBar = () => {
   function timeWatcher() {
     const createUpdateDate = new Date(updatedAt);
     setUpdateDate(buildDate(createUpdateDate));
-
-    if (programmedAt) {
-      const createProgrammedDate = new Date(programmedAt);
+    if (isScheduled) {
+      const createProgrammedDate = new Date(isScheduled);
       setProgrammedDate(buildDate(createProgrammedDate));
+      dispatch(setStatus("SCHEDULED"));
+      setSelectOptions([
+        { value: "PUBLISH", label: "PUBLISH" },
+        { value: "CANCEL", label: "CANCEL PUBLICATION" },
+      ]);
     }
     if (publishedAt) {
       const createPublishedDate = new Date(publishedAt);
@@ -178,15 +190,34 @@ const ActionBar = () => {
   function setButtonContent() {
     if (!isManifesto) {
       if (status === "PUBLISHED" && modified) {
-        setActionButtonContent("UPDATE");
+        setActionButtonContent("PROGRAM UPDATE");
+        setSelectOptions([
+          { value: "UNPUBLISH", label: "UNPUBLISH" },
+          { value: "UPDATE", label: "UPDATE" },
+        ]);
         setIsDeleteButton(false);
-      } else if (status === "PUBLISHED" && !modified) {
+        return;
+      }
+      if (status === "PUBLISHED" && !modified) {
+        setSelectOptions([]);
         setActionButtonContent("UNPUBLISH");
         setIsDeleteButton(false);
-      } else {
-        setActionButtonContent("PUBLISH");
-        setIsDeleteButton(true);
+        return;
       }
+      if (status === "DRAFT" || status === "UNPUBLISHED") {
+        setSelectOptions([{ value: "PUBLISH", label: "PUBLISH" }]);
+        setActionButtonContent("PROGRAM");
+        setIsDeleteButton(false);
+        return;
+      }
+      if (status === "SCHEDULED") {
+        setActionButtonContent("PROGRAM UPDATE");
+        setSelectOptions([{ value: "CANCEL", label: "CANCEL PUBLICATION" }]);
+        setIsDeleteButton(false);
+        return;
+      }
+      setActionButtonContent("PROGRAM");
+      setIsDeleteButton(true);
     }
 
     if (isManifesto) {
@@ -205,7 +236,7 @@ const ActionBar = () => {
 
   useEffect(() => {
     timeWatcher();
-  }, [updatedAt, programmedAt, publishedAt]);
+  }, [updatedAt, isScheduled, publishedAt]);
 
   useEffect(() => {
     setButtonContent();
@@ -245,6 +276,7 @@ const ActionBar = () => {
           />
         )}
         {isOpenArchiveModal && <ArchiveModal id={articleId} />}
+        {isOpenScheduleModal && <ScheduleModal id={articleId} />}
         <ButtonsContainer>
           <Button
             type="button"
@@ -275,7 +307,7 @@ const ActionBar = () => {
             </LastSavedText>
           )}
 
-          {programmedAt && (
+          {isScheduled && (
             <>
               <Separator />
               <ProgrammedBox>
@@ -387,22 +419,32 @@ const ActionBar = () => {
                 type="button"
                 onClick={() => {
                   if (articleId) {
-                    dispatch(setIsOpenPublishModal(true));
+                    if (
+                      actionButtonContent === "PROGRAM" ||
+                      actionButtonContent === "PROGRAM UPDATE"
+                    ) {
+                      dispatch(setIsOpenScheduleModal(true));
+                    } else {
+                      dispatch(setIsOpenPublishModal(true));
+                    }
                   }
                 }}
               >
                 {actionButtonContent}
               </PublishButton>
             )}
-            {status === "PUBLISHED" && modified && !contentIsChanged && (
+            {articleId && !contentIsChanged && selectOptions.length > 0 && (
               <Selector
                 placeholder=""
                 classNamePrefix="select"
                 options={selectOptions}
                 onChange={(e) => {
-                  if (e?.value === "UNPUBLISH") {
+                  if (e?.value !== "PROGRAM") {
                     setActionButtonContent(e?.value);
                     dispatch(setIsOpenPublishModal(true));
+                  } else {
+                    setActionButtonContent(e?.value);
+                    dispatch(setIsOpenScheduleModal(true));
                   }
                 }}
               />

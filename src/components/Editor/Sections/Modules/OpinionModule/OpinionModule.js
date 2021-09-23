@@ -3,10 +3,7 @@ import React, { useRef, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import "../../../../../styles/css/react-draft-wysiwyg.css";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  TitleIcon,
-  FormTitle,
-} from "../../../../../styles/styledComponents/global/Titles.sc";
+import { FormTitle } from "../../../../../styles/styledComponents/global/Titles.sc";
 import {
   SectionBox,
   SectionTitle,
@@ -50,7 +47,6 @@ import HideModal from "../../../../Modals/HideModal";
 import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
 import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.thunk";
 import Field from "../../../Field";
-import quizzIcon from "../../../../../styles/assets/icons/quizz.svg";
 import checkIcon from "../../../../../styles/assets/icons/check.svg";
 import plusIcon from "../../../../../styles/assets/icons/plus-violet-in-cirlce.svg";
 import trashIconViolet from "../../../../../styles/assets/icons/trash-violet-no-circle.svg";
@@ -58,7 +54,10 @@ import trashIconGreyNoCircle from "../../../../../styles/assets/icons/trash-grey
 import trashIcon from "../../../../../styles/assets/icons/trash.svg";
 import eyeIcon from "../../../../../styles/assets/icons/eye-circle-green.svg";
 import eyeUnabled from "../../../../../styles/assets/icons/eye-circle-green-unabled.svg";
-import { showHideModal } from "../../../../../store/actions/actionBarActions";
+import {
+  setAModuleIsOpen,
+  showHideModal,
+} from "../../../../../store/actions/actionBarActions";
 
 const OpinionModule = ({
   uuid,
@@ -72,6 +71,7 @@ const OpinionModule = ({
   explanation,
   answers,
   isVisible,
+  order,
 }) => {
   const dispatch = useDispatch();
   const opinionModuleRef = useRef(null);
@@ -99,6 +99,10 @@ const OpinionModule = ({
     }
   }, [isNewModule]);
 
+  useEffect(() => {
+    setAModuleIsOpen(isOpen);
+  }, [isOpen]);
+
   function onClickOutside() {
     if (!isOpenCloseModal) {
       setIsOpen(false);
@@ -113,7 +117,7 @@ const OpinionModule = ({
   useClickOutside(opinionModuleRef, onClickOutside);
 
   return (
-    <ModuleContainer onClick={() => setIsOpen(true)} ref={opinionModuleRef}>
+    <ModuleContainer ref={opinionModuleRef}>
       {isOpenCloseModal && (
         <CloseModal
           moduleId={uuid}
@@ -126,7 +130,7 @@ const OpinionModule = ({
 
       {!isOpen && <Gradient />}
 
-      <SectionBox isOpen={isOpen}>
+      <SectionBox onClick={() => setIsOpen(true)} isOpen={isOpen}>
         <ActionIcons>
           {status === "DRAFT" && (
             <>
@@ -155,8 +159,7 @@ const OpinionModule = ({
         </ActionIcons>
 
         <SectionTitle>
-          <TitleIcon src={quizzIcon} />
-          <FormTitle>Opinion module</FormTitle>
+          <FormTitle>{`${order}. opinion`}</FormTitle>
         </SectionTitle>
         {!isOpen && <Gradient />}
 
@@ -350,5 +353,6 @@ OpinionModule.propTypes = {
   explanation: PropTypes.string,
   isVisible: PropTypes.bool,
   answers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  order: PropTypes.number.isRequired,
 };
 export default OpinionModule;

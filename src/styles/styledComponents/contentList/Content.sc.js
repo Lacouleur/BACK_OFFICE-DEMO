@@ -63,10 +63,14 @@ export const Tooltip = styled.div`
 `;
 
 export const TooltipText = styled.p`
+  display: block;
   font-size: 14px;
   width: 100%;
   line-height: 20px;
   z-index: 2;
+  &::first-letter {
+    text-transform: capitalize;
+  }
 `;
 
 const publishedTextMixin = css`

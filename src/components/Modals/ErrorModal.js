@@ -49,7 +49,7 @@ const ErrorModal = () => {
     <ModalContainer height="200vh">
       <ModalBox
         ref={modal}
-        height={messages && messages.length > 3 ? "27%" : "200px"}
+        height={messages && messages.length > 3 ? "27%" : "280px"}
       >
         {errorMessage && (
           <Message>

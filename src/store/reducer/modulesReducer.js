@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable array-callback-return */
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -20,6 +21,8 @@ import {
   DELETE_OPINION_ANSWER,
   CREATE_OPINION_NEW_ANSWER,
   SET_IS_VISIBLE,
+  SET_IS_CHANGED,
+  EDIT_MODULES_LIST,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -266,6 +269,31 @@ const modulesReducer = (state = initialState, action = {}) => {
               uuid: module.image.uuid,
               urls: module.image.urls,
             },
+            isChanged: true,
+          };
+        }
+
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case EDIT_MODULES_LIST: {
+      oldState.modulesList = action.payload;
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_IS_CHANGED: {
+      const id = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
             isChanged: true,
           };
         }

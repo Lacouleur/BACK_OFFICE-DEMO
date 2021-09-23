@@ -16,15 +16,12 @@ import {
   DELETE_OPINION_ANSWER,
   SET_OPINION_SHOW_RIGHT_ANSWER,
   SET_IS_VISIBLE,
+  SET_IS_CHANGED,
+  EDIT_MODULES_LIST,
 } from "../constants";
 
 export const setNewModule = (payload) => ({
   type: SET_NEW_MODULE,
-  payload,
-});
-
-export const closeModule = (payload) => ({
-  type: CLOSE_MODULE,
   payload,
 });
 
@@ -100,5 +97,20 @@ export const deleteOpinionAnswer = (payload) => ({
 
 export const setIsVisible = (payload) => ({
   type: SET_IS_VISIBLE,
+  payload,
+});
+
+export const closeModule = (payload) => ({
+  type: CLOSE_MODULE,
+  payload,
+});
+
+export const setIsChanged = (payload) => ({
+  type: SET_IS_CHANGED,
+  payload,
+});
+
+export const editModulesList = (payload) => ({
+  type: EDIT_MODULES_LIST,
   payload,
 });

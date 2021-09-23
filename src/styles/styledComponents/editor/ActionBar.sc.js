@@ -87,18 +87,21 @@ export const StatusContainer = styled.div`
 `;
 
 export const LastSavedBox = styled.div``;
+
 export const LastSavedText = styled.div`
   font-size: 12px;
   line-height: 24px;
   color: ${colors.lightGrey};
   font-style: italic;
 `;
+
 export const Separator = styled.div`
   width: 3px;
   height: 52px;
   margin: 0 32px 0 16px;
   background-color: ${colors.mediumGrey};
 `;
+
 export const ProgrammedBox = styled.div`
   position: relative;
 `;
@@ -119,9 +122,11 @@ export const ProgrammedText = styled.div`
   font-style: italic;
   font-weight: 700;
 `;
+
 export const StatusBox = styled.div`
   position: relative;
 `;
+
 export const StatusText = styled.div`
   font-size: 12px;
   line-height: 24px;
@@ -209,7 +214,6 @@ export const Selector = styled(ReactSelect)`
       border: none;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
-      border-bottom: 1px solid ${colors.paleViolet};
 
       &--is-focused {
         border: none;

@@ -171,7 +171,10 @@ const Field = ({
   }
 
   useEffect(() => {
-    if (categoriesList?.length === 0 || !categoriesList) {
+    if (
+      name === "category" &&
+      (categoriesList?.length === 0 || !categoriesList)
+    ) {
       dispatch(fetchCategoriesList());
     }
   }, []);

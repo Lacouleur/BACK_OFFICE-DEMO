@@ -259,7 +259,6 @@ export function saveModule(uuid, request = "save") {
         if (isChanged) {
           try {
             let response = null;
-
             if (isManifesto) {
               response = await updateComponent(
                 manifestoId,
@@ -278,7 +277,6 @@ export function saveModule(uuid, request = "save") {
               if (isManifesto) {
                 dispatch(setManifestoStatus("UNPUBLISHED"));
               }
-
               console.log(
                 `%cUpdated, ${values.type}-module (id:${uuid}) =>`,
                 `${consoleSucces}`,

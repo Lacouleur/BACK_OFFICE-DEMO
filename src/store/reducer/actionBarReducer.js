@@ -2,12 +2,14 @@ import {
   SET_UPDATED_AT,
   CLEAN_CONTENT_STATE,
   SET_PUBLISHED,
-  SET_PROGRAMMED,
   SET_IS_OPEN_PUBLISH_MODAL,
   SHOW_ERROR_MODAL,
   SET_IS_OPEN_ARCHIVE_MODAL,
   SHOW_CLOSE_MODAL,
   SHOW_HIDE_MODAL,
+  SET_IS_OPEN_SCHEDULE_MODAL,
+  SET_IS_SCHEDULED,
+  SET_A_MODULE_IS_OPEN,
 } from "../constants";
 
 import {} from "../actions/actionBarActions";
@@ -20,6 +22,7 @@ const initialState = {
   isOpenErrorModal: false,
   isOpenArchiveModal: false,
   isOpenCloseModal: false,
+  isOpenScheduleModal: false,
   errorMessage: null,
   isModalOpen: false,
   aModuleIsOpen: false,
@@ -29,6 +32,7 @@ const initialState = {
     moduleId: "",
     type: "",
   },
+  isScheduled: "",
 };
 
 const actionBarReducer = (state = initialState, action = {}) => {
@@ -60,23 +64,26 @@ const actionBarReducer = (state = initialState, action = {}) => {
         publishedAt: null,
       };
 
-    case SET_PROGRAMMED:
-      if (action.payload) {
-        return {
-          ...oldState,
-          programmedAt: action.payload,
-        };
-      }
-      return {
-        ...oldState,
-        programmedAt: null,
-      };
-
     case SET_IS_OPEN_PUBLISH_MODAL: {
       return {
         ...oldState,
         isOpenPublishModal: action.payload,
         isModalOpen: action.payload,
+      };
+    }
+
+    case SET_IS_OPEN_SCHEDULE_MODAL: {
+      return {
+        ...oldState,
+        isOpenScheduleModal: action.payload,
+        isModalOpen: action.payload,
+      };
+    }
+
+    case SET_IS_SCHEDULED: {
+      return {
+        ...oldState,
+        isScheduled: action.payload || "",
       };
     }
 
@@ -146,15 +153,16 @@ const actionBarReducer = (state = initialState, action = {}) => {
       };
     }
 
+    case SET_A_MODULE_IS_OPEN: {
+      return {
+        ...oldState,
+        aModuleIsOpen: action.payload,
+      };
+    }
+
     case CLEAN_CONTENT_STATE:
       return {
-        updatedAt: "",
-        publishedAt: null,
-        programmedAt: null,
-        isOpenPublishModal: false,
-        isOpenErrorModal: false,
-        isOpenArchiveModal: false,
-        errorMessage: null,
+        ...oldState,
       };
 
     default:

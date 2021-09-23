@@ -58,6 +58,7 @@ export const FormContainer = styled.div`
   width: 70%;
   margin: auto;
   max-width: 2000px;
+  position: relative;
 `;
 
 export const DeleteIcon = styled.img`

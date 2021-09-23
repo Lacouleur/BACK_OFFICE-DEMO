@@ -64,8 +64,6 @@ const scheduleModal = () => {
           The selected date must be at least 5 minutes later than the current
           date.
         </MessageSmall>
-        {console.log("isScheduled ==>", isScheduled)}
-        {console.log("DATE ==>", date)}
 
         <DateContainer>
           <DatePicker

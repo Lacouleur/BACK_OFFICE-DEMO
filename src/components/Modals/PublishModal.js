@@ -19,9 +19,6 @@ const PublishModal = ({ actionName, articleId }) => {
   const modal = useRef(null);
   const dispatch = useDispatch();
 
-  console.log("Action Name", actionName);
-  console.log("articleId", articleId);
-
   const manifestoState = useSelector(
     ({ manifestoReducer }) => manifestoReducer
   );

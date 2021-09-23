@@ -25,7 +25,6 @@ import {
 } from "../../styles/styledComponents/modal/Modal.sc";
 import { Selector } from "../../styles/styledComponents/global/Field.sc";
 import langList from "../../helper/langList";
-import colors from "../../styles/core/colors";
 
 const DuplicateModal = () => {
   const modal = useRef(null);

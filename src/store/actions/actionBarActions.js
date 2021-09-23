@@ -20,11 +20,6 @@ export const setPublishedAt = (payload) => ({
   payload,
 });
 
-export const setProgrammedAt = (payload) => ({
-  type: SET_PROGRAMMED,
-  payload,
-});
-
 export const setIsOpenPublishModal = (payload) => ({
   type: SET_IS_OPEN_PUBLISH_MODAL,
   payload,

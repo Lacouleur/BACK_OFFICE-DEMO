@@ -9,7 +9,6 @@ import {
 import { isValidToken } from "../../../services/client/refreshToken";
 import {
   setIsScheduled,
-  setProgrammedAt,
   setPublishedAt,
   setUpdatedAt,
   showErrorModal,
@@ -201,10 +200,6 @@ export function fetchContent(id) {
           dispatch(setUpdatedAt(response.data.updatedAt));
           dispatch(setPublishedAt(response.data.publishedAt));
           dispatch(setIsScheduled(response.data.publishScheduledAt || ""));
-          console.log(
-            "response.data.publishScheduledAt =>",
-            response.data.publishScheduledAt
-          );
         }
 
         return null;

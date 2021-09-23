@@ -151,6 +151,7 @@ export function duplicateArticle(articleId) {
       }
       return null;
     }
+    return null;
   };
 }
 

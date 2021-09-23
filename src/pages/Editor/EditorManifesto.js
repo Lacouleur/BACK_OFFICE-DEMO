@@ -51,7 +51,7 @@ const EditorManifesto = () => {
     ({ manifestoReducer}) => manifestoReducer
   );
   const actionBarState = useSelector(({ actionBarReducer }) => actionBarReducer);
- const { manifestoId, isManifesto } = manifestoState;
+ const { manifestoId} = manifestoState;
  const { isOpenCloseModal, aModuleIsOpen} = actionBarState;
 
   useEffect(() => {

@@ -4,19 +4,13 @@ import {
   postManifesto,
   updateManifesto,
 } from "../../../services/client/contentClient";
-import isValidToken from "../../../services/client/refreshToken";
-import { showErrorModal } from "../actionBarActions";
 import {
   contentLoaded,
   setErrorPosting,
   setErrorSpecial,
   setPosted,
 } from "../commonsActions";
-import {
-  setCategoriesList,
-  setErrorTitle,
-  setModified,
-} from "../mainInformationActions";
+import { setErrorTitle, setModified } from "../mainInformationActions";
 import {
   setManifestoId,
   setManifestolang,
@@ -31,6 +25,7 @@ import {
 } from "../../../helper/consoleStyles";
 import { deleteToken } from "../../../services/client/tokenStuff";
 import ErrorCaseClient from "../../../helper/ErrorCaseClient";
+import { isValidToken } from "../../../services/client/refreshToken";
 
 export function actualizeManifesto(manifestoId) {
   console.log("%cUPDATING MANIFESTO", `${consoleTitle}`, manifestoId);

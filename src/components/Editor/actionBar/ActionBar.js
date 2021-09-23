@@ -417,7 +417,7 @@ const ActionBar = () => {
               <PublishButton
                 disabled={!(articleId && !contentIsChanged)}
                 type="button"
-                onClick={(e) => {
+                onClick={() => {
                   if (articleId) {
                     if (
                       actionButtonContent === "PROGRAM" ||

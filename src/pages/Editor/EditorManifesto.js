@@ -69,8 +69,7 @@ const EditorManifesto = () => {
       <Form>
         <ActionBar />
         <FormContainer>
-          <HideOnDnd isManifesto />
-          {isUsedDndArea && <HideOnDnd isManifesto />}
+          {isUsedDndArea && <HideOnDnd />}
           {isOpenCloseModal?.value && <HideContent />}
           <TitleBox>
             <ManifestoTitle>MANIFESTO</ManifestoTitle>

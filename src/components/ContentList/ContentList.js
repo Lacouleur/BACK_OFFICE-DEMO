@@ -55,6 +55,7 @@ const ContentList = () => {
             classNamePrefix="select"
             options={langList}
             onChange={(lang) => {
+              console.log("lang", lang.value);
               history.push(`/create-manifesto/${lang.value}`);
             }}
           />

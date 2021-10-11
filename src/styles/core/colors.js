@@ -14,6 +14,7 @@ const colors = {
   deepBlue: "#2958E5",
   green: "#03DAC5",
   matBlack: "#1b1b1b",
+  orange: "#F79D00",
 };
 
 export default colors;

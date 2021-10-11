@@ -86,6 +86,8 @@ const ActionBar = () => {
     isOpenArchiveModal,
     isOpenScheduleModal,
     isScheduled,
+    publicationFailed,
+    publicationFailData,
   } = actionBarState;
 
   const { isChanged: seoChanged } = seoState;
@@ -307,7 +309,7 @@ const ActionBar = () => {
             </LastSavedText>
           )}
 
-          {isScheduled && (
+          {isScheduled && !publicationFailed && !publicationFailData && (
             <>
               <Separator />
               <ProgrammedBox>
@@ -317,16 +319,49 @@ const ActionBar = () => {
               </ProgrammedBox>
             </>
           )}
-          {publishedAt && status === "PUBLISHED" && (
+
+          {(publicationFailed || publicationFailData) && (
             <>
-              <Separator />
-              <StatusBox>
-                <ColorDot background={`${colors.green}`} />
-                <StatusText>Published</StatusText>
-                <StatusText>{`${publishedDate}`}</StatusText>
-              </StatusBox>
+              {publicationFailData?.retryAt && (
+                <>
+                  <Separator />
+                  <ProgrammedBox>
+                    <ColorDot background={`${colors.orange}`} />
+                    <ProgrammedText>{`Publish failed (count: ${publicationFailData.failCount})`}</ProgrammedText>
+                    <ProgrammedText>
+                      {`retry at : ${buildDate(
+                        new Date(publicationFailData.retryAt)
+                      )}`}
+                    </ProgrammedText>
+                  </ProgrammedBox>
+                </>
+              )}
+
+              {!publicationFailData?.retryAt && (
+                <>
+                  <Separator />
+                  <ProgrammedBox>
+                    <ColorDot background={`${colors.red}`} />
+                    <ProgrammedText>Publish failed</ProgrammedText>
+                  </ProgrammedBox>
+                </>
+              )}
             </>
           )}
+          {publishedAt &&
+            status === "PUBLISHED" &&
+            !publicationFailed &&
+            !publicationFailData &&
+            !isScheduled && (
+              <>
+                <Separator />
+                <StatusBox>
+                  <ColorDot background={`${colors.green}`} />
+                  <StatusText>Published</StatusText>
+                  <StatusText>{`${publishedDate}`}</StatusText>
+                </StatusBox>
+              </>
+            )}
         </StatusContainer>
         <ActionsContainer>
           <ActionIcon
@@ -440,8 +475,13 @@ const ActionBar = () => {
                 options={selectOptions}
                 onChange={(e) => {
                   if (e?.value !== "PROGRAM") {
-                    setActionButtonContent(e?.value);
-                    dispatch(setIsOpenPublishModal(true));
+                    if (e.value === "CANCEL") {
+                      setActionButtonContent(e?.value);
+                      dispatch(setIsOpenPublishModal(true));
+                    } else {
+                      setActionButtonContent(e?.value);
+                      dispatch(setIsOpenPublishModal(true));
+                    }
                   } else {
                     setActionButtonContent(e?.value);
                     dispatch(setIsOpenScheduleModal(true));

@@ -78,6 +78,7 @@ const ContentList = () => {
                 id={content._id}
                 status={content.state}
                 slug={content.slug}
+                publishScheduleFailed={content.publishScheduleFailed}
                 publishScheduledAt={content.publishScheduledAt}
                 publishedAt={content.publishedAt}
                 categoryLabel={content.category?.label}
@@ -87,6 +88,8 @@ const ContentList = () => {
                 updatedAt={content.updatedAt}
                 key={keyGenerator(content._id)}
                 modulesList={content.components}
+                retryAt={content?.publishScheduleFailData?.retryAt}
+                failCount={content?.publishScheduleFailData?.failCount}
               />
             );
           })}

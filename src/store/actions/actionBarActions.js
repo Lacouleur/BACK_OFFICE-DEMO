@@ -8,7 +8,19 @@ import {
   SET_IS_OPEN_SCHEDULE_MODAL,
   SET_IS_SCHEDULED,
   SET_A_MODULE_IS_OPEN,
+  SET_PUBLISH_SCHEDULE_FAIL_DATA,
+  SET_PUBLISH_SCHEDULE_FAILED,
 } from "../constants";
+
+export const setPublishScheduleFailData = (payload) => ({
+  type: SET_PUBLISH_SCHEDULE_FAIL_DATA,
+  payload,
+});
+
+export const setPublishScheduleFailed = (payload) => ({
+  type: SET_PUBLISH_SCHEDULE_FAILED,
+  payload,
+});
 
 export const setUpdatedAt = (payload) => ({
   type: SET_UPDATED_AT,

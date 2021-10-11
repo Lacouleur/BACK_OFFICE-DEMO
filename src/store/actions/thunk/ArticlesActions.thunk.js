@@ -10,6 +10,8 @@ import { isValidToken } from "../../../services/client/refreshToken";
 import {
   setIsScheduled,
   setPublishedAt,
+  setPublishScheduleFailed,
+  setPublishScheduleFailData,
   setUpdatedAt,
   showErrorModal,
 } from "../actionBarActions";
@@ -25,6 +27,7 @@ import {
   setErrorSlug,
   setErrorTitle,
   setModified,
+  setStatus,
 } from "../mainInformationActions";
 import { deleteToken } from "../../../services/client/tokenStuff";
 
@@ -187,6 +190,32 @@ export function checkAndSend(type = "save", articleId = null) {
   };
 }
 
+export function getStatus(id) {
+  console.log("%cFETCHING STATUS =>", `${consoleTitle}`, id);
+  return async (dispatch) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
+      try {
+        const response = await getContent(id);
+        console.log("RESPONSE", response);
+        if (response.status < 300 && response.status > 199) {
+          console.log(
+            "%cFetched Status =>",
+            `${consoleInfo}`,
+            response.data.state
+          );
+          dispatch(setStatus(response.data.state));
+        }
+        return null;
+      } catch (error) {
+        console.log("%cError =>", `${consoleError}`, error?.response?.data);
+        return null;
+      }
+    }
+    return null;
+  };
+}
+
 export function fetchContent(id) {
   console.log("%cFETCHING CONTENT =>", `${consoleTitle}`, id);
   return async (dispatch) => {
@@ -200,6 +229,13 @@ export function fetchContent(id) {
           dispatch(setUpdatedAt(response.data.updatedAt));
           dispatch(setPublishedAt(response.data.publishedAt));
           dispatch(setIsScheduled(response.data.publishScheduledAt || ""));
+          dispatch(setStatus(response.data.state));
+          dispatch(
+            setPublishScheduleFailed(response.data.publishScheduleFailed)
+          );
+          dispatch(
+            setPublishScheduleFailData(response.data.publishScheduleFailData)
+          );
         }
 
         return null;

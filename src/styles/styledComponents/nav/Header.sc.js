@@ -8,7 +8,7 @@ export const HeaderContainer = styled.div`
   background-color: ${colors.black};
   position: ${(props) => props.position || "absolute"};
   top: 0;
-  z-index: 100;
+  z-index: 200;
 `;
 
 export const DisconectButton = styled.button`
@@ -36,12 +36,29 @@ export const DisconectButton = styled.button`
   }
 `;
 
-export const BurgerMenu = styled.img`
+export const ProfileBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   position: absolute;
-  transform: translate(-50%, -50%);
+  right: 112px;
+  transform: translateY(-50%);
   top: 50%;
-  left: 0;
-  margin-left: 16px;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+export const Avatar = styled.img`
+  width: 32px;
+  height: 32px;
+  background-color: ${colors.lightGrey};
+  margin-right: 12px;
+  border-radius: 50%;
+`;
+
+export const ProfileName = styled.p`
+  text-transform: capitalize;
 `;
 
 export const MainLogo = styled.img`

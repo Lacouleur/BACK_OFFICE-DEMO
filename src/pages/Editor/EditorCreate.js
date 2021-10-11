@@ -13,6 +13,7 @@ import {
 } from "../../styles/styledComponents/editor/Sections.sc";
 import ActionBar from "../../components/Editor/actionBar/ActionBar";
 import { setIsManifesto } from "../../store/actions/manifestoActions";
+import { setIsAccessiblePanel } from "../../store/actions/userPanelActions";
 
 
 
@@ -30,6 +31,7 @@ const EditorCreate = () => {
     if (isPosted) {
       history.push(`/editor/${articleId}`)
     }
+    dispatch(setIsAccessiblePanel(false));
   }, [isPosted]);
 
   return (

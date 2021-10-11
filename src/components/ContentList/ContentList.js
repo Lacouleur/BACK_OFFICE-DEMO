@@ -17,6 +17,7 @@ import Pagination from "./Pagination";
 import keyGenerator from "../../helper/keyGenerator";
 import { fetchContentsList } from "../../store/actions/thunk/ArticlesActions.thunk";
 import { cleanContentState } from "../../store/actions/commonsActions";
+import { setIsAccessiblePanel } from "../../store/actions/userPanelActions";
 import langList from "../../helper/langList";
 import DuplicateModal from "../Modals/DuplicateModal";
 import ArchiveModal from "../Modals/ArchiveModal";
@@ -33,18 +34,21 @@ const ContentList = () => {
   const actionBarState = useSelector(
     ({ actionBarReducer }) => actionBarReducer
   );
+
   const { contentsList, isOpenDuplicateModal } = contentsListState;
   const { isOpenErrorModal, isOpenArchiveModal } = actionBarState;
 
   useEffect(() => {
     dispatch(fetchContentsList());
     dispatch(cleanContentState());
+    dispatch(setIsAccessiblePanel(true));
   }, []);
 
   return (
     <>
       {isOpenDuplicateModal.value && <DuplicateModal />}
       {isOpenArchiveModal && <ArchiveModal />}
+
       <ContentSectionBox>
         {isOpenErrorModal && <ErrorModal />}
         <TitleBox>
@@ -68,7 +72,6 @@ const ContentList = () => {
         </TitleBox>
         <ListBox>
           {contentsList.map((content, index) => {
-            /* content.publishScheduledAt = "2021-08-30T07:58:00.613Z"; */
             return (
               <Content
                 number={index}

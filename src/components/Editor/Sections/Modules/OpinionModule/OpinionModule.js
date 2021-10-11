@@ -260,8 +260,8 @@ const OpinionModule = ({
               <AnswerContainer key={answer.uuid}>
                 <Field
                   placeholder="Answer"
-                  maxlength="60"
-                  infos="Maximum 60 characters"
+                  maxlength="90"
+                  infos="Maximum 90 characters"
                   name="answer"
                   section="opinion"
                   moduleId={uuid}

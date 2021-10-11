@@ -38,6 +38,7 @@ import { ManifestoLang, ManifestoTitle } from "../../styles/styledComponents/glo
 import { setIsManifesto } from "../../store/actions/manifestoActions";
 import { onDragEnd } from "../../helper/Editor/dragAndDrop";
 import { HideOnDnd, ModulesBoardDnd } from "../../styles/styledComponents/editor/modules/Modules.sc";
+import { setIsAccessiblePanel } from "../../store/actions/userPanelActions";
 
 const EditorManifesto = () => {
   const dispatch = useDispatch();
@@ -59,6 +60,7 @@ const EditorManifesto = () => {
     if (!manifestoId) {
       dispatch(fetchManifesto(lang));
     }
+    dispatch(setIsAccessiblePanel(false));
 
   }, []);
 

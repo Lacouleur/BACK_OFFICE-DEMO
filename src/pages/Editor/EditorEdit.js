@@ -40,6 +40,7 @@ import HomeNavigation from "../../components/Editor/Sections/HomeNavigation";
 import OpinionModule from "../../components/Editor/Sections/Modules/OpinionModule/OpinionModule";
 import { HideOnDnd, ModulesBoardDnd } from "../../styles/styledComponents/editor/modules/Modules.sc";
 import { onDragEnd } from "../../helper/Editor/dragAndDrop";
+import { setIsAccessiblePanel } from "../../store/actions/userPanelActions";
 
 
 const Editor = () => {
@@ -58,6 +59,7 @@ const Editor = () => {
       dispatch(setIsManifesto(false))
       dispatch(fetchContent(articleId));
       dispatch(setArticleId(articleId));
+      dispatch(setIsAccessiblePanel(false));
   }, []);
 
 

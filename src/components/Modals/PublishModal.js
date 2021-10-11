@@ -7,6 +7,7 @@ import {
   cancelScheduledPublication,
   publishAction,
 } from "../../store/actions/thunk/ActionBarActions.thunk";
+import { getStatus } from "../../store/actions/thunk/ArticlesActions.thunk";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import {
   Message,
@@ -80,6 +81,7 @@ const PublishModal = ({ actionName, articleId }) => {
             onClick={() => {
               if (actionName === "CANCEL") {
                 dispatch(cancelScheduledPublication(articleId));
+                dispatch(getStatus(articleId));
                 dispatch(setIsOpenPublishModal(false));
               } else {
                 handlePublish(actionName === "UPDATE" ? "PUBLISH" : actionName);

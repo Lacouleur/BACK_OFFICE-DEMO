@@ -10,6 +10,8 @@ import {
   SET_IS_OPEN_SCHEDULE_MODAL,
   SET_IS_SCHEDULED,
   SET_A_MODULE_IS_OPEN,
+  SET_PUBLISH_SCHEDULE_FAIL_DATA,
+  SET_PUBLISH_SCHEDULE_FAILED,
 } from "../constants";
 
 import {} from "../actions/actionBarActions";
@@ -18,6 +20,8 @@ const initialState = {
   updatedAt: "",
   publishedAt: null,
   programmedAt: null,
+  publicationFailed: null,
+  publicationFailData: null,
   isOpenPublishModal: false,
   isOpenErrorModal: false,
   isOpenArchiveModal: false,
@@ -84,6 +88,20 @@ const actionBarReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         isScheduled: action.payload || "",
+      };
+    }
+
+    case SET_PUBLISH_SCHEDULE_FAILED: {
+      return {
+        ...oldState,
+        publicationFaile: action.payload || "",
+      };
+    }
+
+    case SET_PUBLISH_SCHEDULE_FAIL_DATA: {
+      return {
+        ...oldState,
+        publicationFailData: action.payload || null,
       };
     }
 

@@ -45,9 +45,12 @@ const Content = ({
   status,
   updatedAt,
   publishScheduledAt,
+  publishScheduleFailed,
   publishedAt,
   modified,
   modulesList,
+  retryAt,
+  failCount,
 }) => {
   const even = isEven(number);
   const updateDate = buildDate(new Date(updatedAt));
@@ -76,6 +79,9 @@ const Content = ({
         publishScheduledAt={publishScheduledAt}
         publishedAt={publishedAt}
         modified={modified}
+        publishScheduleFailed={publishScheduleFailed}
+        retryAt={retryAt}
+        failCount={failCount}
       />
 
       <IconActionBox>
@@ -154,12 +160,16 @@ Content.defaultProps = {
   categoryLabel: "",
   publishScheduledAt: undefined,
   publishedAt: undefined,
+  publishScheduleFailed: undefined,
+  retryAt: null,
+  failCount: null,
 };
 
 Content.propTypes = {
   number: PropTypes.number.isRequired,
   id: PropTypes.string.isRequired,
   categoryLabel: PropTypes.string,
+  publishScheduleFailed: PropTypes.bool,
   title: PropTypes.string.isRequired,
   lang: PropTypes.string.isRequired,
   updatedAt: PropTypes.string.isRequired,
@@ -169,6 +179,8 @@ Content.propTypes = {
   modified: PropTypes.bool.isRequired,
   slug: PropTypes.string.isRequired,
   modulesList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  retryAt: PropTypes.string,
+  failCount: PropTypes.number,
 };
 
 export default Content;

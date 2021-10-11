@@ -3,7 +3,11 @@ import React, { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import useClickOutside from "../../helper/cutomHooks/useClickOutside";
-import { setIsOpenScheduleModal } from "../../store/actions/actionBarActions";
+import {
+  setIsOpenScheduleModal,
+  setPublishScheduleFailData,
+  setPublishScheduleFailed,
+} from "../../store/actions/actionBarActions";
 import crossIcon from "../../styles/assets/icons/cross-white.svg";
 import clearIcon from "../../styles/assets/icons/cross-white-light.svg";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
@@ -33,6 +37,7 @@ const scheduleModal = () => {
   );
   const { articleId } = useParams();
   const actualDate = new Date();
+  const DatePlusFiveMinutes = new Date(actualDate.getTime() + 5 * 60000);
 
   useEffect(() => {
     modal.current.scrollIntoView({
@@ -47,10 +52,6 @@ const scheduleModal = () => {
   }
 
   useClickOutside(modal, onClickOutside);
-
-  /*   function (datee, minutes) {
-    return new Date(date.getTime() + 5 * 60000);
-  } */
 
   return (
     <ModalContainer height="200vh">
@@ -72,7 +73,7 @@ const scheduleModal = () => {
             disableClock
             calendarIcon={false}
             clearIcon={<DatePickerIcon src={clearIcon} />}
-            minDate={new Date(actualDate.getTime() + 5 * 60000)}
+            minDate={DatePlusFiveMinutes}
           />
         </DateContainer>
 
@@ -93,10 +94,12 @@ const scheduleModal = () => {
 
           <Button
             type="button"
-            disabled={!(date >= new Date(actualDate.getTime() + 5 * 60000))}
+            disabled={!(date >= DatePlusFiveMinutes)}
             onClick={() => {
-              if (date >= new Date(actualDate.getTime() + 5 * 60000)) {
+              if (date >= DatePlusFiveMinutes) {
                 dispatch(schedulePublication(articleId, date));
+                dispatch(setPublishScheduleFailed(null));
+                dispatch(setPublishScheduleFailData(null));
                 dispatch(setIsOpenScheduleModal(false));
               }
             }}

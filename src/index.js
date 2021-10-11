@@ -42,6 +42,7 @@ const rootComponent = (
           path="/manifesto/:lang"
           exact
           component={EditorManifesto}
+          replace
         />
         <PrivateRoute path="/editor/:articleId" exact component={EditorEdit} />
         <PrivateRoute

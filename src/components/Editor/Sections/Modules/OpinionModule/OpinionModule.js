@@ -100,7 +100,7 @@ const OpinionModule = ({
   }, [isNewModule]);
 
   useEffect(() => {
-    setAModuleIsOpen(isOpen);
+    dispatch(setAModuleIsOpen(isOpen));
   }, [isOpen]);
 
   function onClickOutside() {

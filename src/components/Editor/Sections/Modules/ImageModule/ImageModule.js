@@ -52,7 +52,7 @@ const ImageModule = ({
   }, [isChanged, imageUuid]);
 
   useEffect(() => {
-    setAModuleIsOpen(isOpen);
+    dispatch(setAModuleIsOpen(isOpen));
   }, [isOpen]);
 
   useEffect(() => {

@@ -49,11 +49,10 @@ const Editor = () => {
   const [isOpen, setIsOpen] = useState(false);
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
   const actionBarState = useSelector(({ actionBarReducer }) => actionBarReducer);
-  const [aModuleIsOpen, setAModuleIsOpen] =useState(false);
   const [isUsedDndArea, setIsUsedDnDArea] = useState(false)
 
   const { modulesList } = modulesState;
-  const { isOpenCloseModal } = actionBarState;
+  const { isOpenCloseModal, aModuleIsOpen } = actionBarState;
 
   useEffect(() => {
       dispatch(setIsManifesto(false))
@@ -124,7 +123,7 @@ const Editor = () => {
                             isChanged={module.isChanged}
                             isOpenCloseModal={module.isOpenCloseModal}
                             isNewModule={module.isNewModule}
-                            setAModuleIsOpen={setAModuleIsOpen}
+                 
                           />
                         </div>
                       )}}
@@ -162,7 +161,6 @@ const Editor = () => {
                           isChanged={module.isChanged}
                           isOpenCloseModal={module.isOpenCloseModal}
                           isNewModule={module.isNewModule}
-                          setAModuleIsOpen={setAModuleIsOpen}
                         />
                       </div>
                       )}}
@@ -204,7 +202,6 @@ const Editor = () => {
                           explanation={module.explanation}
                           answers={module.answers}
                           isVisible={module.isVisible}
-                          setAModuleIsOpen={setAModuleIsOpen}
                         />
                       </div>
                       )}}

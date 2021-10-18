@@ -43,6 +43,7 @@ export const SET_STATUS = "SET_STATUS";
 export const SET_MODIFIED = "SET_MODIFIED";
 export const ADD_LANG = "ADD_LANG";
 export const SET_COLOR_STYLE = "SET_COLOR_STYLE";
+export const SET_CAPTION = "SET_CAPTION";
 
 // MANIFESTO
 export const SET_IS_MANIFESTO = "IS_MANIFESTO";
@@ -94,4 +95,8 @@ export const SET_LAST_NAME = "SET_LAST_NAME";
 export const SET_FIRST_NAME = "SET_FIRST_NAME";
 export const SET_DISPLAYED_NAME = "SET_DISPLAYED_NAME";
 export const SET_QUOTE = "SET_QUOTE";
-export const SET_AVATAR = "SET_AVATAR";
+export const SET_EMAIL = "SET_EMAIL";
+export const SET_GENDER = "SET_GENDER";
+export const SET_PICTURE = "SET_PICTURE";
+export const SET_LOCALE = "SET_LOCALE";
+export const SET_USER_ID = "SET_USER_ID";

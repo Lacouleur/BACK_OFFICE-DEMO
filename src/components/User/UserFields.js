@@ -9,6 +9,7 @@ import {
 import {
   AvatarBox,
   AvatarField,
+  AvatarImg,
   UploaderIcon,
 } from "../../styles/styledComponents/user/user.sc";
 import DlIcon from "../../styles/assets/icons/download-violet.svg";
@@ -19,6 +20,9 @@ import {
   setPosition,
   setQuote,
 } from "../../store/actions/userPanelActions";
+import { showErrorModal } from "../../store/actions/actionBarActions";
+import { sizeOrFormatError } from "../../helper/errorMessages";
+import { saveAvatar } from "../../store/actions/thunk/UserAction.thunk";
 
 const UserFields = ({ name, type, placeholder, max }) => {
   // Next functions concern File Uploader fields
@@ -32,35 +36,23 @@ const UserFields = ({ name, type, placeholder, max }) => {
     ({ userPanelReducer }) => userPanelReducer
   );
 
-  const { isPanelOpen } = userPanelState;
-
-  /*   const initialState = {
-    isAccessible: false,
-    isPanelOpen: false,
-    position: "",
-    lastName: "",
-    fisrtName: "",
-    displayedName: "",
-    quote: "",
-  }; */
+  const { picture } = userPanelState;
 
   const handleChange = (event) => {
-    const file = event.target.files[0];
+    const image = event.target.files[0];
     if (
-      file &&
-      file.size < 500000 &&
-      (file.type === "image/png" ||
-        file.type === "image/jpg" ||
-        file.type === "image/gif" ||
-        file.type === "image/jpeg")
+      image &&
+      image.size < 500000 &&
+      (image.type === "image/png" ||
+        image.type === "image/jpg" ||
+        image.type === "image/gif" ||
+        image.type === "image/jpeg")
     ) {
-      console.log(file);
-      /*     dispatch(saveImage(name, file, moduleId));
-    setFileTitle(file.name); */
+      dispatch(saveAvatar(image));
     } else {
-      console.log("fail upload");
-      /*     dispatch(showErrorModal({ value: true, message: sizeOrFormatError(file) }));
-    setFileTitle(""); */
+      dispatch(
+        showErrorModal({ value: true, message: sizeOrFormatError(image) })
+      );
     }
   };
 
@@ -123,6 +115,7 @@ const UserFields = ({ name, type, placeholder, max }) => {
                 onChange={handleChange}
                 style={{ display: "none" }}
               />
+              <AvatarImg src={picture.urls.thumbnail?.url} />
               <UploaderIcon src={DlIcon} />
             </AvatarBox>
           </FieldBox>

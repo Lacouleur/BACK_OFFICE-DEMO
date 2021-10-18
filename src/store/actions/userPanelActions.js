@@ -6,7 +6,11 @@ import {
   SET_FIRST_NAME,
   SET_DISPLAYED_NAME,
   SET_QUOTE,
-  SET_AVATAR,
+  SET_EMAIL,
+  SET_GENDER,
+  SET_PICTURE,
+  SET_LOCALE,
+  SET_USER_ID,
 } from "../constants";
 
 export const setIsAccessiblePanel = (payload) => ({
@@ -44,7 +48,27 @@ export const setQuote = (payload) => ({
   payload,
 });
 
-export const setAvatar = (payload) => ({
-  type: SET_AVATAR,
+export const setEmail = (payload) => ({
+  type: SET_EMAIL,
+  payload,
+});
+
+export const setGender = (payload) => ({
+  type: SET_GENDER,
+  payload,
+});
+
+export const setPicture = (payload) => ({
+  type: SET_PICTURE,
+  payload,
+});
+
+export const setLocale = (payload) => ({
+  type: SET_LOCALE,
+  payload,
+});
+
+export const setUserId = (payload) => ({
+  type: SET_USER_ID,
   payload,
 });

@@ -26,7 +26,7 @@ const Header = ({ position }) => {
     ({ userPanelReducer }) => userPanelReducer
   );
 
-  const { isAccessible, isPanelOpen } = userPanelState;
+  const { isAccessible, isPanelOpen, picture } = userPanelState;
 
   return (
     <HeaderContainer position={position}>
@@ -39,7 +39,7 @@ const Header = ({ position }) => {
                   dispatch(setPanelOpen(!isPanelOpen));
                 }}
               >
-                <Avatar />
+                <Avatar src={picture.urls.thumbnail.url} />
                 <ProfileName>My profile</ProfileName>
               </ProfileBox>
             )}

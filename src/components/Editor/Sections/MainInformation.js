@@ -43,6 +43,7 @@ const MainInformation = () => {
     slug,
     lang,
     colorStyle,
+    caption,
     category,
     regexSlugError,
     slugError,
@@ -188,6 +189,13 @@ const MainInformation = () => {
 
               <VisualiseColorStyle color={colorStyle?.toString() || "1"} />
             </ColorFieldBox>
+
+            <Field
+              placeholder="Caption"
+              name="caption"
+              section="mainInformation"
+              edit={caption || ""}
+            />
           </>
         )}
       </SectionBox>

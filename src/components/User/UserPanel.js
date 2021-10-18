@@ -13,9 +13,23 @@ import {
 } from "../../styles/styledComponents/user/user.sc";
 import arrow from "../../styles/assets/icons/arrow-left.svg";
 import UserFields from "./UserFields";
-import { setPanelOpen } from "../../store/actions/userPanelActions";
+import {
+  setDisplayedName,
+  setEmail,
+  setFirstName,
+  setGender,
+  setLastName,
+  setLocale,
+  setPanelOpen,
+  setPicture,
+  setPosition,
+  setQuote,
+  setUserId,
+} from "../../store/actions/userPanelActions";
 import useClickOutside from "../../helper/cutomHooks/useClickOutside";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
+import { getToken, parseJwt } from "../../services/client/tokenStuff";
+import { updateUser } from "../../store/actions/thunk/UserAction.thunk";
 
 /* import PropTypes from "prop-types"; */
 
@@ -57,13 +71,31 @@ const UserPanel = ({ userPanel }) => {
   );
   const [isLoading, setIsLoading] = useState(true);
 
-  const { isPanelOpen, isAccessiblePanel } = userPanelState;
+  const { isPanelOpen } = userPanelState;
+  const [userInfo] = useState(parseJwt(getToken()));
 
   useEffect(() => {
-    if (isAccessiblePanel) {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1000);
+    // Besoin de retravailler l'animation du paneau.
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
+
+  useEffect(() => {
+    console.log("userInfo", userInfo);
+
+    if (userInfo) {
+      dispatch(setUserId(userInfo.sub || ""));
+      dispatch(setPosition(userInfo.position || ""));
+      dispatch(setFirstName(userInfo.given_name || ""));
+      dispatch(setLastName(userInfo.family_name || ""));
+      dispatch(setQuote(userInfo.quote || ""));
+      dispatch(setDisplayedName(userInfo.displayed_name || ""));
+      dispatch(setEmail(userInfo.email || ""));
+      dispatch(setGender(userInfo.gender || ""));
+      dispatch(setPicture(userInfo.picture || ""));
+      dispatch(setLocale(userInfo.locale || ""));
     }
   }, []);
 
@@ -119,6 +151,7 @@ const UserPanel = ({ userPanel }) => {
             marginTop: "38px",
           }}
           type="button"
+          onClick={() => dispatch(updateUser(userInfo.sub))}
         >
           save
         </Button>

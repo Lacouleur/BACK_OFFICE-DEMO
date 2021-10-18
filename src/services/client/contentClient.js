@@ -2,12 +2,6 @@
 import axiosConfig from "../config/axiosConfig";
 import { getToken } from "./tokenStuff";
 
-/* const headers = {
-    headers: {
-      Authorization: `Bearer ${getToken()}`,
-    },
-  }
- */
 export const sendAuth = (data) => {
   return axiosConfig({
     method: "post",
@@ -63,6 +57,17 @@ export function postContent(values, lang) {
   return axiosConfig({
     method: "post",
     url: `/contents${string}`,
+    data: values,
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}
+
+export function postUser(values, userId) {
+  return axiosConfig({
+    method: "put",
+    url: `/users/${userId}`,
     data: values,
     headers: {
       Authorization: `Bearer ${getToken()}`,

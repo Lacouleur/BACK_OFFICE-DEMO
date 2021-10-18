@@ -55,6 +55,7 @@ export function checkAndSend(type = "save", articleId = null) {
         category,
         lang,
         colorStyle,
+        caption,
       } = mainInformationReducer;
       const { description, title: seoTitle } = seoReducer;
 
@@ -113,6 +114,7 @@ export function checkAndSend(type = "save", articleId = null) {
                 source: "FTV-internal",
               }
             : undefined,
+          partnership: caption,
         };
       } else {
         values = {

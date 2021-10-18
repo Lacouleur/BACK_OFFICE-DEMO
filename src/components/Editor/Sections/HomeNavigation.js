@@ -34,7 +34,6 @@ const HomeNavigation = () => {
   const { articleId } = useParams();
   const [isHomeImage, setIsHomeImage] = useState(false);
   const [isNavImage, setIsNavImage] = useState(false);
-  /*   const [isNavigationImage, setIsNavigationImage] = useState(true); */
   const [homeImgTitle, setHomeImgTitle] = useState(undefined);
   const [navImgTitle, setNavImgTitle] = useState(undefined);
 

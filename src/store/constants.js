@@ -100,3 +100,4 @@ export const SET_GENDER = "SET_GENDER";
 export const SET_PICTURE = "SET_PICTURE";
 export const SET_LOCALE = "SET_LOCALE";
 export const SET_USER_ID = "SET_USER_ID";
+export const SET_USER_IS_CHANGED = "SET_USER_IS_CHANGED";

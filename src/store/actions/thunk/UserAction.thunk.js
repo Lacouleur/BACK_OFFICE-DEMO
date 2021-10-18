@@ -8,7 +8,7 @@ import {
   refreshMyToken,
 } from "../../../services/client/refreshToken";
 import { showErrorModal } from "../actionBarActions";
-import { setPicture } from "../userPanelActions";
+import { setPicture, setUserIsChanged } from "../userPanelActions";
 
 export function updateUser(userId) {
   console.log("%cUPDATING USER", `${consoleTitle}`);
@@ -48,6 +48,7 @@ export function updateUser(userId) {
         if (response.status < 300 && response.status > 199) {
           console.log(`%cUser infos updated=>`, `${consoleSucces}`, response);
           await refreshMyToken(dispatch);
+          dispatch(setUserIsChanged(false));
         }
       } catch (error) {
         ErrorCaseClient(dispatch, error?.response?.data);
@@ -78,6 +79,7 @@ export function saveAvatar(image) {
               urls: response.data.urls,
             })
           );
+          dispatch(setUserIsChanged(true));
         }
       } catch (error) {
         if (error?.response.status === 400) {

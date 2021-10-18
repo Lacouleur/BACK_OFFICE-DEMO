@@ -11,6 +11,7 @@ import {
   SET_PICTURE,
   SET_LOCALE,
   SET_USER_ID,
+  SET_USER_IS_CHANGED,
 } from "../constants";
 
 export const setIsAccessiblePanel = (payload) => ({
@@ -70,5 +71,10 @@ export const setLocale = (payload) => ({
 
 export const setUserId = (payload) => ({
   type: SET_USER_ID,
+  payload,
+});
+
+export const setUserIsChanged = (payload) => ({
+  type: SET_USER_IS_CHANGED,
   payload,
 });

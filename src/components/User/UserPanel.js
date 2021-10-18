@@ -25,6 +25,7 @@ import {
   setPosition,
   setQuote,
   setUserId,
+  setUserIsChanged,
 } from "../../store/actions/userPanelActions";
 import useClickOutside from "../../helper/cutomHooks/useClickOutside";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
@@ -71,7 +72,7 @@ const UserPanel = ({ userPanel }) => {
   );
   const [isLoading, setIsLoading] = useState(true);
 
-  const { isPanelOpen } = userPanelState;
+  const { isPanelOpen, userIsChanged } = userPanelState;
   const [userInfo] = useState(parseJwt(getToken()));
 
   useEffect(() => {
@@ -96,6 +97,7 @@ const UserPanel = ({ userPanel }) => {
       dispatch(setGender(userInfo.gender || ""));
       dispatch(setPicture(userInfo.picture || ""));
       dispatch(setLocale(userInfo.locale || ""));
+      dispatch(setUserIsChanged(false));
     }
   }, []);
 
@@ -152,6 +154,7 @@ const UserPanel = ({ userPanel }) => {
           }}
           type="button"
           onClick={() => dispatch(updateUser(userInfo.sub))}
+          disabled={!userIsChanged}
         >
           save
         </Button>

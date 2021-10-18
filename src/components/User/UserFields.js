@@ -24,6 +24,55 @@ import { showErrorModal } from "../../store/actions/actionBarActions";
 import { sizeOrFormatError } from "../../helper/errorMessages";
 import { saveAvatar } from "../../store/actions/thunk/UserAction.thunk";
 
+function watchChageForm(value, name, dispatch) {
+  switch (name) {
+    case "position": {
+      dispatch(setPosition(value));
+      return;
+    }
+
+    case "lastName": {
+      dispatch(setLastName(value));
+      break;
+    }
+
+    case "firstName": {
+      dispatch(setFirstName(value));
+      break;
+    }
+
+    case "displayedName": {
+      dispatch(setDisplayedName(value));
+      break;
+    }
+
+    case "quote": {
+      dispatch(setQuote(value));
+      break;
+    }
+
+    default:
+  }
+}
+
+const handleChange = (event, dispatch) => {
+  const image = event.target.files[0];
+  if (
+    image &&
+    image.size < 500000 &&
+    (image.type === "image/png" ||
+      image.type === "image/jpg" ||
+      image.type === "image/gif" ||
+      image.type === "image/jpeg")
+  ) {
+    dispatch(saveAvatar(image));
+  } else {
+    dispatch(
+      showErrorModal({ value: true, message: sizeOrFormatError(image) })
+    );
+  }
+};
+
 const UserFields = ({ name, type, placeholder, max }) => {
   // Next functions concern File Uploader fields
   const hiddenFileInput = React.useRef(null);
@@ -37,24 +86,6 @@ const UserFields = ({ name, type, placeholder, max }) => {
   );
 
   const { picture } = userPanelState;
-
-  const handleChange = (event) => {
-    const image = event.target.files[0];
-    if (
-      image &&
-      image.size < 500000 &&
-      (image.type === "image/png" ||
-        image.type === "image/jpg" ||
-        image.type === "image/gif" ||
-        image.type === "image/jpeg")
-    ) {
-      dispatch(saveAvatar(image));
-    } else {
-      dispatch(
-        showErrorModal({ value: true, message: sizeOrFormatError(image) })
-      );
-    }
-  };
 
   switch (type) {
     case "text": {
@@ -72,26 +103,7 @@ const UserFields = ({ name, type, placeholder, max }) => {
               maxLength={max || ""}
               defaultValue={userPanelState[name]}
               onInput={(e) => {
-                const { value } = e.target;
-                switch (name) {
-                  case "position":
-                    return dispatch(setPosition(value));
-
-                  case "lastName":
-                    return dispatch(setLastName(value));
-
-                  case "firstName":
-                    return dispatch(setFirstName(value));
-
-                  case "displayedName":
-                    return dispatch(setDisplayedName(value));
-
-                  case "quote":
-                    return dispatch(setQuote(value));
-
-                  default:
-                    return null;
-                }
+                watchChageForm(e.target.value, name, dispatch);
               }}
             />
           </FieldBox>
@@ -112,7 +124,7 @@ const UserFields = ({ name, type, placeholder, max }) => {
               <input
                 type="file"
                 ref={hiddenFileInput}
-                onChange={handleChange}
+                onChange={(e) => handleChange(e, dispatch)}
                 style={{ display: "none" }}
               />
               <AvatarImg src={picture.urls.thumbnail?.url} />

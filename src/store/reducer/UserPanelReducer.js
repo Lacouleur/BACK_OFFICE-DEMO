@@ -11,6 +11,7 @@ import {
   SET_LOCALE,
   SET_GENDER,
   SET_USER_ID,
+  SET_USER_IS_CHANGED,
 } from "../constants";
 
 const initialState = {
@@ -19,7 +20,7 @@ const initialState = {
   userId: "",
   position: "",
   lastName: "",
-  fisrtName: "",
+  firstName: "",
   displayedName: "",
   quote: "",
   email: "",
@@ -31,6 +32,7 @@ const initialState = {
     urls: {},
   },
   locale: "",
+  userIsChanged: false,
 };
 
 const userPanelReducer = (state = initialState, action = {}) => {
@@ -62,6 +64,7 @@ const userPanelReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         position: action.payload,
+        userIsChanged: true,
       };
     }
 
@@ -69,6 +72,7 @@ const userPanelReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         lastName: action.payload,
+        userIsChanged: true,
       };
     }
 
@@ -76,6 +80,7 @@ const userPanelReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         firstName: action.payload,
+        userIsChanged: true,
       };
     }
 
@@ -83,6 +88,7 @@ const userPanelReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         email: action.payload,
+        userIsChanged: true,
       };
     }
 
@@ -90,6 +96,7 @@ const userPanelReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         gender: action.payload,
+        userIsChanged: true,
       };
     }
 
@@ -97,6 +104,7 @@ const userPanelReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         picture: action.payload,
+        userIsChanged: true,
       };
     }
 
@@ -104,6 +112,7 @@ const userPanelReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         locale: action.payload,
+        userIsChanged: true,
       };
     }
 
@@ -111,6 +120,7 @@ const userPanelReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         displayedName: action.payload,
+        userIsChanged: true,
       };
     }
 
@@ -118,6 +128,14 @@ const userPanelReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         quote: action.payload,
+        userIsChanged: true,
+      };
+    }
+
+    case SET_USER_IS_CHANGED: {
+      return {
+        ...oldState,
+        userIsChanged: action.payload,
       };
     }
 

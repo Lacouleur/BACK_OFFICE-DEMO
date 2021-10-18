@@ -9,6 +9,7 @@ import {
   SET_MODIFIED,
   ADD_LANG,
   SET_COLOR_STYLE,
+  SET_CAPTION,
 } from "../constants";
 
 export const addTitle = (payload) => ({
@@ -58,5 +59,10 @@ export const addLang = (payload) => ({
 
 export const setColorStyle = (payload) => ({
   type: SET_COLOR_STYLE,
+  payload,
+});
+
+export const setCaption = (payload) => ({
+  type: SET_CAPTION,
   payload,
 });

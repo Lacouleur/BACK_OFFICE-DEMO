@@ -17,23 +17,27 @@ export const UserGlobalcontainer = styled.div`
 
 const OpenPanelMixin = css`
   animation-name: ${expandPanel};
-  animation-duration: 0.5s;
+  animation-duration: 0.3s;
   animation-fill-mode: forwards;
 `;
 
 const ClosePanelMixin = css`
   animation-name: ${foldPanel};
-  animation-duration: 0.5s;
+  animation-duration: 0.3s;
   animation-fill-mode: forwards;
 `;
 
 const LoadingPanelMixin = css`
-  animation-duration: 0s !important;
+  animation-name: ${foldPanel};
+  animation-duration: 0s;
+  width: 0;
 `;
 
 export const PanelContainer = styled.div`
   ${(props) => (props?.isPanelOpen ? OpenPanelMixin : ClosePanelMixin)};
-  ${(props) => (props?.isLoading ? LoadingPanelMixin : "")};
+  animation-duration: ${(props) => {
+    return props?.isLoading ? LoadingPanelMixin : "";
+  }};
   width: 0;
   height: ${window.innerHeight}px;
   background-color: ${colors.mediumGrey};
@@ -96,6 +100,20 @@ export const PanelSectionTitle = styled.h3`
 `;
 
 export const AvatarField = styled.input`
+  width: 81px;
+  height: 81px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  &:hover {
+    transform: scale(102%);
+  }
+`;
+
+export const AvatarImg = styled.img`
+  position: absolute;
+  left: 0;
+  border: none;
   width: 81px;
   height: 81px;
   background-color: ${colors.lightGrey};

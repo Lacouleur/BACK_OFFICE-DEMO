@@ -8,6 +8,7 @@ import {
   addCategory,
   addLang,
   setColorStyle,
+  setCaption,
 } from "../../store/actions/mainInformationActions";
 import { addSeoDescription, addSeoTitle } from "../../store/actions/seoActions";
 import {
@@ -350,11 +351,14 @@ const Field = ({
               if (name === "slug" && section === "mainInformation") {
                 dispatch(addSlug(e.target.value));
               }
-              if (name === "title" && section === "homeNavigation") {
-                dispatch(addHomeTitle(e.target.value));
+              if (name === "caption" && section === "mainInformation") {
+                dispatch(setCaption(e.target.value));
               }
               if (name === "title" && section === "seo") {
                 dispatch(addSeoTitle(e.target.value));
+              }
+              if (name === "title" && section === "homeNavigation") {
+                dispatch(addHomeTitle(e.target.value));
               }
               if (name === "altImage" && section === "imageModule") {
                 dispatch(setAltImage({ id: moduleId, value: e.target.value }));
@@ -370,6 +374,7 @@ const Field = ({
                   setOpinionQuestion({ id: moduleId, value: e.target.value })
                 );
               }
+
               if (name === "answer" && section === "opinion") {
                 dispatch(
                   setOpinionTextAnswer({

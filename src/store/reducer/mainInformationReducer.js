@@ -16,6 +16,7 @@ import {
   ADD_LANG,
   CLEAN_CONTENT_STATE,
   SET_COLOR_STYLE,
+  SET_CAPTION,
 } from "../constants";
 
 const initialState = {
@@ -24,6 +25,7 @@ const initialState = {
   slug: "",
   lang: "",
   colorStyle: "",
+  caption: "",
   status: "",
   modified: null,
   categoriesList: [],
@@ -76,6 +78,14 @@ const mainInformationReducer = (state = initialState, action = {}) => {
 
     case ADD_LANG: {
       return { ...oldState, lang: action.payload, isChanged: true };
+    }
+
+    case SET_CAPTION: {
+      return {
+        ...oldState,
+        caption: action.payload,
+        isChanged: true,
+      };
     }
 
     case SET_COLOR_STYLE: {
@@ -161,6 +171,7 @@ const mainInformationReducer = (state = initialState, action = {}) => {
         status: action.payload?.state ?? "",
         modified: action.payload?.modified ?? null,
         colorStyle: action.payload?.theme ?? null,
+        caption: action.payload?.partnership ?? null,
       };
     }
 

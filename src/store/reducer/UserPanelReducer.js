@@ -6,17 +6,31 @@ import {
   SET_FIRST_NAME,
   SET_DISPLAYED_NAME,
   SET_QUOTE,
-  SET_AVATAR,
+  SET_EMAIL,
+  SET_PICTURE,
+  SET_LOCALE,
+  SET_GENDER,
+  SET_USER_ID,
 } from "../constants";
 
 const initialState = {
   isAccessible: false,
   isPanelOpen: false,
+  userId: "",
   position: "",
   lastName: "",
   fisrtName: "",
   displayedName: "",
   quote: "",
+  email: "",
+  gender: "",
+  picture: {
+    alt: "",
+    source: "",
+    uuid: "",
+    urls: {},
+  },
+  locale: "",
 };
 
 const userPanelReducer = (state = initialState, action = {}) => {
@@ -34,6 +48,13 @@ const userPanelReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         isPanelOpen: action.payload,
+      };
+    }
+
+    case SET_USER_ID: {
+      return {
+        ...oldState,
+        userId: action.payload,
       };
     }
 
@@ -55,6 +76,34 @@ const userPanelReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         firstName: action.payload,
+      };
+    }
+
+    case SET_EMAIL: {
+      return {
+        ...oldState,
+        email: action.payload,
+      };
+    }
+
+    case SET_GENDER: {
+      return {
+        ...oldState,
+        gender: action.payload,
+      };
+    }
+
+    case SET_PICTURE: {
+      return {
+        ...oldState,
+        picture: action.payload,
+      };
+    }
+
+    case SET_LOCALE: {
+      return {
+        ...oldState,
+        locale: action.payload,
       };
     }
 

@@ -84,7 +84,7 @@ const TextModule = ({
   }
 
   useEffect(() => {
-    setAModuleIsOpen(isOpen);
+    dispatch(setAModuleIsOpen(isOpen));
   }, [isOpen]);
 
   useEffect(() => {

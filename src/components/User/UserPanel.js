@@ -57,12 +57,14 @@ const UserPanel = ({ userPanel }) => {
   );
   const [isLoading, setIsLoading] = useState(true);
 
-  const { isPanelOpen } = userPanelState;
+  const { isPanelOpen, isAccessiblePanel } = userPanelState;
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+    if (isAccessiblePanel) {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
+    }
   }, []);
 
   function onClickOutside() {

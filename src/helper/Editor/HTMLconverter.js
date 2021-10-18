@@ -27,8 +27,11 @@ function HTMLconverter(editorState, mode = "to", data = "") {
     entityToHTML: (entity) => {
       if (entity.type === "LINK") {
         // This object structure is important to avoid this text éditor to replace ' by html entities in links. If you modify this, please check links in editor before. ex: I'm a link.
+
         return {
-          start: `<a href="${entity.data.url}" target="${entity.data.targetOption}" rel="noreferrer">`,
+          start: `<a href="${entity.data.url.replace(/\/$/, "")}" target="${
+            entity.data.targetOption
+          }" rel="noreferrer">`,
           end: "</a>",
         };
       }
@@ -45,8 +48,11 @@ function HTMLconverter(editorState, mode = "to", data = "") {
     },
     htmlToEntity: (nodeName, node, createEntity) => {
       if (nodeName === "a") {
-        return createEntity("LINK", "UNMUTABLE", {
-          url: `${node?.href}`,
+        const href =
+          node.pathname === "/" ? node.href.replace(/\/$/, "") : node.href;
+
+        return createEntity("LINK", "IMMUTABLE", {
+          url: `${href}`,
           targetOption: node.target,
         });
       }

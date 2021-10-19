@@ -127,7 +127,11 @@ const UserFields = ({ name, type, placeholder, max }) => {
                 onChange={(e) => handleChange(e, dispatch)}
                 style={{ display: "none" }}
               />
-              <AvatarImg src={picture.urls.thumbnail?.url} />
+              {picture?.urls?.thumbnail?.url && (
+                <>
+                  <AvatarImg src={picture?.urls?.thumbnail?.url} />
+                </>
+              )}
               <UploaderIcon src={DlIcon} />
             </AvatarBox>
           </FieldBox>

@@ -114,6 +114,7 @@ export const AvatarImg = styled.img`
   position: absolute;
   left: 0;
   border: none;
+  border-width: 0px;
   width: 81px;
   height: 81px;
   background-color: ${colors.lightGrey};

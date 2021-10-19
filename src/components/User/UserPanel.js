@@ -156,7 +156,7 @@ const UserPanel = ({ userPanel }) => {
           onClick={() => dispatch(updateUser(userInfo.sub))}
           disabled={!userIsChanged}
         >
-          save
+          {userIsChanged ? "save" : "saved"}
         </Button>
       </ButtonBox>
     </PanelContainer>

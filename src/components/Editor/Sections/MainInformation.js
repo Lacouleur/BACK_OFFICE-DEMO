@@ -190,14 +190,16 @@ const MainInformation = () => {
               <VisualiseColorStyle color={colorStyle?.toString() || "1"} />
             </ColorFieldBox>
 
-            <Field
-              placeholder="Partner Caption"
-              name="caption"
-              section="mainInformation"
-              edit={caption || ""}
-              infos="Maximum 100 characters"
-              maxlength="100"
-            />
+            {!isManifesto && (
+              <Field
+                placeholder="Partner Caption"
+                name="caption"
+                section="mainInformation"
+                edit={caption || ""}
+                infos="Maximum 100 characters"
+                maxlength="100"
+              />
+            )}
           </>
         )}
       </SectionBox>

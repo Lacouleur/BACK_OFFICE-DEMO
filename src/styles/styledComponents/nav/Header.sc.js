@@ -40,8 +40,11 @@ export const ProfileBox = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   position: absolute;
-  right: 112px;
+  right: 56px;
+  height: 100%;
+  width: calc(288px - 56px);
   transform: translateY(-50%);
   top: 50%;
   &:hover {

@@ -209,7 +209,7 @@ const ActionBar = () => {
       if (status === "DRAFT" || status === "UNPUBLISHED") {
         setSelectOptions([{ value: "PUBLISH", label: "PUBLISH" }]);
         setActionButtonContent("PROGRAM");
-        setIsDeleteButton(false);
+        setIsDeleteButton(true);
         return;
       }
       if (status === "SCHEDULED") {

@@ -39,7 +39,7 @@ const Header = ({ position }) => {
                   dispatch(setPanelOpen(!isPanelOpen));
                 }}
               >
-                <Avatar src={picture.urls.thumbnail.url} />
+                <Avatar src={picture?.urls?.thumbnail?.url || undefined} />
                 <ProfileName>My profile</ProfileName>
               </ProfileBox>
             )}

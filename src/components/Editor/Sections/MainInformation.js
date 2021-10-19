@@ -191,10 +191,12 @@ const MainInformation = () => {
             </ColorFieldBox>
 
             <Field
-              placeholder="Caption"
+              placeholder="Partner Caption"
               name="caption"
               section="mainInformation"
               edit={caption || ""}
+              infos="Maximum 100 characters"
+              maxlength="100"
             />
           </>
         )}

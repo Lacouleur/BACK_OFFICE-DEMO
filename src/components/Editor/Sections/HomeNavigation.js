@@ -18,6 +18,7 @@ import {
 import { checkAndSend } from "../../../store/actions/thunk/ArticlesActions.thunk";
 import { actualizeManifesto } from "../../../store/actions/thunk/ManifestoActions.thunk";
 import useClickOutside from "../../../helper/cutomHooks/useClickOutside";
+import { getTitleAndSplit } from "../../../helper/homeNavigationHelper";
 
 const HomeNavigation = () => {
   const homeNavigationState = useSelector(
@@ -50,18 +51,6 @@ const HomeNavigation = () => {
   } = homeNavigationState;
 
   const { manifestoId, isManifesto } = manifestoState;
-
-  function getTitleAndSplit() {
-    if (homeImgUuid) {
-      setHomeImgTitle(homeImgUuid.split("/")[1]);
-      setIsHomeImage(true);
-    }
-
-    if (navImgUuid) {
-      setNavImgTitle(navImgUuid.split("/")[1]);
-      setIsNavImage(true);
-    }
-  }
 
   function onClickOutside() {
     setIsOpen(false);
@@ -96,7 +85,14 @@ const HomeNavigation = () => {
   }, [articleId, manifestoId]);
 
   useEffect(() => {
-    getTitleAndSplit();
+    getTitleAndSplit(
+      homeImgUuid,
+      setHomeImgTitle,
+      setIsHomeImage,
+      navImgUuid,
+      setNavImgTitle,
+      setIsNavImage
+    );
   }, [homeNavIsChanged, homeImgUuid, navImgUuid]);
 
   return (

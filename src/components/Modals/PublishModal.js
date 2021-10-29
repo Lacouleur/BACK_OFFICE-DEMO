@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React, { useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useClickOutside from "../../helper/cutomHooks/useClickOutside";
+import { handleButton } from "../../helper/modalsHelper";
 import { setIsOpenPublishModal } from "../../store/actions/actionBarActions";
 import {
   cancelScheduledPublication,
@@ -23,16 +24,6 @@ const PublishModal = ({ actionName, articleId }) => {
   const manifestoState = useSelector(
     ({ manifestoReducer }) => manifestoReducer
   );
-  const { isManifesto, manifestoId } = manifestoState;
-
-  function handlePublish() {
-    if (!isManifesto) {
-      dispatch(publishAction(articleId, actionName));
-    }
-    if (isManifesto) {
-      dispatch(publishAction(manifestoId, actionName));
-    }
-  }
 
   useEffect(() => {
     modal.current.scrollIntoView({
@@ -79,14 +70,7 @@ const PublishModal = ({ actionName, articleId }) => {
           <Button
             type="button"
             onClick={() => {
-              if (actionName === "CANCEL") {
-                dispatch(cancelScheduledPublication(articleId));
-                dispatch(getStatus(articleId));
-                dispatch(setIsOpenPublishModal(false));
-              } else {
-                handlePublish(actionName === "UPDATE" ? "PUBLISH" : actionName);
-                dispatch(setIsOpenPublishModal(false));
-              }
+              handleButton(dispatch, actionName, articleId, manifestoState);
             }}
           >
             {actionName}

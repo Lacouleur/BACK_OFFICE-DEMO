@@ -14,7 +14,6 @@ import {
   SectionBox,
   SectionTitle,
 } from "../../../styles/styledComponents/editor/Sections.sc";
-import { checkAndSend } from "../../../store/actions/thunk/ArticlesActions.thunk";
 import {
   saveManifesto,
   actualizeManifesto,
@@ -25,6 +24,11 @@ import {
   VisualiseColorStyle,
   PreviewColorStyle,
 } from "../../../styles/styledComponents/global/Field.sc";
+import {
+  checkContentAndSend,
+  checkIfManifestoAndSetup,
+  slugMessage,
+} from "../../../helper/mainInformationHelper";
 
 const MainInformation = () => {
   const mainInformationState = useSelector(
@@ -49,63 +53,24 @@ const MainInformation = () => {
     slugError,
     titleError,
     postingError,
-    isChanged,
   } = mainInformationState;
 
-  const { isManifesto, manifestoId, manifestoLang } = manifestoState;
-
-  function slugMessage() {
-    let message = "";
-    if (postingError) {
-      message = "Slug already exist";
-    } else if (regexSlugError) {
-      message = "INVALID ! Only characters, numbers and hyphens.";
-    } else {
-      message = "Only characters, numbers and hyphens.";
-    }
-    return message;
-  }
+  const { isManifesto, manifestoId } = manifestoState;
 
   useEffect(() => {
-    if (!isManifesto) {
-      if (articleId) {
-        setIsOpen(false);
-      } else {
-        setIsOpen(true);
-      }
-    }
-
-    if (isManifesto) {
-      if (manifestoId) {
-        setIsOpen(false);
-      } else {
-        setIsOpen(true);
-      }
-    }
+    checkIfManifestoAndSetup(isManifesto, manifestoId, articleId, setIsOpen);
   }, [articleId, manifestoId]);
 
   function onClickOutside() {
-    if (isManifesto) {
-      if (title && !titleError) {
-        setIsOpen(false);
-        if (isChanged && !manifestoId) {
-          dispatch(saveManifesto(manifestoLang));
-        } else if (isChanged && manifestoId) {
-          dispatch(actualizeManifesto(manifestoId));
-        }
-      }
-    }
-
-    if (!isManifesto) {
-      if (title && slug && !slugError && !regexSlugError && !postingError) {
-        setIsOpen(false);
-      }
-      if (isChanged && articleId) {
-        dispatch(checkAndSend("update", articleId));
-      } else if (isChanged && !articleId) {
-        dispatch(checkAndSend());
-      }
-    }
+    checkContentAndSend(
+      dispatch,
+      mainInformationState,
+      manifestoState,
+      setIsOpen,
+      saveManifesto,
+      actualizeManifesto,
+      articleId
+    );
   }
   useClickOutside(mainInformationRef, onClickOutside);
 
@@ -153,7 +118,9 @@ const MainInformation = () => {
                 <Field
                   placeholder="slug URL"
                   infos={
-                    slugError ? "Content need a slug." : `${slugMessage()}`
+                    slugError
+                      ? "Content need a slug."
+                      : `${slugMessage(mainInformationState)}`
                   }
                   name="slug"
                   section="mainInformation"

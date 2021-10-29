@@ -3,10 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import useClickOutside from "../../helper/cutomHooks/useClickOutside";
 import { setIsOpenDuplicateModal } from "../../store/actions/contentListActions";
-import {
-  duplicateArticle,
-  translateArticle,
-} from "../../store/actions/thunk/ActionBarActions.thunk";
+
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import {
   DuplicateTitle,
@@ -25,6 +22,12 @@ import {
 } from "../../styles/styledComponents/modal/Modal.sc";
 import { Selector } from "../../styles/styledComponents/global/Field.sc";
 import langList from "../../helper/langList";
+import {
+  convertLang,
+  handleCheck,
+  handleDuplication,
+  handleTranslation,
+} from "../../helper/modalsHelper";
 
 const DuplicateModal = () => {
   const modal = useRef(null);
@@ -42,14 +45,6 @@ const DuplicateModal = () => {
 
   const { id, lang } = contentsListState.isOpenDuplicateModal;
 
-  function handleDuplication() {
-    dispatch(duplicateArticle(id));
-  }
-
-  function handleTranslation() {
-    dispatch(translateArticle(id, selectedLang.value, history));
-  }
-
   useEffect(() => {
     modal.current.scrollIntoView({
       behavior: "smooth",
@@ -57,19 +52,7 @@ const DuplicateModal = () => {
       inline: "nearest",
     });
 
-    if (lang) {
-      if (lang === "german") {
-        setSelectedLang({
-          label: "French",
-          value: "fr",
-        });
-      } else {
-        setSelectedLang({
-          label: "German",
-          value: "de",
-        });
-      }
-    }
+    convertLang(lang, setSelectedLang);
   }, []);
 
   function onClickOutside() {
@@ -163,15 +146,14 @@ const DuplicateModal = () => {
             type="button"
             disabled={!!(!selectedLang && tradChecked)}
             onClick={() => {
-              if (simpleChecked) {
-                handleDuplication();
-                dispatch(setIsOpenDuplicateModal({ value: false, id: "" }));
-              }
-
-              if (tradChecked && selectedLang) {
-                handleTranslation();
-                dispatch(setIsOpenDuplicateModal({ value: false, id: "" }));
-              }
+              handleCheck(
+                dispatch,
+                simpleChecked,
+                id,
+                tradChecked,
+                selectedLang,
+                history
+              );
             }}
           >
             {tradChecked ? "TRANSLATE" : "DUPLICATE"}

@@ -35,6 +35,17 @@ import statIconGreen from "../../styles/assets/icons/opinion-green.svg";
 import statIconGrey from "../../styles/assets/icons/opinion-grey.svg";
 import { setIsOpenDuplicateModal } from "../../store/actions/contentListActions";
 
+function harmonizeLang(lang, slug) {
+  let language = lang.slice(0, 2);
+  if (language === "ge") {
+    language = "de";
+  }
+  window.open(
+    `${PREVIEW_URL}/${language.slice(0, 2)}/content/${slug}`,
+    "_blank"
+  );
+}
+
 const Content = ({
   number,
   id,
@@ -85,19 +96,7 @@ const Content = ({
       />
 
       <IconActionBox>
-        <IconAction
-          src={eye}
-          onClick={() => {
-            let language = lang.slice(0, 2);
-            if (language === "ge") {
-              language = "de";
-            }
-            window.open(
-              `${PREVIEW_URL}/${language.slice(0, 2)}/content/${slug}`,
-              "_blank"
-            );
-          }}
-        />
+        <IconAction src={eye} onClick={() => harmonizeLang(lang, slug)} />
         {!isOpinionModules ? (
           <IconAction src={statIconGrey} />
         ) : (

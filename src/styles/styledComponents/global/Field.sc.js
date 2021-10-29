@@ -154,6 +154,73 @@ export const Selector = styled(ReactSelect)`
   }
 `;
 
+export const SelectorTag = styled(ReactSelect)`
+  ${(props) =>
+    props.isDisabled ? unactiveSelectorMixin : activeSelectorMixin};
+  & .select {
+    &__indicator &__dropdown-indicator {
+      border-color: none;
+    }
+
+    &__multi-value {
+      background-color: ${colors.darkGrey};
+      border-radius: 20px;
+      border: 1px solid ${colors.paleViolet};
+
+      &__label {
+        color: ${colors.white};
+      }
+    }
+
+    &__control {
+      height: 100%;
+      background-color: ${colors.darkGrey};
+      border: none;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+
+      &--is-focused {
+        border: none;
+        box-shadow: none;
+      }
+    }
+
+    &__menu {
+      height: 56px;
+      margin-top: 0;
+      background-color: ${colors.darkGrey};
+      border: none;
+      box-shadow: none;
+      border-radius: 0;
+      z-index: 101;
+    }
+
+    &__option {
+      background-color: ${colors.darkGrey};
+      color: ${(props) => props.color || colors.white};
+    }
+
+    &__option {
+      &--is-focused {
+        background-color: ${colors.paleViolet};
+      }
+    }
+
+    &__value {
+      &-container {
+        padding-left: 20px;
+      }
+    }
+
+    &__clear-indicator {
+      color: ${colors.paleVioletTransp};
+      &:hover {
+        color: ${colors.paleViolet};
+      }
+    }
+  }
+`;
+
 export const TextArea = styled(TextareaAutosize)`
   -webkit-appearance: none;
   width: 100%;

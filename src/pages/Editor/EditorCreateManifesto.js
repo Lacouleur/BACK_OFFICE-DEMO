@@ -30,21 +30,18 @@ const EditorCreateManifesto = () => {
   const {manifestoId, manifestoLang } = manifestoState;
 
   useEffect(() => { 
-
     dispatch(setIsManifesto(true))
     dispatch(setManifestolang(lang))
 
     if(!manifestoId) {
       dispatch(fetchManifesto(lang));
     }
-
      }, []);
 
   useEffect(() => { 
     if (manifestoId) {
       history.replace(`/manifesto/${lang}`)
     }
-
    }, [manifestoId, manifestoLang]);
 
 

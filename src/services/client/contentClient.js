@@ -26,6 +26,14 @@ export function getContent(id) {
   });
 }
 
+export function getUsers() {
+  return axiosConfig.get(`/users`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}
+
 export function getManifesto(lang) {
   return axiosConfig.get(`/manifest?lang=${lang}`, {
     headers: {

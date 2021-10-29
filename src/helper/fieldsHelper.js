@@ -129,6 +129,36 @@ export function onEdit(
   }
 }
 
+export function initAuthorsSelector(
+  edit,
+  setSelectedAuthors,
+  selectedAuthors,
+  authorsList
+) {
+  if (selectedAuthors.length === 0) {
+    const buildAuthorList = [];
+    authorsList.map((author) => {
+      edit.map((authorId) => {
+        if (authorId === author.value) {
+          buildAuthorList.push(author);
+        }
+        return null;
+      });
+      setSelectedAuthors(buildAuthorList);
+      return null;
+    });
+  }
+}
+
+export function dispatchAuthors(selectedAuthors) {
+  const arr = [];
+  selectedAuthors.map((author) => {
+    arr.push(author.value);
+    return null;
+  });
+  return arr;
+}
+
 export function handleChange(event, dispatch, setFileTitle, name, moduleId) {
   const file = event.target.files[0];
   if (
@@ -172,10 +202,22 @@ export function valueSelector(
   }
 }
 
-export function optionSelector(name, categoriesList) {
+export function createAutorsList(users) {
+  const authorList = [];
+  users.map((user) => {
+    authorList.push({
+      value: user._id,
+      label: user.displayed_name || user.name,
+    });
+    return null;
+  });
+  return authorList;
+}
+
+export function optionSelector(name, list) {
   switch (name) {
     case "category":
-      return categoriesList;
+      return list;
 
     case "lang":
       return langList;
@@ -185,6 +227,9 @@ export function optionSelector(name, categoriesList) {
 
     case "colorStyle":
       return colorStyleList;
+
+    case "authors":
+      return list;
 
     default:
       return null;

@@ -13,65 +13,8 @@ import {
   UploaderIcon,
 } from "../../styles/styledComponents/user/user.sc";
 import DlIcon from "../../styles/assets/icons/download-violet.svg";
-import {
-  setDisplayedName,
-  setFirstName,
-  setLastName,
-  setPosition,
-  setQuote,
-} from "../../store/actions/userPanelActions";
-import { showErrorModal } from "../../store/actions/actionBarActions";
-import { sizeOrFormatError } from "../../helper/errorMessages";
-import { saveAvatar } from "../../store/actions/thunk/UserAction.thunk";
-
-function watchChageForm(value, name, dispatch) {
-  switch (name) {
-    case "position": {
-      dispatch(setPosition(value));
-      return;
-    }
-
-    case "lastName": {
-      dispatch(setLastName(value));
-      break;
-    }
-
-    case "firstName": {
-      dispatch(setFirstName(value));
-      break;
-    }
-
-    case "displayedName": {
-      dispatch(setDisplayedName(value));
-      break;
-    }
-
-    case "quote": {
-      dispatch(setQuote(value));
-      break;
-    }
-
-    default:
-  }
-}
-
-const handleChange = (event, dispatch) => {
-  const image = event.target.files[0];
-  if (
-    image &&
-    image.size < 500000 &&
-    (image.type === "image/png" ||
-      image.type === "image/jpg" ||
-      image.type === "image/gif" ||
-      image.type === "image/jpeg")
-  ) {
-    dispatch(saveAvatar(image));
-  } else {
-    dispatch(
-      showErrorModal({ value: true, message: sizeOrFormatError(image) })
-    );
-  }
-};
+import { watchChangeForm } from "../../helper/userHelper";
+import { handleChange } from "../../helper/fieldsHelper";
 
 const UserFields = ({ name, type, placeholder, max }) => {
   // Next functions concern File Uploader fields
@@ -103,7 +46,7 @@ const UserFields = ({ name, type, placeholder, max }) => {
               maxLength={max || ""}
               defaultValue={userPanelState[name]}
               onInput={(e) => {
-                watchChageForm(e.target.value, name, dispatch);
+                watchChangeForm(e.target.value, name, dispatch);
               }}
             />
           </FieldBox>

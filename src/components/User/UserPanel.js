@@ -13,57 +13,12 @@ import {
 } from "../../styles/styledComponents/user/user.sc";
 import arrow from "../../styles/assets/icons/arrow-left.svg";
 import UserFields from "./UserFields";
-import {
-  setDisplayedName,
-  setEmail,
-  setFirstName,
-  setGender,
-  setLastName,
-  setLocale,
-  setPanelOpen,
-  setPicture,
-  setPosition,
-  setQuote,
-  setUserId,
-  setUserIsChanged,
-} from "../../store/actions/userPanelActions";
 import useClickOutside from "../../helper/cutomHooks/useClickOutside";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import { getToken, parseJwt } from "../../services/client/tokenStuff";
 import { updateUser } from "../../store/actions/thunk/UserAction.thunk";
-
-/* import PropTypes from "prop-types"; */
-
-const fieldsList = [
-  { name: "position", placeholder: "Position", type: "text", area: "identity" },
-  {
-    name: "lastName",
-    placeholder: "Last Name",
-    type: "text",
-    area: "identity",
-  },
-  {
-    name: "firstName",
-    placeholder: "First Name",
-    type: "text",
-    area: "identity",
-  },
-  { name: "avatar", placeholder: "", type: "image", area: "avatar" },
-  {
-    name: "displayedName",
-    placeholder: "Displayed name",
-    type: "text",
-    area: "avatar",
-    max: 30,
-  },
-  {
-    name: "quote",
-    placeholder: "Quote",
-    type: "text",
-    area: "avatar",
-    max: 50,
-  },
-];
+import { dispatchUserInfo, fieldsList } from "../../helper/userHelper";
+import { setPanelOpen } from "../../store/actions/userPanelActions";
 
 const UserPanel = ({ userPanel }) => {
   const dispatch = useDispatch();
@@ -76,29 +31,13 @@ const UserPanel = ({ userPanel }) => {
   const [userInfo] = useState(parseJwt(getToken()));
 
   useEffect(() => {
-    // Besoin de retravailler l'animation du paneau.
-
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
   }, []);
 
   useEffect(() => {
-    console.log("userInfo", userInfo);
-
-    if (userInfo) {
-      dispatch(setUserId(userInfo.sub || ""));
-      dispatch(setPosition(userInfo.position || ""));
-      dispatch(setFirstName(userInfo.given_name || ""));
-      dispatch(setLastName(userInfo.family_name || ""));
-      dispatch(setQuote(userInfo.quote || ""));
-      dispatch(setDisplayedName(userInfo.displayed_name || ""));
-      dispatch(setEmail(userInfo.email || ""));
-      dispatch(setGender(userInfo.gender || ""));
-      dispatch(setPicture(userInfo.picture || ""));
-      dispatch(setLocale(userInfo.locale || ""));
-      dispatch(setUserIsChanged(false));
-    }
+    dispatchUserInfo(dispatch, userInfo);
   }, []);
 
   function onClickOutside() {

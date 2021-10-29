@@ -46,7 +46,14 @@ import {
   Tooltip,
   TooltipText,
 } from "../../../styles/styledComponents/contentList/Content.sc";
-import { watchOpinionModules } from "../../../helper/actionBarHelper";
+import {
+  actionsSelectorButton,
+  FieldsErrorWatcher,
+  ModifiedModulesWatcher,
+  setButtonContent,
+  timeWatcher,
+  watchOpinionModules,
+} from "../../../helper/actionBarHelper";
 import ScheduleModal from "../../Modals/ScheduleModal";
 import { setStatus } from "../../../store/actions/mainInformationActions";
 
@@ -100,7 +107,6 @@ const ActionBar = () => {
     postingError,
     isChanged: MainInformationChanged,
     articleId,
-    modified,
     status,
     lang,
   } = MainInformationState;
@@ -124,124 +130,40 @@ const ActionBar = () => {
 
   const opinionLink = React.useRef(null);
 
-  function ModifiedModulesWatcher() {
-    const modifiedModules = [];
-    modulesList.map((module) => {
-      if (module.isChanged) {
-        modifiedModules.push(module);
-        return null;
-      }
-      return null;
-    });
-
-    if (
-      seoChanged ||
-      MainInformationChanged ||
-      homeNavIsChanged ||
-      modifiedModules.length > 0
-    ) {
-      setContentIsChanged(true);
-    } else {
-      setContentIsChanged(false);
-    }
-  }
-
-  function FieldsErrorWatcher() {
-    if (!isManifesto) {
-      if (
-        titleError ||
-        slugError ||
-        regexSlugError ||
-        postingError ||
-        !slug ||
-        !title
-      ) {
-        setIsArticleError(true);
-      } else {
-        setIsArticleError(false);
-      }
-    }
-
-    if (isManifesto) {
-      if (titleError || !title) {
-        setIsArticleError(true);
-      } else {
-        setIsArticleError(false);
-      }
-    }
-  }
-
-  function timeWatcher() {
-    const createUpdateDate = new Date(updatedAt);
-    setUpdateDate(buildDate(createUpdateDate));
-    if (isScheduled) {
-      const createProgrammedDate = new Date(isScheduled);
-      setProgrammedDate(buildDate(createProgrammedDate));
-      dispatch(setStatus("SCHEDULED"));
-      setSelectOptions([
-        { value: "PUBLISH", label: "PUBLISH" },
-        { value: "CANCEL", label: "CANCEL PUBLICATION" },
-      ]);
-    }
-    if (publishedAt) {
-      const createPublishedDate = new Date(publishedAt);
-      setPublishedDate(buildDate(createPublishedDate));
-    }
-  }
-
-  function setButtonContent() {
-    if (!isManifesto) {
-      if (status === "PUBLISHED" && modified) {
-        setActionButtonContent("PROGRAM UPDATE");
-        setSelectOptions([
-          { value: "UNPUBLISH", label: "UNPUBLISH" },
-          { value: "UPDATE", label: "UPDATE" },
-        ]);
-        setIsDeleteButton(false);
-        return;
-      }
-      if (status === "PUBLISHED" && !modified) {
-        setSelectOptions([]);
-        setActionButtonContent("UNPUBLISH");
-        setIsDeleteButton(false);
-        return;
-      }
-      if (status === "DRAFT" || status === "UNPUBLISHED") {
-        setSelectOptions([{ value: "PUBLISH", label: "PUBLISH" }]);
-        setActionButtonContent("PROGRAM");
-        setIsDeleteButton(true);
-        return;
-      }
-      if (status === "SCHEDULED") {
-        setActionButtonContent("PROGRAM UPDATE");
-        setSelectOptions([{ value: "CANCEL", label: "CANCEL PUBLICATION" }]);
-        setIsDeleteButton(false);
-        return;
-      }
-      setActionButtonContent("PROGRAM");
-      setIsDeleteButton(true);
-    }
-
-    if (isManifesto) {
-      setActionButtonContent(manifestoId ? "UPDATE" : "PUBLISH");
-      setIsDeleteButton(false);
-    }
-  }
-
   useEffect(() => {
-    ModifiedModulesWatcher();
+    ModifiedModulesWatcher(
+      modulesList,
+      seoChanged,
+      MainInformationChanged,
+      homeNavIsChanged,
+      setContentIsChanged
+    );
   }, [seoChanged, MainInformationChanged, modulesState, homeNavIsChanged]);
 
   useEffect(() => {
-    FieldsErrorWatcher();
+    FieldsErrorWatcher(isManifesto, MainInformationState, setIsArticleError);
   }, [titleError, slugError, regexSlugError, postingError, title, slug]);
 
   useEffect(() => {
-    timeWatcher();
+    timeWatcher(
+      dispatch,
+      actionBarState,
+      setProgrammedDate,
+      setUpdateDate,
+      setStatus,
+      setSelectOptions,
+      setPublishedDate
+    );
   }, [updatedAt, isScheduled, publishedAt]);
 
   useEffect(() => {
-    setButtonContent();
+    setButtonContent(
+      MainInformationState,
+      setActionButtonContent,
+      setSelectOptions,
+      setIsDeleteButton,
+      manifestoState
+    );
   }, [MainInformationState]);
 
   useEffect(() => {
@@ -263,7 +185,13 @@ const ActionBar = () => {
 
   useEffect(() => {
     if (isOpenPublishModal === false) {
-      setButtonContent();
+      setButtonContent(
+        MainInformationState,
+        setActionButtonContent,
+        setSelectOptions,
+        setIsDeleteButton,
+        manifestoState
+      );
     }
   }, [isOpenPublishModal]);
 
@@ -474,18 +402,13 @@ const ActionBar = () => {
                 classNamePrefix="select"
                 options={selectOptions}
                 onChange={(e) => {
-                  if (e?.value !== "PROGRAM") {
-                    if (e.value === "CANCEL") {
-                      setActionButtonContent(e?.value);
-                      dispatch(setIsOpenPublishModal(true));
-                    } else {
-                      setActionButtonContent(e?.value);
-                      dispatch(setIsOpenPublishModal(true));
-                    }
-                  } else {
-                    setActionButtonContent(e?.value);
-                    dispatch(setIsOpenScheduleModal(true));
-                  }
+                  actionsSelectorButton(
+                    e,
+                    dispatch,
+                    setActionButtonContent,
+                    setIsOpenPublishModal,
+                    setIsOpenScheduleModal
+                  );
                 }}
               />
             )}

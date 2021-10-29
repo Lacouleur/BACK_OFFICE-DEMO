@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import useClickOutside from "../../helper/cutomHooks/useClickOutside";
+import { setErrorsList } from "../../helper/modalsHelper";
 import { showErrorModal } from "../../store/actions/actionBarActions";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import {
@@ -22,16 +23,8 @@ const ErrorModal = () => {
 
   const { errorMessage } = ActionBarState;
 
-  function setErrorsList() {
-    if (Array.isArray(errorMessage)) {
-      setMessages(errorMessage);
-    } else {
-      setMessages([{ message: errorMessage }]);
-    }
-  }
-
   useEffect(() => {
-    setErrorsList();
+    setMessages(setErrorsList(errorMessage));
     modal.current.scrollIntoView({
       behavior: "smooth",
       block: "center",

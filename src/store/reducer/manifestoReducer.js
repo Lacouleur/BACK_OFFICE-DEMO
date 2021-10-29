@@ -9,7 +9,7 @@ import {
 
 const initialState = {
   manifestoId: "",
-  isManifesto: "",
+  isManifesto: false,
   manifestoLang: "",
   isPublishedManifesto: false,
   isModifiedManifesto: false,

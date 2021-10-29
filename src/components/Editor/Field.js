@@ -2,15 +2,8 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addTitle,
-  addSlug,
-  addCategory,
-  addLang,
-  setColorStyle,
-  setCaption,
-} from "../../store/actions/mainInformationActions";
-import { addSeoDescription, addSeoTitle } from "../../store/actions/seoActions";
+
+import { addSeoDescription } from "../../store/actions/seoActions";
 import {
   FieldStyle,
   Selector,
@@ -26,27 +19,21 @@ import colors from "../../styles/core/colors";
 import exclamationIcon from "../../styles/assets/icons/exclamationGrey.svg";
 import exclamationVioletIcon from "../../styles/assets/icons/exclamation.svg";
 import { fetchCategoriesList } from "../../store/actions/thunk/ArticlesActions.thunk";
-import { saveImage } from "../../store/actions/thunk/ModulesActions.thunk";
 import {
   Tooltip,
   TooltipText,
 } from "../../styles/styledComponents/contentList/Content.sc";
-import { showErrorModal } from "../../store/actions/actionBarActions";
-/* import convertBytes from "../../helper/convertBytes"; */
-import { sizeOrFormatError } from "../../helper/errorMessages";
+
+import { setOpinionExplain } from "../../store/actions/moduleActions";
+
 import {
-  setAltImage,
-  setOpinionExplain,
-  setOpinionQuestion,
-  setOpinionTextAnswer,
-} from "../../store/actions/moduleActions";
-import {
-  setReadingTime,
-  addHomeTitle,
-  setHomeImageAlt,
-  setNavImageAlt,
-} from "../../store/actions/homeNavigationActions";
-import langList from "../../helper/langList";
+  dispatchFields,
+  dispatchSelected,
+  handleChange,
+  onEdit,
+  optionSelector,
+  valueSelector,
+} from "../../helper/fieldsHelper";
 
 const Field = ({
   type,
@@ -68,56 +55,6 @@ const Field = ({
   const [selectedColorStyle, setSelectedColorStyle] = useState();
   const [fileTitle, setFileTitle] = useState("");
 
-  const readingTimeList = [
-    {
-      label: "1 min",
-      value: 1,
-    },
-    {
-      label: "2 min",
-      value: 2,
-    },
-    {
-      label: "3 min",
-      value: 3,
-    },
-    {
-      label: "5 min",
-      value: 5,
-    },
-    {
-      label: "10 min",
-      value: 10,
-    },
-    {
-      label: "15 min",
-      value: 15,
-    },
-    {
-      label: "20 min",
-      value: 20,
-    },
-    {
-      label: "25 min",
-      value: 25,
-    },
-    {
-      label: "30 min",
-      value: 30,
-    },
-  ];
-
-  const colorStyleList = [
-    {
-      label: "Blue",
-      value: "1",
-    },
-    {
-      label: "Yellow",
-      value: "2",
-    },
-  ];
-
   const MainInformationState = useSelector(
     ({ mainInformationReducer }) => mainInformationReducer
   );
@@ -125,51 +62,6 @@ const Field = ({
   const { categoriesList, status } = MainInformationState;
 
   // Next functions concern File Select fields
-
-  function onEdit() {
-    if (edit) {
-      setFileTitle(edit);
-    }
-
-    if (categoriesList && edit) {
-      categoriesList.map((option) => {
-        if (edit === option.value) {
-          setEditCategory(option);
-        }
-        return null;
-      });
-    }
-
-    if (!selectedLang) {
-      langList.map((option) => {
-        if (edit === option.value) {
-          setSelectedLang(option);
-          return null;
-        }
-        return null;
-      });
-    }
-
-    if (!selectedReadTime) {
-      readingTimeList.map((option) => {
-        if (parseInt(edit, 10) === option.value) {
-          setSelectedReadTime(option);
-          return null;
-        }
-        return null;
-      });
-    }
-
-    if (!selectedColorStyle) {
-      colorStyleList.map((option) => {
-        if (edit === option.value) {
-          setSelectedColorStyle(option);
-          return null;
-        }
-        return null;
-      });
-    }
-  }
 
   useEffect(() => {
     if (
@@ -181,71 +73,24 @@ const Field = ({
   }, []);
 
   useEffect(() => {
-    onEdit();
+    onEdit(
+      edit,
+      categoriesList,
+      setFileTitle,
+      setEditCategory,
+      selectedLang,
+      setSelectedLang,
+      selectedReadTime,
+      setSelectedReadTime,
+      selectedColorStyle,
+      setSelectedColorStyle
+    );
   }, [edit, categoriesList]);
 
   // Next functions concern File Uploader fields
   const hiddenFileInput = React.useRef(null);
-  const handleClick = () => {
+  function handleClick() {
     hiddenFileInput.current.click();
-  };
-
-  const handleChange = (event) => {
-    const file = event.target.files[0];
-    if (
-      file &&
-      file.size < 500000 &&
-      (file.type === "image/png" ||
-        file.type === "image/jpg" ||
-        file.type === "image/gif" ||
-        file.type === "image/jpeg")
-    ) {
-      dispatch(saveImage(name, file, moduleId));
-      setFileTitle(file.name);
-    } else {
-      dispatch(
-        showErrorModal({ value: true, message: sizeOrFormatError(file) })
-      );
-      setFileTitle("");
-    }
-  };
-
-  function valueSelector() {
-    switch (name) {
-      case "category":
-        return editCategory;
-
-      case "lang":
-        return selectedLang;
-
-      case "readTime":
-        return selectedReadTime;
-
-      case "colorStyle":
-        return selectedColorStyle;
-
-      default:
-        return null;
-    }
-  }
-
-  function optionSelector() {
-    switch (name) {
-      case "category":
-        return categoriesList;
-
-      case "lang":
-        return langList;
-
-      case "readTime":
-        return readingTimeList;
-
-      case "colorStyle":
-        return colorStyleList;
-
-      default:
-        return null;
-    }
   }
 
   return (
@@ -254,33 +99,27 @@ const Field = ({
         <FieldBox>
           <Selector
             isDisabled={name === "lang" && !(status === "DRAFT" || !status)}
-            value={valueSelector(name)}
-            options={optionSelector(name)}
+            value={valueSelector(
+              name,
+              editCategory,
+              selectedLang,
+              selectedReadTime,
+              selectedColorStyle
+            )}
+            options={optionSelector(name, categoriesList)}
             classNamePrefix="select"
             placeholder={name}
             isClearable={!(name === "lang" || name === "colorStyle")}
-            onChange={(e) => {
-              if (e?.value) {
-                if (name === "category") {
-                  setEditCategory(e);
-                  dispatch(addCategory(e.value));
-                }
-                if (name === "lang") {
-                  setSelectedLang(e);
-                  dispatch(addLang(e.value));
-                }
-                if (name === "readTime") {
-                  setSelectedReadTime(e);
-                  dispatch(setReadingTime(e.value));
-                }
-                if (name === "colorStyle") {
-                  setSelectedColorStyle(e);
-                  dispatch(setColorStyle(e.value));
-                }
-              } else if (name === "category") {
-                setEditCategory("");
-                dispatch(addCategory(""));
-              }
+            onChange={(event) => {
+              dispatchSelected(
+                event,
+                dispatch,
+                name,
+                setEditCategory,
+                setSelectedLang,
+                setSelectedReadTime,
+                setSelectedColorStyle
+              );
             }}
           />
           {name === "lang" && !(status === "DRAFT" || !status) && (
@@ -331,7 +170,9 @@ const Field = ({
           <input
             type="file"
             ref={hiddenFileInput}
-            onChange={handleChange}
+            onChange={(event) =>
+              handleChange(event, dispatch, setFileTitle, name, moduleId)
+            }
             style={{ display: "none" }}
           />
           <FieldButton>UPLOAD</FieldButton>
@@ -345,45 +186,14 @@ const Field = ({
             maxLength={maxlength}
             disabled={name === "slug" && !(status === "DRAFT" || !status)}
             onInput={(e) => {
-              if (name === "title" && section === "mainInformation") {
-                dispatch(addTitle(e.target.value));
-              }
-              if (name === "slug" && section === "mainInformation") {
-                dispatch(addSlug(e.target.value));
-              }
-              if (name === "caption" && section === "mainInformation") {
-                dispatch(setCaption(e.target.value));
-              }
-              if (name === "title" && section === "seo") {
-                dispatch(addSeoTitle(e.target.value));
-              }
-              if (name === "title" && section === "homeNavigation") {
-                dispatch(addHomeTitle(e.target.value));
-              }
-              if (name === "altImage" && section === "imageModule") {
-                dispatch(setAltImage({ id: moduleId, value: e.target.value }));
-              }
-              if (name === "altHomeImage" && section === "homeNavigation") {
-                dispatch(setHomeImageAlt(e.target.value));
-              }
-              if (name === "altNavImage" && section === "homeNavigation") {
-                dispatch(setNavImageAlt(e.target.value));
-              }
-              if (name === "question" && section === "opinion") {
-                dispatch(
-                  setOpinionQuestion({ id: moduleId, value: e.target.value })
-                );
-              }
-
-              if (name === "answer" && section === "opinion") {
-                dispatch(
-                  setOpinionTextAnswer({
-                    moduleId,
-                    answerId,
-                    value: e.target.value,
-                  })
-                );
-              }
+              dispatchFields(
+                name,
+                section,
+                dispatch,
+                e.target.value,
+                moduleId,
+                answerId
+              );
             }}
             defaultValue={edit ? `${edit}` : ""}
             styles={

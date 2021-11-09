@@ -44,6 +44,8 @@ export const SET_MODIFIED = "SET_MODIFIED";
 export const ADD_LANG = "ADD_LANG";
 export const SET_COLOR_STYLE = "SET_COLOR_STYLE";
 export const SET_CAPTION = "SET_CAPTION";
+export const SET_USERS = "SET_USERS";
+export const SET_AUTHORS = "SET_AUTHORS";
 
 // MANIFESTO
 export const SET_IS_MANIFESTO = "IS_MANIFESTO";

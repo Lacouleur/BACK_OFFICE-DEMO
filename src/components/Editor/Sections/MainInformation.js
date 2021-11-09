@@ -29,6 +29,7 @@ import {
   checkIfManifestoAndSetup,
   slugMessage,
 } from "../../../helper/mainInformationHelper";
+import { fetchUsers } from "../../../store/actions/thunk/ArticlesActions.thunk";
 
 const MainInformation = () => {
   const mainInformationState = useSelector(
@@ -53,11 +54,16 @@ const MainInformation = () => {
     slugError,
     titleError,
     postingError,
+    authors,
+    users,
   } = mainInformationState;
 
   const { isManifesto, manifestoId } = manifestoState;
 
   useEffect(() => {
+    if (!users || users?.length === 0) {
+      dispatch(fetchUsers());
+    }
     checkIfManifestoAndSetup(isManifesto, manifestoId, articleId, setIsOpen);
   }, [articleId, manifestoId]);
 
@@ -166,6 +172,14 @@ const MainInformation = () => {
                   edit={caption || ""}
                   infos="Maximum 100 characters"
                   maxlength="100"
+                />
+
+                <Field
+                  placeholder="Authors"
+                  name="authors"
+                  section="mainInformation"
+                  edit={authors || ""}
+                  fieldType="select-tag"
                 />
               </>
             )}

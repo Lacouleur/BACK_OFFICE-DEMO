@@ -23,6 +23,11 @@ import {
   SET_IS_VISIBLE,
   SET_IS_CHANGED,
   EDIT_MODULES_LIST,
+  SET_CTA_URL,
+  SET_CTA_INTRO,
+  SET_CTA_LABEL,
+  SET_CTA_IS_NEWTAB,
+  SET_CTA_DESCRIPTION,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -113,6 +118,30 @@ const modulesReducer = (state = initialState, action = {}) => {
                 isChanged: true,
                 isNewModule: true,
                 isOpenCloseModal: false,
+              },
+            ],
+          };
+        }
+        case "cta": {
+          return {
+            ...oldState,
+            modulesList: [
+              ...oldState.modulesList,
+              {
+                type: "cta-button",
+                order: state.modulesList.length + 1,
+                uuid: `${uuidv4()}`,
+                isPostedModule: false,
+                isChanged: true,
+                isNewModule: true,
+                isOpenCloseModal: false,
+                isVisible: true,
+                introduction: null,
+                url: "",
+                label: "",
+                description: "<p></p>",
+                openNewTab: true,
+                image: null,
               },
             ],
           };
@@ -485,6 +514,98 @@ const modulesReducer = (state = initialState, action = {}) => {
         }
         return null;
       });
+      return {
+        ...oldState,
+      };
+    }
+
+    // CTA
+    case SET_CTA_URL: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            url: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_CTA_INTRO: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            introduction: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_CTA_LABEL: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            label: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_CTA_DESCRIPTION: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            description: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_CTA_IS_NEWTAB: {
+      const { id, value } = action.payload;
+      console.log("PLLLL", value);
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            openNewTab: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
       return {
         ...oldState,
       };

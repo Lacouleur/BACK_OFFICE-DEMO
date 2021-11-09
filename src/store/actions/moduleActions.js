@@ -18,6 +18,11 @@ import {
   SET_IS_VISIBLE,
   SET_IS_CHANGED,
   EDIT_MODULES_LIST,
+  SET_CTA_URL,
+  SET_CTA_INTRO,
+  SET_CTA_LABEL,
+  SET_CTA_IS_NEWTAB,
+  SET_CTA_DESCRIPTION,
 } from "../constants";
 
 export const setNewModule = (payload) => ({
@@ -112,5 +117,27 @@ export const setIsChanged = (payload) => ({
 
 export const editModulesList = (payload) => ({
   type: EDIT_MODULES_LIST,
+  payload,
+});
+
+export const setCtaUrl = (payload) => ({
+  type: SET_CTA_URL,
+  payload,
+});
+
+export const setCtaDescription = (payload) => ({
+  type: SET_CTA_DESCRIPTION,
+  payload,
+});
+export const setCtaIntro = (payload) => ({
+  type: SET_CTA_INTRO,
+  payload,
+});
+export const setCtaIsNewtab = (payload) => ({
+  type: SET_CTA_IS_NEWTAB,
+  payload,
+});
+export const setCtaLabel = (payload) => ({
+  type: SET_CTA_LABEL,
   payload,
 });

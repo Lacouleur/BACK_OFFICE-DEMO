@@ -29,7 +29,6 @@ import {
   setErrorTitle,
   setModified,
   setStatus,
-  setUsers,
 } from "../mainInformationActions";
 import { deleteToken } from "../../../services/client/tokenStuff";
 
@@ -332,27 +331,6 @@ export function fetchCategoriesList() {
           console.log("%cError =>", `${consoleError}`, error?.response?.data);
           deleteToken(dispatch);
         }
-        return null;
-      }
-    }
-    return null;
-  };
-}
-
-export function fetchUsers() {
-  console.log("%cFETCH USERS=>", `${consoleTitle}`);
-  return async (dispatch) => {
-    const tokenIsValid = await isValidToken(dispatch);
-    if (tokenIsValid) {
-      try {
-        const response = await getUsers();
-        if (response.status < 300 && response.status > 199) {
-          console.log("%cFetched Users =>", `${consoleInfo}`, response.data);
-          dispatch(setUsers(response.data));
-        }
-        return null;
-      } catch (error) {
-        console.log("%cError =>", `${consoleError}`, error?.response?.data);
         return null;
       }
     }

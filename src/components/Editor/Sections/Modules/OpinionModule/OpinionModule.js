@@ -23,7 +23,7 @@ import {
   SwitchBox,
   SwitchLabel,
   Switch,
-  AnswerContainer,
+  FieldAndSwitchContainer,
   AnswerTrashIcon,
   IconBox,
   AddAnswerBox,
@@ -257,7 +257,7 @@ const OpinionModule = ({
           answers &&
           answers.map((answer) => {
             return (
-              <AnswerContainer key={answer.uuid}>
+              <FieldAndSwitchContainer key={answer.uuid}>
                 <Field
                   placeholder="Answer"
                   maxlength="90"
@@ -312,7 +312,7 @@ const OpinionModule = ({
                     htmlFor={`switch-${answer.uuid}`}
                   />
                 </SwitchBox>
-              </AnswerContainer>
+              </FieldAndSwitchContainer>
             );
           })}
 

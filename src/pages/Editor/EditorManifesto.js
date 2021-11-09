@@ -39,6 +39,7 @@ import { setIsManifesto } from "../../store/actions/manifestoActions";
 import { onDragEnd } from "../../helper/Editor/dragAndDrop";
 import { HideOnDnd, ModulesBoardDnd } from "../../styles/styledComponents/editor/modules/Modules.sc";
 import { setIsAccessiblePanel } from "../../store/actions/userPanelActions";
+import CtaModule from "../../components/Editor/Sections/Modules/CtaModule/CtaModule";
 
 const EditorManifesto = () => {
   const dispatch = useDispatch();
@@ -214,6 +215,45 @@ const EditorManifesto = () => {
                       )}}
                     </Draggable>
                     );}
+                    case "cta-button":{
+                      return (
+                        <Draggable
+                          isDragDisabled={aModuleIsOpen}
+                          key={module.uuid}
+                          draggableId={module.uuid}
+                          index={index}
+                        > 
+                          {(provided, snapshot) => {
+                      return (
+                        <div 
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={{
+                            userSelect: "none",
+                            backgroundColor: snapshot.isDragging
+                              ? "#263B4A"
+                              : "#456C86",
+                            ...provided.draggableProps.style
+                          }}
+                        >
+                          <CtaModule
+                            key={module.uuid}
+                            uuid={module.uuid}
+                            order={module.order}
+                            isChanged={module.isChanged}
+                            isOpenCloseModal={module.isOpenCloseModal}
+                            isNewModule={module.isNewModule}
+                            url={module.url}
+                            introduction={module.introduction}
+                            label={module.label}
+                            description={module.description}
+                            openNewTab={module.openNewTab}
+                          />
+                        </div>
+                        )}}
+                        </Draggable>
+                      );}
                     default :
                     return null;
                 }

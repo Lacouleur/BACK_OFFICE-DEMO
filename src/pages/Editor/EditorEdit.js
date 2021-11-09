@@ -42,6 +42,7 @@ import { HideOnDnd, ModulesBoardDnd } from "../../styles/styledComponents/editor
 import { onDragEnd } from "../../helper/Editor/dragAndDrop";
 import { setIsAccessiblePanel } from "../../store/actions/userPanelActions";
 import CtaModule from "../../components/Editor/Sections/Modules/CtaModule/CtaModule";
+import ModulesDispatcher from "../../components/Editor/Sections/Modules/ModulesDispatcher";
 
 
 const Editor = () => {
@@ -84,180 +85,20 @@ const Editor = () => {
               }}
             onDragStart={() => setIsUsedDnDArea(true)}
           > 
+            {modulesList && modulesList.length > 0 && (
             <Droppable droppableId={articleId}>
               {(provided) => {
               return (
-                <ModulesBoardDnd
+                <ModulesDispatcher
+                  modulesList={modulesList}
                   isUsedDndArea={isUsedDndArea}
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                > 
-                  {modulesList?.map((module, index) => {
-                    // Faire un fichier commun avec ce switch -> Commun avec MANIFESTO
-                switch (module.type) {
-                  case "text":{
-                    return (
-                      <Draggable
-                        isDragDisabled={aModuleIsOpen}
-                        key={module.uuid}
-                        draggableId={module.uuid}
-                        index={index}
-                      > 
-                        {(provided, snapshot) => {
-                      return (
-                        <div 
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={{
-                            userSelect: "none",
-                            backgroundColor: snapshot.isDragging
-                              ? "#263B4A"
-                              : "#456C86",
-                            ...provided.draggableProps.style
-                          }}
-                        >
-                          <TextModule
-                            text={module.text}
-                            uuid={module.uuid}
-                            order={module.order}
-                            isChanged={module.isChanged}
-                            isOpenCloseModal={module.isOpenCloseModal}
-                            isNewModule={module.isNewModule}
-                          />
-                        </div>
-                      )}}
-                      </Draggable>
-                    );}
-                  case "image":{
-                    return (
-                      <Draggable
-                        isDragDisabled={aModuleIsOpen}
-                        key={module.uuid}
-                        draggableId={module.uuid}
-                        index={index}
-                      > 
-                        {(provided, snapshot) => {
-                    return (
-                      <div 
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        style={{
-                          userSelect: "none",
-                          backgroundColor: snapshot.isDragging
-                            ? "#263B4A"
-                            : "#456C86",
-                          ...provided.draggableProps.style
-                        }}
-                      >
-                        <ImageModule
-                          key={module.uuid}
-                          uuid={module.uuid}
-                          order={module.order}
-                          thumbnail={module?.image?.urls?.thumbnail?.url || undefined}
-                          imageUuid={module.image.uuid}
-                          altImage={module.image.alt}
-                          isChanged={module.isChanged}
-                          isOpenCloseModal={module.isOpenCloseModal}
-                          isNewModule={module.isNewModule}
-                        />
-                      </div>
-                      )}}
-                      </Draggable>
-                    );}
-                  case "opinion":{
-                    return (
-                      <Draggable
-                        isDragDisabled={aModuleIsOpen}
-                        key={module.uuid}
-                        draggableId={module.uuid}
-                        index={index}
-                      > 
-                        {(provided, snapshot) => {
-                    return (
-                      <div 
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        style={{
-                          userSelect: "none",
-                          backgroundColor: snapshot.isDragging
-                            ? "#263B4A"
-                            : "#456C86",
-                          ...provided.draggableProps.style
-                        }}
-                      >
-                        <OpinionModule 
-                          key={module.uuid}
-                          uuid={module.uuid}
-                          order={module.order}
-                          isChanged={module.isChanged}
-                          isOpenCloseModal={module.isOpenCloseModal}
-                          isNewModule={module.isNewModule}
-                          question={module.question}
-                          showPercentage={module.showPercentage}
-                          showResponse={module.showResponse}
-                          showRight={module.showRight}
-                          explanation={module.explanation}
-                          answers={module.answers}
-                          isVisible={module.isVisible}
-                        />
-                      </div>
-                      )}}
-                      </Draggable>
-                    );}
-                    case "cta-button":{
-                      return (
-                        <Draggable
-                          isDragDisabled={aModuleIsOpen}
-                          key={module.uuid}
-                          draggableId={module.uuid}
-                          index={index}
-                        > 
-                          {(provided, snapshot) => {
-                      return (
-                        <div 
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={{
-                            userSelect: "none",
-                            backgroundColor: snapshot.isDragging
-                              ? "#263B4A"
-                              : "#456C86",
-                            ...provided.draggableProps.style
-                          }}
-                        >
-                          <CtaModule
-                            key={module.uuid}
-                            uuid={module.uuid}
-                            order={module.order}
-                            isChanged={module.isChanged}
-                            isOpenCloseModal={module.isOpenCloseModal}
-                            isNewModule={module.isNewModule}
-                            url={module.url}
-                            introduction={module.introduction}
-                            label={module.label}
-                            description={module.description}
-                            openNewTab={module.openNewTab}
-                          />
-                        </div>
-                        )}}
-                        </Draggable>
-                      );}
-                    default :
-                    return null;
-                }
-                })}
-                  {provided.placeholder}
-                </ModulesBoardDnd>
-                
-
+                  provided={provided}
+                  aModuleIsOpen={aModuleIsOpen}
+                />
                 )
               }}
-  
             </Droppable>
+          )}
           </DragDropContext>
 
           {isOpen && articleId && <ModuleCreator setIsOpen={setIsOpen} />}

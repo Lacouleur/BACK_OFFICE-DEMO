@@ -248,7 +248,7 @@ const ActionBar = () => {
             </>
           )}
 
-          {(publicationFailed || publicationFailData) && (
+          {(publicationFailed || publicationFailData) && !isManifesto && (
             <>
               {publicationFailData?.retryAt && (
                 <>

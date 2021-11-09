@@ -15,7 +15,6 @@ import {
   ModuleContainer,
   Delete,
   ActionIcons,
-  DraftJsWrapper,
   SwitchBox,
   Switch,
   SwitchLabel,
@@ -30,14 +29,11 @@ import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
 import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.thunk";
 import Field from "../../../Field";
 import {
-  onEditorStateChange,
-  processLink,
   setCtaModuleContent,
-  styleMap,
   watchNewModules,
 } from "../../../../../helper/modulesHelper";
-import emojisList from "../TextModule/emojisList";
 import { setAModuleIsOpen } from "../../../../../store/actions/actionBarActions";
+import TextEditor from "../TextEditor";
 
 const CtaModule = ({
   uuid,
@@ -75,6 +71,16 @@ const CtaModule = ({
       dispatch
     );
   }, []);
+
+  useEffect(() => {
+    setCtaModuleContent(
+      uuid,
+      editorState,
+      description,
+      setEditorState,
+      dispatch
+    );
+  }, [editorState]);
 
   useEffect(() => {
     watchNewModules(isNewModule, ctaModuleRef, setIsOpen);
@@ -174,33 +180,15 @@ const CtaModule = ({
           </SwitchBox>
         </FieldAndSwitchContainer>
 
-        <DraftJsWrapper isOpen={isOpen}>
-          <Editor
-            wrapperClassName="wrapper"
-            editorClassName="editor"
-            toolbarClassName="toolbar"
-            stripPastedStyles
-            customStyleMap={styleMap}
-            editorState={editorState}
-            onEditorStateChange={(e) => {
-              onEditorStateChange(e, setEditorState);
-            }}
-            toolbarHidden={!isOpen}
-            toolbar={{
-              options: ["link", "emoji"],
-              link: {
-                inDropdown: true,
-                defaultTargetOption: "_blank",
-                linkCallback: processLink,
-                trailingWhitespace: false,
-                showOpenOptionOnHover: true,
-              },
-              emoji: {
-                emojis: emojisList,
-              },
-            }}
-          />
-        </DraftJsWrapper>
+        {editorState && (
+          <>
+            <TextEditor
+              editorState={editorState}
+              setEditorState={setEditorState}
+              isOpen={isOpen}
+            />
+          </>
+        )}
       </SectionBox>
     </ModuleContainer>
   );

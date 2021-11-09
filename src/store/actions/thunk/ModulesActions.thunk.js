@@ -135,6 +135,33 @@ export function saveModule(uuid, request = "save") {
 
                 break;
               }
+              case "cta-button": {
+                const {
+                  type,
+                  order,
+                  isVisible,
+                  introduction,
+                  url,
+                  label,
+                  description,
+                  openNewTab,
+                } = module;
+
+                values = {
+                  uuid,
+                  type,
+                  order,
+                  isVisible,
+                  introduction,
+                  url,
+                  label,
+                  description,
+                  openNewTab,
+                };
+                isNewModule = true;
+
+                break;
+              }
 
               default:
                 return null;
@@ -243,6 +270,32 @@ export function saveModule(uuid, request = "save") {
                   answers: formatedAnswers,
                   order,
                   isVisible,
+                };
+                isChanged = true;
+
+                break;
+              }
+              case "cta-button": {
+                const {
+                  type,
+                  order,
+                  isVisible,
+                  introduction,
+                  url,
+                  label,
+                  description,
+                  openNewTab,
+                } = module;
+
+                values = {
+                  type,
+                  order,
+                  isVisible,
+                  introduction,
+                  url,
+                  label,
+                  description,
+                  openNewTab,
                 };
                 isChanged = true;
 

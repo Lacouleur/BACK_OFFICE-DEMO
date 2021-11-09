@@ -15,6 +15,9 @@ import {
 } from "../store/actions/mainInformationActions";
 import {
   setAltImage,
+  setCtaIntro,
+  setCtaLabel,
+  setCtaUrl,
   setOpinionQuestion,
   setOpinionTextAnswer,
 } from "../store/actions/moduleActions";
@@ -202,18 +205,6 @@ export function valueSelector(
   }
 }
 
-export function createAutorsList(users) {
-  const authorList = [];
-  users.map((user) => {
-    authorList.push({
-      value: user._id,
-      label: user.displayed_name || user.name,
-    });
-    return null;
-  });
-  return authorList;
-}
-
 export function optionSelector(name, list) {
   switch (name) {
     case "category":
@@ -286,7 +277,6 @@ export function dispatchFields(
   moduleId,
   answerId
 ) {
-  console.log({ name, section, dispatch, value, moduleId, answerId });
   switch (true) {
     case name === "title" && section === "mainInformation":
       dispatch(addTitle(value));
@@ -332,6 +322,17 @@ export function dispatchFields(
           value,
         })
       );
+      break;
+    case name === "intro" && section === "cta":
+      dispatch(setCtaIntro({ id: moduleId, value }));
+      break;
+
+    case name === "label" && section === "cta":
+      dispatch(setCtaLabel({ id: moduleId, value }));
+      break;
+
+    case name === "url" && section === "cta":
+      dispatch(setCtaUrl({ id: moduleId, value }));
       break;
 
     default:

@@ -14,6 +14,7 @@ import textIcon from "../../../../styles/assets/icons/text.svg";
 import quizzIcon from "../../../../styles/assets/icons/quizz-dark.svg";
 import imageIcon from "../../../../styles/assets/icons/image-black.svg";
 import crossIcon from "../../../../styles/assets/icons/cross-white.svg";
+import ctaIcon from "../../../../styles/assets/icons/cta.svg";
 import {
   ModuleBox,
   ModulesContainer,
@@ -29,6 +30,7 @@ const ModuleCreator = ({ setIsOpen }) => {
     { type: "text", icon: textIcon },
     { type: "opinion", icon: quizzIcon },
     { type: "image", icon: imageIcon },
+    { type: "cta", icon: ctaIcon },
   ];
 
   const moduleRef = useRef(null);

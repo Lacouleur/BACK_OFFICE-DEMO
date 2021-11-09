@@ -10,8 +10,6 @@ import {
   ADD_LANG,
   SET_COLOR_STYLE,
   SET_CAPTION,
-  SET_USERS,
-  SET_AUTHORS,
 } from "../constants";
 
 export const addTitle = (payload) => ({
@@ -66,15 +64,5 @@ export const setColorStyle = (payload) => ({
 
 export const setCaption = (payload) => ({
   type: SET_CAPTION,
-  payload,
-});
-
-export const setUsers = (payload) => ({
-  type: SET_USERS,
-  payload,
-});
-
-export const setAuthors = (payload) => ({
-  type: SET_AUTHORS,
   payload,
 });

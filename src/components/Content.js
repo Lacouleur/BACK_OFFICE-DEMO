@@ -14,26 +14,26 @@ import {
   ButtonIcon,
   Tooltip,
   TooltipText,
-} from "../../styles/styledComponents/contentList/Content.sc";
-import isEven from "../../helper/isEven";
-import colors from "../../styles/core/colors";
-import trashIcon from "../../styles/assets/icons/trash.svg";
-import greyTrashIcon from "../../styles/assets/icons/trash-grey.svg";
-import eye from "../../styles/assets/icons/eye-circle-green.svg";
-import copy from "../../styles/assets/icons/copy.svg";
-import pen from "../../styles/assets/icons/pen.svg";
-import buildDate from "../../helper/buildDate";
-import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
-import Status from "./Status";
+} from "../styles/styledComponents/contentList/Content.sc";
+import isEven from "../helper/isEven";
+import colors from "../styles/core/colors";
+import trashIcon from "../styles/assets/icons/trash.svg";
+import greyTrashIcon from "../styles/assets/icons/trash-grey.svg";
+import eye from "../styles/assets/icons/eye-circle-green.svg";
+import copy from "../styles/assets/icons/copy.svg";
+import pen from "../styles/assets/icons/pen.svg";
+import buildDate from "../helper/buildDate";
+import Button from "../styles/styledComponents/global/Buttons/Buttons.sc";
+import Status from "./ContentList/Status";
 import {
   ActionIcon,
   ArchiveBox,
-} from "../../styles/styledComponents/editor/ActionBar.sc";
-import { setIsOpenArchiveModal } from "../../store/actions/actionBarActions";
-import { watchOpinionModules } from "../../helper/actionBarHelper";
-import statIconGreen from "../../styles/assets/icons/opinion-green.svg";
-import statIconGrey from "../../styles/assets/icons/opinion-grey.svg";
-import { setIsOpenDuplicateModal } from "../../store/actions/contentListActions";
+} from "../styles/styledComponents/editor/ActionBar.sc";
+import { setIsOpenArchiveModal } from "../store/actions/actionBarActions";
+import { watchOpinionModules } from "../helper/actionBarHelper";
+import statIconGreen from "../styles/assets/icons/opinion-green.svg";
+import statIconGrey from "../styles/assets/icons/opinion-grey.svg";
+import { setIsOpenDuplicateModal } from "../store/actions/contentListActions";
 
 const Content = ({
   number,

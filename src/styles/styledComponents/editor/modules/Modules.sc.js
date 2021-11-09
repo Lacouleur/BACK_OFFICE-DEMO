@@ -241,7 +241,7 @@ export const Switch = styled.input`
   }
 `;
 
-export const AnswerContainer = styled.div`
+export const FieldAndSwitchContainer = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;

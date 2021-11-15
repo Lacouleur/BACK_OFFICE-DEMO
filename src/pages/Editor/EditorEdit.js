@@ -5,7 +5,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {  useParams } from "react-router-dom";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import PageContainer from "../../styles/styledComponents/global/PageContainer.sc";
@@ -25,8 +25,6 @@ import {
 import ActionBar from "../../components/Editor/actionBar/ActionBar";
 import ModuleCreator from "../../components/Editor/Sections/Modules/ModuleCreator";
 import { fetchContent } from "../../store/actions/thunk/ArticlesActions.thunk";
-import TextModule from "../../components/Editor/Sections/Modules/TextModule/TextModule";
-import ImageModule from "../../components/Editor/Sections/Modules/ImageModule/ImageModule";
 import { setArticleId } from "../../store/actions/commonsActions";
 import {
   setErrorSlug,
@@ -37,11 +35,9 @@ import {
 } from "../../store/actions/manifestoActions";
 import colors from "../../styles/core/colors";
 import HomeNavigation from "../../components/Editor/Sections/HomeNavigation";
-import OpinionModule from "../../components/Editor/Sections/Modules/OpinionModule/OpinionModule";
-import { HideOnDnd, ModulesBoardDnd } from "../../styles/styledComponents/editor/modules/Modules.sc";
+import { HideOnDnd } from "../../styles/styledComponents/editor/modules/Modules.sc";
 import { onDragEnd } from "../../helper/Editor/dragAndDrop";
 import { setIsAccessiblePanel } from "../../store/actions/userPanelActions";
-import CtaModule from "../../components/Editor/Sections/Modules/CtaModule/CtaModule";
 import ModulesDispatcher from "../../components/Editor/Sections/Modules/ModulesDispatcher";
 
 

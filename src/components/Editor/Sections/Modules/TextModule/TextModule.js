@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import React, { useRef, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 

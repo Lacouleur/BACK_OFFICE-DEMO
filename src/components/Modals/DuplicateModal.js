@@ -22,12 +22,7 @@ import {
 } from "../../styles/styledComponents/modal/Modal.sc";
 import { Selector } from "../../styles/styledComponents/global/Field.sc";
 import langList from "../../helper/langList";
-import {
-  convertLang,
-  handleCheck,
-  handleDuplication,
-  handleTranslation,
-} from "../../helper/modalsHelper";
+import { convertLang, handleCheck } from "../../helper/modalsHelper";
 
 const DuplicateModal = () => {
   const modal = useRef(null);

@@ -3,7 +3,6 @@ import React, { useRef, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import "../../../../../styles/css/react-draft-wysiwyg.css";
 import { useDispatch, useSelector } from "react-redux";
-import { Editor } from "react-draft-wysiwyg";
 import { FormTitle } from "../../../../../styles/styledComponents/global/Titles.sc";
 import {
   SectionBox,

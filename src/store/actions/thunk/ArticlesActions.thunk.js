@@ -61,7 +61,6 @@ export function checkAndSend(type = "save", articleId = null) {
         authors,
       } = mainInformationReducer;
       const { description, title: seoTitle } = seoReducer;
-
       const {
         homeTitle,
         readingTime,
@@ -125,7 +124,7 @@ export function checkAndSend(type = "save", articleId = null) {
           title: mainTitle,
           slug,
           category: !category ? null : category,
-          theme: colorStyle,
+          theme: colorStyle || "1",
         };
       }
 

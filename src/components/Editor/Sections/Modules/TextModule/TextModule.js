@@ -1,10 +1,9 @@
+/* eslint-disable no-restricted-globals */
 import React, { useRef, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-import { Editor } from "react-draft-wysiwyg";
 import "../../../../../styles/css/react-draft-wysiwyg.css";
 import { useDispatch, useSelector } from "react-redux";
-import hilighterIcon from "../../../../../styles/assets/icons/highlighter.svg";
 import { FormTitle } from "../../../../../styles/styledComponents/global/Titles.sc";
 import {
   SectionBox,
@@ -13,7 +12,6 @@ import {
 } from "../../../../../styles/styledComponents/editor/Sections.sc";
 import trashIcon from "../../../../../styles/assets/icons/trash.svg";
 import {
-  DraftJsWrapper,
   ModuleContainer,
   Delete,
   ActionIcons,
@@ -22,15 +20,12 @@ import { showCloseModal } from "../../../../../store/actions/moduleActions";
 import CloseModal from "../../../../Modals/CloseModal";
 import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
 import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.thunk";
-import emojisList from "./emojisList";
 import { setAModuleIsOpen } from "../../../../../store/actions/actionBarActions";
 import {
-  onEditorStateChange,
-  processLink,
   setTextModuleContent,
-  styleMap,
   watchNewModules,
 } from "../../../../../helper/modulesHelper";
+import TextEditor from "../TextEditor";
 
 const TextModule = ({
   text,
@@ -109,56 +104,15 @@ const TextModule = ({
           <FormTitle>{`${order}. text`}</FormTitle>
         </SectionTitle>
         {!isOpen && <Gradient />}
-        <DraftJsWrapper isOpen={isOpen}>
-          <Editor
-            wrapperClassName="wrapper"
-            editorClassName="editor"
-            toolbarClassName="toolbar"
-            stripPastedStyles
-            customStyleMap={styleMap}
-            editorState={editorState}
-            onEditorStateChange={(e) => {
-              onEditorStateChange(e, setEditorState);
-            }}
-            toolbarHidden={!isOpen}
-            toolbar={{
-              options: [
-                "inline",
-                "emoji",
-                "link",
-                "list",
-                "blockType",
-                "history",
-              ],
-              inline: {
-                inDropdown: false,
-                options: ["bold", "italic", "underline", "strikethrough"],
-                strikethrough: {
-                  icon: hilighterIcon,
-                },
-              },
-              blockType: {
-                inDropdown: true,
-                options: ["Normal", "H2", "H3", "H4", "Blockquote"],
-              },
-              list: {
-                inDropdown: true,
-                options: ["unordered", "ordered"],
-              },
-              link: {
-                inDropdown: true,
-                defaultTargetOption: "_blank",
-                linkCallback: processLink,
-                trailingWhitespace: false,
-                showOpenOptionOnHover: true,
-              },
-              history: { inDropdown: false },
-              emoji: {
-                emojis: emojisList,
-              },
-            }}
-          />
-        </DraftJsWrapper>
+        {editorState && (
+          <>
+            <TextEditor
+              editorState={editorState}
+              setEditorState={setEditorState}
+              isOpen={isOpen}
+            />
+          </>
+        )}
       </SectionBox>
     </ModuleContainer>
   );

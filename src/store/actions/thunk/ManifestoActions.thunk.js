@@ -146,7 +146,11 @@ export function fetchManifesto(lang) {
             );
 
             if (fetchedLang === lang) {
-              dispatch(setManifestoStatus("PUBLISHED"));
+              dispatch(
+                setManifestoStatus(
+                  response.data[0]?.modified ? "" : "PUBLISHED"
+                )
+              );
               dispatch(setManifestolang(fetchedLang));
               dispatch(contentLoaded(response.data[0]));
             } else {

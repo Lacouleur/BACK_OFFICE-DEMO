@@ -8,6 +8,7 @@ import { addSeoDescription } from "../../store/actions/seoActions";
 import {
   FieldStyle,
   Selector,
+  SelectorTag,
   FieldError,
   ErrorIcon,
   FieldContainer,
@@ -28,13 +29,16 @@ import {
 import { setOpinionExplain } from "../../store/actions/moduleActions";
 
 import {
+  dispatchAuthors,
   dispatchFields,
   dispatchSelected,
   handleChange,
+  initAuthorsSelector,
   onEdit,
   optionSelector,
   valueSelector,
 } from "../../helper/fieldsHelper";
+import { setAuthors } from "../../store/actions/mainInformationActions";
 
 const Field = ({
   type,
@@ -55,14 +59,13 @@ const Field = ({
   const [selectedReadTime, setSelectedReadTime] = useState();
   const [selectedColorStyle, setSelectedColorStyle] = useState();
   const [fileTitle, setFileTitle] = useState("");
+  const [selectedAuthors, setSelectedAuthors] = useState([]);
 
   const MainInformationState = useSelector(
     ({ mainInformationReducer }) => mainInformationReducer
   );
 
   const { categoriesList, status, authorsList } = MainInformationState;
-
-  // Next functions concern File Select fields
 
   useEffect(() => {
     if (
@@ -86,6 +89,15 @@ const Field = ({
       selectedColorStyle,
       setSelectedColorStyle
     );
+
+    if (fieldType === "select-tag") {
+      initAuthorsSelector(
+        edit,
+        setSelectedAuthors,
+        selectedAuthors,
+        authorsList
+      );
+    }
   }, [edit, categoriesList, authorsList]);
 
   // Next functions concern File Uploader fields
@@ -132,7 +144,20 @@ const Field = ({
           )}
         </FieldBox>
       )}
-
+      {fieldType && fieldType === "select-tag" && (
+        <FieldBox>
+          <SelectorTag
+            classNamePrefix="select"
+            isMulti
+            value={selectedAuthors}
+            options={optionSelector("authors", authorsList)}
+            onChange={(event) => {
+              setSelectedAuthors(event);
+              dispatch(setAuthors(dispatchAuthors(event)));
+            }}
+          />
+        </FieldBox>
+      )}
       {fieldType && fieldType === "textarea" && (
         <TextArea
           placeholder={placeholder}

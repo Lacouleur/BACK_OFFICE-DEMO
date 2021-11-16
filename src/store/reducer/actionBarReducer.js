@@ -20,7 +20,7 @@ const initialState = {
   updatedAt: "",
   publishedAt: null,
   programmedAt: null,
-  publicationFailed: null,
+  publicationFailed: false,
   publicationFailData: null,
   isOpenPublishModal: false,
   isOpenErrorModal: false,
@@ -94,7 +94,7 @@ const actionBarReducer = (state = initialState, action = {}) => {
     case SET_PUBLISH_SCHEDULE_FAILED: {
       return {
         ...oldState,
-        publicationFaile: action.payload || "",
+        publicationFailed: action.payload || "",
       };
     }
 

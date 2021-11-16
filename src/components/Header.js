@@ -30,19 +30,18 @@ const Header = ({ position }) => {
 
   return (
     <HeaderContainer position={position}>
-      {isConnected && (
+      {isConnected && isAccessible && (
         <>
           <UserGlobalcontainer ref={userPanel}>
-            {isAccessible && (
-              <ProfileBox
-                onClick={() => {
-                  dispatch(setPanelOpen(!isPanelOpen));
-                }}
-              >
-                <Avatar src={picture?.urls?.thumbnail?.url || undefined} />
-                <ProfileName>My profile</ProfileName>
-              </ProfileBox>
-            )}
+            <ProfileBox
+              onClick={() => {
+                dispatch(setPanelOpen(!isPanelOpen));
+              }}
+            >
+              <Avatar src={picture?.urls?.thumbnail?.url || undefined} />
+              <ProfileName>My profile</ProfileName>
+            </ProfileBox>
+
             <UserPanel userPanel={userPanel} />
           </UserGlobalcontainer>
 

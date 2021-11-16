@@ -116,46 +116,56 @@ export function setButtonContent(
   setActionButtonContent,
   setSelectOptions,
   setIsDeleteButton,
-  manifestoState
+  manifestoState,
+  actionBarState
 ) {
-  const { isManifesto, manifestoId } = manifestoState;
-  const { status: buttonStatus, modified } = MainInformationState;
+  if (actionBarState) {
+    const { publicationFailed } = actionBarState;
+    const { isManifesto, manifestoId } = manifestoState;
+    const { status, modified } = MainInformationState;
 
-  if (!isManifesto) {
-    if (buttonStatus === "PUBLISHED" && modified) {
-      setActionButtonContent("PROGRAM UPDATE");
-      setSelectOptions([
-        { value: "UNPUBLISH", label: "UNPUBLISH" },
-        { value: "UPDATE", label: "UPDATE" },
-      ]);
-      setIsDeleteButton(false);
-      return;
-    }
-    if (buttonStatus === "PUBLISHED" && !modified) {
-      setSelectOptions([]);
-      setActionButtonContent("UNPUBLISH");
-      setIsDeleteButton(false);
-      return;
-    }
-    if (buttonStatus === "DRAFT" || buttonStatus === "UNPUBLISHED") {
-      setSelectOptions([{ value: "PUBLISH", label: "PUBLISH" }]);
+    if (!isManifesto) {
+      let buttonStatus = status;
+
+      if (publicationFailed && !actionBarState?.publicationFailData?.retryAt) {
+        buttonStatus = "UNPUBLISHED";
+      }
+
+      if (buttonStatus === "PUBLISHED" && modified) {
+        setActionButtonContent("PROGRAM UPDATE");
+        setSelectOptions([
+          { value: "UNPUBLISH", label: "UNPUBLISH" },
+          { value: "UPDATE", label: "UPDATE" },
+        ]);
+        setIsDeleteButton(false);
+        return;
+      }
+      if (buttonStatus === "PUBLISHED" && !modified) {
+        setSelectOptions([]);
+        setActionButtonContent("UNPUBLISH");
+        setIsDeleteButton(false);
+        return;
+      }
+      if (buttonStatus === "DRAFT" || buttonStatus === "UNPUBLISHED") {
+        setSelectOptions([{ value: "PUBLISH", label: "PUBLISH" }]);
+        setActionButtonContent("PROGRAM");
+        setIsDeleteButton(true);
+        return;
+      }
+      if (buttonStatus === "SCHEDULED") {
+        setActionButtonContent("PROGRAM UPDATE");
+        setSelectOptions([{ value: "CANCEL", label: "CANCEL PUBLICATION" }]);
+        setIsDeleteButton(false);
+        return;
+      }
       setActionButtonContent("PROGRAM");
       setIsDeleteButton(true);
-      return;
     }
-    if (buttonStatus === "SCHEDULED") {
-      setActionButtonContent("PROGRAM UPDATE");
-      setSelectOptions([{ value: "CANCEL", label: "CANCEL PUBLICATION" }]);
-      setIsDeleteButton(false);
-      return;
-    }
-    setActionButtonContent("PROGRAM");
-    setIsDeleteButton(true);
-  }
 
-  if (isManifesto) {
-    setActionButtonContent(manifestoId ? "UPDATE" : "PUBLISH");
-    setIsDeleteButton(false);
+    if (isManifesto) {
+      setActionButtonContent(manifestoId ? "UPDATE" : "PUBLISH");
+      setIsDeleteButton(false);
+    }
   }
 }
 

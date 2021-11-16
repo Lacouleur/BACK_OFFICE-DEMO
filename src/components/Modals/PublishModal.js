@@ -4,11 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import useClickOutside from "../../helper/cutomHooks/useClickOutside";
 import { handleButton } from "../../helper/modalsHelper";
 import { setIsOpenPublishModal } from "../../store/actions/actionBarActions";
-import {
-  cancelScheduledPublication,
-  publishAction,
-} from "../../store/actions/thunk/ActionBarActions.thunk";
-import { getStatus } from "../../store/actions/thunk/ArticlesActions.thunk";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import {
   Message,

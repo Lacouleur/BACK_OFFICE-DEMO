@@ -1,5 +1,5 @@
 import { verifySlug } from "../../helper/auth/verifyFields";
-
+import { createAutorsList } from "../../helper/fieldsHelper";
 import {
   ADD_TITLE,
   ADD_SLUG,
@@ -18,6 +18,8 @@ import {
   CLEAN_CONTENT_STATE,
   SET_COLOR_STYLE,
   SET_CAPTION,
+  SET_USERS,
+  SET_AUTHORS,
 } from "../constants";
 
 const initialState = {
@@ -177,6 +179,22 @@ const mainInformationReducer = (state = initialState, action = {}) => {
         colorStyle: action.payload?.theme ?? null,
         caption: action.payload?.partnership ?? null,
         authors: action.payload?.authors,
+      };
+    }
+
+    case SET_USERS: {
+      return {
+        ...oldState,
+        authorsList: createAutorsList(action.payload),
+        users: action.payload,
+      };
+    }
+
+    case SET_AUTHORS: {
+      return {
+        ...oldState,
+        authors: action.payload,
+        isChanged: true,
       };
     }
 

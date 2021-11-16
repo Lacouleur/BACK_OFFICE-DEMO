@@ -594,7 +594,6 @@ const modulesReducer = (state = initialState, action = {}) => {
 
     case SET_CTA_IS_NEWTAB: {
       const { id, value } = action.payload;
-      console.log("PLLLL", value);
       state.modulesList.find((module, index) => {
         if (module?.uuid === id) {
           oldState.modulesList[index] = {

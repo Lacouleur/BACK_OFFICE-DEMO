@@ -164,7 +164,6 @@ const CtaModule = ({
             htmlFor={`switch-${uuid}`}
             onChange={() => {
               dispatch(setCtaIsNewtab({ id: uuid, value: !openNewTab }));
-              console.log("openNewTab", !openNewTab);
             }}
           >
             <p>Open in new window</p>

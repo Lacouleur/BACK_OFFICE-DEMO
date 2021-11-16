@@ -162,9 +162,10 @@ const ActionBar = () => {
       setActionButtonContent,
       setSelectOptions,
       setIsDeleteButton,
-      manifestoState
+      manifestoState,
+      actionBarState
     );
-  }, [MainInformationState]);
+  }, [MainInformationState, actionBarState]);
 
   useEffect(() => {
     setIsOpinionModules(watchOpinionModules(modulesList));

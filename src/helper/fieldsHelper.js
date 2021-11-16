@@ -205,6 +205,18 @@ export function valueSelector(
   }
 }
 
+export function createAutorsList(users) {
+  const authorList = [];
+  users.map((user) => {
+    authorList.push({
+      value: user._id,
+      label: user.displayed_name || user.name,
+    });
+    return null;
+  });
+  return authorList;
+}
+
 export function optionSelector(name, list) {
   switch (name) {
     case "category":

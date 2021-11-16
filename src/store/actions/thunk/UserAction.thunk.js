@@ -70,7 +70,7 @@ export function saveAvatar(image) {
       try {
         const response = await uploadImage(formData);
         if (response.status < 300 && response.status > 199) {
-          console.log("RESPONSE AVATAR", response.data);
+          console.log(`%cAvatar saved =>`, `${consoleSucces}`, response);
           dispatch(
             setPicture({
               alt: picture.alt || "",

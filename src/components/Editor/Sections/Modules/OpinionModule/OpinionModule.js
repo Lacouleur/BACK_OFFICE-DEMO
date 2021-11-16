@@ -251,7 +251,6 @@ const OpinionModule = ({
           section="opinion"
           moduleId={uuid}
           edit={question}
-          /* error={titleError} */
         />
         {question &&
           answers &&
@@ -286,32 +285,33 @@ const OpinionModule = ({
                     unactive={answers.length > 2}
                   />
                 </IconBox>
-
-                <SwitchBox
-                  htmlFor={`switch-${answer.uuid}`}
-                  onChange={() => {
-                    dispatch(
-                      SetOpinionRightAnswer({
-                        moduleId: uuid,
-                        answerId: answer.uuid,
-                        value: !answer.right,
-                      })
-                    );
-                  }}
-                >
-                  <p>Right answer</p>
-                  <Switch
-                    className="Switch"
-                    id={`switch-${answer.uuid}`}
-                    type="checkbox"
-                    checked={!!answer.right}
-                    readOnly
-                  />
-                  <SwitchLabel
-                    className="SwitchLabel"
+                {showRight && (
+                  <SwitchBox
                     htmlFor={`switch-${answer.uuid}`}
-                  />
-                </SwitchBox>
+                    onChange={() => {
+                      dispatch(
+                        SetOpinionRightAnswer({
+                          moduleId: uuid,
+                          answerId: answer.uuid,
+                          value: !answer.right,
+                        })
+                      );
+                    }}
+                  >
+                    <p>Right answer</p>
+                    <Switch
+                      className="Switch"
+                      id={`switch-${answer.uuid}`}
+                      type="checkbox"
+                      checked={!!answer.right}
+                      readOnly
+                    />
+                    <SwitchLabel
+                      className="SwitchLabel"
+                      htmlFor={`switch-${answer.uuid}`}
+                    />
+                  </SwitchBox>
+                )}
               </FieldAndSwitchContainer>
             );
           })}

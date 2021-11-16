@@ -2,7 +2,7 @@
 /* eslint-disable no-return-assign */
 import React, {  useEffect } from "react";
 import {useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams, Link } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import PageContainer from "../../styles/styledComponents/global/PageContainer.sc";

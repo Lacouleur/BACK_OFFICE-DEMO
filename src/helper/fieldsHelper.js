@@ -138,13 +138,14 @@ export function initAuthorsSelector(
   selectedAuthors,
   authorsList
 ) {
-  if (selectedAuthors.length === 0) {
+  if (selectedAuthors.length === 0 && authorsList && edit) {
     const buildAuthorList = [];
     authorsList.map((author) => {
       edit.map((authorId) => {
         if (authorId === author.value) {
           buildAuthorList.push(author);
         }
+
         return null;
       });
       setSelectedAuthors(buildAuthorList);
@@ -153,9 +154,9 @@ export function initAuthorsSelector(
   }
 }
 
-export function dispatchAuthors(selectedAuthors) {
+export function dispatchAuthors(event) {
   const arr = [];
-  selectedAuthors.map((author) => {
+  event.map((author) => {
     arr.push(author.value);
     return null;
   });

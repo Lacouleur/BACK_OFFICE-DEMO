@@ -165,7 +165,20 @@ const ActionBar = () => {
       manifestoState,
       actionBarState
     );
-  }, [MainInformationState, actionBarState]);
+  }, [MainInformationState]);
+
+  useEffect(() => {
+    if (isOpenPublishModal === false) {
+      setButtonContent(
+        MainInformationState,
+        setActionButtonContent,
+        setSelectOptions,
+        setIsDeleteButton,
+        manifestoState,
+        actionBarState
+      );
+    }
+  }, [isOpenPublishModal]);
 
   useEffect(() => {
     setIsOpinionModules(watchOpinionModules(modulesList));
@@ -183,18 +196,6 @@ const ActionBar = () => {
     }
     setIsPreviewButton(false);
   }, [articleId, lang, slug, isManifesto, manifestoLang, manifestoId]);
-
-  useEffect(() => {
-    if (isOpenPublishModal === false) {
-      setButtonContent(
-        MainInformationState,
-        setActionButtonContent,
-        setSelectOptions,
-        setIsDeleteButton,
-        manifestoState
-      );
-    }
-  }, [isOpenPublishModal]);
 
   return (
     <>
@@ -403,13 +404,7 @@ const ActionBar = () => {
                 classNamePrefix="select"
                 options={selectOptions}
                 onChange={(e) => {
-                  actionsSelectorButton(
-                    e,
-                    dispatch,
-                    setActionButtonContent,
-                    setIsOpenPublishModal,
-                    setIsOpenScheduleModal
-                  );
+                  actionsSelectorButton(e, dispatch, setActionButtonContent);
                 }}
               />
             )}

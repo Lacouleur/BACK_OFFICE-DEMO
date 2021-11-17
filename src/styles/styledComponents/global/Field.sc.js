@@ -192,7 +192,12 @@ export const SelectorTag = styled(ReactSelect)`
       border: none;
       box-shadow: none;
       border-radius: 0;
-      z-index: 101;
+      z-index: 205;
+      &-list {
+        z-index: 205;
+        height: 200px;
+        border: 1px solid ${colors.paleViolet};
+      }
     }
 
     &__option {

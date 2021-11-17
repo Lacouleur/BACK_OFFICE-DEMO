@@ -1,5 +1,9 @@
 /* eslint-disable array-callback-return */
 
+import {
+  setIsOpenPublishModal,
+  setIsOpenScheduleModal,
+} from "../store/actions/actionBarActions";
 import buildDate from "./buildDate";
 
 /* eslint-disable import/prefer-default-export */
@@ -169,13 +173,7 @@ export function setButtonContent(
   }
 }
 
-export function actionsSelectorButton(
-  e,
-  dispatch,
-  setActionButtonContent,
-  setIsOpenPublishModal,
-  setIsOpenScheduleModal
-) {
+export function actionsSelectorButton(e, dispatch, setActionButtonContent) {
   if (e?.value !== "PROGRAM") {
     if (e.value === "CANCEL") {
       setActionButtonContent(e?.value);

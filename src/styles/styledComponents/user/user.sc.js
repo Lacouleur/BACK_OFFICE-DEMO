@@ -3,11 +3,11 @@ import colors from "../../core/colors";
 
 const expandPanel = keyframes`
   0% {width:0; opacity: 0; padding: 25px 0};
-  100% {width: 288px;}
+  100% {width: 320px;}
 `;
 
 const foldPanel = keyframes`
-  0% {width: 288px;};
+  0% {width: 320px;};
   100% {opacity: 0; padding: 25px 0}
 `;
 
@@ -54,8 +54,8 @@ export const PanelContainer = styled.div`
   right: 0;
   top: 56px;
   bottom: 0;
-  padding: 25px 16px;
-  overflow: scroll;
+  padding: 25px 32px 25px 16px;
+  overflow: ${() => (window.innerHeight < 710 ? "auto" : "hidden")};
   box-shadow: -4px 0px 13px 2px ${colors.shadow};
 `;
 

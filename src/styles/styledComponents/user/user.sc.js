@@ -3,19 +3,15 @@ import colors from "../../core/colors";
 
 const expandPanel = keyframes`
   0% {width:0; opacity: 0; padding: 25px 0};
-  100% {width: 288px; height: ${window.innerHeight}px}
-/*   100% {height: ${window.innerHeight}px} */
+  100% {width: 288px;}
 `;
 
 const foldPanel = keyframes`
-  /* 0% {height: ${window.innerHeight}px}; */
-  0% {width: 288px; height: ${window.innerHeight}px};
+  0% {width: 288px;};
   100% {opacity: 0; padding: 25px 0}
 `;
 
-export const UserGlobalcontainer = styled.div`
-  z-index: 101;
-`;
+export const UserGlobalcontainer = styled.div``;
 
 export const ConnectContainer = styled.div`
   position: relative;
@@ -23,6 +19,7 @@ export const ConnectContainer = styled.div`
   width: 100%;
   max-width: 1920px;
   margin: auto;
+  z-index: 300;
 `;
 
 const OpenPanelMixin = css`
@@ -44,19 +41,21 @@ const LoadingPanelMixin = css`
 `;
 
 export const PanelContainer = styled.div`
+  z-index: 300;
   ${(props) => (props?.isPanelOpen ? OpenPanelMixin : ClosePanelMixin)};
   animation-duration: ${(props) => {
     return props?.isLoading ? LoadingPanelMixin : "";
   }};
   width: 0;
   display: block;
-  height: 0;
+  height: ${window.innerHeight}px;
   background-color: ${colors.mediumGrey};
   position: absolute;
   right: 0;
   top: 56px;
-  bottom: 56px;
+  bottom: 0;
   padding: 25px 16px;
+  overflow: scroll;
   box-shadow: -4px 0px 13px 2px ${colors.shadow};
 `;
 

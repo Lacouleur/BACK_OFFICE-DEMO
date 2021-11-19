@@ -38,10 +38,7 @@ import {
   optionSelector,
   valueSelector,
 } from "../../helper/fieldsHelper";
-import {
-  setAuthors,
-  setColorStyle,
-} from "../../store/actions/mainInformationActions";
+import { setAuthors } from "../../store/actions/mainInformationActions";
 
 const Field = ({
   type,
@@ -155,7 +152,6 @@ const Field = ({
             value={selectedAuthors}
             options={optionSelector("authors", authorsList)}
             onChange={(event) => {
-              console.log("EVENT", event);
               if (!event) {
                 setSelectedAuthors([]);
               } else {

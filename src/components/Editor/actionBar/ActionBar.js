@@ -165,7 +165,7 @@ const ActionBar = () => {
       manifestoState,
       actionBarState
     );
-  }, [MainInformationState]);
+  }, [MainInformationState, publicationFailed, status]);
 
   useEffect(() => {
     if (isOpenPublishModal === false) {

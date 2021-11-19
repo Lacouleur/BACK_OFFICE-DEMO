@@ -131,7 +131,10 @@ export function setButtonContent(
     if (!isManifesto) {
       let buttonStatus = status;
 
-      if (publicationFailed && !actionBarState?.publicationFailData?.retryAt) {
+      if (
+        publicationFailed === true &&
+        !actionBarState?.publicationFailData?.retryAt
+      ) {
         buttonStatus = "UNPUBLISHED";
       }
 

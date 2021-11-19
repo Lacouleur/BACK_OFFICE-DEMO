@@ -2,17 +2,27 @@ import styled, { keyframes, css } from "styled-components";
 import colors from "../../core/colors";
 
 const expandPanel = keyframes`
-  0% {width: 0; opacity: 0; padding: 25px 0};
-  100% {width: 288px}
+  0% {width:0; opacity: 0; padding: 25px 0};
+  100% {width: 288px; height: ${window.innerHeight}px}
+/*   100% {height: ${window.innerHeight}px} */
 `;
 
 const foldPanel = keyframes`
-  0% {width: 288px};
-  100% {width: 0; opacity: 0; padding: 25px 0}
+  /* 0% {height: ${window.innerHeight}px}; */
+  0% {width: 288px; height: ${window.innerHeight}px};
+  100% {opacity: 0; padding: 25px 0}
 `;
 
 export const UserGlobalcontainer = styled.div`
   z-index: 101;
+`;
+
+export const ConnectContainer = styled.div`
+  position: relative;
+  height: 56px;
+  width: 100%;
+  max-width: 1920px;
+  margin: auto;
 `;
 
 const OpenPanelMixin = css`
@@ -39,7 +49,8 @@ export const PanelContainer = styled.div`
     return props?.isLoading ? LoadingPanelMixin : "";
   }};
   width: 0;
-  height: ${window.innerHeight}px;
+  display: block;
+  height: 0;
   background-color: ${colors.mediumGrey};
   position: absolute;
   right: 0;
@@ -47,12 +58,6 @@ export const PanelContainer = styled.div`
   bottom: 56px;
   padding: 25px 16px;
   box-shadow: -4px 0px 13px 2px ${colors.shadow};
-`;
-
-export const toot = styled.div`
-  width: 150px;
-  height: 400px;
-  background-color: ${colors.lightGrey};
 `;
 
 export const ArrowIcon = styled.img`

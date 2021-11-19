@@ -11,7 +11,12 @@ import {
 import { setErrorAuth } from "../authActions";
 import { setModified, setStatus } from "../mainInformationActions";
 import { setManifestoStatus } from "../manifestoActions";
-import { setIsScheduled, showErrorModal } from "../actionBarActions";
+import {
+  setIsScheduled,
+  setPublishScheduleFailData,
+  setPublishScheduleFailed,
+  showErrorModal,
+} from "../actionBarActions";
 import { alreadyTranslated } from "../../../helper/errorMessages";
 import {
   consoleError,
@@ -67,6 +72,9 @@ export function publishAction(articleId, mode) {
           isManifesto
         );
         if (response.status < 300 && response.status > 199) {
+          dispatch(setPublishScheduleFailed(false));
+          dispatch(setPublishScheduleFailData(null));
+          dispatch(setIsScheduled(false));
           if (!isManifesto) {
             if (actionName === "PUBLISH") {
               dispatch(setStatus("PUBLISHED"));

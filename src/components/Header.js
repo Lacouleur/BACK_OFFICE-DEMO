@@ -14,7 +14,10 @@ import phoenixLogo from "../styles/assets/logos/phoenix-logo.svg";
 import { getToken, deleteToken } from "../services/client/tokenStuff";
 import { setPanelOpen } from "../store/actions/userPanelActions";
 import UserPanel from "./User/UserPanel";
-import { UserGlobalcontainer } from "../styles/styledComponents/user/user.sc";
+import {
+  ConnectContainer,
+  UserGlobalcontainer,
+} from "../styles/styledComponents/user/user.sc";
 
 const Header = ({ position }) => {
   const [isConnected] = useState(!!getToken());
@@ -31,7 +34,7 @@ const Header = ({ position }) => {
   return (
     <HeaderContainer position={position}>
       {isConnected && isAccessible && (
-        <>
+        <ConnectContainer>
           <UserGlobalcontainer ref={userPanel}>
             <ProfileBox
               onClick={() => {
@@ -51,7 +54,7 @@ const Header = ({ position }) => {
               history.push("/");
             }}
           />
-        </>
+        </ConnectContainer>
       )}
       <MainLogo src={phoenixLogo} />
     </HeaderContainer>

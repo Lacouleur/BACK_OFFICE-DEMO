@@ -42,7 +42,7 @@ export const ProfileBox = styled.div`
   align-items: center;
   justify-content: center;
   position: absolute;
-  right: 56px;
+  right: 5%;
   height: 100%;
   width: calc(288px - 56px);
   transform: translateY(-50%);

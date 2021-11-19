@@ -95,7 +95,7 @@ const MainInformation = () => {
         {!isOpen && !isManifesto && (
           <>
             <CollapsedText>{title}</CollapsedText>
-            <PreviewColorStyle color={colorStyle} />
+            <PreviewColorStyle color={colorStyle || "1"} />
             <CollapsedText>{slug}</CollapsedText>
             <CollapsedText>{lang}</CollapsedText>
           </>

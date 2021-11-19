@@ -15,7 +15,7 @@ import {
 } from "../store/actions/userPanelActions";
 import { sizeOrFormatError } from "./errorMessages";
 
-export const handleChange = (event, dispatch) => {
+export const handleChangeAvatar = (event, dispatch) => {
   const image = event.target.files[0];
   if (
     image &&

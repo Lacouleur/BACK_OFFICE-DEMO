@@ -16,8 +16,10 @@ import { setIsManifesto, setManifestolang} from "../../store/actions/manifestoAc
 import { TitleBox } from "../../styles/styledComponents/contentList/ContentList.sc";
 import { ManifestoLang, ManifestoTitle } from "../../styles/styledComponents/global/Titles.sc";
 import { fetchManifesto } from "../../store/actions/thunk/ManifestoActions.thunk";
+import { consolePage } from "../../helper/consoleStyles";
 
 const EditorCreateManifesto = () => {
+  
   const dispatch = useDispatch();
   const history = useHistory();
   const { lang } = useParams();
@@ -30,6 +32,7 @@ const EditorCreateManifesto = () => {
   const {manifestoId, manifestoLang } = manifestoState;
 
   useEffect(() => { 
+    console.log("%cPAGE => CREATE MANIFESTO", `${consolePage}`);
     dispatch(setIsManifesto(true))
     dispatch(setManifestolang(lang))
 

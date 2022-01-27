@@ -10,4 +10,5 @@ export const consoleSucces =
 export const consoleTitle =
   "font-size:14px; background-color:#bb86fc; margin:10px 0; color:black; padding: 0 10px; border-top: 1px solid #bb86fc";
 
-/*   {consoleError,consoleInfo,consoleSucces,consoleTitle} */
+export const consolePage =
+  "font-size:14px; background-color:#F79D00; margin:10px 0; color:black; padding: 0 10px;";

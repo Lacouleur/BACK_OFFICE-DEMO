@@ -46,6 +46,8 @@ export const SET_COLOR_STYLE = "SET_COLOR_STYLE";
 export const SET_CAPTION = "SET_CAPTION";
 export const SET_USERS = "SET_USERS";
 export const SET_AUTHORS = "SET_AUTHORS";
+export const SET_TAGS = "SET_TAGS";
+export const SET_TAGS_LIST = "SET_TAGS_LIST";
 
 // MANIFESTO
 export const SET_IS_MANIFESTO = "IS_MANIFESTO";

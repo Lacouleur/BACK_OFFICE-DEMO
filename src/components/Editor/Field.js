@@ -1,14 +1,20 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-new */
 /* eslint-disable react/jsx-curly-newline */
 /* eslint-disable react/jsx-one-expression-per-line */
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
+import makeAnimated from "react-select/animated";
+import Fuse from "fuse.js";
 
+import { useRef } from "react";
 import { addSeoDescription } from "../../store/actions/seoActions";
 import {
   FieldStyle,
   Selector,
   SelectorTag,
+  SelectorAndCreateTag,
   FieldError,
   ErrorIcon,
   FieldContainer,
@@ -16,11 +22,24 @@ import {
   TextArea,
   FieldBox,
   FieldButton,
+  WarningCreate,
+  ButtonWarn,
+  TextWarn,
+  BoxWarnButton,
+  TagBox,
+  FieldTitle,
+  Line,
+  FieldTitleBox,
+  WarningCreateContainer,
+  WarnCreateBox,
 } from "../../styles/styledComponents/global/Field.sc";
 import colors from "../../styles/core/colors";
 import exclamationIcon from "../../styles/assets/icons/exclamationGrey.svg";
 import exclamationVioletIcon from "../../styles/assets/icons/exclamation.svg";
-import { fetchCategoriesList } from "../../store/actions/thunk/ArticlesActions.thunk";
+import {
+  fetchCategoriesList,
+  fetchTags,
+} from "../../store/actions/thunk/ArticlesActions.thunk";
 import {
   Tooltip,
   TooltipText,
@@ -30,16 +49,25 @@ import { setOpinionExplain } from "../../store/actions/moduleActions";
 
 import {
   dispatchAuthors,
+  dispatchTags,
   dispatchFields,
   dispatchSelected,
-  handleChange,
+  checkImage,
   initAuthorsSelector,
+  initTagsSelector,
   onEdit,
   optionSelector,
   valueSelector,
+  validTagCreation,
+  fuzzyOptions,
+  loadOptions,
 } from "../../helper/fieldsHelper";
-import { setAuthors } from "../../store/actions/mainInformationActions";
+import {
+  setAuthors,
+  setTags,
+} from "../../store/actions/mainInformationActions";
 
+// All necessary methods of "Field" are in "fieldsHelper.js"
 const Field = ({
   type,
   placeholder,
@@ -52,6 +80,7 @@ const Field = ({
   edit,
   moduleId,
   answerId,
+  lang,
 }) => {
   const dispatch = useDispatch();
   const [editCategory, setEditCategory] = useState();
@@ -60,13 +89,37 @@ const Field = ({
   const [selectedColorStyle, setSelectedColorStyle] = useState();
   const [fileTitle, setFileTitle] = useState("");
   const [selectedAuthors, setSelectedAuthors] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [newTag, setNewTag] = useState();
+  const [isOpenTagWarn, setIsOpenTagWarn] = useState();
+  const animatedComponents = makeAnimated();
+  const [fuse, setFuse] = useState(null);
 
   const MainInformationState = useSelector(
     ({ mainInformationReducer }) => mainInformationReducer
   );
 
-  const { categoriesList, status, authorsList } = MainInformationState;
+  const {
+    categoriesList,
+    status,
+    authorsList,
+    tagsList,
+  } = MainInformationState;
 
+  // Fuse search -> dynamic tag search field
+  useEffect(() => {
+    setFuse(new Fuse(tagsList, fuzzyOptions));
+    return () => setFuse(null);
+  }, [tagsList]);
+
+  // fuse search -> dynamic tag search field
+  useEffect(() => {
+    if ((tagsList, fuse)) {
+      fuse.setCollection(tagsList);
+    }
+  }, [fuse, tagsList]);
+
+  // Multi selector fiels
   useEffect(() => {
     if (
       name === "category" &&
@@ -74,8 +127,13 @@ const Field = ({
     ) {
       dispatch(fetchCategoriesList());
     }
+
+    if (name === "tags" && lang) {
+      dispatch(fetchTags(lang));
+    }
   }, []);
 
+  // Regular selector fields
   useEffect(() => {
     onEdit(
       edit,
@@ -90,15 +148,21 @@ const Field = ({
       setSelectedColorStyle
     );
 
-    if (fieldType === "select-tag") {
-      initAuthorsSelector(
-        edit,
-        setSelectedAuthors,
-        selectedAuthors,
-        authorsList
-      );
+    if (fieldType === "multi-value") {
+      if (name === "tags") {
+        initTagsSelector(edit, setSelectedTags, selectedTags, tagsList);
+      }
+
+      if (name === "authors") {
+        initAuthorsSelector(
+          edit,
+          setSelectedAuthors,
+          selectedAuthors,
+          authorsList
+        );
+      }
     }
-  }, [edit, categoriesList, authorsList]);
+  }, [edit, categoriesList, authorsList, tagsList]);
 
   // Next functions concern File Uploader fields
   const hiddenFileInput = React.useRef(null);
@@ -108,10 +172,20 @@ const Field = ({
 
   return (
     <FieldContainer>
+      {/*      <FieldTitleBox>
+        <FieldTitle>{name}</FieldTitle>
+        <Line />
+      </FieldTitleBox> */}
+
+      {/* regular selector fields */}
+
       {fieldType && fieldType === "select" && (
         <FieldBox>
           <Selector
-            isDisabled={name === "lang" && !(status === "DRAFT" || !status)}
+            isDisabled={
+              (name === "lang" || name === "category") &&
+              !(status === "DRAFT" || !status)
+            }
             value={valueSelector(
               name,
               editCategory,
@@ -144,24 +218,129 @@ const Field = ({
           )}
         </FieldBox>
       )}
-      {fieldType && fieldType === "select-tag" && (
+
+      {/* multi value Selector */}
+
+      {fieldType && fieldType === "multi-value" && (
         <FieldBox>
-          <SelectorTag
-            classNamePrefix="select"
-            isMulti
-            value={selectedAuthors}
-            options={optionSelector("authors", authorsList)}
-            onChange={(event) => {
-              if (!event) {
-                setSelectedAuthors([]);
-              } else {
-                setSelectedAuthors(event);
-              }
-              dispatch(setAuthors(dispatchAuthors(event || [])));
-            }}
-          />
+          {/* tag selector */}
+
+          {name === "tags" && (
+            <>
+              {/* Warn message on new tag creation */}
+              {isOpenTagWarn && newTag?.label && (
+                <>
+                  <WarningCreateContainer>
+                    <TextWarn violet margin>
+                      Please note that the creation of a tag is final.
+                    </TextWarn>
+                    <WarnCreateBox>
+                      <TextWarn width30>
+                        Do you want to create the tag :
+                      </TextWarn>
+                      <TagBox>{`${newTag.label}`}</TagBox>
+                      <BoxWarnButton>
+                        <ButtonWarn
+                          autoFocus
+                          type="button"
+                          onClick={() => {
+                            validTagCreation(
+                              dispatch,
+                              newTag,
+                              lang,
+                              setNewTag,
+                              setSelectedTags,
+                              selectedTags,
+                              setIsOpenTagWarn
+                            );
+                          }}
+                        >
+                          Yes
+                        </ButtonWarn>
+                        <ButtonWarn
+                          type="button"
+                          onClick={() => {
+                            setNewTag("");
+                            setIsOpenTagWarn(false);
+                          }}
+                        >
+                          No
+                        </ButtonWarn>
+                      </BoxWarnButton>
+                    </WarnCreateBox>
+                  </WarningCreateContainer>
+                </>
+              )}
+
+              {/* tag Selector with fuse dynamic search */}
+
+              <SelectorAndCreateTag
+                isDisabled={!!isOpenTagWarn}
+                classNamePrefix="select"
+                isMulti
+                isSearchable
+                components={animatedComponents}
+                closeMenuOnSelect={false}
+                menuIsOpen={isOpenTagWarn ? false : undefined}
+                placeholder={placeholder}
+                value={selectedTags}
+                options={tagsList}
+                getOptionValue={(option) => `${option.label}`}
+                onCreateOption={(event) => {
+                  setNewTag({ label: event });
+                  setIsOpenTagWarn(true);
+                }}
+                fuzzyOptions={fuzzyOptions}
+                autoCorrect="off"
+                spellCheck="off"
+                styles={{
+                  /* Hack to stylize the create Button */
+                  option: (provided, state) => ({
+                    ...provided,
+                    background:
+                      state.data.__isNew__ && `${colors.matBlack} !important`,
+                    color: state.data.__isNew__ && `${colors.green} !important`,
+                  }),
+                }}
+                defaultOptions={tagsList}
+                loadOptions={(value) => loadOptions(value, fuse)}
+                onChange={(event) => {
+                  setSelectedTags(event);
+                  dispatch(setTags(dispatchTags(event || [])));
+                }}
+              />
+            </>
+          )}
+
+          {/* authors selector */}
+
+          {name === "authors" && (
+            <>
+              <SelectorTag
+                classNamePrefix="select"
+                isMulti
+                components={animatedComponents}
+                closeMenuOnSelect={false}
+                placeholder={placeholder}
+                defaultValue={selectedAuthors}
+                value={selectedAuthors}
+                options={optionSelector("authors", authorsList)}
+                onChange={(event) => {
+                  if (!event) {
+                    setSelectedAuthors([]);
+                  } else {
+                    setSelectedAuthors(event);
+                  }
+                  dispatch(setAuthors(dispatchAuthors(event || [])));
+                }}
+              />
+            </>
+          )}
         </FieldBox>
       )}
+
+      {/* text area fields */}
+
       {fieldType && fieldType === "textarea" && (
         <TextArea
           placeholder={placeholder}
@@ -179,6 +358,9 @@ const Field = ({
           }}
         />
       )}
+
+      {/* uploaders fields */}
+
       {fieldType && fieldType === "uploader" && (
         <FieldBox
           onClick={(e) => {
@@ -202,7 +384,7 @@ const Field = ({
             type="file"
             ref={hiddenFileInput}
             onChange={(event) =>
-              handleChange(event, dispatch, setFileTitle, name, moduleId)
+              checkImage(event, dispatch, setFileTitle, name, moduleId)
             }
             style={{ display: "none" }}
           />
@@ -281,6 +463,7 @@ Field.defaultProps = {
   edit: undefined,
   moduleId: undefined,
   answerId: undefined,
+  lang: undefined,
 };
 
 Field.propTypes = {
@@ -295,6 +478,7 @@ Field.propTypes = {
   edit: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   moduleId: PropTypes.string,
   answerId: PropTypes.string,
+  lang: PropTypes.string,
 };
 
 export default Field;

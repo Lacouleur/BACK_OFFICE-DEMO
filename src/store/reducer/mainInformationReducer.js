@@ -20,6 +20,8 @@ import {
   SET_CAPTION,
   SET_USERS,
   SET_AUTHORS,
+  SET_TAGS,
+  SET_TAGS_LIST,
 } from "../constants";
 
 const initialState = {
@@ -45,6 +47,8 @@ const initialState = {
   users: [],
   authorsList: [],
   authors: [],
+  tagsList: [],
+  tags: [],
 };
 
 const mainInformationReducer = (state = initialState, action = {}) => {
@@ -179,6 +183,7 @@ const mainInformationReducer = (state = initialState, action = {}) => {
         colorStyle: action.payload?.theme ?? null,
         caption: action.payload?.partnership ?? null,
         authors: action.payload?.authors,
+        tags: action.payload?.tags ?? null,
       };
     }
 
@@ -194,6 +199,22 @@ const mainInformationReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         authors: action.payload,
+        isChanged: true,
+      };
+    }
+
+    case SET_TAGS: {
+      return {
+        ...oldState,
+        tags: action.payload,
+        isChanged: true,
+      };
+    }
+
+    case SET_TAGS_LIST: {
+      return {
+        ...oldState,
+        tagsList: action.payload,
         isChanged: true,
       };
     }

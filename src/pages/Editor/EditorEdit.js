@@ -39,9 +39,11 @@ import { HideOnDnd } from "../../styles/styledComponents/editor/modules/Modules.
 import { onDragEnd } from "../../helper/Editor/dragAndDrop";
 import { setIsAccessiblePanel } from "../../store/actions/userPanelActions";
 import ModulesDispatcher from "../../components/Editor/Sections/Modules/ModulesDispatcher";
+import { consolePage } from "../../helper/consoleStyles";
 
 
 const Editor = () => {
+  
   const dispatch = useDispatch();
   const { articleId } = useParams();
   const [isOpen, setIsOpen] = useState(false);
@@ -53,6 +55,7 @@ const Editor = () => {
   const { isOpenCloseModal, aModuleIsOpen } = actionBarState;
 
   useEffect(() => {
+      console.log("%cPAGE => EDIT CONTENT", `${consolePage}`);
       dispatch(setIsManifesto(false))
       dispatch(fetchContent(articleId));
       dispatch(setArticleId(articleId));

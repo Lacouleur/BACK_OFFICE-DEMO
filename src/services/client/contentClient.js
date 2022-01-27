@@ -42,6 +42,24 @@ export function getManifesto(lang) {
   });
 }
 
+export function postTag(label, lang) {
+  return axiosConfig({
+    method: "post",
+    url: `/tags?language=${lang}`,
+    data: { label },
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}
+export function getTags(lang) {
+  return axiosConfig.get(`/tags?lang=${lang}`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}
+
 export function postManifesto(values, lang) {
   let string = "";
   if (lang) {

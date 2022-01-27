@@ -1,13 +1,34 @@
 import styled, { css } from "styled-components";
 import TextareaAutosize from "react-textarea-autosize";
 import ReactSelect from "react-select";
+import CreatableSelect from "react-select/async-creatable";
 import colors from "../../core/colors";
 
-export const FieldContainer = styled.div`
-  width: ${(props) => props.styles?.width || "50%"};
-  flex-direction: column;
-  margin-bottom: 30px;
-  margin: 16px 0 16px 0;
+export const FieldTitle = styled.p`
+  margin-left: 16px;
+  z-index: 21;
+  color: ${colors.lightGrey};
+  font-size: 14px;
+  opacity: 0.8;
+  text-transform: capitalize;
+`;
+
+export const Line = styled.div`
+  height: 1px;
+  width: 90%;
+  background-color: ${colors.paleViolet};
+  z-index: 18;
+  margin-left: 16px;
+  box-shadow: 0px 0px 10px 1px ${colors.paleVioletTransp};
+  align-self: center;
+  opacity: 0;
+`;
+
+export const FieldTitleBox = styled.div`
+  display: flex;
+  position: absolute;
+  top: -10px;
+  width: 100%;
 `;
 
 export const FieldBox = styled.div`
@@ -100,6 +121,7 @@ const activeSelectorMixin = css`
 export const Selector = styled(ReactSelect)`
   ${(props) =>
     props.isDisabled ? unactiveSelectorMixin : activeSelectorMixin};
+
   & .select {
     &__indicator &__dropdown-indicator {
       border-color: none;
@@ -119,13 +141,18 @@ export const Selector = styled(ReactSelect)`
     }
 
     &__menu {
-      height: 56px;
       margin-top: 0;
       background-color: ${colors.darkGrey};
       border: none;
       box-shadow: none;
       border-radius: 0;
-      z-index: 101;
+      z-index: 205;
+      &-list {
+        z-index: 205;
+        border-bottom: 1px solid ${colors.paleViolet};
+        border-right: 1px solid ${colors.paleViolet};
+        border-left: 1px solid ${colors.paleViolet};
+      }
     }
 
     &__option {
@@ -166,6 +193,8 @@ export const SelectorTag = styled(ReactSelect)`
       background-color: ${colors.darkGrey};
       border-radius: 20px;
       border: 1px solid ${colors.paleViolet};
+      width: 150px;
+      overflow: visible;
 
       &__label {
         color: ${colors.white};
@@ -173,7 +202,7 @@ export const SelectorTag = styled(ReactSelect)`
     }
 
     &__control {
-      height: 100%;
+      height: 56px;
       background-color: ${colors.darkGrey};
       border: none;
       border-bottom-left-radius: 0;
@@ -195,8 +224,12 @@ export const SelectorTag = styled(ReactSelect)`
       z-index: 205;
       &-list {
         z-index: 205;
-        height: 200px;
-        border: 1px solid ${colors.paleViolet};
+        background-color: ${colors.darkGrey};
+        min-height: 56px;
+        max-height: 200px;
+        border-bottom: 1px solid ${colors.paleViolet};
+        border-right: 1px solid ${colors.paleViolet};
+        border-left: 1px solid ${colors.paleViolet};
       }
     }
 
@@ -206,6 +239,157 @@ export const SelectorTag = styled(ReactSelect)`
     }
 
     &__option {
+      &--is-focused {
+        background-color: ${colors.paleViolet};
+      }
+    }
+
+    &__value {
+      &-container {
+        padding-left: 20px;
+      }
+    }
+
+    &__clear-indicator {
+      color: ${colors.paleVioletTransp};
+      &:hover {
+        color: ${colors.paleViolet};
+      }
+    }
+  }
+`;
+
+export const WarningCreateContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: ${colors.darkGrey};
+  position: relative;
+  z-index: 19;
+  width: 100%;
+  height: 100%;
+  min-height: 100px;
+  margin-bottom: 16px;
+`;
+
+export const TextWarn = styled.div`
+  margin-right: 12px;
+  margin-left: 12px;
+  z-index: 20;
+  width: ${(props) => (props.width30 ? "30%" : "auto")};
+  color: ${(props) => (props.violet ? colors.paleViolet : colors.white)};
+  padding: ${(props) => (props.margin ? "16px 0 16px 16px" : "0 0 0 16px")};
+`;
+
+export const WarnCreateBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: ${colors.darkGrey};
+  height: 100%;
+`;
+
+export const BoxWarnButton = styled.div`
+  width: 90px;
+  display: flex;
+  justify-content: space-between;
+  margin-left: auto;
+  margin-right: 20px;
+`;
+
+export const ButtonWarn = styled.button`
+  width: 40px;
+  border: 2px solid ${colors.white};
+  border-radius: 25px;
+  text-align: center;
+  padding: 3px;
+  z-index: 99;
+  opacity: 0.8;
+  background: none;
+  color: ${colors.white};
+  cursor: pointer;
+  &:hover {
+    border: 2px solid ${colors.paleViolet};
+    color: ${colors.paleViolet};
+    opacity: 1;
+    box-shadow: 0px 0px 10px 1px ${colors.paleVioletTransp};
+  }
+`;
+
+export const TagBox = styled.div`
+  border: 2px solid ${colors.paleViolet};
+  border-radius: 25px;
+  text-align: center;
+  padding: 3px 10px;
+`;
+
+export const SelectorAndCreateTag = styled(CreatableSelect)`
+  ${(props) =>
+    props.isDisabled ? unactiveSelectorMixin : activeSelectorMixin};
+
+  & .select {
+    &__indicator &__dropdown-indicator {
+      border-color: none;
+    }
+
+    &__input {
+      color: ${colors.paleViolet};
+      margin-left: 8px;
+    }
+
+    &__multi-value {
+      background-color: ${colors.darkGrey};
+      border-radius: 20px;
+      border: 1px solid ${colors.paleViolet};
+
+      &__label {
+        color: ${colors.white};
+      }
+    }
+
+    &__control {
+      height: 56px;
+      background-color: ${colors.darkGrey};
+      border: none;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+
+      &--is-focused {
+        border: none;
+        box-shadow: none;
+      }
+    }
+
+    &__menu {
+      height: 56px;
+      margin-top: 0;
+      background-color: ${colors.darkGrey};
+      border: none;
+      box-shadow: none;
+      border-radius: 0;
+      z-index: 205;
+      &-list {
+        z-index: 205;
+        display: flex;
+        flex-wrap: wrap;
+        background-color: ${colors.darkGrey};
+        min-height: 56px;
+        max-height: 200px;
+        border: 1px solid ${colors.paleViolet};
+      }
+    }
+
+    &__option {
+      background-color: ${colors.darkGrey};
+      color: ${(props) => props.color || colors.white};
+      border-radius: 20px;
+      border: 1px solid ${colors.paleViolet};
+      width: auto !important;
+      margin: 4px;
+      height: 24px;
+      text-align: center;
+      font-size: 85%;
+      padding: 4px 8px !important;
+      cursor: pointer;
       &--is-focused {
         background-color: ${colors.paleViolet};
       }
@@ -304,4 +488,46 @@ export const FieldButton = styled.div`
   right: 16px;
   transform: translateY(-50%);
   top: 50%;
+`;
+
+export const FieldContainer = styled.div`
+  width: ${(props) => props.styles?.width || "50%"};
+  flex-direction: column;
+  margin-bottom: 30px;
+  margin: 16px 0 16px 0;
+  position: relative;
+
+  &:hover {
+    & ${FieldTitle} {
+      color: ${colors.paleViolet};
+      opacity: 1;
+      font-size: 16px;
+    }
+    & ${Line} {
+      opacity: 1;
+      box-shadow: 0px 0px 10px 1px ${colors.paleVioletTransp};
+    }
+
+    & ${Selector} {
+      .select__indicator-separator {
+        background-color: ${colors.paleViolet};
+      }
+    }
+
+    & ${SelectorAndCreateTag} {
+      &:hover {
+        .select__indicator-separator {
+          background-color: ${colors.paleViolet} !important;
+        }
+      }
+    }
+
+    & ${SelectorTag} {
+      &:hover {
+        .select__indicator-separator {
+          background-color: ${colors.paleViolet} !important;
+        }
+      }
+    }
+  }
 `;

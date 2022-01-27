@@ -55,6 +55,7 @@ const MainInformation = () => {
     titleError,
     postingError,
     authors,
+    tags,
     users,
   } = mainInformationState;
 
@@ -133,6 +134,7 @@ const MainInformation = () => {
                   edit={slug}
                   error={regexSlugError || postingError || slugError}
                 />
+
                 <Field
                   placeholder="Category"
                   name="category"
@@ -179,7 +181,16 @@ const MainInformation = () => {
                   name="authors"
                   section="mainInformation"
                   edit={authors || ""}
-                  fieldType="select-tag"
+                  fieldType="multi-value"
+                />
+
+                <Field
+                  placeholder="Tags"
+                  name="tags"
+                  section="mainInformation"
+                  edit={tags || ""}
+                  fieldType="multi-value"
+                  lang={lang}
                 />
               </>
             )}

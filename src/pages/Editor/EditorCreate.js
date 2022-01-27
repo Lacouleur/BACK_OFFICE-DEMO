@@ -14,10 +14,12 @@ import {
 import ActionBar from "../../components/Editor/actionBar/ActionBar";
 import { setIsManifesto } from "../../store/actions/manifestoActions";
 import { setIsAccessiblePanel } from "../../store/actions/userPanelActions";
+import { consolePage } from "../../helper/consoleStyles";
 
 
 
 const EditorCreate = () => {
+  
   const dispatch = useDispatch();
   const history = useHistory();
   const MainInformationState = useSelector(
@@ -25,6 +27,10 @@ const EditorCreate = () => {
   );
 
   const {isPosted, articleId } = MainInformationState;
+
+  useEffect(() => {
+    console.log("%cPAGE => CREATE CONTENT", `${consolePage}`);
+  }, []);
 
   useEffect(() => {
     dispatch(setIsManifesto(false))

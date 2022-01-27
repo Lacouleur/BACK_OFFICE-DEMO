@@ -3,8 +3,10 @@ import {
   getCategories,
   getContent,
   getContentList,
+  getTags,
   getUsers,
   postContent,
+  postTag,
   updateContent,
 } from "../../../services/client/contentClient";
 import { isValidToken } from "../../../services/client/refreshToken";
@@ -30,6 +32,7 @@ import {
   setModified,
   setStatus,
   setUsers,
+  setTagsList,
 } from "../mainInformationActions";
 import { deleteToken } from "../../../services/client/tokenStuff";
 
@@ -59,6 +62,7 @@ export function checkAndSend(type = "save", articleId = null) {
         colorStyle,
         caption,
         authors,
+        tags,
       } = mainInformationReducer;
       const { description, title: seoTitle } = seoReducer;
       const {
@@ -118,6 +122,7 @@ export function checkAndSend(type = "save", articleId = null) {
             : undefined,
           partnership: caption,
           authors,
+          tags,
         };
       } else {
         values = {
@@ -125,6 +130,8 @@ export function checkAndSend(type = "save", articleId = null) {
           slug,
           category: !category ? null : category,
           theme: colorStyle || "1",
+          authors,
+          tags,
         };
       }
 
@@ -348,6 +355,51 @@ export function fetchUsers() {
         if (response.status < 300 && response.status > 199) {
           console.log("%cFetched Users =>", `${consoleInfo}`, response.data);
           dispatch(setUsers(response.data));
+        }
+        return null;
+      } catch (error) {
+        console.log("%cError =>", `${consoleError}`, error?.response?.data);
+        return null;
+      }
+    }
+    return null;
+  };
+}
+
+export function fetchTags(lang) {
+  console.log("%cFETCH TAGS=>", `${consoleTitle}`);
+  return async (dispatch) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
+      try {
+        const response = await getTags(lang);
+        if (response.status < 300 && response.status > 199) {
+          console.log("%cFetched Tags =>", `${consoleInfo}`, response.data);
+          dispatch(setTagsList(response.data));
+        }
+        return null;
+      } catch (error) {
+        console.log("%cError =>", `${consoleError}`, error?.response?.data);
+        return null;
+      }
+    }
+    return null;
+  };
+}
+
+export function createTag(label, lang, setNewTag) {
+  console.log("%cCREATING TAG=>", `${consoleTitle}`, label);
+  return async (dispatch, getState) => {
+    const { mainInformationReducer } = getState();
+    const { tagsList } = mainInformationReducer;
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
+      try {
+        const response = await postTag(label, lang);
+        if (response.status < 300 && response.status > 199) {
+          console.log("%cTag Created=>", `${consoleInfo}`, response.data);
+          setNewTag({ label, _id: response.data });
+          dispatch(setTagsList([...tagsList, { label, _id: response.data }]));
         }
         return null;
       } catch (error) {

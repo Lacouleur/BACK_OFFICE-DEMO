@@ -37,8 +37,10 @@ import { onDragEnd } from "../../helper/Editor/dragAndDrop";
 import { HideOnDnd} from "../../styles/styledComponents/editor/modules/Modules.sc";
 import { setIsAccessiblePanel } from "../../store/actions/userPanelActions";
 import ModulesDispatcher from "../../components/Editor/Sections/Modules/ModulesDispatcher";
+import { consolePage } from "../../helper/consoleStyles";
 
 const EditorManifesto = () => {
+ 
   const dispatch = useDispatch();
   const { lang } = useParams();
   const [isOpen, setIsOpen] = useState(false);
@@ -53,6 +55,7 @@ const EditorManifesto = () => {
  const { isOpenCloseModal, aModuleIsOpen} = actionBarState;
 
   useEffect(() => {
+    console.log("%cPAGE => EDIT MANIFESTO", `${consolePage}`);
     dispatch(setIsAccessiblePanel(false));
     dispatch(setIsManifesto(true));
     if (!manifestoId) {

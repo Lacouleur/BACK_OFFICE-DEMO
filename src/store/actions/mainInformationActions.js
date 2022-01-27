@@ -12,6 +12,8 @@ import {
   SET_CAPTION,
   SET_USERS,
   SET_AUTHORS,
+  SET_TAGS,
+  SET_TAGS_LIST,
 } from "../constants";
 
 export const addTitle = (payload) => ({
@@ -76,5 +78,15 @@ export const setUsers = (payload) => ({
 
 export const setAuthors = (payload) => ({
   type: SET_AUTHORS,
+  payload,
+});
+
+export const setTags = (payload) => ({
+  type: SET_TAGS,
+  payload,
+});
+
+export const setTagsList = (payload) => ({
+  type: SET_TAGS_LIST,
   payload,
 });

@@ -19,6 +19,7 @@ import PageContainer from "../styles/styledComponents/global/PageContainer.sc";
 import Error from "../components/Notifications/Error";
 import { logUser } from "../store/actions/thunk/ActionBarActions.thunk";
 import { getRefreshToken, getToken } from "../services/client/tokenStuff";
+import { consolePage } from "../helper/consoleStyles";
 
 const Auth = () => {
   const authState = useSelector(({ authReducer }) => authReducer);
@@ -35,6 +36,7 @@ const Auth = () => {
   };
 
   useEffect(() => {
+    console.log("%cPAGE => AUTH", `${consolePage}`);
     if (getToken() && getRefreshToken()) {
       history.push("/dashboard");
     }

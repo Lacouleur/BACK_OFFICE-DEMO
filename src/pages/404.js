@@ -7,11 +7,13 @@ import {
   Title404,
 } from "../styles/styledComponents/global/404.sc";
 import Button from "../styles/styledComponents/global/Buttons/Buttons.sc";
+import { consolePage } from "../helper/consoleStyles";
 
 const Error404 = () => {
   const history = useHistory();
 
   useEffect(() => {
+    console.log("%cPAGE => 404", `${consolePage}`);
     setTimeout(() => {
       history.push("/");
     }, 2000);

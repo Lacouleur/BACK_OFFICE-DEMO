@@ -22,10 +22,12 @@ import {
   setOpinionTextAnswer,
 } from "../store/actions/moduleActions";
 import { addSeoTitle } from "../store/actions/seoActions";
+import { createTag } from "../store/actions/thunk/ArticlesActions.thunk";
 import { saveImage } from "../store/actions/thunk/ModulesActions.thunk";
 import { sizeOrFormatError } from "./errorMessages";
 import langList from "./langList";
 
+// Hard coded reading time list for theming.
 export const readingTimeList = [
   {
     label: "1 min",
@@ -65,6 +67,7 @@ export const readingTimeList = [
   },
 ];
 
+// Hard coded Color list for theming.
 export const colorStyleList = [
   {
     label: "Blue",
@@ -76,6 +79,7 @@ export const colorStyleList = [
   },
 ];
 
+// match selection with current list for simple selector fields.
 export function onEdit(
   edit,
   categoriesList,
@@ -132,6 +136,7 @@ export function onEdit(
   }
 }
 
+// Init the Author selector with fetched tags from API
 export function initAuthorsSelector(
   edit,
   setSelectedAuthors,
@@ -154,6 +159,7 @@ export function initAuthorsSelector(
   }
 }
 
+// build a clean array usable for dispatch
 export function dispatchAuthors(event) {
   const arr = [];
   event.map((author) => {
@@ -163,7 +169,43 @@ export function dispatchAuthors(event) {
   return arr;
 }
 
-export function handleChange(event, dispatch, setFileTitle, name, moduleId) {
+// Init the tag selector with fetched tags from API
+export function initTagsSelector(
+  edit,
+  setSelectedTags,
+  selectedTags,
+  tagsList
+) {
+  if (selectedTags?.length === 0 && tagsList && edit) {
+    const buildTagList = [];
+    tagsList.map((tag) => {
+      edit.map((tagId) => {
+        if (tagId === tag._id) {
+          buildTagList.push(tag);
+        }
+
+        return null;
+      });
+      setSelectedTags(buildTagList);
+      return null;
+    });
+  }
+}
+
+// Dispatch selected tags in the reducer.
+export function dispatchTags(event) {
+  const arr = [];
+  event.map((tag) => {
+    if (tag._id) {
+      arr.push(tag._id);
+    }
+    return null;
+  });
+  return arr;
+}
+
+// Check image of the upload fields, throw modal error if not valid
+export function checkImage(event, dispatch, setFileTitle, name, moduleId) {
   const file = event.target.files[0];
   if (
     file &&
@@ -181,6 +223,7 @@ export function handleChange(event, dispatch, setFileTitle, name, moduleId) {
   }
 }
 
+// feed multi-selector with fetched selected values.
 export function valueSelector(
   name,
   editCategory,
@@ -218,6 +261,7 @@ export function createAutorsList(users) {
   return authorList;
 }
 
+// feeding selector field with the good option list
 export function optionSelector(name, list) {
   switch (name) {
     case "category":
@@ -240,6 +284,7 @@ export function optionSelector(name, list) {
   }
 }
 
+// dispatch the value of selector field in th good reducer.
 export function dispatchSelected(
   event,
   dispatch,
@@ -282,6 +327,26 @@ export function dispatchSelected(
   return null;
 }
 
+export async function validTagCreation(
+  dispatch,
+  newTag,
+  lang,
+  setNewTag,
+  setSelectedTags,
+  selectedTags,
+  setIsOpenTagWarn
+) {
+  await dispatch(createTag(newTag.label, lang, setNewTag));
+  setSelectedTags(
+    !selectedTags && selectedTags?.length === 0
+      ? [newTag]
+      : [...selectedTags, newTag]
+  );
+  setNewTag("");
+  setIsOpenTagWarn(false);
+}
+
+// dispatch the value of field in th good reducer.
 export function dispatchFields(
   name,
   section,
@@ -353,3 +418,20 @@ export function dispatchFields(
   }
   return null;
 }
+
+// Fuse.js + react-select -> dynamic tag search field
+export async function loadOptions(inputValue, fuse) {
+  if (!inputValue) {
+    return [];
+  }
+  const result = await fuse.search(inputValue).map((c) => ({ ...c.item }));
+  return result;
+}
+
+// fuze.js options
+// https://fusejs.io/demo.html
+export const fuzzyOptions = {
+  keys: ["label"],
+  limit: 15,
+  distance: 4,
+};

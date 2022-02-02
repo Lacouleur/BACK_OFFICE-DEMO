@@ -13,7 +13,7 @@ import { addSeoDescription } from "../../store/actions/seoActions";
 import {
   FieldStyle,
   Selector,
-  SelectorTag,
+  SelectorAuthor,
   SelectorAndCreateTag,
   FieldError,
   ErrorIcon,
@@ -22,7 +22,6 @@ import {
   TextArea,
   FieldBox,
   FieldButton,
-  WarningCreate,
   ButtonWarn,
   TextWarn,
   BoxWarnButton,
@@ -37,6 +36,7 @@ import colors from "../../styles/core/colors";
 import exclamationIcon from "../../styles/assets/icons/exclamationGrey.svg";
 import exclamationVioletIcon from "../../styles/assets/icons/exclamation.svg";
 import {
+  createTag,
   fetchCategoriesList,
   fetchTags,
 } from "../../store/actions/thunk/ArticlesActions.thunk";
@@ -58,13 +58,13 @@ import {
   onEdit,
   optionSelector,
   valueSelector,
-  validTagCreation,
   fuzzyOptions,
   loadOptions,
 } from "../../helper/fieldsHelper";
 import {
   setAuthors,
   setTags,
+  setNewTag,
 } from "../../store/actions/mainInformationActions";
 
 // All necessary methods of "Field" are in "fieldsHelper.js"
@@ -90,7 +90,6 @@ const Field = ({
   const [fileTitle, setFileTitle] = useState("");
   const [selectedAuthors, setSelectedAuthors] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
-  const [newTag, setNewTag] = useState();
   const [isOpenTagWarn, setIsOpenTagWarn] = useState();
   const animatedComponents = makeAnimated();
   const [fuse, setFuse] = useState(null);
@@ -104,6 +103,7 @@ const Field = ({
     status,
     authorsList,
     tagsList,
+    newTag,
   } = MainInformationState;
 
   // Fuse search -> dynamic tag search field
@@ -172,10 +172,12 @@ const Field = ({
 
   return (
     <FieldContainer>
-      {/*      <FieldTitleBox>
-        <FieldTitle>{name}</FieldTitle>
-        <Line />
-      </FieldTitleBox> */}
+      {!error && (
+        <FieldTitleBox>
+          <FieldTitle>{name}</FieldTitle>
+          <Line />
+        </FieldTitleBox>
+      )}
 
       {/* regular selector fields */}
 
@@ -244,14 +246,14 @@ const Field = ({
                           autoFocus
                           type="button"
                           onClick={() => {
-                            validTagCreation(
-                              dispatch,
-                              newTag,
-                              lang,
-                              setNewTag,
-                              setSelectedTags,
-                              selectedTags,
-                              setIsOpenTagWarn
+                            dispatch(
+                              createTag(
+                                newTag.label,
+                                lang,
+                                setSelectedTags,
+                                selectedTags,
+                                setIsOpenTagWarn
+                              )
                             );
                           }}
                         >
@@ -260,7 +262,7 @@ const Field = ({
                         <ButtonWarn
                           type="button"
                           onClick={() => {
-                            setNewTag("");
+                            dispatch(setNewTag(undefined));
                             setIsOpenTagWarn(false);
                           }}
                         >
@@ -283,11 +285,11 @@ const Field = ({
                 closeMenuOnSelect={false}
                 menuIsOpen={isOpenTagWarn ? false : undefined}
                 placeholder={placeholder}
+                defaultValue={selectedTags}
                 value={selectedTags}
-                options={tagsList}
                 getOptionValue={(option) => `${option.label}`}
                 onCreateOption={(event) => {
-                  setNewTag({ label: event });
+                  dispatch(setNewTag({ label: event }));
                   setIsOpenTagWarn(true);
                 }}
                 fuzzyOptions={fuzzyOptions}
@@ -316,7 +318,7 @@ const Field = ({
 
           {name === "authors" && (
             <>
-              <SelectorTag
+              <SelectorAuthor
                 classNamePrefix="select"
                 isMulti
                 components={animatedComponents}
@@ -409,6 +411,7 @@ const Field = ({
               );
             }}
             defaultValue={edit ? `${edit}` : ""}
+            error
             styles={
               name === "slug" && !(status === "DRAFT" || !status)
                 ? {

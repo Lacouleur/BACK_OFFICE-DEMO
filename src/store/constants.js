@@ -48,6 +48,7 @@ export const SET_USERS = "SET_USERS";
 export const SET_AUTHORS = "SET_AUTHORS";
 export const SET_TAGS = "SET_TAGS";
 export const SET_TAGS_LIST = "SET_TAGS_LIST";
+export const SET_NEW_TAG = "SET_NEW_TAG";
 
 // MANIFESTO
 export const SET_IS_MANIFESTO = "IS_MANIFESTO";

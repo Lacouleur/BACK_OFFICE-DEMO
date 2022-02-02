@@ -12,6 +12,7 @@ import {
   addTitle,
   setCaption,
   setColorStyle,
+  setTags,
 } from "../store/actions/mainInformationActions";
 import {
   setAltImage,
@@ -22,7 +23,6 @@ import {
   setOpinionTextAnswer,
 } from "../store/actions/moduleActions";
 import { addSeoTitle } from "../store/actions/seoActions";
-import { createTag } from "../store/actions/thunk/ArticlesActions.thunk";
 import { saveImage } from "../store/actions/thunk/ModulesActions.thunk";
 import { sizeOrFormatError } from "./errorMessages";
 import langList from "./langList";
@@ -325,25 +325,6 @@ export function dispatchSelected(
     dispatch(addCategory(""));
   }
   return null;
-}
-
-export async function validTagCreation(
-  dispatch,
-  newTag,
-  lang,
-  setNewTag,
-  setSelectedTags,
-  selectedTags,
-  setIsOpenTagWarn
-) {
-  await dispatch(createTag(newTag.label, lang, setNewTag));
-  setSelectedTags(
-    !selectedTags && selectedTags?.length === 0
-      ? [newTag]
-      : [...selectedTags, newTag]
-  );
-  setNewTag("");
-  setIsOpenTagWarn(false);
 }
 
 // dispatch the value of field in th good reducer.

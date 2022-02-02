@@ -31,21 +31,6 @@ export const FieldTitleBox = styled.div`
   width: 100%;
 `;
 
-export const FieldBox = styled.div`
-  width: ${(props) => props.styles?.width || "100%"};
-  flex-direction: column;
-  position: relative;
-
-  &:hover {
-    & div:nth-of-type(1) {
-      visibility: visible;
-    }
-    & div:nth-of-type(2) {
-      visibility: visible;
-    }
-  }
-`;
-
 export const FieldError = styled.div`
   color: ${(props) => props.color || colors.lightGrey};
   font-size: 12px;
@@ -56,66 +41,6 @@ export const FieldError = styled.div`
 export const ErrorIcon = styled.img`
   width: 12px;
   margin-left: 17px;
-`;
-
-export const FieldStyle = styled.input`
-  width: ${(props) => props.styles.width || "100%"};
-  height: ${(props) => props.styles.height || "100%"};
-  background-color: ${colors.darkGrey};
-  border: ${(props) => props.styles.border || "none"};
-  padding-left: ${(props) => props.styles.paddingLeft || "20px"};
-  padding-right: ${(props) => props.styles.paddingRight || "0"};
-  color: ${(props) => props.styles.color || colors.white};
-  cursor: ${(props) => props.styles.cursor || "auto"};
-  text-overflow: ${(props) => props.styles.textOverflow || "clip"};
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
-  font-size: 16px;
-  line-height: 24px;
-
-  &::-webkit-file-upload-button {
-    display: none;
-  }
-
-  // customing the native CSS for autocomplet.
-  &:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 1000px ${colors.darkGrey} inset;
-  }
-  &:-webkit-autofill::first-line {
-    font-family: Arial;
-    color: ${colors.lightGrey};
-    font-size: 14px;
-  }
-`;
-
-const unactiveSelectorMixin = css`
-  & .select {
-    &__indicator {
-      display: none;
-      &-separator {
-        display: none;
-      }
-    }
-
-    &__single-value {
-      color: ${colors.lightGrey};
-    }
-  }
-`;
-
-const activeSelectorMixin = css`
-  & .select {
-    &__indicator {
-      display: block;
-      &-separator {
-        display: block;
-      }
-    }
-
-    &__single-value {
-      color: ${colors.white};
-    }
-  }
 `;
 
 export const Selector = styled(ReactSelect)`
@@ -181,7 +106,52 @@ export const Selector = styled(ReactSelect)`
   }
 `;
 
-export const SelectorTag = styled(ReactSelect)`
+export const FieldBox = styled.div`
+  width: ${(props) => props.styles?.width || "100%"};
+  flex-direction: column;
+  position: relative;
+
+  &:hover {
+    & div:nth-of-type(1) {
+      visibility: visible;
+    }
+    & div:nth-of-type(2) {
+      visibility: visible;
+    }
+  }
+`;
+
+const unactiveSelectorMixin = css`
+  & .select {
+    &__indicator {
+      display: none;
+      &-separator {
+        display: none;
+      }
+    }
+
+    &__single-value {
+      color: ${colors.lightGrey};
+    }
+  }
+`;
+
+const activeSelectorMixin = css`
+  & .select {
+    &__indicator {
+      display: block;
+      &-separator {
+        display: block;
+      }
+    }
+
+    &__single-value {
+      color: ${colors.white};
+    }
+  }
+`;
+
+export const SelectorAuthor = styled(ReactSelect)`
   ${(props) =>
     props.isDisabled ? unactiveSelectorMixin : activeSelectorMixin};
   & .select {
@@ -189,20 +159,31 @@ export const SelectorTag = styled(ReactSelect)`
       border-color: none;
     }
 
+    &__input {
+      color: ${colors.paleViolet};
+    }
+
     &__multi-value {
       background-color: ${colors.darkGrey};
       border-radius: 20px;
       border: 1px solid ${colors.paleViolet};
-      width: 150px;
-      overflow: visible;
 
       &__label {
         color: ${colors.white};
       }
+
+      &__remove {
+        &:hover {
+          border-top-right-radius: 25px;
+          border-bottom-right-radius: 25px;
+          background-color: ${colors.paleVioletTransp};
+        }
+      }
     }
 
     &__control {
-      height: 56px;
+      min-height: 56px;
+      height: 100%;
       background-color: ${colors.darkGrey};
       border: none;
       border-bottom-left-radius: 0;
@@ -246,7 +227,7 @@ export const SelectorTag = styled(ReactSelect)`
 
     &__value {
       &-container {
-        padding-left: 20px;
+        padding: 18px 0 18px 20px;
       }
     }
 
@@ -333,7 +314,6 @@ export const SelectorAndCreateTag = styled(CreatableSelect)`
 
     &__input {
       color: ${colors.paleViolet};
-      margin-left: 8px;
     }
 
     &__multi-value {
@@ -344,10 +324,19 @@ export const SelectorAndCreateTag = styled(CreatableSelect)`
       &__label {
         color: ${colors.white};
       }
+
+      &__remove {
+        &:hover {
+          border-top-right-radius: 25px;
+          border-bottom-right-radius: 25px;
+          background-color: ${colors.paleVioletTransp};
+        }
+      }
     }
 
     &__control {
-      height: 56px;
+      min-height: 56px;
+      height: 100%;
       background-color: ${colors.darkGrey};
       border: none;
       border-bottom-left-radius: 0;
@@ -397,7 +386,7 @@ export const SelectorAndCreateTag = styled(CreatableSelect)`
 
     &__value {
       &-container {
-        padding-left: 20px;
+        padding: 18px 0 18px 20px;
       }
     }
 
@@ -497,7 +486,7 @@ export const FieldContainer = styled.div`
   margin: 16px 0 16px 0;
   position: relative;
 
-  &:hover {
+  &:focus-within {
     & ${FieldTitle} {
       color: ${colors.paleViolet};
       opacity: 1;
@@ -506,6 +495,19 @@ export const FieldContainer = styled.div`
     & ${Line} {
       opacity: 1;
       box-shadow: 0px 0px 10px 1px ${colors.paleVioletTransp};
+    }
+
+    & ${Selector} {
+      .select__indicator-separator {
+        background-color: ${colors.paleViolet};
+      }
+    }
+  }
+
+  &:hover:not(:focus) {
+    & ${FieldTitle} {
+      color: ${colors.paleViolet};
+      font-size: 16px;
     }
 
     & ${Selector} {
@@ -522,12 +524,41 @@ export const FieldContainer = styled.div`
       }
     }
 
-    & ${SelectorTag} {
+    & ${SelectorAuthor} {
       &:hover {
         .select__indicator-separator {
           background-color: ${colors.paleViolet} !important;
         }
       }
     }
+  }
+`;
+
+export const FieldStyle = styled.input`
+  width: ${(props) => props.styles.width || "100%"};
+  height: ${(props) => props.styles.height || "100%"};
+  background-color: ${colors.darkGrey};
+  border: ${(props) => props.styles.border || "none"};
+  padding-left: ${(props) => props.styles.paddingLeft || "20px"};
+  padding-right: ${(props) => props.styles.paddingRight || "0"};
+  color: ${(props) => props.styles.color || colors.white};
+  cursor: ${(props) => props.styles.cursor || "auto"};
+  text-overflow: ${(props) => props.styles.textOverflow || "clip"};
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  font-size: 16px;
+  line-height: 24px;
+
+  &::-webkit-file-upload-button {
+    display: none;
+  }
+
+  // customing the native CSS for autocomplet.
+  &:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px ${colors.darkGrey} inset;
+    -webkit-text-fill-color: ${colors.lightGrey};
+  }
+  &:-webkit-autofill::first-line {
+    font-family: Arial;
   }
 `;

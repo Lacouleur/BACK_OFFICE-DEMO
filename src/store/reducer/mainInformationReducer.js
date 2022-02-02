@@ -22,6 +22,7 @@ import {
   SET_AUTHORS,
   SET_TAGS,
   SET_TAGS_LIST,
+  SET_NEW_TAG,
 } from "../constants";
 
 const initialState = {
@@ -49,6 +50,7 @@ const initialState = {
   authors: [],
   tagsList: [],
   tags: [],
+  newTag: {},
 };
 
 const mainInformationReducer = (state = initialState, action = {}) => {
@@ -215,6 +217,13 @@ const mainInformationReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         tagsList: action.payload,
+      };
+    }
+
+    case SET_NEW_TAG: {
+      return {
+        ...oldState,
+        newTag: action.payload,
         isChanged: true,
       };
     }

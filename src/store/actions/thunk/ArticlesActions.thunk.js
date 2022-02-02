@@ -33,6 +33,8 @@ import {
   setStatus,
   setUsers,
   setTagsList,
+  setNewTag,
+  setTags,
 } from "../mainInformationActions";
 import { deleteToken } from "../../../services/client/tokenStuff";
 
@@ -44,6 +46,7 @@ import {
 } from "../../../helper/consoleStyles";
 import { setContentsList, setPagination } from "../contentListActions";
 import ErrorCaseClient from "../../../helper/ErrorCaseClient";
+import { dispatchTags } from "../../../helper/fieldsHelper";
 
 export function checkAndSend(type = "save", articleId = null) {
   return async (dispatch, getState) => {
@@ -124,6 +127,7 @@ export function checkAndSend(type = "save", articleId = null) {
           authors,
           tags,
         };
+        console.log("VALUES.TAG ==>", values.tags);
       } else {
         values = {
           title: mainTitle,
@@ -387,7 +391,13 @@ export function fetchTags(lang) {
   };
 }
 
-export function createTag(label, lang, setNewTag) {
+export function createTag(
+  label,
+  lang,
+  setSelectedTags,
+  selectedTags,
+  setIsOpenTagWarn
+) {
   console.log("%cCREATING TAG=>", `${consoleTitle}`, label);
   return async (dispatch, getState) => {
     const { mainInformationReducer } = getState();
@@ -398,8 +408,18 @@ export function createTag(label, lang, setNewTag) {
         const response = await postTag(label, lang);
         if (response.status < 300 && response.status > 199) {
           console.log("%cTag Created=>", `${consoleInfo}`, response.data);
-          setNewTag({ label, _id: response.data });
+          const newTag = { label, _id: response.data };
+          dispatch(setNewTag(newTag));
           dispatch(setTagsList([...tagsList, { label, _id: response.data }]));
+
+          const newSelectedTags =
+            !selectedTags && selectedTags?.length === 0
+              ? [newTag]
+              : [...selectedTags, newTag];
+
+          dispatch(setTags(dispatchTags(newSelectedTags)));
+          setSelectedTags(newSelectedTags);
+          setIsOpenTagWarn(false);
         }
         return null;
       } catch (error) {

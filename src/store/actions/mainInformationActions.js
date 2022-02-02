@@ -14,6 +14,7 @@ import {
   SET_AUTHORS,
   SET_TAGS,
   SET_TAGS_LIST,
+  SET_NEW_TAG,
 } from "../constants";
 
 export const addTitle = (payload) => ({
@@ -88,5 +89,10 @@ export const setTags = (payload) => ({
 
 export const setTagsList = (payload) => ({
   type: SET_TAGS_LIST,
+  payload,
+});
+
+export const setNewTag = (payload) => ({
+  type: SET_NEW_TAG,
   payload,
 });

@@ -10,7 +10,7 @@ export const sendAuth = (data) => {
   });
 };
 
-export function getContentList(page = 1, limit = 20) {
+export function getContentList(page = 1, limit = 15) {
   return axiosConfig.get(`/contents?limit=${limit}&page=${page}`, {
     headers: {
       Authorization: `Bearer ${getToken()}`,

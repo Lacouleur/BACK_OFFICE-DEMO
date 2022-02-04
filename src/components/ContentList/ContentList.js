@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { H1 } from "../../styles/styledComponents/global/Titles.sc";
@@ -35,8 +35,9 @@ const ContentList = () => {
     ({ actionBarReducer }) => actionBarReducer
   );
 
-  const { contentsList, isOpenDuplicateModal } = contentsListState;
+  const { isOpenDuplicateModal } = contentsListState;
   const { isOpenErrorModal, isOpenArchiveModal } = actionBarState;
+  const [contentList, setContentList] = useState([]);
 
   useEffect(() => {
     dispatch(fetchContentsList());
@@ -70,7 +71,7 @@ const ContentList = () => {
           </Link>
         </TitleBox>
         <ListBox>
-          {contentsList.map((content, index) => {
+          {contentList.map((content, index) => {
             return (
               <Content
                 number={index}
@@ -93,7 +94,7 @@ const ContentList = () => {
             );
           })}
         </ListBox>
-        <Pagination />
+        <Pagination setContentList={setContentList} />
       </ContentSectionBox>
     </>
   );

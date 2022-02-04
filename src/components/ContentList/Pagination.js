@@ -1,65 +1,61 @@
-import React from "react";
+/* eslint-disable react/prop-types */
+/* eslint-disable react/jsx-one-expression-per-line */
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import ReactPaginate from "react-paginate";
 import {
-  PageListLi,
-  PageListUl,
   PageListArrow,
   PaginationBox,
+  PageListNoArrow,
 } from "../../styles/styledComponents/contentList/Pagination.sc";
 import arrow from "../../styles/assets/icons/arrow-left.svg";
-import keyGenerator from "../../helper/keyGenerator";
-import colors from "../../styles/core/colors";
 import { fetchContentsList } from "../../store/actions/thunk/ArticlesActions.thunk";
 
-const Pagination = () => {
+const Pagination = ({ setContentList }) => {
   const contentState = useSelector(
     ({ contentListReducer }) => contentListReducer
   );
-  const { currentPage, lastPage } = contentState;
-  const pageArr = [];
-  const maxDisplayedPages = lastPage < 5 ? lastPage : 5;
+  const { currentPage, lastPage, contentsList: items } = contentState;
   const dispatch = useDispatch();
 
-  const changePage = (pageNumber) => {
-    if (pageNumber) dispatch(fetchContentsList(parseInt(pageNumber, 10)));
-  };
+  useEffect(() => {
+    dispatch(fetchContentsList());
+  }, []);
 
-  for (let i = 1; i <= maxDisplayedPages && i <= lastPage; i += 1) {
-    const page = i;
-    pageArr.push(
-      <PageListLi
-        key={keyGenerator(page)}
-        styles={
-          page === currentPage
-            ? { border: `1px solid ${colors.white}`, padding: "5px 8px" }
-            : { border: "none" }
-        }
-        onClick={(e) => {
-          changePage(e.target.innerText);
-        }}
-      >
-        {page}
-      </PageListLi>
-    );
-  }
+  useEffect(() => {
+    setContentList(items);
+  }, [items]);
+
+  const handlePageClick = (event) => {
+    dispatch(fetchContentsList(event.selected + 1));
+  };
 
   return (
     <PaginationBox>
-      <PageListArrow
-        src={arrow}
-        onClick={() => {
-          changePage(currentPage - 1);
-        }}
-        hide={currentPage - 1 < 1 ? "hidden" : "visible"}
-      />
-      <PageListUl>{pageArr}</PageListUl>
-      <PageListArrow
-        right
-        src={arrow}
-        onClick={() => {
-          changePage(currentPage + 1);
-        }}
-        hide={currentPage + 1 > maxDisplayedPages ? "hidden" : "visible"}
+      <ReactPaginate
+        breakLabel="..."
+        previousLabel={
+          currentPage !== 1 ? (
+            <PageListArrow alt="arrow" src={arrow} />
+          ) : (
+            <PageListNoArrow />
+          )
+        }
+        nextLabel={
+          lastPage !== currentPage ? (
+            <PageListArrow right alt="arrow" src={arrow} />
+          ) : (
+            <PageListNoArrow />
+          )
+        }
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={3}
+        pageCount={lastPage}
+        containerClassName="paginate"
+        pageClassName="paginate-page"
+        pageLinkClassName="paginate-page__link"
+        breakClassName="paginate-break"
+        renderOnZeroPageCount={null}
       />
     </PaginationBox>
   );

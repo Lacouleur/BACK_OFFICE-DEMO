@@ -43,6 +43,51 @@ export const ErrorIcon = styled.img`
   margin-left: 17px;
 `;
 
+export const FieldBox = styled.div`
+  width: ${(props) => props.styles?.width || "100%"};
+  flex-direction: column;
+  position: relative;
+
+  &:hover {
+    & div:nth-of-type(1) {
+      visibility: visible;
+    }
+    & div:nth-of-type(2) {
+      visibility: visible;
+    }
+  }
+`;
+
+const unactiveSelectorMixin = css`
+  & .select {
+    &__indicator {
+      display: none;
+      &-separator {
+        display: none;
+      }
+    }
+
+    &__single-value {
+      color: ${colors.lightGrey};
+    }
+  }
+`;
+
+const activeSelectorMixin = css`
+  & .select {
+    &__indicator {
+      display: block;
+      &-separator {
+        display: block;
+      }
+    }
+
+    &__single-value {
+      color: ${colors.white};
+    }
+  }
+`;
+
 export const Selector = styled(ReactSelect)`
   ${(props) =>
     props.isDisabled ? unactiveSelectorMixin : activeSelectorMixin};
@@ -102,51 +147,6 @@ export const Selector = styled(ReactSelect)`
       &:hover {
         color: ${colors.paleViolet};
       }
-    }
-  }
-`;
-
-export const FieldBox = styled.div`
-  width: ${(props) => props.styles?.width || "100%"};
-  flex-direction: column;
-  position: relative;
-
-  &:hover {
-    & div:nth-of-type(1) {
-      visibility: visible;
-    }
-    & div:nth-of-type(2) {
-      visibility: visible;
-    }
-  }
-`;
-
-const unactiveSelectorMixin = css`
-  & .select {
-    &__indicator {
-      display: none;
-      &-separator {
-        display: none;
-      }
-    }
-
-    &__single-value {
-      color: ${colors.lightGrey};
-    }
-  }
-`;
-
-const activeSelectorMixin = css`
-  & .select {
-    &__indicator {
-      display: block;
-      &-separator {
-        display: block;
-      }
-    }
-
-    &__single-value {
-      color: ${colors.white};
     }
   }
 `;

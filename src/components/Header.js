@@ -31,6 +31,7 @@ const Header = ({ position }) => {
 
   const { isAccessible, isPanelOpen, picture } = userPanelState;
 
+  // "position props is for "position" css attribute fixed or absolute.
   return (
     <HeaderContainer position={position}>
       {isConnected && isAccessible && (

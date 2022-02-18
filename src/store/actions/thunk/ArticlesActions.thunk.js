@@ -124,8 +124,8 @@ export function checkAndSend(type = "save", articleId = null) {
               }
             : undefined,
           partnership: caption,
-          authors,
-          tags,
+          authors: authors || [],
+          tags: tags || [],
         };
         console.log("VALUES.TAG ==>", values.tags);
       } else {
@@ -134,8 +134,8 @@ export function checkAndSend(type = "save", articleId = null) {
           slug,
           category: !category ? null : category,
           theme: colorStyle || "1",
-          authors,
-          tags,
+          authors: authors || [],
+          tags: tags || [],
         };
       }
 

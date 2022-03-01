@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,44 +9,44 @@ import {
   MainLogo,
   ProfileBox,
   ProfileName,
-} from "../styles/styledComponents/nav/Header.sc";
-import phoenixLogo from "../styles/assets/logos/phoenix-logo.svg";
-import { getToken, deleteToken } from "../services/client/tokenStuff";
-import { setPanelOpen } from "../store/actions/userPanelActions";
-import UserPanel from "./User/UserPanel";
+} from "../../styles/styledComponents/nav/Header.sc";
+import phoenixLogo from "../../styles/assets/logos/phoenix-logo.svg";
+import {
+  getToken,
+  deleteToken,
+  parseJwt,
+} from "../../services/client/tokenStuff";
 import {
   ConnectContainer,
   UserGlobalcontainer,
-} from "../styles/styledComponents/user/user.sc";
+} from "../../styles/styledComponents/user/user.sc";
+import { dispatchUserInfo } from "../../helper/userHelper";
 
 const Header = ({ position }) => {
+  const [userInfo] = useState(parseJwt(getToken()));
   const [isConnected] = useState(!!getToken());
   const history = useHistory();
   const dispatch = useDispatch();
   const userPanel = useRef();
 
-  const userPanelState = useSelector(
-    ({ userPanelReducer }) => userPanelReducer
-  );
+  const userState = useSelector(({ userReducer }) => userReducer);
 
-  const { isAccessible, isPanelOpen, picture } = userPanelState;
+  useEffect(() => {
+    dispatchUserInfo(dispatch, userInfo);
+  }, []);
+
+  const { firstName, lastName, picture, position: post } = userState;
 
   // "position props is for "position" css attribute fixed or absolute.
   return (
     <HeaderContainer position={position}>
-      {isConnected && isAccessible && (
+      {isConnected && (
         <ConnectContainer>
           <UserGlobalcontainer ref={userPanel}>
-            <ProfileBox
-              onClick={() => {
-                dispatch(setPanelOpen(!isPanelOpen));
-              }}
-            >
+            <ProfileBox>
               <Avatar src={picture?.urls?.thumbnail?.url || undefined} />
-              <ProfileName>My profile</ProfileName>
+              <ProfileName>{`${firstName} ${lastName} -- ${post}`}</ProfileName>
             </ProfileBox>
-
-            <UserPanel userPanel={userPanel} />
           </UserGlobalcontainer>
 
           <DisconectButton

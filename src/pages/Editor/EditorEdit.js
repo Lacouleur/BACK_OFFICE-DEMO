@@ -6,8 +6,8 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {  useParams } from "react-router-dom";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
+import Footer from "../../components/Navigation/Footer";
+import Header from "../../components/Navigation/Header";
 import PageContainer from "../../styles/styledComponents/global/PageContainer.sc";
 import MainInformation from "../../components/Editor/Sections/MainInformation";
 import Seo from "../../components/Editor/Sections/Seo";
@@ -37,7 +37,7 @@ import colors from "../../styles/core/colors";
 import HomeNavigation from "../../components/Editor/Sections/HomeNavigation";
 import { HideOnDnd } from "../../styles/styledComponents/editor/modules/Modules.sc";
 import { onDragEnd } from "../../helper/Editor/dragAndDrop";
-import { setIsAccessiblePanel } from "../../store/actions/userPanelActions";
+import { setIsAccessiblePanel } from "../../store/actions/userActions";
 import ModulesDispatcher from "../../components/Editor/Sections/Modules/ModulesDispatcher";
 import { consolePage } from "../../helper/consoleStyles";
 
@@ -49,8 +49,7 @@ const Editor = () => {
   const [isOpen, setIsOpen] = useState(false);
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
   const actionBarState = useSelector(({ actionBarReducer }) => actionBarReducer);
-  const [isUsedDndArea, setIsUsedDnDArea] = useState(false)
-
+  const [isUsedDndArea, setIsUsedDnDArea] = useState(false);
   const { modulesList } = modulesState;
   const { isOpenCloseModal, aModuleIsOpen } = actionBarState;
 
@@ -59,7 +58,6 @@ const Editor = () => {
       dispatch(setIsManifesto(false))
       dispatch(fetchContent(articleId));
       dispatch(setArticleId(articleId));
-      dispatch(setIsAccessiblePanel(false));
   }, []);
 
 

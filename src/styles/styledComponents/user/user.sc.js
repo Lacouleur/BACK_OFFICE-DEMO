@@ -1,14 +1,75 @@
 import styled, { keyframes, css } from "styled-components";
 import colors from "../../core/colors";
 
-const expandPanel = keyframes`
-  0% {width:0; opacity: 0; padding: 25px 0};
-  100% {width: 320px;}
+const expand = keyframes`
+  0% { background-color: rgba(28, 28, 28, 0)};
+  100% { background-color: ${colors.matBlack};}
 `;
 
-const foldPanel = keyframes`
-  0% {width: 320px;};
-  100% {opacity: 0; padding: 25px 0}
+const fold = keyframes`
+  0% { background-color: ${colors.matBlack};}
+  100% { background-color: rgba(28, 28, 28, 0)};
+`;
+
+export const UserActionBar = styled.div`
+  width: 100%;
+  height: 112px;
+  margin-top: 56px;
+  z-index: 201;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  position: fixed;
+  ${(props) =>
+    props.show
+      ? css`
+          animation: ${expand} 0.3s forwards;
+        `
+      : css`
+          animation: ${fold} 0.3s forwards;
+        `};
+`;
+
+export const ActionBarBox = styled.div`
+  max-width: 2000px;
+  min-width: 900px;
+  width: 70%;
+  margin: auto;
+  display: flex;
+`;
+
+const disabledMixin = css`
+  background-color: ${colors.lightGrey}!important;
+
+  &:hover {
+    opacity: 0.8 !important;
+    cursor: not-allowed !important;
+    box-shadow: 0px 0px 10px 1px ${colors.mediumGrey}!important;
+  }
+`;
+
+export const SaveButton = styled.button`
+  ${(props) => (props.disabled ? disabledMixin : "")};
+  cursor: pointer;
+  border-radius: 5px;
+  width: 100px;
+  height: 36px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  text-transform: uppercase;
+  margin-left: 56px;
+  border: none;
+  background-color: ${colors.paleViolet};
+
+  &:active {
+    background-color: ${colors.paleVioletTransp};
+  }
+  &:hover {
+    opacity: 1;
+    box-shadow: 0px 0px 10px 1px ${colors.paleVioletTransp};
+  }
 `;
 
 export const UserGlobalcontainer = styled.div``;
@@ -19,132 +80,4 @@ export const ConnectContainer = styled.div`
   width: 100%;
   margin: auto;
   z-index: 300;
-`;
-
-const OpenPanelMixin = css`
-  animation-name: ${expandPanel};
-  animation-duration: 0.3s;
-  animation-fill-mode: forwards;
-`;
-
-const ClosePanelMixin = css`
-  animation-name: ${foldPanel};
-  animation-duration: 0.3s;
-  animation-fill-mode: forwards;
-`;
-
-const LoadingPanelMixin = css`
-  animation-name: ${foldPanel};
-  animation-duration: 0s;
-  width: 0;
-`;
-
-export const PanelContainer = styled.div`
-  z-index: 300;
-  ${(props) => (props?.isPanelOpen ? OpenPanelMixin : ClosePanelMixin)};
-  animation-duration: ${(props) => {
-    return props?.isLoading ? LoadingPanelMixin : "";
-  }};
-  width: 0;
-  display: block;
-  height: ${window.innerHeight}px;
-  background-color: ${colors.mediumGrey};
-  position: absolute;
-  right: 0;
-  top: 56px;
-  bottom: 0;
-  padding: 25px 32px 25px 16px;
-  overflow: ${() => (window.innerHeight < 710 ? "auto" : "hidden")};
-  box-shadow: -4px 0px 13px 2px ${colors.shadow};
-`;
-
-export const ArrowIcon = styled.img`
-  transform: rotate(180deg);
-  margin-right: 16px;
-  width: 7px;
-
-  &:hover {
-    width: 8px;
-  }
-`;
-
-export const PanelTitleContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 256px;
-  flex-wrap: nowrap;
-  align-items: center;
-  cursor: pointer;
-`;
-
-export const SeparatorUser = styled.div`
-  width: 242px;
-  height: 2px;
-  background-color: ${colors.lightGrey};
-  margin: 32px auto;
-`;
-
-export const PanelMainTitle = styled.h2`
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 19px;
-  text-transform: uppercase;
-`;
-
-export const PanelSectionTitle = styled.h3`
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 16px;
-  text-transform: uppercase;
-`;
-
-export const AvatarField = styled.input`
-  width: 81px;
-  height: 81px;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  &:hover {
-    transform: scale(102%);
-  }
-`;
-
-export const AvatarImg = styled.img`
-  position: absolute;
-  left: 0;
-  border: none;
-  border-width: 0px;
-  width: 81px;
-  height: 81px;
-  background-color: ${colors.lightGrey};
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  &:hover {
-    transform: scale(102%);
-  }
-`;
-
-export const AvatarBox = styled.div`
-  position: relative;
-  width: 81px;
-  height: 81px;
-`;
-
-export const UploaderIcon = styled.img`
-  width: 24px;
-  right: 0%;
-  bottom: 0;
-  position: absolute;
-  cursor: pointer;
-`;
-
-export const ButtonBox = styled.div`
-  position: relative;
-  width: 256px;
-  height: 56px;
 `;

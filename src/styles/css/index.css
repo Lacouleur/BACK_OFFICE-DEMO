@@ -12,3 +12,27 @@ body {
   color: #2F3640;
   width: 100%;
 }
+
+  /* Scrollbar */
+  /* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Track */
+::-webkit-scrollbar-track {
+    background: #474747;
+
+  }
+
+  /* Handle */
+::-webkit-scrollbar-thumb {
+    background: #7f7f7f;
+    border-radius: 5px;
+
+  }
+
+  /* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #acacac;
+  }

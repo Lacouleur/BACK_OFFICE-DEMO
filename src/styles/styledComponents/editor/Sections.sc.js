@@ -36,8 +36,25 @@ const SectionBoxOpenMixin = css`
   border-bottom: 2px solid ${colors.paleViolet};
 `;
 
+const SectionBoxNoWrap = css`
+  height: 100%;
+  padding: 30px;
+  overflow: visible;
+  border-bottom: 0px solid ${colors.paleViolet};
+
+  &:hover {
+    transition: border-bottom 0.3s ease;
+    border-bottom: 2px solid ${colors.paleViolet};
+  }
+`;
+
 export const SectionBox = styled.div`
-  ${(props) => (props.isOpen ? SectionBoxOpenMixin : SectionBoxClosedMixin)};
+  ${(props) => {
+    if (props.isOpen) return SectionBoxOpenMixin;
+    if (props.isOpen === false) return SectionBoxClosedMixin;
+    if (props.noWrap) return SectionBoxNoWrap;
+    return null;
+  }};
   position: relative;
   width: 100%;
   padding: 30px;
@@ -54,7 +71,8 @@ export const Form = styled.form`
 `;
 
 export const FormContainer = styled.div`
-  padding-top: calc(56px + 93px + 12px);
+  padding-top: ${(props) =>
+    props.userPage ? " 170px" : "calc(56px + 93px + 12px);"};
   width: 70%;
   margin: auto;
   max-width: 2000px;
@@ -93,35 +111,59 @@ export const NewBlockButtonBox = styled.div`
 `;
 
 const HomeImageMixin = css`
-  top: 246px !important;
+  top: 315px !important;
+
+  &:hover {
+    height: 150px !important;
+    transition: all 0.3s ease;
+  }
 `;
 
 const navPreviewMixin = css`
   top: 40px !important;
 `;
 
+const avatarMixin = css`
+  bottom: 260px !important;
+  height: 80px !important;
+  transform: translate(50%, 50%);
+`;
+
 export const Thumbnail = styled.img`
   ${(props) => (props.homeImage ? HomeImageMixin : "")};
-
   position: absolute;
   max-width: 150px;
+  transform: translate(50%, -50%);
   max-height: 244px;
   right: 30%;
-  top: 70px;
+  top: 90px;
   height: 100px;
+  cursor: not-allowed;
   box-shadow: 0px 0px 31px 2px ${colors.shadow};
+
+  &:hover {
+    height: 150px !important;
+    transition: height 0.3s ease;
+  }
 `;
 
 export const RoundThumbnail = styled.img`
   ${(props) => (props.preview ? navPreviewMixin : "")};
+  ${(props) => (props.avatar ? avatarMixin : "")};
   position: absolute;
+  transform: translate(50%, 50%);
   max-width: 150px;
   max-height: 244px;
   border-radius: 50%;
   right: 30%;
-  bottom: 155px;
+  cursor: not-allowed;
+  bottom: 210px;
   height: 100px;
   box-shadow: 0px 0px 31px 2px ${colors.shadow};
+  &:hover {
+    height: 150px !important;
+    transition: height 0.3s ease;
+  }
 `;
 
 export const HideContent = styled.div`

@@ -1,5 +1,3 @@
-import { showErrorModal } from "../store/actions/actionBarActions";
-import { saveAvatar } from "../store/actions/thunk/UserAction.thunk";
 import {
   setDisplayedName,
   setEmail,
@@ -12,55 +10,42 @@ import {
   setQuote,
   setUserId,
   setUserIsChanged,
-} from "../store/actions/userPanelActions";
-import { sizeOrFormatError } from "./errorMessages";
+} from "../store/actions/userActions";
 
-export const handleChangeAvatar = (event, dispatch) => {
-  const image = event.target.files[0];
-  if (
-    image &&
-    image.size < 500000 &&
-    (image.type === "image/png" ||
-      image.type === "image/jpg" ||
-      image.type === "image/gif" ||
-      image.type === "image/jpeg")
-  ) {
-    dispatch(saveAvatar(image));
-  } else {
-    dispatch(
-      showErrorModal({ value: true, message: sizeOrFormatError(image) })
-    );
-  }
-};
+// Signatures and quotes need to be dispatched depending on the locale language of the user. If locale is FR then displayed-name and quote will have all french infos, on the other hand displayed-names ans quotes will have all foreign languages in an object {de, it, fi...}
+function findLangAndDispatch(userInfo, dispatch) {
+  const userLang = userInfo.locale;
+  const quotesLangArr = userInfo.quotes ? Object.keys(userInfo.quotes) : [];
+  const dispNamesLangArr = userInfo.displayed_names
+    ? Object.keys(userInfo.displayed_names)
+    : [];
 
-export function watchChangeForm(value, name, dispatch) {
-  switch (name) {
-    case "position": {
-      dispatch(setPosition(value));
-      return;
-    }
+  dispatch(setLocale(userInfo.locale || ""));
+  dispatch(setQuote({ value: userInfo.quote || null, lang: userLang }));
+  dispatch(
+    setDisplayedName({
+      value: userInfo.displayed_name || null,
+      lang: userLang,
+    })
+  );
 
-    case "lastName": {
-      dispatch(setLastName(value));
-      break;
-    }
-
-    case "firstName": {
-      dispatch(setFirstName(value));
-      break;
-    }
-
-    case "displayedName": {
-      dispatch(setDisplayedName(value));
-      break;
-    }
-
-    case "quote": {
-      dispatch(setQuote(value));
-      break;
-    }
-
-    default:
+  if (userInfo.locale) {
+    quotesLangArr.map((currentLang) => {
+      return dispatch(
+        setQuote({
+          value: userInfo.quotes[currentLang] || null,
+          lang: currentLang,
+        })
+      );
+    });
+    dispNamesLangArr.map((currentLang) => {
+      return dispatch(
+        setDisplayedName({
+          value: userInfo?.displayed_names[currentLang] || null,
+          lang: currentLang,
+        })
+      );
+    });
   }
 }
 
@@ -70,44 +55,69 @@ export function dispatchUserInfo(dispatch, userInfo) {
     dispatch(setPosition(userInfo.position || ""));
     dispatch(setFirstName(userInfo.given_name || ""));
     dispatch(setLastName(userInfo.family_name || ""));
-    dispatch(setQuote(userInfo.quote || ""));
-    dispatch(setDisplayedName(userInfo.displayed_name || ""));
     dispatch(setEmail(userInfo.email || ""));
     dispatch(setGender(userInfo.gender || ""));
     dispatch(setPicture(userInfo.picture || ""));
     dispatch(setLocale(userInfo.locale || ""));
+    findLangAndDispatch(userInfo, dispatch);
     dispatch(setUserIsChanged(false));
   }
   return null;
 }
 
 export const fieldsList = [
-  { name: "position", placeholder: "Position", type: "text", area: "identity" },
   {
-    name: "lastName",
-    placeholder: "Last Name",
+    name: "position",
+    placeholder: "Position",
     type: "text",
-    area: "identity",
+    section: "identity",
+    max: "40",
   },
   {
     name: "firstName",
     placeholder: "First Name",
     type: "text",
-    area: "identity",
+    section: "identity",
+    max: "40",
   },
-  { name: "avatar", placeholder: "", type: "image", area: "avatar" },
   {
-    name: "displayedName",
+    name: "lastName",
+    placeholder: "Last Name",
+    type: "text",
+    section: "identity",
+    max: "40",
+  },
+  { name: "avatar", placeholder: "", type: "image", section: "userSign" },
+  {
+    name: "displayedName-fr",
     placeholder: "Displayed name",
     type: "text",
-    area: "avatar",
-    max: 30,
+    section: "userSign",
+    max: "64",
+    lang: "fr",
   },
   {
-    name: "quote",
+    name: "quote-fr",
     placeholder: "Quote",
     type: "text",
-    area: "avatar",
-    max: 50,
+    section: "userSign",
+    max: "64",
+    lang: "fr",
+  },
+  {
+    name: "displayedName-de",
+    placeholder: "Displayed name",
+    type: "text",
+    section: "userSign",
+    max: "64",
+    lang: "de",
+  },
+  {
+    name: "quote-de",
+    placeholder: "Quote",
+    type: "text",
+    section: "userSign",
+    max: "64",
+    lang: "de",
   },
 ];

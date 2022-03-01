@@ -22,6 +22,14 @@ import {
   setOpinionQuestion,
   setOpinionTextAnswer,
 } from "../store/actions/moduleActions";
+import {
+  setDisplayedName,
+  setFirstName,
+  setLastName,
+  setPosition,
+  setQuote,
+} from "../store/actions/userActions";
+import { saveAvatar } from "../store/actions/thunk/UserAction.thunk";
 import { addSeoTitle } from "../store/actions/seoActions";
 import { saveImage } from "../store/actions/thunk/ModulesActions.thunk";
 import { sizeOrFormatError } from "./errorMessages";
@@ -215,11 +223,15 @@ export function checkImage(event, dispatch, setFileTitle, name, moduleId) {
       file.type === "image/gif" ||
       file.type === "image/jpeg")
   ) {
-    dispatch(saveImage(name, file, moduleId));
-    setFileTitle(file.name);
+    if (name === "avatar") {
+      dispatch(saveAvatar(file));
+      setFileTitle(file.name);
+    } else {
+      dispatch(saveImage(name, file, moduleId));
+      setFileTitle(file.name);
+    }
   } else {
     dispatch(showErrorModal({ value: true, message: sizeOrFormatError(file) }));
-    setFileTitle("");
   }
 }
 
@@ -334,7 +346,8 @@ export function dispatchFields(
   dispatch,
   value,
   moduleId,
-  answerId
+  answerId = null,
+  lang = "fr"
 ) {
   switch (true) {
     case name === "title" && section === "mainInformation":
@@ -392,6 +405,28 @@ export function dispatchFields(
 
     case name === "url" && section === "cta":
       dispatch(setCtaUrl({ id: moduleId, value }));
+      break;
+
+    case name === "position" && section === "userProfile":
+      dispatch(setPosition(value));
+      break;
+
+    case name === "lastName" && section === "userProfile":
+      dispatch(setLastName(value));
+      break;
+
+    case name === "firstName" && section === "userProfile":
+      dispatch(setFirstName(value));
+      break;
+
+    case name.substr(0, name.length - 3) === "displayedName" &&
+      section === "userProfile":
+      dispatch(setDisplayedName({ value, lang }));
+      break;
+
+    case name.substr(0, name.length - 3) === "quote" &&
+      section === "userProfile":
+      dispatch(setQuote({ value, lang }));
       break;
 
     default:

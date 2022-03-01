@@ -7,7 +7,7 @@ import { consolePage } from "../helper/consoleStyles";
 import SideBar from "../components/Navigation/SideBar";
 
 const Home = () => {
-  console.log("%cPAGE => DASHBOARD", `${consolePage}`);
+  console.log("%cPAGE: DASHBOARD", `${consolePage}`);
 
   return (
     <PageContainer position="relative">

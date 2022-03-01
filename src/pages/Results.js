@@ -40,7 +40,7 @@ import { cleanContentState } from "../store/actions/commonsActions";
 import { consolePage } from "../helper/consoleStyles";
 
 const Results = () => {
-  console.log("%cPAGE => QUIZZ RESULTS", `${consolePage}`);
+  console.log("%cPAGE: QUIZZ RESULTS", `${consolePage}`);
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
   const [data, setData] = useState([]);
   const dispatch = useDispatch();

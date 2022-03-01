@@ -1,8 +1,13 @@
 /* eslint-disable import/prefer-default-export */
 import { consoleSucces, consoleTitle } from "../../../helper/consoleStyles";
 import ErrorCaseClient from "../../../helper/ErrorCaseClient";
-import { nameSpaceError } from "../../../helper/errorMessages";
-import { postUser, uploadImage } from "../../../services/client/contentClient";
+import { nameSpaceError, uploadError } from "../../../helper/errorMessages";
+import { dispatchUserInfo } from "../../../helper/userHelper";
+import {
+  getUser,
+  postUser,
+  uploadImage,
+} from "../../../services/client/contentClient";
 import {
   isValidToken,
   refreshMyToken,
@@ -46,7 +51,6 @@ export function updateUser(userId) {
         locale,
         position,
       };
-      console.log("VALUES", values);
       try {
         const response = await postUser(values, userId);
 
@@ -63,7 +67,7 @@ export function updateUser(userId) {
   };
 }
 
-export function saveAvatar(image) {
+export function saveAvatar(setFileTitle, image) {
   console.log("%cSAVING Avatar", `${consoleTitle}`);
   return async (dispatch, getState) => {
     const { userReducer } = getState();
@@ -84,11 +88,47 @@ export function saveAvatar(image) {
               urls: response.data.urls,
             })
           );
+          setFileTitle(image.name);
           dispatch(setUserIsChanged(true));
         }
       } catch (error) {
         if (error?.response.status === 400) {
-          dispatch(showErrorModal({ value: true, message: nameSpaceError() }));
+          dispatch(
+            showErrorModal({
+              value: true,
+              message: uploadError(error?.response?.data),
+            })
+          );
+          ErrorCaseClient(dispatch, error?.response?.data);
+        } else {
+          ErrorCaseClient(dispatch, error?.response?.data);
+        }
+      }
+    }
+    return null;
+  };
+}
+
+export function fetchUser(id) {
+  return async (dispatch) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
+      try {
+        const response = await getUser(id);
+        if (response.status < 300 && response.status > 199) {
+          console.log(`%cUser Fetched =>`, `${consoleSucces}`, response.data);
+          dispatchUserInfo(dispatch, response.data);
+          dispatch(setUserIsChanged(false));
+        }
+      } catch (error) {
+        if (error?.response.status === 400) {
+          dispatch(
+            showErrorModal({
+              value: true,
+              message: uploadError(error?.response?.data),
+            })
+          );
+          ErrorCaseClient(dispatch, error?.response?.data);
         } else {
           ErrorCaseClient(dispatch, error?.response?.data);
         }

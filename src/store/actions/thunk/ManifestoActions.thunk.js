@@ -115,6 +115,7 @@ export function actualizeManifesto(manifestoId) {
         if (error.response.status === 409) {
           dispatch(setErrorPosting(true));
           dispatch(setPosted(false));
+          ErrorCaseClient(dispatch, error?.response?.data);
         } else {
           ErrorCaseClient(dispatch, error?.response?.data);
           dispatch(setPosted(false));
@@ -160,10 +161,14 @@ export function fetchManifesto(lang) {
           return null;
         } catch (error) {
           if (error?.response?.status === 401) {
-            console.log("%cError =>", `${consoleError}`, error?.response?.data);
+            console.error(
+              "%cError =>",
+              `${consoleError}`,
+              error?.response?.data
+            );
             deleteToken(dispatch);
           }
-          console.log("%cError =>", `${consoleError}`, error?.response?.data);
+          console.error("%cError =>", `${consoleError}`, error?.response?.data);
           return null;
         }
       }

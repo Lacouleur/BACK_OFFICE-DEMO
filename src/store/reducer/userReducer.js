@@ -10,6 +10,7 @@ import {
   SET_GENDER,
   SET_USER_ID,
   SET_USER_IS_CHANGED,
+  CLEAN_USER,
 } from "../constants";
 
 const initialState = {
@@ -198,6 +199,12 @@ const userReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         userIsChanged: action.payload,
+      };
+    }
+
+    case CLEAN_USER: {
+      return {
+        state,
       };
     }
 

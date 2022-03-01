@@ -1,5 +1,5 @@
 import { verifySlug } from "../../helper/auth/verifyFields";
-import { createAutorsList } from "../../helper/fieldsHelper";
+import { createAutorsList, createUsersList } from "../../helper/fieldsHelper";
 import {
   ADD_TITLE,
   ADD_SLUG,
@@ -193,6 +193,7 @@ const mainInformationReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         authorsList: createAutorsList(action.payload),
+        usersList: createUsersList(action.payload),
         users: action.payload,
       };
     }

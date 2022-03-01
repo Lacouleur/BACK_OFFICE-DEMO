@@ -13,7 +13,6 @@ import {
 } from "../../styles/styledComponents/editor/Sections.sc";
 import ActionBar from "../../components/Editor/actionBar/ActionBar";
 import { setIsManifesto } from "../../store/actions/manifestoActions";
-import { setIsAccessiblePanel } from "../../store/actions/userActions";
 import { consolePage } from "../../helper/consoleStyles";
 
 
@@ -29,7 +28,7 @@ const EditorCreate = () => {
   const {isPosted, articleId } = MainInformationState;
 
   useEffect(() => {
-    console.log("%cPAGE => CREATE CONTENT", `${consolePage}`);
+    console.log("%cPAGE: CREATE CONTENT", `${consolePage}`);
   }, []);
 
   useEffect(() => {

@@ -5,7 +5,14 @@ import Header from "../components/Navigation/Header";
 import Footer from "../components/Navigation/Footer";
 import SideBar from "../components/Navigation/SideBar";
 import { getToken, parseJwt } from "../services/client/tokenStuff";
-import { dispatchUserInfo, fieldsList } from "../helper/userHelper";
+import {
+  buildAvatarInfos,
+  dispatchUserInfo,
+  fieldsList,
+  findSelectedUser,
+  findSignature,
+  listenToScroll,
+} from "../helper/userHelper";
 import {
   Form,
   FormContainer,
@@ -27,13 +34,14 @@ import {
   ActionBarBox,
   SaveButton,
   UserActionBar,
+  Selector,
 } from "../styles/styledComponents/user/user.sc";
 
-import { updateUser } from "../store/actions/thunk/UserAction.thunk";
+import { fetchUser, updateUser } from "../store/actions/thunk/UserAction.thunk";
 import ErrorModal from "../components/Modals/ErrorModal";
 import { consoleSucces } from "../helper/consoleStyles";
-/* import UserProfileContainer from "../../styles/styledComponents/nav/UserProfile.sc";
- */
+import { fetchUsers } from "../store/actions/thunk/ArticlesActions.thunk";
+import { cleanUser } from "../store/actions/userActions";
 
 const UserProfile = () => {
   const userInfo = parseJwt(getToken());
@@ -43,6 +51,8 @@ const UserProfile = () => {
   const [showActionBar, setShowActionBar] = useState(false);
   const [avatarTitle, setAvatarTitle] = useState(undefined);
   const [isAvatarImage, setIsAvatarImage] = useState(undefined);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const isAdmin = userInfo.role === "ADMINISTRATOR";
 
   const userProfileState = useSelector(({ userReducer }) => userReducer);
 
@@ -50,9 +60,15 @@ const UserProfile = () => {
     ({ actionBarReducer }) => actionBarReducer
   );
 
+  const mainInformationState = useSelector(
+    ({ mainInformationReducer }) => mainInformationReducer
+  );
+
   const { isOpenErrorModal } = actionBarState;
+  const { usersList } = mainInformationState;
 
   const {
+    userId,
     userIsChanged,
     picture,
     locale,
@@ -61,62 +77,21 @@ const UserProfile = () => {
     quote,
     quotes,
   } = userProfileState;
-  const avatarUrl = picture.urls?.thumbnail?.url;
+
+  const avatarUrl = picture?.urls?.thumbnail?.url;
 
   function onClickOutside() {
     if (userIsChanged) {
-      dispatch(updateUser(userInfo.sub));
+      dispatch(updateUser(selectedUser.value));
     }
-  }
-
-  const listenToScroll = () => {
-    const scrollPosition =
-      document.body.scrollTop || document.documentElement.scrollTop;
-
-    if (scrollPosition > 0) {
-      setShowActionBar(true);
-    } else {
-      setShowActionBar(false);
-    }
-  };
-
-  function findSignature(name) {
-    const fieldLang = name.substr(name.length - 2);
-    const fieldType = name.substring(0, name.length - 3);
-
-    if (fieldLang === locale) {
-      if (quote && fieldType === "quote") {
-        return quote;
-      }
-
-      if (displayedName && fieldType === "displayedName") {
-        return displayedName;
-      }
-    }
-
-    if (quotes && fieldType === "quote" && quotes[fieldLang]) {
-      return quotes[fieldLang];
-    }
-
-    if (
-      displayedNames &&
-      fieldType === "displayedName" &&
-      displayedNames[fieldLang]
-    ) {
-      return displayedNames[fieldLang];
-    }
-
-    return "";
   }
 
   useEffect(() => {
     console.log("%cUser infos =>", `${consoleSucces}`, userInfo);
     dispatchUserInfo(dispatch, userInfo);
-  }, []);
-
-  useEffect(() => {
+    dispatch(fetchUsers());
     window.addEventListener("scroll", () => {
-      listenToScroll();
+      listenToScroll(setShowActionBar);
     });
 
     return () => {
@@ -125,14 +100,22 @@ const UserProfile = () => {
     };
   }, []);
 
+  useEffect(() => {
+    findSelectedUser(usersList, userInfo, setSelectedUser);
+  }, [usersList]);
+
   useClickOutside(userProfileSection, onClickOutside);
 
   useEffect(() => {
-    if (picture.uuid) {
-      setAvatarTitle(picture.uuid.split("/")[1]);
+    buildAvatarInfos(picture, setAvatarTitle, setIsAvatarImage);
+  }, [userIsChanged, picture?.uuid]);
+
+  useEffect(() => {
+    if (picture?.uuid) {
+      setAvatarTitle(picture?.uuid.split("/")[1]);
       setIsAvatarImage(true);
     }
-  }, [userIsChanged, picture.uuid]);
+  }, [userIsChanged, picture?.uuid]);
 
   return (
     <PageContainer position="relative">
@@ -146,6 +129,21 @@ const UserProfile = () => {
             <SaveButton type="button" disabled={!userIsChanged}>
               {userIsChanged ? "save" : "saved"}
             </SaveButton>
+            {isAdmin && selectedUser && (
+              <Selector
+                classNamePrefix="select"
+                className="selector"
+                value={selectedUser}
+                defaultValue={selectedUser}
+                options={usersList}
+                isClerable={false}
+                onChange={(event) => {
+                  dispatch(cleanUser());
+                  setSelectedUser(event);
+                  dispatch(fetchUser(event.value));
+                }}
+              />
+            )}
           </ActionBarBox>
         </UserActionBar>
         <FormContainer userPage>
@@ -163,7 +161,7 @@ const UserProfile = () => {
                   if (field.section === "identity") {
                     return (
                       <Field
-                        key={`${field.name}${field.placeholder}`}
+                        key={`${field.name}-${field.type}-${field.placeholder}-${userId}`}
                         name={field.name}
                         placeholder={field.placeholder}
                         section="userProfile"
@@ -180,7 +178,7 @@ const UserProfile = () => {
                   return (
                     <Field
                       name={field.name}
-                      key={`${field.name}${field.placeholder}`}
+                      key={`${field.name}-${field.type}-${field.placeholder}-${userId}`}
                       fieldType="uploader"
                       placeholder={field.placeholder}
                       section="userProfile"
@@ -206,7 +204,7 @@ const UserProfile = () => {
               if (field?.lang === "fr") {
                 return (
                   <Field
-                    key={`${field.name}${field.placeholder}`}
+                    key={`${field.name}-${field.type}-${field.placeholder}-${userId}`}
                     name={field.name}
                     placeholder={field.placeholder}
                     section="userProfile"
@@ -214,7 +212,14 @@ const UserProfile = () => {
                     infos={
                       field.max ? `Maximum ${field.max} characters` : undefined
                     }
-                    edit={findSignature(field.name)}
+                    edit={findSignature(
+                      field.name,
+                      locale,
+                      quote,
+                      displayedName,
+                      quotes,
+                      displayedNames
+                    )}
                     lang={field.lang}
                   />
                 );
@@ -231,7 +236,7 @@ const UserProfile = () => {
               if (field?.lang === "de") {
                 return (
                   <Field
-                    key={`${field.name}${field.placeholder}`}
+                    key={`${field.name}-${field.type}-${field.placeholder}-${userId}`}
                     name={field.name}
                     placeholder={field.placeholder}
                     section="userProfile"
@@ -239,7 +244,14 @@ const UserProfile = () => {
                     infos={
                       field.max ? `Maximum ${field.max} characters` : undefined
                     }
-                    edit={findSignature(field.name)}
+                    edit={findSignature(
+                      field.name,
+                      locale,
+                      quote,
+                      displayedName,
+                      quotes,
+                      displayedNames
+                    )}
                     lang={field.lang}
                   />
                 );

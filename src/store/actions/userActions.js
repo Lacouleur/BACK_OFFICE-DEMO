@@ -10,6 +10,7 @@ import {
   SET_LOCALE,
   SET_USER_ID,
   SET_USER_IS_CHANGED,
+  CLEAN_USER,
 } from "../constants";
 
 export const setPosition = (payload) => ({
@@ -64,5 +65,10 @@ export const setUserId = (payload) => ({
 
 export const setUserIsChanged = (payload) => ({
   type: SET_USER_IS_CHANGED,
+  payload,
+});
+
+export const cleanUser = (payload) => ({
+  type: CLEAN_USER,
   payload,
 });

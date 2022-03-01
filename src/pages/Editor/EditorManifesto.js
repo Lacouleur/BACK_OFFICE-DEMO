@@ -55,7 +55,7 @@ const EditorManifesto = () => {
  const { isOpenCloseModal, aModuleIsOpen} = actionBarState;
 
   useEffect(() => {
-    console.log("%cPAGE => EDIT MANIFESTO", `${consolePage}`);
+    console.log("%cPAGE: EDIT MANIFESTO", `${consolePage}`);
     dispatch(setIsManifesto(true));
     if (!manifestoId) {
       dispatch(fetchManifesto(lang));

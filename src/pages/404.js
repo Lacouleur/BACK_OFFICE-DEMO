@@ -13,7 +13,7 @@ const Error404 = () => {
   const history = useHistory();
 
   useEffect(() => {
-    console.log("%cPAGE => 404", `${consolePage}`);
+    console.log("%cPAGE: 404", `${consolePage}`);
     setTimeout(() => {
       history.push("/");
     }, 2000);

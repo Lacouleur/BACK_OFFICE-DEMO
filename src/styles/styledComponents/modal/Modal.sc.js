@@ -23,7 +23,7 @@ export const ModalBox = styled.div`
   width: 807px;
 `;
 
-export const Message = styled.p`
+export const Message = styled.div`
   font-size: 20px;
   line-height: 24px;
   text-transform: uppercase;

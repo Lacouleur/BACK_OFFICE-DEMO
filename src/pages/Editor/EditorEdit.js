@@ -54,7 +54,7 @@ const Editor = () => {
   const { isOpenCloseModal, aModuleIsOpen } = actionBarState;
 
   useEffect(() => {
-      console.log("%cPAGE => EDIT CONTENT", `${consolePage}`);
+      console.log("%cPAGE: EDIT CONTENT", `${consolePage}`);
       dispatch(setIsManifesto(false))
       dispatch(fetchContent(articleId));
       dispatch(setArticleId(articleId));

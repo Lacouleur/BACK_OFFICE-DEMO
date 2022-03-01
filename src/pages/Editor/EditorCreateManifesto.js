@@ -32,7 +32,7 @@ const EditorCreateManifesto = () => {
   const {manifestoId, manifestoLang } = manifestoState;
 
   useEffect(() => { 
-    console.log("%cPAGE => CREATE MANIFESTO", `${consolePage}`);
+    console.log("%cPAGE: CREATE MANIFESTO", `${consolePage}`);
     dispatch(setIsManifesto(true))
     dispatch(setManifestolang(lang))
 

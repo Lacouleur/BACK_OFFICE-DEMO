@@ -112,10 +112,10 @@ export const NewBlockButtonBox = styled.div`
 
 const HomeImageMixin = css`
   top: 315px !important;
+  transition: all 0.3s ease;
 
   &:hover {
     height: 150px !important;
-    transition: all 0.3s ease;
   }
 `;
 
@@ -140,10 +140,10 @@ export const Thumbnail = styled.img`
   height: 100px;
   cursor: not-allowed;
   box-shadow: 0px 0px 31px 2px ${colors.shadow};
+  transition: height 0.3s ease;
 
   &:hover {
     height: 150px !important;
-    transition: height 0.3s ease;
   }
 `;
 
@@ -160,9 +160,9 @@ export const RoundThumbnail = styled.img`
   bottom: 210px;
   height: 100px;
   box-shadow: 0px 0px 31px 2px ${colors.shadow};
+  transition: height 0.3s ease;
   &:hover {
     height: 150px !important;
-    transition: height 0.3s ease;
   }
 `;
 

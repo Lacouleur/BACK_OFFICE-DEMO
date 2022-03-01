@@ -23,7 +23,6 @@ const Pagination = ({ setContentList }) => {
   }, [items]);
 
   const handlePageClick = (event) => {
-    console.log("Pagination handlePageClick");
     dispatch(fetchContentsList(event.selected + 1));
   };
 

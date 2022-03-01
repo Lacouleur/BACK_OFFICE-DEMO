@@ -51,7 +51,7 @@ function findLangAndDispatch(userInfo, dispatch) {
 
 export function dispatchUserInfo(dispatch, userInfo) {
   if (userInfo) {
-    dispatch(setUserId(userInfo.sub || ""));
+    dispatch(setUserId(userInfo.sub || userInfo._id || ""));
     dispatch(setPosition(userInfo.position || ""));
     dispatch(setFirstName(userInfo.given_name || ""));
     dispatch(setLastName(userInfo.family_name || ""));
@@ -65,17 +65,75 @@ export function dispatchUserInfo(dispatch, userInfo) {
   return null;
 }
 
+export function listenToScroll(setShowActionBar) {
+  const scrollPosition =
+    document.body.scrollTop || document.documentElement.scrollTop;
+
+  if (scrollPosition > 0) {
+    setShowActionBar(true);
+  } else {
+    setShowActionBar(false);
+  }
+}
+
+export function findSignature(
+  name,
+  locale,
+  quote,
+  displayedName,
+  quotes,
+  displayedNames
+) {
+  const fieldLang = name.substr(name.length - 2);
+  const fieldType = name.substring(0, name.length - 3);
+
+  if (fieldLang === locale) {
+    if (quote && fieldType === "quote") {
+      return quote;
+    }
+
+    if (displayedName && fieldType === "displayedName") {
+      return displayedName;
+    }
+  }
+
+  if (quotes && fieldType === "quote" && quotes[fieldLang]) {
+    return quotes[fieldLang];
+  }
+
+  if (
+    displayedNames &&
+    fieldType === "displayedName" &&
+    displayedNames[fieldLang]
+  ) {
+    return displayedNames[fieldLang];
+  }
+
+  return "";
+}
+
+export function findSelectedUser(usersList, userInfo, setSelectedUser) {
+  if (usersList) {
+    usersList.map((user) => {
+      if (user.label === userInfo.name) {
+        setSelectedUser(user);
+      }
+      return null;
+    });
+  }
+}
+
+export function buildAvatarInfos(picture, setAvatarTitle, setIsAvatarImage) {
+  if (picture?.uuid) {
+    setAvatarTitle(picture.uuid.split("/")[1]);
+    setIsAvatarImage(true);
+  }
+}
+
 export const fieldsList = [
   {
     name: "position",
     placeholder: "Position",
-    type: "text",
-    section: "identity",
-    max: "40",
-  },
-  {
-    name: "firstName",
-    placeholder: "First Name",
     type: "text",
     section: "identity",
     max: "40",

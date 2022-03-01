@@ -137,7 +137,6 @@ export const StatusText = styled.div`
 export const ArchiveBox = styled.div`
   position: relative;
   display: flex;
-  position: relative;
 
   &:hover {
     & div {

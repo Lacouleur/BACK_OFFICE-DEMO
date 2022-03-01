@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import colors from "../../core/colors";
+import { CardStatusBoxMixin } from "../pagesHub/PagesHub.sc";
 
 export const LineContentBox = styled.div`
   display: flex;
@@ -12,7 +13,7 @@ export const LineContentBox = styled.div`
   background-color: ${(props) => props.styles.backgroundColor};
 `;
 
-export const StatusBox = styled.div`
+const ContentStatusBoxMixin = css`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -28,6 +29,10 @@ export const StatusBox = styled.div`
       visibility: visible;
     }
   }
+`;
+
+export const StatusBox = styled.div`
+  ${(props) => (props.isCard ? CardStatusBoxMixin : ContentStatusBoxMixin)};
 `;
 
 export const ActionToolTipMixin = css`

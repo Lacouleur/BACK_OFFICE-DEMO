@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
-import { H1 } from "../../styles/styledComponents/global/Titles.sc";
+import { TitleBox, H1 } from "../../styles/styledComponents/global/Titles.sc";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import Content from "./Content";
 import plus from "../../styles/assets/icons/plus.svg";
 import {
   IconCreat,
   ContentSectionBox,
-  TitleBox,
   ListBox,
   ManifestoLangSelector,
 } from "../../styles/styledComponents/contentList/ContentList.sc";

@@ -7,17 +7,6 @@ export const ContentSectionBox = styled.div`
   min-width: 800px;
 `;
 
-export const TitleBox = styled.div`
-  min-width: 900px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  position: relative;
-  margin-top: 50px;
-  margin-bottom: 20px;
-  height: 36px;
-`;
-
 export const ListBox = styled.div`
   flex-direction: column;
   width: 100%;

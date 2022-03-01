@@ -111,3 +111,7 @@ export const SET_LOCALE = "SET_LOCALE";
 export const SET_USER_ID = "SET_USER_ID";
 export const SET_USER_IS_CHANGED = "SET_USER_IS_CHANGED";
 export const CLEAN_USER = "CLEAN_USER";
+
+// PAGES HUB
+
+export const SET_PAGES_LIST = "SET_PAGES_LIST";

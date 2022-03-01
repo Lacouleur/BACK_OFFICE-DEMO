@@ -7,6 +7,7 @@ import modulesReducer from "./reducer/modulesReducer";
 import actionBarReducer from "./reducer/actionBarReducer";
 import homeNavigationReducer from "./reducer/homeNavigationReducer";
 import manifestoReducer from "./reducer/manifestoReducer";
+import pagesHubReducer from "./reducer/pagesHubReducer";
 import userReducer from "./reducer/userReducer";
 
 export default combineReducers({
@@ -19,4 +20,5 @@ export default combineReducers({
   actionBarReducer,
   manifestoReducer,
   userReducer,
+  pagesHubReducer,
 });

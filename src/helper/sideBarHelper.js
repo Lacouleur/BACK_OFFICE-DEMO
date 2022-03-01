@@ -2,7 +2,8 @@
 export function setActivePage(
   currentPage,
   setIsActiveContent,
-  setIsActiveProfile
+  setIsActiveProfile,
+  setIsActivePageHub
 ) {
   switch (currentPage) {
     case "/dashboard": {
@@ -11,6 +12,10 @@ export function setActivePage(
     }
     case "/profile": {
       setIsActiveProfile(true);
+      return null;
+    }
+    case "/pages": {
+      setIsActivePageHub(true);
       return null;
     }
     default:

@@ -25,6 +25,7 @@ const Status = ({
   publishScheduleFailed,
   retryAt,
   failCount,
+  isCard,
 }) => {
   const updateDate = buildDate(new Date(updatedAt));
   const publishedDate = buildDate(new Date(publishedAt));
@@ -32,7 +33,7 @@ const Status = ({
   const retryDate = buildDate(new Date(retryAt));
 
   return (
-    <StatusBox>
+    <StatusBox isCard>
       {publishScheduledAt && !publishScheduleFailed && (
         <>
           {publishedAt && (
@@ -137,10 +138,12 @@ Status.defaultProps = {
   publishScheduleFailed: undefined,
   retryAt: null,
   failCount: null,
+  isCard: false,
+  updatedAt: undefined,
 };
 
 Status.propTypes = {
-  updatedAt: PropTypes.string.isRequired,
+  updatedAt: PropTypes.string,
   status: PropTypes.string.isRequired,
   publishedAt: PropTypes.string,
   modified: PropTypes.bool.isRequired,
@@ -148,6 +151,7 @@ Status.propTypes = {
   publishScheduleFailed: PropTypes.bool,
   retryAt: PropTypes.string,
   failCount: PropTypes.number,
+  isCard: PropTypes.bool,
 };
 
 export default Status;

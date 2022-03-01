@@ -15,6 +15,17 @@ export const H2 = styled.h2`
   color: ${colors.white};
 `;
 
+export const TitleBox = styled.div`
+  min-width: 900px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  margin-top: 50px;
+  margin-bottom: 20px;
+  height: 36px;
+`;
+
 export const MainTitleBox = styled.div`
   margin: ${(props) => props.margin || "auto"};
   width: 392px;

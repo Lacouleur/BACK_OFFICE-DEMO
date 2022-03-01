@@ -13,8 +13,7 @@ import {
 } from "../../styles/styledComponents/editor/Sections.sc";
 import ActionBar from "../../components/Editor/actionBar/ActionBar";
 import { setIsManifesto, setManifestolang} from "../../store/actions/manifestoActions";
-import { TitleBox } from "../../styles/styledComponents/contentList/ContentList.sc";
-import { ManifestoLang, ManifestoTitle } from "../../styles/styledComponents/global/Titles.sc";
+import { ManifestoLang, ManifestoTitle, TitleBox } from "../../styles/styledComponents/global/Titles.sc";
 import { fetchManifesto } from "../../store/actions/thunk/ManifestoActions.thunk";
 import { consolePage } from "../../helper/consoleStyles";
 

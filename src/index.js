@@ -18,6 +18,7 @@ import EditorCreateManifesto from "./pages/Editor/EditorCreateManifesto";
 import combineReducers from "./store/combineReducers";
 import logMiddleware from "./store/logMiddleware";
 import UserProfile from "./pages/UserProfile";
+import PagesHub from "./pages/PagesHub";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -33,6 +34,7 @@ const rootComponent = (
           <Auth />
         </Route>
         <PrivateRoute path="/dashboard" exact component={Home} />
+        <PrivateRoute path="/pages" exact component={PagesHub} />
         <PrivateRoute path="/editor" exact component={EditorCreate} />
         <PrivateRoute path="/profile" exact component={UserProfile} />
         <PrivateRoute

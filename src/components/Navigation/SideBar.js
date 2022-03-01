@@ -12,17 +12,25 @@ import contentEditVioletIcon from "../../styles/assets/icons/sideBar/content-edi
 import contentEditWhiteIcon from "../../styles/assets/icons/sideBar/content-edit-white.svg";
 import profileVioletIcon from "../../styles/assets/icons/sideBar/profile-violet.svg";
 import profileWhiteIcon from "../../styles/assets/icons/sideBar/profile-white.svg";
+import pagesHubVioletIcon from "../../styles/assets/icons/sideBar/pageshub-violet.svg";
+import pagesHubWhiteIcon from "../../styles/assets/icons/sideBar/pageshub-white.svg";
 import { setActivePage } from "../../helper/sideBarHelper";
 
 const SideBar = ({ position }) => {
   const [isActiveContent, setIsActiveContent] = useState(false);
   const [isActiveProfile, setIsActiveProfile] = useState(false);
+  const [isActivePagesHub, setIsActivePageHub] = useState(false);
 
   const history = useHistory();
   const currentPage = history.location.pathname;
 
   useEffect(() => {
-    setActivePage(currentPage, setIsActiveContent, setIsActiveProfile);
+    setActivePage(
+      currentPage,
+      setIsActiveContent,
+      setIsActiveProfile,
+      setIsActivePageHub
+    );
   }, [currentPage]);
 
   return (
@@ -42,6 +50,23 @@ const SideBar = ({ position }) => {
         />
         <SideBarText>Contents</SideBarText>
       </SideBarIconBox>
+
+      <SideBarIconBox
+        bottom
+        active={isActivePagesHub}
+        onClick={() => {
+          if (!isActivePagesHub) {
+            history.push(`/pages`);
+          }
+        }}
+      >
+        <SideBarIcon
+          alt="PagesHub Icon"
+          src={isActivePagesHub ? pagesHubVioletIcon : pagesHubWhiteIcon}
+        />
+        <SideBarText>Pages</SideBarText>
+      </SideBarIconBox>
+
       <SideBarIconBox
         bottom
         active={isActiveProfile}

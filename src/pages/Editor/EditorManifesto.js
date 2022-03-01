@@ -14,7 +14,7 @@ import Seo from "../../components/Editor/Sections/Seo";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import plus from "../../styles/assets/icons/plus.svg";
 import { createNewContent } from "../../styles/styledComponents/global/Buttons/CustomButtons.sc";
-import { IconCreat, TitleBox } from "../../styles/styledComponents/contentList/ContentList.sc";
+import { IconCreat } from "../../styles/styledComponents/contentList/ContentList.sc";
 import {
   Form,
   FormContainer,
@@ -31,7 +31,7 @@ import {
 } from "../../store/actions/mainInformationActions";
 import colors from "../../styles/core/colors";
 import HomeNavigation from "../../components/Editor/Sections/HomeNavigation";
-import { ManifestoLang, ManifestoTitle } from "../../styles/styledComponents/global/Titles.sc";
+import { ManifestoLang, ManifestoTitle, TitleBox } from "../../styles/styledComponents/global/Titles.sc";
 import { setIsManifesto } from "../../store/actions/manifestoActions";
 import { onDragEnd } from "../../helper/Editor/dragAndDrop";
 import { HideOnDnd} from "../../styles/styledComponents/editor/modules/Modules.sc";

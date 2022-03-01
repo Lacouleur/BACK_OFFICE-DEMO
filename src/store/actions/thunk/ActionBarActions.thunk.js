@@ -105,9 +105,6 @@ export function schedulePublication(articleId, date) {
   return async (dispatch) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
-      /*       const { manifestoReducer } = getState();
-      const { isManifesto, manifestoId } = manifestoReducer; */
-
       try {
         const response = await scheduleContentPublication(articleId, date);
         if (response.status < 300 && response.status > 199) {
@@ -178,7 +175,7 @@ export function translateArticle(articleId, lang, history) {
           dispatch(fetchContentsList());
         }
       } catch (error) {
-        console.log("%cError =>", `${consoleError}`, error?.response?.data);
+        console.error("%cError =>", `${consoleError}`, error?.response?.data);
         if (error?.response?.status === 409) {
           dispatch(
             showErrorModal({

@@ -215,23 +215,10 @@ export function dispatchTags(event) {
 // Check image of the upload fields, throw modal error if not valid
 export function checkImage(event, dispatch, setFileTitle, name, moduleId) {
   const file = event.target.files[0];
-  if (
-    file &&
-    file.size < 500000 &&
-    (file.type === "image/png" ||
-      file.type === "image/jpg" ||
-      file.type === "image/gif" ||
-      file.type === "image/jpeg")
-  ) {
-    if (name === "avatar") {
-      dispatch(saveAvatar(file));
-      setFileTitle(file.name);
-    } else {
-      dispatch(saveImage(name, file, moduleId));
-      setFileTitle(file.name);
-    }
+  if (name === "avatar") {
+    dispatch(saveAvatar(setFileTitle, file));
   } else {
-    dispatch(showErrorModal({ value: true, message: sizeOrFormatError(file) }));
+    dispatch(saveImage(setFileTitle, name, file, moduleId));
   }
 }
 
@@ -271,6 +258,18 @@ export function createAutorsList(users) {
     return null;
   });
   return authorList;
+}
+
+export function createUsersList(users) {
+  const usersList = [];
+  users.map((user) => {
+    usersList.push({
+      value: user._id,
+      label: user.name || "unamed",
+    });
+    return null;
+  });
+  return usersList;
 }
 
 // feeding selector field with the good option list

@@ -46,7 +46,7 @@ const ErrorModal = () => {
       >
         {errorMessage && (
           <Message>
-            Please check or report the following errors before trying again :
+            Please check or report the following error before trying again :
           </Message>
         )}
         {errorMessage &&

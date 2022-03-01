@@ -26,6 +26,14 @@ export function getContent(id) {
   });
 }
 
+export function getUser(id) {
+  return axiosConfig.get(`/users/${id}`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}
+
 export function getUsers() {
   return axiosConfig.get(`/users`, {
     headers: {

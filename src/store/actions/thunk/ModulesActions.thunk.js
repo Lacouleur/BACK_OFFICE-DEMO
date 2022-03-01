@@ -17,7 +17,7 @@ import {
   consoleTitle,
 } from "../../../helper/consoleStyles";
 import { setHomeImageUuid, setNavImageUuid } from "../homeNavigationActions";
-import { nameSpaceError } from "../../../helper/errorMessages";
+import { nameSpaceError, uploadError } from "../../../helper/errorMessages";
 import ErrorCaseClient from "../../../helper/ErrorCaseClient";
 
 export function deleteModule(articleId, moduleId) {
@@ -195,10 +195,6 @@ export function saveModule(uuid, request = "save") {
             }
           } catch (error) {
             ErrorCaseClient(dispatch, error?.response?.data);
-            console.log(
-              `%cError, ${values.type}-module (id:${uuid})`,
-              `${consoleError}`
-            );
           }
         }
       }
@@ -338,10 +334,6 @@ export function saveModule(uuid, request = "save") {
             }
           } catch (error) {
             ErrorCaseClient(dispatch, error?.response?.data);
-            console.log(
-              `%cError, ${values.type}-module (id:${uuid})`,
-              `${consoleError}`
-            );
           }
         }
       }
@@ -349,7 +341,7 @@ export function saveModule(uuid, request = "save") {
   };
 }
 
-export function saveImage(name, image, moduleId) {
+export function saveImage(setFileTitle, name, image, moduleId) {
   console.log("%cSAVING IMAGE", `${consoleTitle}`, moduleId);
   return async (dispatch) => {
     const tokenIsValid = await isValidToken(dispatch);
@@ -362,17 +354,26 @@ export function saveImage(name, image, moduleId) {
           if (name === "image") {
             console.log("%cRESPONSE", `${consoleInfo}`, response.data);
             dispatch(setImageUuid({ id: moduleId, value: response.data }));
+            setFileTitle(image.name);
           }
           if (name === "homeImage") {
             dispatch(setHomeImageUuid(response.data));
+            setFileTitle(image.name);
           }
           if (name === "navImage") {
             dispatch(setNavImageUuid(response.data));
+            setFileTitle(image.name);
           }
         }
       } catch (error) {
         if (error?.response.status === 400) {
-          dispatch(showErrorModal({ value: true, message: nameSpaceError() }));
+          dispatch(
+            showErrorModal({
+              value: true,
+              message: uploadError(error?.response?.data),
+            })
+          );
+          ErrorCaseClient(dispatch, error?.response?.data);
         } else {
           ErrorCaseClient(dispatch, error?.response?.data);
         }

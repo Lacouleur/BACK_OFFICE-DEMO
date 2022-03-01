@@ -36,7 +36,7 @@ const Auth = () => {
   };
 
   useEffect(() => {
-    console.log("%cPAGE => AUTH", `${consolePage}`);
+    console.log("%cPAGE: AUTH", `${consolePage}`);
     if (getToken() && getRefreshToken()) {
       history.push("/dashboard");
     }

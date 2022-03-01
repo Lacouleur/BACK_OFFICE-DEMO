@@ -167,10 +167,16 @@ export function checkAndSend(type = "save", articleId = null) {
             if (error.response.status === 409) {
               dispatch(setErrorPosting(true));
               dispatch(setPosted(false));
+              console.log(
+                "%cError =>",
+                `${consoleError}`,
+                error?.response?.data
+              );
+              ErrorCaseClient(dispatch, error?.response?.data);
             } else {
               ErrorCaseClient(dispatch, error.response.data);
             }
-            console.log("%cError =>", `${consoleError}`, error?.response?.data);
+
             dispatch(showErrorModal(true));
           }
         }
@@ -195,6 +201,7 @@ export function checkAndSend(type = "save", articleId = null) {
           if (error.response.status === 409) {
             dispatch(setErrorPosting(true));
             dispatch(setPosted(false));
+            ErrorCaseClient(dispatch, error?.response?.data);
           } else {
             ErrorCaseClient(dispatch, error?.response?.data);
           }
@@ -223,7 +230,7 @@ export function getStatus(id) {
         }
         return null;
       } catch (error) {
-        console.log("%cError =>", `${consoleError}`, error?.response?.data);
+        console.error("%cError =>", `${consoleError}`, error?.response?.data);
         return null;
       }
     }
@@ -255,11 +262,10 @@ export function fetchContent(id) {
 
         return null;
       } catch (error) {
+        console.log("%cerror =>", `${consoleError}`, error?.response?.data);
         if (error?.response?.status === 401) {
-          console.log("%cError =>", `${consoleError}`, error?.response?.data);
           deleteToken(dispatch);
         }
-        console.log("%cError =>", `${consoleError}`, error?.response?.data);
         return null;
       }
     }
@@ -286,7 +292,7 @@ export function fetchContentsList(page) {
 
         return null;
       } catch (error) {
-        console.log("%cError =>", `${consoleError}`, error?.response?.data);
+        console.error("%cError =>", `${consoleError}`, error?.response?.data);
         return null;
       }
     }
@@ -339,7 +345,7 @@ export function fetchCategoriesList() {
         return null;
       } catch (error) {
         if (error?.response?.status === 401) {
-          console.log("%cError =>", `${consoleError}`, error?.response?.data);
+          console.error("%cError =>", `${consoleError}`, error?.response?.data);
           deleteToken(dispatch);
         }
         return null;
@@ -350,7 +356,7 @@ export function fetchCategoriesList() {
 }
 
 export function fetchUsers() {
-  console.log("%cFETCH USERS=>", `${consoleTitle}`);
+  console.log("%cFETCH USERS", `${consoleTitle}`);
   return async (dispatch) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
@@ -362,7 +368,7 @@ export function fetchUsers() {
         }
         return null;
       } catch (error) {
-        console.log("%cError =>", `${consoleError}`, error?.response?.data);
+        console.error("%cError =>", `${consoleError}`, error?.response?.data);
         return null;
       }
     }
@@ -371,7 +377,7 @@ export function fetchUsers() {
 }
 
 export function fetchTags(lang) {
-  console.log("%cFETCH TAGS=>", `${consoleTitle}`);
+  console.log("%cFETCH TAGS", `${consoleTitle}`);
   return async (dispatch) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
@@ -383,7 +389,7 @@ export function fetchTags(lang) {
         }
         return null;
       } catch (error) {
-        console.log("%cError =>", `${consoleError}`, error?.response?.data);
+        console.error("%cError =>", `${consoleError}`, error?.response?.data);
         return null;
       }
     }
@@ -398,7 +404,7 @@ export function createTag(
   selectedTags,
   setIsOpenTagWarn
 ) {
-  console.log("%cCREATING TAG=>", `${consoleTitle}`, label);
+  console.log("%cCREATING TAG =>", `${consoleTitle}`, label);
   return async (dispatch, getState) => {
     const { mainInformationReducer } = getState();
     const { tagsList } = mainInformationReducer;
@@ -423,7 +429,7 @@ export function createTag(
         }
         return null;
       } catch (error) {
-        console.log("%cError =>", `${consoleError}`, error?.response?.data);
+        console.error("%cError =>", `${consoleError}`, error?.response?.data);
         return null;
       }
     }

@@ -9,10 +9,10 @@ function ErrorCaseClient(dispatch, errorData) {
         message: errorData,
       })
     );
-    console.log("%cError =>", `${consoleError}`, errorData);
+    console.error("%cError =>", `${consoleError}`, errorData);
   } else {
     dispatch(showErrorModal(true));
-    console.log("%cError =>", `${consoleError}`, errorData);
+    console.error("%cError =>", `${consoleError}`, errorData);
   }
 }
 

@@ -29,6 +29,7 @@ import {
   ActionIcon,
   ArchiveBox,
 } from "../../styles/styledComponents/editor/ActionBar.sc";
+
 import { setIsOpenArchiveModal } from "../../store/actions/actionBarActions";
 import { watchOpinionModules } from "../../helper/actionBarHelper";
 import statIconGreen from "../../styles/assets/icons/opinion-green.svg";

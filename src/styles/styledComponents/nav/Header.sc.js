@@ -44,7 +44,7 @@ export const ProfileBox = styled.div`
   position: absolute;
   right: 5%;
   height: 100%;
-  width: calc(288px - 56px);
+  max-width: 400px;
   transform: translateY(-50%);
   top: 50%;
   &:hover {

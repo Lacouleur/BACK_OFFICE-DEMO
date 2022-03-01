@@ -8,25 +8,27 @@ import {
   refreshMyToken,
 } from "../../../services/client/refreshToken";
 import { showErrorModal } from "../actionBarActions";
-import { setPicture, setUserIsChanged } from "../userPanelActions";
+import { setPicture, setUserIsChanged } from "../userActions";
 
 export function updateUser(userId) {
   console.log("%cUPDATING USER", `${consoleTitle}`);
   return async (dispatch, getState) => {
-    const tokenIsValid = await isValidToken(dispatch);
+    const tokenIsValid = await isValidToken(dispatch, true);
     if (tokenIsValid) {
-      const { userPanelReducer } = getState();
+      const { userReducer } = getState();
       const {
         position,
         lastName,
         firstName,
         displayedName,
+        displayedNames,
         quote,
+        quotes,
         email,
         gender,
         picture,
         locale,
-      } = userPanelReducer;
+      } = userReducer;
 
       const values = {
         email,
@@ -34,7 +36,9 @@ export function updateUser(userId) {
         given_name: firstName,
         family_name: lastName,
         displayed_name: displayedName,
+        displayed_names: displayedNames,
         quote,
+        quotes,
         picture: {
           alt: picture.alt,
           uuid: picture.uuid,
@@ -42,6 +46,7 @@ export function updateUser(userId) {
         locale,
         position,
       };
+      console.log("VALUES", values);
       try {
         const response = await postUser(values, userId);
 
@@ -61,8 +66,8 @@ export function updateUser(userId) {
 export function saveAvatar(image) {
   console.log("%cSAVING Avatar", `${consoleTitle}`);
   return async (dispatch, getState) => {
-    const { userPanelReducer } = getState();
-    const { picture } = userPanelReducer;
+    const { userReducer } = getState();
+    const { picture } = userReducer;
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
       const formData = new FormData();

@@ -10,6 +10,7 @@ export const FieldTitle = styled.p`
   color: ${colors.lightGrey};
   font-size: 14px;
   opacity: 0.8;
+  white-space: nowrap;
   text-transform: capitalize;
 `;
 

@@ -4,7 +4,6 @@ import colors from "../../core/colors";
 
 export const ContentSectionBox = styled.div`
   margin-top: 56px;
-  overflow: hidden;
   min-width: 800px;
 `;
 

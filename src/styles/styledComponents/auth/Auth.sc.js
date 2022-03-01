@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import colors from "../../core/colors";
-import media from "../../core/mediaQuery";
 
 export const AuthBox = styled.div`
   height: 100%;
@@ -18,7 +17,4 @@ export const Form = styled.form`
   justify-content: center;
   border-radius: 4px;
   box-shadow: 0px 11px 15px ${colors.shadow};
-  ${media.mobile`
-  width: 288px;
-  `};
 `;

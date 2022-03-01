@@ -3,8 +3,8 @@
 import React, {  useEffect } from "react";
 import {useDispatch, useSelector } from "react-redux";
 import { useHistory} from "react-router-dom";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
+import Footer from "../../components/Navigation/Footer";
+import Header from "../../components/Navigation/Header";
 import PageContainer from "../../styles/styledComponents/global/PageContainer.sc";
 import MainInformation from "../../components/Editor/Sections/MainInformation";
 import {
@@ -13,7 +13,7 @@ import {
 } from "../../styles/styledComponents/editor/Sections.sc";
 import ActionBar from "../../components/Editor/actionBar/ActionBar";
 import { setIsManifesto } from "../../store/actions/manifestoActions";
-import { setIsAccessiblePanel } from "../../store/actions/userPanelActions";
+import { setIsAccessiblePanel } from "../../store/actions/userActions";
 import { consolePage } from "../../helper/consoleStyles";
 
 
@@ -37,7 +37,6 @@ const EditorCreate = () => {
     if (isPosted) {
       history.push(`/editor/${articleId}`)
     }
-    dispatch(setIsAccessiblePanel(false));
   }, [isPosted]);
 
   return (

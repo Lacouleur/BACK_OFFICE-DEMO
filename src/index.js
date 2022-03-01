@@ -17,6 +17,7 @@ import EditorManifesto from "./pages/Editor/EditorManifesto";
 import EditorCreateManifesto from "./pages/Editor/EditorCreateManifesto";
 import combineReducers from "./store/combineReducers";
 import logMiddleware from "./store/logMiddleware";
+import UserProfile from "./pages/UserProfile";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -33,6 +34,7 @@ const rootComponent = (
         </Route>
         <PrivateRoute path="/dashboard" exact component={Home} />
         <PrivateRoute path="/editor" exact component={EditorCreate} />
+        <PrivateRoute path="/profile" exact component={UserProfile} />
         <PrivateRoute
           path="/create-manifesto/:lang"
           exact
@@ -55,6 +57,7 @@ const rootComponent = (
           exact
           component={Results}
         />
+
         <Route path="*">
           <Error404 />
         </Route>

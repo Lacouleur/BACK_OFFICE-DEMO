@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
+import Footer from "../components/Navigation/Footer";
+import Header from "../components/Navigation/Header";
 import { ButtonIcon } from "../styles/styledComponents/contentList/Content.sc";
 import Button from "../styles/styledComponents/global/Buttons/Buttons.sc";
 import PageContainer from "../styles/styledComponents/global/PageContainer.sc";

@@ -1,7 +1,7 @@
-/* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-one-expression-per-line */
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import PropTypes from "prop-types";
 import ReactPaginate from "react-paginate";
 import {
   PageListArrow,
@@ -19,14 +19,11 @@ const Pagination = ({ setContentList }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchContentsList());
-  }, []);
-
-  useEffect(() => {
     setContentList(items);
   }, [items]);
 
   const handlePageClick = (event) => {
+    console.log("Pagination handlePageClick");
     dispatch(fetchContentsList(event.selected + 1));
   };
 
@@ -59,6 +56,10 @@ const Pagination = ({ setContentList }) => {
       />
     </PaginationBox>
   );
+};
+
+Pagination.propTypes = {
+  setContentList: PropTypes.func.isRequired,
 };
 
 export default Pagination;

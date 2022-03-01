@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import FooterContainer from "../styles/styledComponents/nav/Footer.sc";
+import FooterContainer from "../../styles/styledComponents/nav/Footer.sc";
 
 const Footer = ({ position }) => {
   return <FooterContainer position={position} />;

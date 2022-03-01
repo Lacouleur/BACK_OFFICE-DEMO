@@ -4,7 +4,7 @@ import colors from "../../core/colors";
 const PageContainer = styled.div`
   padding: 0;
   position: ${(props) => props.position || "relative"};
-  height: ${(props) => props.height || "100%"};
+  height: ${(props) => props.height || ""};
   width: 100%;
   min-width: 800px;
   color: ${colors.white};
@@ -16,7 +16,7 @@ const PageContainer = styled.div`
   right: 0;
   left: 0;
   bottom: 0;
-  overflow: ${(props) => (props.isModalOpen ? "hidden" : "visible")}; ;
+  overflow: ${(props) => (props.isModalOpen ? "hidden" : "visible")};
 `;
 
 export default PageContainer;

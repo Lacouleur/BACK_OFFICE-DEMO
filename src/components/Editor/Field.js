@@ -7,8 +7,6 @@ import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import makeAnimated from "react-select/animated";
 import Fuse from "fuse.js";
-
-import { useRef } from "react";
 import { addSeoDescription } from "../../store/actions/seoActions";
 import {
   FieldStyle,
@@ -68,6 +66,22 @@ import {
 } from "../../store/actions/mainInformationActions";
 
 // All necessary methods of "Field" are in "fieldsHelper.js"
+
+/*
+type : semantic type of the field
+placeholder,
+maxlength,
+infos : text to display below the field
+name : field name used to dispatch values
+error : error text for the current field
+fieldType : custom type of field used to display it (If undefined, a classic "type text" is displayed)
+section: The group to which the field belongs
+edit : fetched value to populate the field
+moduleId : ID of the group to which the field belongs,
+answerId : used for quizz,
+lang,
+*/
+
 const Field = ({
   type,
   placeholder,
@@ -407,7 +421,8 @@ const Field = ({
                 dispatch,
                 e.target.value,
                 moduleId,
-                answerId
+                answerId,
+                lang
               );
             }}
             defaultValue={edit ? `${edit}` : ""}

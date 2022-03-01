@@ -40,7 +40,7 @@ export const refreshMyToken = async (dispatch) => {
   return null;
 };
 
-export const isValidToken = async (dispatch) => {
+export const isValidToken = async (dispatch, refresh = true) => {
   const token = getToken();
   const refreshToken = getRefreshToken();
 
@@ -53,7 +53,9 @@ export const isValidToken = async (dispatch) => {
       currentTimeInSeconds < refreshTokenExpire
     ) {
       try {
-        await refreshMyToken(dispatch);
+        if (refresh) {
+          await refreshMyToken(dispatch);
+        }
         return true;
       } catch (error) {
         return false;

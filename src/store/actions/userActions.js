@@ -1,6 +1,4 @@
 import {
-  SET_IS_ACCESSIBLE_PANEL,
-  SET_PANEL_OPEN,
   SET_POSITION,
   SET_LAST_NAME,
   SET_FIRST_NAME,
@@ -13,16 +11,6 @@ import {
   SET_USER_ID,
   SET_USER_IS_CHANGED,
 } from "../constants";
-
-export const setIsAccessiblePanel = (payload) => ({
-  type: SET_IS_ACCESSIBLE_PANEL,
-  payload,
-});
-
-export const setPanelOpen = (payload) => ({
-  type: SET_PANEL_OPEN,
-  payload,
-});
 
 export const setPosition = (payload) => ({
   type: SET_POSITION,

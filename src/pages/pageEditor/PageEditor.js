@@ -40,12 +40,13 @@ import { onDragEnd } from "../../helper/Editor/dragAndDrop";
 import { setIsAccessiblePanel } from "../../store/actions/userActions";
 import ModulesDispatcher from "../../components/Editor/Sections/Modules/ModulesDispatcher";
 import { consolePage } from "../../helper/consoleStyles";
+import { pageSetId } from "../../store/actions/pageEditor/pageMainInformationsActions";
 
 
 const Editor = () => {
   
   const dispatch = useDispatch();
-  const { articleId } = useParams();
+  const { pageId } = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
   const actionBarState = useSelector(({ actionBarReducer }) => actionBarReducer);
@@ -55,8 +56,8 @@ const Editor = () => {
 
   useEffect(() => {
       console.log("%cPAGE: PAGE-EDITOR", `${consolePage}`);
-      dispatch(fetchPage(articleId));
-      dispatch(setArticleId(articleId));
+      dispatch(fetchContent(pageId));
+      dispatch(pageSetId(pageId));
   }, []);
 
 
@@ -69,11 +70,11 @@ const Editor = () => {
           {isUsedDndArea && <HideOnDnd />}
           {isOpenCloseModal?.value && <HideContent />}
           <MainInformation />
-          <Seo />
+          {/* <Seo />
           <HomeNavigation />
           {modulesList?.length > 0 && (
             <Separator />
-          )}
+          )} */}
           <DragDropContext
             onDragEnd={(result) => {
               onDragEnd(result, modulesList, dispatch)
@@ -82,7 +83,7 @@ const Editor = () => {
             onDragStart={() => setIsUsedDnDArea(true)}
           > 
             {modulesList && modulesList.length > 0 && (
-            <Droppable droppableId={articleId}>
+            <Droppable droppableId={pageId}>
               {(provided) => {
               return (
                 <ModulesDispatcher
@@ -97,7 +98,7 @@ const Editor = () => {
           )}
           </DragDropContext>
 
-          {isOpen && articleId && <ModuleCreator setIsOpen={setIsOpen} />}
+          {/* {isOpen && pageId && <ModuleCreator setIsOpen={setIsOpen} />} */}
           <NewBlockButtonBox>
             <Button
               type="button"

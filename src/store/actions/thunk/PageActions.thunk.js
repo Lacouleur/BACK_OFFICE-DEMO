@@ -1,23 +1,30 @@
 import { isValidToken } from "../../../services/client/refreshToken";
 import { setUpdatedAt, showErrorModal } from "../actionBarActions";
-import { setArticleId, setErrorPosting, setPosted } from "../commonsActions";
+import {
+  contentLoaded,
+  setArticleId,
+  setErrorPosting,
+  setPosted,
+} from "../commonsActions";
 import {
   pageSetErrorSlug,
   pageSetErrorTitle,
   pageSetId,
   pageSetModified,
+  pageSetStatus,
   setErrorTitle,
   setModified,
 } from "../pageEditor/pageMainInformationsActions";
 
 import {
   consoleError,
+  consoleInfo,
   consoleSucces,
   consoleTitle,
 } from "../../../helper/consoleStyles";
 
 import ErrorCaseClient from "../../../helper/ErrorCaseClient";
-import { postPage } from "../../../services/client/pagesClient";
+import { getPage, postPage } from "../../../services/client/pagesClient";
 
 // eslint-disable-next-line import/prefer-default-export
 export function pageCheckAndSend(type = "save", pageId = null) {
@@ -75,6 +82,33 @@ export function pageCheckAndSend(type = "save", pageId = null) {
             dispatch(showErrorModal(true));
           }
         }
+      }
+    }
+    return null;
+  };
+}
+
+export function fetchPage(id) {
+  console.log("%cFETCHING PAGE =>", `${consoleTitle}`, id);
+  return async (dispatch) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
+      try {
+        const response = await getPage(id);
+        if (response.status < 300 && response.status > 199) {
+          console.log("%cFetched page =>", `${consoleInfo}`, response.data);
+          dispatch(contentLoaded(response.data));
+          dispatch(setUpdatedAt(response.data.updatedAt));
+          /*  dispatch(setPublishedAt(response.data.publishedAt));
+          dispatch(setIsScheduled(response.data.publishScheduledAt || "")); */
+          dispatch(pageSetStatus(response.data.state));
+        }
+
+        return null;
+      } catch (error) {
+        console.log("%cerror =>", `${consoleError}`, error?.response?.data);
+
+        return null;
       }
     }
     return null;

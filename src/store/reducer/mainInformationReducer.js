@@ -26,6 +26,7 @@ import {
 } from "../constants";
 
 const initialState = {
+  // string
   articleId: "",
   title: "",
   slug: "",
@@ -33,24 +34,32 @@ const initialState = {
   colorStyle: "",
   caption: "",
   status: "",
-  modified: null,
-  categoriesList: [],
-  category: null,
+
+  // bool
+  isPosted: true,
   titleError: false,
   slugError: false,
   regexSlugError: false,
   postingError: false,
-  isPosted: true,
   isChanged: false,
-  options: [],
   isManifesto: false,
-  manifestoId: null,
+
+  // arr
+  options: [],
+  categoriesList: [],
   users: [],
   authorsList: [],
   authors: [],
   tagsList: [],
   tags: [],
+
+  // obj
   newTag: {},
+
+  // mix
+  modified: null,
+  category: null,
+  manifestoId: null,
 };
 
 const mainInformationReducer = (state = initialState, action = {}) => {

@@ -11,13 +11,18 @@ import {
 } from "../constants";
 
 const initialState = {
+  // string
   homeTitle: "",
+  navImgUuid: "",
+  navImgAlt: "",
+
+  // bool
+  homeNavIsChanged: false,
+
+  // mix
   readingTime: undefined,
   homeImgUuid: undefined,
   homeImgAlt: undefined,
-  navImgUuid: "",
-  navImgAlt: "",
-  homeNavIsChanged: false,
   homeImgUrls: undefined,
   navImgUrls: undefined,
 };

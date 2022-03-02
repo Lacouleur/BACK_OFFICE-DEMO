@@ -8,11 +8,16 @@ import {
 } from "../constants";
 
 const initialState = {
+  // string
   manifestoId: "",
-  isManifesto: false,
   manifestoLang: "",
+
+  // bool
+  isManifesto: false,
   isPublishedManifesto: false,
   isModifiedManifesto: false,
+
+  // arr
   manifestoData: [],
 };
 

@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { useHistory, useParams } from "react-router-dom";
 import {
   CardArchiveBox,
   CardIconAction,
@@ -30,6 +31,7 @@ const PageCard = ({
   modified,
   language,
 }) => {
+  const history = useHistory();
   return (
     <PageCardContainer id="pages" key={id}>
       <CardIconActionBox>
@@ -53,7 +55,7 @@ const PageCard = ({
         <CardIconAction
           src={penVioletIcon}
           onClick={() => {
-            console.log("it will open page Editor");
+            history.push(`/page-editor/${id}`);
           }}
         />
       </CardIconActionBox>

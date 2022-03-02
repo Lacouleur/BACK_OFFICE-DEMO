@@ -263,9 +263,7 @@ export function fetchContent(id) {
         return null;
       } catch (error) {
         console.log("%cerror =>", `${consoleError}`, error?.response?.data);
-        if (error?.response?.status === 401) {
-          deleteToken(dispatch);
-        }
+
         return null;
       }
     }

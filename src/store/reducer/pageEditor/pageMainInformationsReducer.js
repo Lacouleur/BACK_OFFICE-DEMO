@@ -8,14 +8,19 @@ import {
   PAGE_SET_ERROR_SLUG,
   SET_ERROR_POSTING,
   SET_POSTED,
+  PAGE_SET_STATUS,
 } from "../../constants";
 import { verifySlug } from "../../../helper/auth/verifyFields";
 
 const initialState = {
+  // string
   pageId: "",
   title: "",
   slug: "",
   lang: "",
+  status: "",
+
+  // bool
   regexSlugError: false,
   slugError: false,
   titleError: false,
@@ -97,6 +102,13 @@ const mainInformationReducer = (state = initialState, action = {}) => {
         ...oldState,
         isPosted: action.payload,
         isChanged: false,
+      };
+    }
+
+    case PAGE_SET_STATUS: {
+      return {
+        ...oldState,
+        status: action.payload,
       };
     }
 

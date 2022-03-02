@@ -14,26 +14,33 @@ import {
 } from "../constants";
 
 const initialState = {
-  isAccessible: false,
-  isPanelOpen: false,
+  // string
   userId: "",
   position: "",
   lastName: "",
   firstName: "",
   displayedName: "",
-  displayedNames: null,
   quote: "",
-  quotes: null,
   email: "",
   gender: "",
+  locale: "",
+
+  // bool
+  isAccessible: false,
+  isPanelOpen: false,
+  userIsChanged: false,
+
+  // obj
   picture: {
     alt: "",
     source: "",
     uuid: "",
     urls: {},
   },
-  locale: "",
-  userIsChanged: false,
+
+  // mix
+  quotes: null,
+  displayedNames: null,
 };
 
 const userReducer = (state = initialState, action = {}) => {

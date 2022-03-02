@@ -24,3 +24,11 @@ export function postPage(values, lang) {
     },
   });
 }
+
+export function getPage(id) {
+  return axiosConfig.get(`/pages/${id}`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}

@@ -17,26 +17,33 @@ import {
 import {} from "../actions/actionBarActions";
 
 const initialState = {
+  // string
   updatedAt: "",
-  publishedAt: null,
-  programmedAt: null,
+  isScheduled: "",
+  articleToDelete: "",
+
+  // bool
   publicationFailed: false,
-  publicationFailData: null,
   isOpenPublishModal: false,
   isOpenErrorModal: false,
   isOpenArchiveModal: false,
   isOpenCloseModal: false,
   isOpenScheduleModal: false,
-  errorMessage: null,
   isModalOpen: false,
   aModuleIsOpen: false,
-  articleToDelete: "",
+
+  // obj
   hideModal: {
     isOpen: false,
     moduleId: "",
     type: "",
   },
-  isScheduled: "",
+
+  // mix
+  publishedAt: null,
+  programmedAt: null,
+  publicationFailData: null,
+  errorMessage: null,
 };
 
 const actionBarReducer = (state = initialState, action = {}) => {

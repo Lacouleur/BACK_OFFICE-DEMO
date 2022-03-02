@@ -6,6 +6,7 @@ import {
   PAGE_SET_MODIFIED,
   PAGE_SET_ERROR_TITLE,
   PAGE_SET_ERROR_SLUG,
+  PAGE_SET_STATUS,
 } from "../../constants";
 
 export const pageSetTitle = (payload) => ({
@@ -40,5 +41,10 @@ export const pageSetErrorTitle = (payload) => ({
 
 export const pageSetErrorSlug = (payload) => ({
   type: PAGE_SET_ERROR_SLUG,
+  payload,
+});
+
+export const pageSetStatus = (payload) => ({
+  type: PAGE_SET_STATUS,
   payload,
 });

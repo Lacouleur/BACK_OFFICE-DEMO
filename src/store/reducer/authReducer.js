@@ -7,8 +7,11 @@ import {
 } from "../constants";
 
 const initialState = {
+  // string
   password: "",
   mail: "",
+
+  // bool
   passwordFieldError: false,
   mailFieldError: false,
   authError: false,

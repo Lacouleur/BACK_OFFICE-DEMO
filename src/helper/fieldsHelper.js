@@ -34,6 +34,10 @@ import { addSeoTitle } from "../store/actions/seoActions";
 import { saveImage } from "../store/actions/thunk/ModulesActions.thunk";
 import { sizeOrFormatError } from "./errorMessages";
 import langList from "./langList";
+import {
+  pageSetSlug,
+  pageSetTitle,
+} from "../store/actions/pageEditor/pageMainInformationsActions";
 
 // Hard coded reading time list for theming.
 export const readingTimeList = [
@@ -349,6 +353,8 @@ export function dispatchFields(
   lang = "fr"
 ) {
   switch (true) {
+    // CONTENT EDITOR
+
     case name === "title" && section === "mainInformation":
       dispatch(addTitle(value));
       break;
@@ -426,6 +432,16 @@ export function dispatchFields(
     case name.substr(0, name.length - 3) === "quote" &&
       section === "userProfile":
       dispatch(setQuote({ value, lang }));
+      break;
+
+    // PAGE EDITOR
+
+    case name === "title" && section === "pageMainInformation":
+      dispatch(pageSetTitle(value));
+      break;
+
+    case name === "slug" && section === "pageMainInformation":
+      dispatch(pageSetSlug(value));
       break;
 
     default:

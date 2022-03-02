@@ -9,3 +9,18 @@ export function getPagesList(page = 1, limit = 20) {
     },
   });
 }
+
+export function postPage(values, lang) {
+  let string = "";
+  if (lang) {
+    string = `?language=${lang}`;
+  }
+  return axiosConfig({
+    method: "post",
+    url: `/pages/${string}`,
+    data: values,
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}

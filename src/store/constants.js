@@ -115,3 +115,12 @@ export const CLEAN_USER = "CLEAN_USER";
 // PAGES HUB
 
 export const SET_PAGES_LIST = "SET_PAGES_LIST";
+
+// PAGE EDITOR & CREATE
+export const PAGE_SET_SLUG = "PAGE_SET_SLUG";
+export const PAGE_SET_TITLE = "PAGE_SET_TITLE";
+export const PAGE_SET_LANG = "PAGE_SET_LANG";
+export const PAGE_SET_ID = "PAGE_SET_ID";
+export const PAGE_SET_MODIFIED = "PAGE_SET_MODIFIED";
+export const PAGE_SET_ERROR_TITLE = "PAGE_SET_ERROR_TITLE";
+export const PAGE_SET_ERROR_SLUG = "  PAGE_SET_ERROR_SLUG";

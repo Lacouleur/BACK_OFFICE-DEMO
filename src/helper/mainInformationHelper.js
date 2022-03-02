@@ -1,4 +1,5 @@
 import { checkAndSend } from "../store/actions/thunk/ArticlesActions.thunk";
+import { pageCheckAndSend } from "../store/actions/thunk/PageActions.thunk";
 
 export function slugMessage(mainInformationState) {
   const { regexSlugError, postingError } = mainInformationState;
@@ -78,5 +79,38 @@ export function checkContentAndSend(
     } else if (isChanged && !articleId) {
       dispatch(checkAndSend());
     }
+  }
+}
+
+export function checkPageAndSend(
+  dispatch,
+  PageMainInformationState,
+  setIsOpen,
+  pageId
+) {
+  const {
+    title,
+    slug,
+    regexSlugError,
+    slugError,
+    titleError,
+    postingError,
+    isChanged,
+  } = PageMainInformationState;
+
+  if (
+    title &&
+    slug &&
+    !slugError &&
+    !regexSlugError &&
+    !postingError &&
+    !titleError
+  ) {
+    setIsOpen(false);
+  }
+  if (isChanged && pageId) {
+    dispatch(pageCheckAndSend("update", pageId));
+  } else if (isChanged && !pageId) {
+    dispatch(pageCheckAndSend());
   }
 }

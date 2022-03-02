@@ -1,16 +1,21 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import Footer from "../components/Navigation/Footer";
 import Header from "../components/Navigation/Header";
 import SideBar from "../components/Navigation/SideBar";
 import PageCard from "../components/PagesHub/PageCard";
 import { fetchPages } from "../store/actions/thunk/PagesHubActions.thunk";
+import { IconCreat } from "../styles/styledComponents/contentList/ContentList.sc";
+import Button from "../styles/styledComponents/global/Buttons/Buttons.sc";
+import { createNewContent } from "../styles/styledComponents/global/Buttons/CustomButtons.sc";
 import PageContainer from "../styles/styledComponents/global/PageContainer.sc";
 import { H1, TitleBox } from "../styles/styledComponents/global/Titles.sc";
 import {
   PageCardsContainer,
   PageHubContainer,
 } from "../styles/styledComponents/pagesHub/PagesHub.sc";
+import plusIcon from "../styles/assets/icons/plus.svg";
 
 const PagesHub = () => {
   const dispatch = useDispatch();
@@ -29,6 +34,12 @@ const PagesHub = () => {
       <PageHubContainer>
         <TitleBox>
           <H1 id="PageManager"> PAGE MANAGER </H1>
+          <Link to="/page-editor/create">
+            <Button styles={createNewContent}>
+              <IconCreat src={plusIcon} />
+              CREATE NEW PAGE
+            </Button>
+          </Link>
         </TitleBox>
         <PageCardsContainer>
           {pagesList &&

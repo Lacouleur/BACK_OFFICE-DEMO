@@ -34,14 +34,12 @@ const initialState = {
 
 const mainInformationReducer = (state = initialState, action = {}) => {
   const oldState = { ...state };
-  console.log(action.type);
   switch (action.type) {
     case PAGE_LOADED: {
       let lang = "fr";
       if (action.payload.language === "german") {
         lang = "de";
       }
-      console.warn("PL", action.payload);
       return {
         ...oldState,
         title: action.payload?.title ?? "",

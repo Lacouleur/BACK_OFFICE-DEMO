@@ -9,7 +9,6 @@ const userReducer = (state = initialState, action = {}) => {
 
   switch (action.type) {
     case SET_PAGES_LIST: {
-      console.log("PL", action.payload.pages);
       return {
         ...oldState,
         pagesList: action.payload.pages,

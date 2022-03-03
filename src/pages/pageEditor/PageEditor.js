@@ -57,8 +57,6 @@ const PageEditor = () => {
   const { modulesList } = modulesState;
   const { isOpenCloseModal, aModuleIsOpen } = actionBarState;
 
-  console.warn(pageId);
-
   useEffect(() => {
       console.log("%cPAGE: PAGE-EDITOR", `${consolePage}`);
       dispatch(fetchPage(pageId));

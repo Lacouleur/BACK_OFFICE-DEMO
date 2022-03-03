@@ -40,6 +40,10 @@ import {
   pageSetSlug,
   pageSetTitle,
 } from "../store/actions/pageEditor/pageMainInformationsActions";
+import {
+  pageSetSeoDescription,
+  pageSetSeoTitle,
+} from "../store/actions/pageSeoActions";
 
 // Hard coded reading time list for theming.
 export const readingTimeList = [
@@ -461,11 +465,11 @@ export function dispatchFields(
       break;
 
     case name === "title" && section === "pageSeo":
-      dispatch(pageSetTitle(value));
+      dispatch(pageSetSeoTitle(value));
       break;
 
-    case name === "slug" && section === "pageSeo":
-      dispatch(pageSetSlug(value));
+    case name === "description" && section === "pageSeo":
+      dispatch(pageSetSeoDescription(value));
       break;
 
     default:

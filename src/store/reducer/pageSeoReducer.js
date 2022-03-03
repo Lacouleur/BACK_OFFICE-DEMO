@@ -1,6 +1,6 @@
 import {
-  PAGE_ADD_SEO_TITLE,
-  PAGE_ADD_SEO_DESCRIPTION,
+  PAGE_SET_SEO_TITLE,
+  PAGE_SET_SEO_DESCRIPTION,
   CLEAN_PAGE_STATE,
   SET_POSTED,
   PAGE_LOADED,
@@ -16,7 +16,7 @@ const seoReducer = (state = initialState, action = {}) => {
   const oldState = { ...state };
 
   switch (action.type) {
-    case PAGE_ADD_SEO_TITLE: {
+    case PAGE_SET_SEO_TITLE: {
       if (action.payload.length > 0) {
         return {
           ...oldState,
@@ -40,7 +40,7 @@ const seoReducer = (state = initialState, action = {}) => {
       };
     }
 
-    case PAGE_ADD_SEO_DESCRIPTION: {
+    case PAGE_SET_SEO_DESCRIPTION: {
       if (action.payload.length > 0) {
         return {
           ...oldState,

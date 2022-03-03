@@ -17,37 +17,27 @@ import {
 } from "../../../styles/styledComponents/editor/Sections.sc";
 import exampleSeoImg from "../../../styles/assets/icons/exampleSeo.svg";
 import { ExampleBox } from "../../../styles/styledComponents/editor/Seo.sc";
-import { actualizeManifesto } from "../../../store/actions/thunk/ManifestoActions.thunk";
-import { checkAndSend } from "../../../store/actions/thunk/ArticlesActions.thunk";
 import useClickOutside from "../../../helper/cutomHooks/useClickOutside";
+import { pageCheckAndSend } from "../../../store/actions/thunk/PageActions.thunk";
 
 const PageSeo = () => {
   const seoRef = useRef();
-  const seoState = useSelector(({ seoReducer }) => seoReducer);
-  const MainInformationState = useSelector(
-    ({ mainInformationReducer }) => mainInformationReducer
-  );
-  const manifestoState = useSelector(
-    ({ manifestoReducer }) => manifestoReducer
+  const pageSeoState = useSelector(({ pageSeoReducer }) => pageSeoReducer);
+  const PageMainInformationState = useSelector(
+    ({ pageMainInformationReducer }) => pageMainInformationReducer
   );
 
-  const { title: seoTitle, description, isChanged } = seoState;
+  const { title: seoTitle, description, isChanged } = pageSeoState;
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
 
-  const { articleId } = MainInformationState;
-  const { manifestoId, isManifesto } = manifestoState;
+  const { pageId } = PageMainInformationState;
 
   function onClickOutside() {
     setIsOpen(false);
     if (isChanged) {
-      if (!isManifesto) {
-        dispatch(checkAndSend("update", articleId));
-      }
-
-      if (isManifesto && manifestoId) {
-        dispatch(actualizeManifesto(manifestoId));
-      }
+      console.warn("PAGUE IDÉ", pageId);
+      dispatch(pageCheckAndSend("update", pageId));
     }
   }
 

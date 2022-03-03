@@ -1,11 +1,11 @@
-import { PAGE_ADD_SEO_TITLE, PAGE_ADD_SEO_DESCRIPTION } from "../constants";
+import { PAGE_SET_SEO_TITLE, PAGE_SET_SEO_DESCRIPTION } from "../constants";
 
-export const addSeoTitle = (payload) => ({
-  type: PAGE_ADD_SEO_TITLE,
+export const pageSetSeoTitle = (payload) => ({
+  type: PAGE_SET_SEO_TITLE,
   payload,
 });
 
-export const addSeoDescription = (payload) => ({
-  type: PAGE_ADD_SEO_DESCRIPTION,
+export const pageSetSeoDescription = (payload) => ({
+  type: PAGE_SET_SEO_DESCRIPTION,
   payload,
 });

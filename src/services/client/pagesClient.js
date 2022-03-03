@@ -32,3 +32,18 @@ export function getPage(id) {
     },
   });
 }
+
+export function updatePage(values, pageId, lang) {
+  let string = "";
+  if (lang) {
+    string = `?language=${lang}`;
+  }
+  return axiosConfig({
+    method: "put",
+    url: `/pages/${pageId}${string}`,
+    data: values,
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}

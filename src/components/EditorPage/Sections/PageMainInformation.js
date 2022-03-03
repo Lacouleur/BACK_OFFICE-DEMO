@@ -50,7 +50,6 @@ const PageMainInformation = () => {
   }, [pageId]);
 
   function onClickOutside() {
-    console.log("Click outside");
     checkPageAndSend(dispatch, PageMainInformationState, setIsOpen, pageId);
   }
   useClickOutside(mainInformationRef, onClickOutside);

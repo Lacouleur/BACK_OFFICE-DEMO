@@ -4,6 +4,7 @@ import {
   contentLoaded,
   pageLoaded,
   setErrorPosting,
+  setErrorSpecial,
   setPosted,
 } from "../commonsActions";
 import {
@@ -22,15 +23,20 @@ import {
 } from "../../../helper/consoleStyles";
 
 import ErrorCaseClient from "../../../helper/ErrorCaseClient";
-import { getPage, postPage } from "../../../services/client/pagesClient";
+import {
+  getPage,
+  postPage,
+  updatePage,
+} from "../../../services/client/pagesClient";
 
 // eslint-disable-next-line import/prefer-default-export
 export function pageCheckAndSend(type = "save", pageId = null) {
   return async (dispatch, getState) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
-      const { pageMainInformationReducer } = getState();
+      const { pageMainInformationReducer, pageSeoReducer } = getState();
       const { title: mainTitle, slug, lang } = pageMainInformationReducer;
+      const { title: seoTitle, description } = pageSeoReducer;
 
       const slugError = !slug;
       const titleError = !mainTitle;
@@ -49,6 +55,30 @@ export function pageCheckAndSend(type = "save", pageId = null) {
         title: mainTitle,
         slug,
       };
+
+      if (type === "update") {
+        values = {
+          title: mainTitle,
+          slug,
+        };
+        console.log("VALUES.TAG ==>", values.tags);
+      } else {
+        values = {
+          title: mainTitle,
+          slug,
+        };
+      }
+
+      if (seoTitle || description) {
+        values.seo = {};
+        const { seo } = values;
+        if (seoTitle) {
+          seo.title = seoTitle;
+        }
+        if (description) {
+          seo.description = description;
+        }
+      }
 
       if (!slugError && !titleError) {
         // post
@@ -79,6 +109,32 @@ export function pageCheckAndSend(type = "save", pageId = null) {
 
             dispatch(showErrorModal(true));
           }
+        }
+      }
+
+      // update
+      if (type === "update") {
+        console.log("%cUPDATING PAGE", `${consoleTitle}`);
+        try {
+          const result = await updatePage(values, pageId, lang);
+
+          if (result.status < 300 && result.status > 199) {
+            dispatch(setErrorSpecial(false));
+            dispatch(setPosted(true));
+            dispatch(pageSetModified(true));
+            console.log("%cPage updated", `${consoleSucces}`);
+          }
+
+          return null;
+        } catch (error) {
+          if (error.response.status === 409) {
+            dispatch(setErrorPosting(true));
+            dispatch(setPosted(false));
+            ErrorCaseClient(dispatch, error?.response?.data);
+          } else {
+            ErrorCaseClient(dispatch, error?.response?.data);
+          }
+          return null;
         }
       }
     }

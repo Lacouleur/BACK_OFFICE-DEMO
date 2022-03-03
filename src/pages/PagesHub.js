@@ -16,11 +16,16 @@ import {
   PageHubContainer,
 } from "../styles/styledComponents/pagesHub/PagesHub.sc";
 import plusIcon from "../styles/assets/icons/plus.svg";
+import {
+  cleanContentState,
+  cleanPageState,
+} from "../store/actions/commonsActions";
 
 const PagesHub = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchPages());
+    dispatch(cleanPageState());
   }, []);
 
   const pagesHubState = useSelector(({ pagesHubReducer }) => pagesHubReducer);

@@ -19,6 +19,7 @@ import {
   setCtaIntro,
   setCtaLabel,
   setCtaUrl,
+  setOpinionExplain,
   setOpinionQuestion,
   setOpinionTextAnswer,
 } from "../store/actions/moduleActions";
@@ -30,11 +31,12 @@ import {
   setQuote,
 } from "../store/actions/userActions";
 import { saveAvatar } from "../store/actions/thunk/UserAction.thunk";
-import { addSeoTitle } from "../store/actions/seoActions";
+import { addSeoDescription, addSeoTitle } from "../store/actions/seoActions";
 import { saveImage } from "../store/actions/thunk/ModulesActions.thunk";
 import { sizeOrFormatError } from "./errorMessages";
 import langList from "./langList";
 import {
+  pageSetlang,
   pageSetSlug,
   pageSetTitle,
 } from "../store/actions/pageEditor/pageMainInformationsActions";
@@ -304,6 +306,7 @@ export function dispatchSelected(
   event,
   dispatch,
   name,
+  section,
   setEditCategory,
   setSelectedLang,
   setSelectedReadTime,
@@ -330,6 +333,11 @@ export function dispatchSelected(
       case "colorStyle":
         setSelectedColorStyle(event);
         dispatch(setColorStyle(value));
+        break;
+
+      case "lang" && section === "pageMainInformation":
+        setSelectedLang(event);
+        dispatch(pageSetlang(value));
         break;
 
       default:
@@ -369,6 +377,10 @@ export function dispatchFields(
 
     case name === "title" && section === "seo":
       dispatch(addSeoTitle(value));
+      break;
+
+    case name === "description" && section === "seo":
+      dispatch(addSeoDescription(value));
       break;
 
     case name === "title" && section === "homeNavigation":
@@ -434,6 +446,10 @@ export function dispatchFields(
       dispatch(setQuote({ value, lang }));
       break;
 
+    case name === "explanation" && section === "opinion":
+      dispatch(setOpinionExplain({ id: moduleId, value: e.target.value }));
+      break;
+
     // PAGE EDITOR
 
     case name === "title" && section === "pageMainInformation":
@@ -441,6 +457,14 @@ export function dispatchFields(
       break;
 
     case name === "slug" && section === "pageMainInformation":
+      dispatch(pageSetSlug(value));
+      break;
+
+    case name === "title" && section === "pageSeo":
+      dispatch(pageSetTitle(value));
+      break;
+
+    case name === "slug" && section === "pageSeo":
       dispatch(pageSetSlug(value));
       break;
 

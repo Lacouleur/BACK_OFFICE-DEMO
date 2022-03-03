@@ -2,7 +2,7 @@ import { isValidToken } from "../../../services/client/refreshToken";
 import { setUpdatedAt, showErrorModal } from "../actionBarActions";
 import {
   contentLoaded,
-  setArticleId,
+  pageLoaded,
   setErrorPosting,
   setPosted,
 } from "../commonsActions";
@@ -12,8 +12,6 @@ import {
   pageSetId,
   pageSetModified,
   pageSetStatus,
-  setErrorTitle,
-  setModified,
 } from "../pageEditor/pageMainInformationsActions";
 
 import {
@@ -97,7 +95,7 @@ export function fetchPage(id) {
         const response = await getPage(id);
         if (response.status < 300 && response.status > 199) {
           console.log("%cFetched page =>", `${consoleInfo}`, response.data);
-          dispatch(contentLoaded(response.data));
+          dispatch(pageLoaded(response.data));
           dispatch(setUpdatedAt(response.data.updatedAt));
           /*  dispatch(setPublishedAt(response.data.publishedAt));
           dispatch(setIsScheduled(response.data.publishScheduledAt || "")); */
@@ -106,6 +104,7 @@ export function fetchPage(id) {
 
         return null;
       } catch (error) {
+        console.log("%cerror =>", `${consoleError}`, error);
         console.log("%cerror =>", `${consoleError}`, error?.response?.data);
 
         return null;

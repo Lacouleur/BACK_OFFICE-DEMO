@@ -3,7 +3,9 @@ import {
   SET_ERROR_SPECIAL,
   SET_ERROR_POSTING,
   CONTENT_LOADED,
+  PAGE_LOADED,
   CLEAN_CONTENT_STATE,
+  CLEAN_PAGE_STATE,
   SET_ARTICLE_ID,
 } from "../constants";
 
@@ -27,8 +29,18 @@ export const contentLoaded = (payload) => ({
   payload,
 });
 
+export const pageLoaded = (payload) => ({
+  type: PAGE_LOADED,
+  payload,
+});
+
 export const cleanContentState = (payload) => ({
   type: CLEAN_CONTENT_STATE,
+  payload,
+});
+
+export const cleanPageState = (payload) => ({
+  type: CLEAN_PAGE_STATE,
   payload,
 });
 

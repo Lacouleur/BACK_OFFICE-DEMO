@@ -210,7 +210,7 @@ const modulesReducer = (state = initialState, action = {}) => {
 
     case CONTENT_LOADED: {
       const { components } = action.payload;
-      components.map((module) => {
+      components?.map((module) => {
         oldState.modulesList = [
           ...oldState.modulesList,
           {

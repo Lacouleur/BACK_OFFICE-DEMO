@@ -10,6 +10,7 @@ import manifestoReducer from "./reducer/manifestoReducer";
 import pagesHubReducer from "./reducer/pagesHubReducer";
 import userReducer from "./reducer/userReducer";
 import pageMainInformationReducer from "./reducer/pageEditor/pageMainInformationsReducer";
+import pageSeoReducer from "./reducer/pageSeoReducer";
 
 export default combineReducers({
   mainInformationReducer,
@@ -23,4 +24,5 @@ export default combineReducers({
   userReducer,
   pagesHubReducer,
   pageMainInformationReducer,
+  pageSeoReducer,
 });

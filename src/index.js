@@ -20,6 +20,7 @@ import logMiddleware from "./store/logMiddleware";
 import UserProfile from "./pages/UserProfile";
 import PagesHub from "./pages/PagesHub";
 import PageEditorCreate from "./pages/pageEditor/PageEditorCreate";
+import PageEditor from "./pages/pageEditor/PageEditor";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -41,7 +42,11 @@ const rootComponent = (
           exact
           component={PageEditorCreate}
         />
-        {/*    <PrivateRoute path="/page-editor/:id" exact component={PageEditor} /> */}
+        <PrivateRoute
+          path="/page-editor/:pageId"
+          exact
+          component={PageEditor}
+        />
         <PrivateRoute path="/pages" exact component={PagesHub} />
         <PrivateRoute path="/editor" exact component={EditorCreate} />
         <PrivateRoute path="/profile" exact component={UserProfile} />

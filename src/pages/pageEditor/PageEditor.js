@@ -41,9 +41,12 @@ import { setIsAccessiblePanel } from "../../store/actions/userActions";
 import ModulesDispatcher from "../../components/Editor/Sections/Modules/ModulesDispatcher";
 import { consolePage } from "../../helper/consoleStyles";
 import { pageSetId } from "../../store/actions/pageEditor/pageMainInformationsActions";
+import PageMainInformation from "../../components/EditorPage/Sections/PageMainInformation";
+import { fetchPage } from "../../store/actions/thunk/PageActions.thunk";
+import PageSeo from "../../components/EditorPage/Sections/PageSeo";
 
 
-const Editor = () => {
+const PageEditor = () => {
   
   const dispatch = useDispatch();
   const { pageId } = useParams();
@@ -54,9 +57,11 @@ const Editor = () => {
   const { modulesList } = modulesState;
   const { isOpenCloseModal, aModuleIsOpen } = actionBarState;
 
+  console.warn(pageId);
+
   useEffect(() => {
       console.log("%cPAGE: PAGE-EDITOR", `${consolePage}`);
-      dispatch(fetchContent(pageId));
+      dispatch(fetchPage(pageId));
       dispatch(pageSetId(pageId));
   }, []);
 
@@ -69,13 +74,14 @@ const Editor = () => {
         <FormContainer>
           {isUsedDndArea && <HideOnDnd />}
           {isOpenCloseModal?.value && <HideContent />}
-          <MainInformation />
+          <PageMainInformation />
+          <PageSeo />
           {/* <Seo />
           <HomeNavigation />
           {modulesList?.length > 0 && (
             <Separator />
           )} */}
-          <DragDropContext
+          {/*           <DragDropContext
             onDragEnd={(result) => {
               onDragEnd(result, modulesList, dispatch)
               setIsUsedDnDArea(false)
@@ -96,10 +102,10 @@ const Editor = () => {
               }}
             </Droppable>
           )}
-          </DragDropContext>
+          </DragDropContext> */}
 
           {/* {isOpen && pageId && <ModuleCreator setIsOpen={setIsOpen} />} */}
-          <NewBlockButtonBox>
+          {/*           <NewBlockButtonBox>
             <Button
               type="button"
               onClick={() => {
@@ -117,7 +123,7 @@ const Editor = () => {
               <IconCreat src={plus} />
               ADD A NEW BLOCK
             </Button>
-          </NewBlockButtonBox>
+          </NewBlockButtonBox> */}
         </FormContainer>
       </Form>
       <Footer position="fixed" />
@@ -125,4 +131,4 @@ const Editor = () => {
   );
 };
 
-export default Editor;
+export default PageEditor;

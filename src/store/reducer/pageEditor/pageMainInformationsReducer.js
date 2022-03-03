@@ -9,6 +9,8 @@ import {
   SET_ERROR_POSTING,
   SET_POSTED,
   PAGE_SET_STATUS,
+  CLEAN_PAGE_STATE,
+  PAGE_LOADED,
 } from "../../constants";
 import { verifySlug } from "../../../helper/auth/verifyFields";
 
@@ -27,12 +29,29 @@ const initialState = {
   postingError: false,
   isPosted: false,
   isChanged: false,
+  modified: false,
 };
 
 const mainInformationReducer = (state = initialState, action = {}) => {
   const oldState = { ...state };
-
+  console.log(action.type);
   switch (action.type) {
+    case PAGE_LOADED: {
+      let lang = "fr";
+      if (action.payload.language === "german") {
+        lang = "de";
+      }
+      console.warn("PL", action.payload);
+      return {
+        ...oldState,
+        title: action.payload?.title ?? "",
+        slug: action.payload?.slug ?? "",
+        lang: lang || "",
+        status: action.payload?.state ?? "",
+        modified: action.payload?.modified ?? null,
+      };
+    }
+
     case PAGE_SET_TITLE: {
       if (action.payload && action.payload.length > 0) {
         oldState.titleError = false;
@@ -67,7 +86,7 @@ const mainInformationReducer = (state = initialState, action = {}) => {
     case PAGE_SET_ID: {
       return {
         ...oldState,
-        articleId: action.payload,
+        pageId: action.payload,
       };
     }
 
@@ -109,6 +128,12 @@ const mainInformationReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         status: action.payload,
+      };
+    }
+
+    case CLEAN_PAGE_STATE: {
+      return {
+        state,
       };
     }
 

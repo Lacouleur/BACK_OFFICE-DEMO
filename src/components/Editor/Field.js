@@ -96,6 +96,20 @@ const Field = ({
   answerId,
   lang,
 }) => {
+  console.log({
+    type,
+    placeholder,
+    maxlength,
+    infos,
+    name,
+    error,
+    fieldType,
+    section,
+    edit,
+    moduleId,
+    answerId,
+    lang,
+  });
   const dispatch = useDispatch();
   const [editCategory, setEditCategory] = useState();
   const [selectedLang, setSelectedLang] = useState();
@@ -218,6 +232,7 @@ const Field = ({
                 event,
                 dispatch,
                 name,
+                section,
                 setEditCategory,
                 setSelectedLang,
                 setSelectedReadTime,
@@ -363,14 +378,7 @@ const Field = ({
           maxLength={maxlength}
           defaultValue={edit ? `${edit}` : ""}
           onInput={(e) => {
-            if (name === "description" && section === "seo") {
-              dispatch(addSeoDescription(e.target.value));
-            }
-            if (name === "explanation" && section === "opinion") {
-              dispatch(
-                setOpinionExplain({ id: moduleId, value: e.target.value })
-              );
-            }
+            dispatchFields(name, section, dispatch, e.target.value);
           }}
         />
       )}

@@ -39,6 +39,8 @@ const PageMainInformation = () => {
     postingError,
   } = PageMainInformationState;
 
+  console.log("PageMainInformationState", PageMainInformationState);
+
   useEffect(() => {
     if (pageId) {
       setIsOpen(false);

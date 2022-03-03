@@ -78,12 +78,18 @@ const PageCard = ({
   );
 };
 
-PageCard.defaultProps = {
+/* PageCard.defaultProps = {
   id: undefined,
-};
+}; */
 
 PageCard.propTypes = {
-  id: PropTypes.string,
+  id: PropTypes.string.isRequired,
+  state: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  updatedAt: PropTypes.string.isRequired,
+  publishedAt: PropTypes.string.isRequired,
+  modified: PropTypes.bool.isRequired,
+  language: PropTypes.string.isRequired,
 };
 
 export default PageCard;

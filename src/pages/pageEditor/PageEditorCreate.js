@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-return-assign */
 import React, {  useEffect } from "react";
-import {useSelector } from "react-redux";
+import {useDispatch, useSelector } from "react-redux";
 import { useHistory} from "react-router-dom";
 import Footer from "../../components/Navigation/Footer";
 import Header from "../../components/Navigation/Header";
@@ -18,13 +18,10 @@ import PageMainInformation from "../../components/EditorPage/Sections/PageMainIn
 
 const PageEditorCreate = () => {
   
-  const dispatch = useDispatch();
   const history = useHistory();
   const PageMainInformationState = useSelector(
     ({ pageMainInformationReducer }) => pageMainInformationReducer
   );
-
-  console.log(PageMainInformationState)
 
   const {isPosted, pageId } = PageMainInformationState;
 
@@ -33,10 +30,10 @@ const PageEditorCreate = () => {
   }, []);
 
   useEffect(() => {
-    if (isPosted) {
+    if (isPosted && pageId) {
       history.push(`/page-editor/${pageId}`)
     }
-  }, [isPosted]);
+  }, [isPosted, pageId]);
 
   return (
     <PageContainer position="relative">

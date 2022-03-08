@@ -40,7 +40,7 @@ import { onDragEnd } from "../../helper/Editor/dragAndDrop";
 import { setIsAccessiblePanel } from "../../store/actions/userActions";
 import ModulesDispatcher from "../../components/Editor/Sections/Modules/ModulesDispatcher";
 import { consolePage } from "../../helper/consoleStyles";
-import { pageSetId } from "../../store/actions/pageEditor/pageMainInformationsActions";
+import { pageSetId, setIsPage } from "../../store/actions/pageEditor/pageMainInformationsActions";
 import PageMainInformation from "../../components/EditorPage/Sections/PageMainInformation";
 import { fetchPage } from "../../store/actions/thunk/PageActions.thunk";
 import PageSeo from "../../components/EditorPage/Sections/PageSeo";
@@ -61,6 +61,7 @@ const PageEditor = () => {
       console.log("%cPAGE: PAGE-EDITOR", `${consolePage}`);
       dispatch(fetchPage(pageId));
       dispatch(pageSetId(pageId));
+      dispatch(setIsPage(true));
   }, []);
 
 
@@ -74,12 +75,12 @@ const PageEditor = () => {
           {isOpenCloseModal?.value && <HideContent />}
           <PageMainInformation />
           <PageSeo />
-          {/* <Seo />
-          <HomeNavigation />
           {modulesList?.length > 0 && (
-            <Separator />
-          )} */}
-          {/*           <DragDropContext
+             
+          <Separator />
+             )}
+   
+          <DragDropContext
             onDragEnd={(result) => {
               onDragEnd(result, modulesList, dispatch)
               setIsUsedDnDArea(false)
@@ -100,10 +101,10 @@ const PageEditor = () => {
               }}
             </Droppable>
           )}
-          </DragDropContext> */}
+          </DragDropContext>
 
-          {/* {isOpen && pageId && <ModuleCreator setIsOpen={setIsOpen} />} */}
-          {/*           <NewBlockButtonBox>
+          {isOpen && pageId && <ModuleCreator setIsOpen={setIsOpen} />}
+          <NewBlockButtonBox>
             <Button
               type="button"
               onClick={() => {
@@ -121,7 +122,7 @@ const PageEditor = () => {
               <IconCreat src={plus} />
               ADD A NEW BLOCK
             </Button>
-          </NewBlockButtonBox> */}
+          </NewBlockButtonBox>
         </FormContainer>
       </Form>
       <Footer position="fixed" />

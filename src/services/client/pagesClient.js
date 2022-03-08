@@ -47,3 +47,16 @@ export function updatePage(values, pageId, lang) {
     },
   });
 }
+
+export async function savePageComponent(pageId, values) {
+  const url = `/pages/${pageId}/sections`;
+
+  return axiosConfig({
+    method: "post",
+    url: `${url}`,
+    data: values,
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}

@@ -96,20 +96,6 @@ const Field = ({
   answerId,
   lang,
 }) => {
-  console.log({
-    type,
-    placeholder,
-    maxlength,
-    infos,
-    name,
-    error,
-    fieldType,
-    section,
-    edit,
-    moduleId,
-    answerId,
-    lang,
-  });
   const dispatch = useDispatch();
   const [editCategory, setEditCategory] = useState();
   const [selectedLang, setSelectedLang] = useState();

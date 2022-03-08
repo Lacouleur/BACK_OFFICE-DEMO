@@ -11,6 +11,7 @@ import {
   PAGE_SET_STATUS,
   CLEAN_PAGE_STATE,
   PAGE_LOADED,
+  SET_IS_PAGE,
 } from "../../constants";
 import { verifySlug } from "../../../helper/auth/verifyFields";
 
@@ -30,6 +31,7 @@ const initialState = {
   isPosted: false,
   isChanged: false,
   modified: false,
+  isPage: false,
 };
 
 const mainInformationReducer = (state = initialState, action = {}) => {
@@ -126,6 +128,13 @@ const mainInformationReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         status: action.payload,
+      };
+    }
+
+    case SET_IS_PAGE: {
+      return {
+        ...oldState,
+        isPage: action.payload,
       };
     }
 

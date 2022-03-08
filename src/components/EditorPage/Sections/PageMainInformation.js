@@ -19,6 +19,7 @@ import {
   checkPageAndSend,
   slugMessage,
 } from "../../../helper/mainInformationHelper";
+import { setIsPage } from "../../../store/actions/pageEditor/pageMainInformationsActions";
 
 const PageMainInformation = () => {
   const PageMainInformationState = useSelector(
@@ -38,6 +39,10 @@ const PageMainInformation = () => {
     titleError,
     postingError,
   } = PageMainInformationState;
+
+  useEffect(() => {
+    dispatch(setIsPage(true));
+  }, []);
 
   useEffect(() => {
     if (pageId) {

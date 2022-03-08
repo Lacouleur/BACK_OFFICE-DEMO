@@ -38,6 +38,7 @@ import { HideOnDnd} from "../../styles/styledComponents/editor/modules/Modules.s
 import { setIsAccessiblePanel } from "../../store/actions/userActions";
 import ModulesDispatcher from "../../components/Editor/Sections/Modules/ModulesDispatcher";
 import { consolePage } from "../../helper/consoleStyles";
+import { setIsPage } from "../../store/actions/pageEditor/pageMainInformationsActions";
 
 const EditorManifesto = () => {
  
@@ -57,6 +58,7 @@ const EditorManifesto = () => {
   useEffect(() => {
     console.log("%cPAGE: EDIT MANIFESTO", `${consolePage}`);
     dispatch(setIsManifesto(true));
+    dispatch(setIsPage(false));
     if (!manifestoId) {
       dispatch(fetchManifesto(lang));
     }

@@ -14,6 +14,7 @@ import {
 import ActionBar from "../../components/Editor/actionBar/ActionBar";
 import { setIsManifesto } from "../../store/actions/manifestoActions";
 import { consolePage } from "../../helper/consoleStyles";
+import { setIsPage } from "../../store/actions/pageEditor/pageMainInformationsActions";
 
 
 
@@ -33,6 +34,7 @@ const EditorCreate = () => {
 
   useEffect(() => {
     dispatch(setIsManifesto(false))
+    dispatch(setIsPage(false));
     if (isPosted) {
       history.push(`/editor/${articleId}`)
     }

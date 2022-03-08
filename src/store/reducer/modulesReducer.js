@@ -28,6 +28,7 @@ import {
   SET_CTA_LABEL,
   SET_CTA_IS_NEWTAB,
   SET_CTA_DESCRIPTION,
+  PAGE_LOADED,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -219,6 +220,26 @@ const modulesReducer = (state = initialState, action = {}) => {
             isPostedModule: true,
             isChanged: false,
             isOpenCloseModal: false,
+          },
+        ];
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case PAGE_LOADED: {
+      const { sections } = action.payload;
+      sections?.map((module) => {
+        oldState.modulesList = [
+          ...oldState.modulesList,
+          {
+            ...module,
+            isNewModule: false,
+            isPostedModule: true,
+            isChanged: false,
+            isOpenCloseModal: false,
+            isPage: true,
           },
         ];
       });

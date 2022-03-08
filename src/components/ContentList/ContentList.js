@@ -15,7 +15,10 @@ import { createNewContent } from "../../styles/styledComponents/global/Buttons/C
 import Pagination from "./Pagination";
 import keyGenerator from "../../helper/keyGenerator";
 import { fetchContentsList } from "../../store/actions/thunk/ArticlesActions.thunk";
-import { cleanContentState } from "../../store/actions/commonsActions";
+import {
+  cleanContentState,
+  cleanPageState,
+} from "../../store/actions/commonsActions";
 import langList from "../../helper/langList";
 import DuplicateModal from "../Modals/DuplicateModal";
 import ArchiveModal from "../Modals/ArchiveModal";
@@ -40,6 +43,7 @@ const ContentList = () => {
   useEffect(() => {
     dispatch(fetchContentsList());
     dispatch(cleanContentState());
+    dispatch(cleanPageState());
   }, []);
 
   return (

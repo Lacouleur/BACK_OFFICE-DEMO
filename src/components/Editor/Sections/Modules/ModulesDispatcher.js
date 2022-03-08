@@ -16,6 +16,7 @@ const ModulesDispatcher = ({
   provided,
   aModuleIsOpen,
 }) => {
+  console.log("modulesList", modulesList);
   return (
     <ModulesBoardDnd
       isUsedDndArea={isUsedDndArea}
@@ -23,9 +24,9 @@ const ModulesDispatcher = ({
       ref={provided.innerRef}
     >
       {modulesList?.map((module, index) => {
-        // Faire un fichier commun avec ce switch -> Commun avec MANIFESTO
         switch (module.type) {
           case "text": {
+            console.warn("Module", module);
             return (
               <Draggable
                 isDragDisabled={aModuleIsOpen}
@@ -54,6 +55,7 @@ const ModulesDispatcher = ({
                         isChanged={module.isChanged}
                         isOpenCloseModal={module.isOpenCloseModal}
                         isNewModule={module.isNewModule}
+                        isPage={module.isPage}
                       />
                     </div>
                   );
@@ -95,6 +97,7 @@ const ModulesDispatcher = ({
                         isChanged={module.isChanged}
                         isOpenCloseModal={module.isOpenCloseModal}
                         isNewModule={module.isNewModule}
+                        isPage={module.isPage}
                       />
                     </div>
                   );
@@ -138,6 +141,7 @@ const ModulesDispatcher = ({
                         explanation={module.explanation}
                         answers={module.answers}
                         isVisible={module.isVisible}
+                        isPage={module.isPage}
                       />
                     </div>
                   );
@@ -179,6 +183,7 @@ const ModulesDispatcher = ({
                         label={module.label}
                         description={module.description}
                         openNewTab={module.openNewTab}
+                        isPage={module.isPage}
                       />
                     </div>
                   );

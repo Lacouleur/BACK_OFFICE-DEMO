@@ -42,6 +42,10 @@ import ErrorModal from "../components/Modals/ErrorModal";
 import { consoleSucces } from "../helper/consoleStyles";
 import { fetchUsers } from "../store/actions/thunk/ArticlesActions.thunk";
 import { cleanUser } from "../store/actions/userActions";
+import {
+  cleanContentState,
+  cleanPageState,
+} from "../store/actions/commonsActions";
 
 const UserProfile = () => {
   const userInfo = parseJwt(getToken());
@@ -88,6 +92,8 @@ const UserProfile = () => {
 
   useEffect(() => {
     console.log("%cUser infos =>", `${consoleSucces}`, userInfo);
+    dispatch(cleanPageState());
+    dispatch(cleanContentState());
     dispatchUserInfo(dispatch, userInfo);
     dispatch(fetchUsers());
     window.addEventListener("scroll", () => {

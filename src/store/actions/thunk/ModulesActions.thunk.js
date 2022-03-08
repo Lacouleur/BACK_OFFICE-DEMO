@@ -19,14 +19,16 @@ import {
 import { setHomeImageUuid, setNavImageUuid } from "../homeNavigationActions";
 import { nameSpaceError, uploadError } from "../../../helper/errorMessages";
 import ErrorCaseClient from "../../../helper/ErrorCaseClient";
+import { savePageComponent } from "../../../services/client/pagesClient";
 
 export function deleteModule(articleId, moduleId) {
   console.log("%cDELETING MODULE", `${consoleTitle}`, moduleId);
   return async (dispatch, getState) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
-      const { manifestoReducer } = getState();
+      const { manifestoReducer, pageMainInformationReducer } = getState();
       const { isManifesto, manifestoId } = manifestoReducer;
+      const { pageId } = pageMainInformationReducer;
       try {
         let response = null;
 
@@ -65,10 +67,13 @@ export function saveModule(uuid, request = "save") {
         mainInformationReducer,
         modulesReducer,
         manifestoReducer,
+        pageMainInformationReducer,
       } = getState();
       const { articleId } = mainInformationReducer;
       const { modulesList } = modulesReducer;
       const { isManifesto, manifestoId } = manifestoReducer;
+      const { pageId, isPage } = pageMainInformationReducer;
+
       let values = {};
       let isNewModule = false;
 
@@ -176,6 +181,9 @@ export function saveModule(uuid, request = "save") {
 
             if (isManifesto) {
               response = await saveComponent(manifestoId, values, isManifesto);
+            } else if (isPage) {
+              console.warn("IS PAGE");
+              response = await savePageComponent(pageId, values);
             } else {
               response = await saveComponent(articleId, values);
             }

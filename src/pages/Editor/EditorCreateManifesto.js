@@ -16,6 +16,7 @@ import { setIsManifesto, setManifestolang} from "../../store/actions/manifestoAc
 import { ManifestoLang, ManifestoTitle, TitleBox } from "../../styles/styledComponents/global/Titles.sc";
 import { fetchManifesto } from "../../store/actions/thunk/ManifestoActions.thunk";
 import { consolePage } from "../../helper/consoleStyles";
+import { setIsPage } from "../../store/actions/pageEditor/pageMainInformationsActions";
 
 const EditorCreateManifesto = () => {
   
@@ -33,6 +34,7 @@ const EditorCreateManifesto = () => {
   useEffect(() => { 
     console.log("%cPAGE: CREATE MANIFESTO", `${consolePage}`);
     dispatch(setIsManifesto(true))
+    dispatch(setIsPage(false));
     dispatch(setManifestolang(lang))
 
     if(!manifestoId) {

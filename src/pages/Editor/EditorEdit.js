@@ -40,6 +40,7 @@ import { onDragEnd } from "../../helper/Editor/dragAndDrop";
 import { setIsAccessiblePanel } from "../../store/actions/userActions";
 import ModulesDispatcher from "../../components/Editor/Sections/Modules/ModulesDispatcher";
 import { consolePage } from "../../helper/consoleStyles";
+import { setIsPage } from "../../store/actions/pageEditor/pageMainInformationsActions";
 
 
 const Editor = () => {
@@ -56,6 +57,7 @@ const Editor = () => {
   useEffect(() => {
       console.log("%cPAGE: EDIT CONTENT", `${consolePage}`);
       dispatch(setIsManifesto(false))
+      dispatch(setIsPage(false));
       dispatch(fetchContent(articleId));
       dispatch(setArticleId(articleId));
   }, []);

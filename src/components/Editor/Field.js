@@ -364,7 +364,7 @@ const Field = ({
           maxLength={maxlength}
           defaultValue={edit ? `${edit}` : ""}
           onInput={(e) => {
-            dispatchFields(name, section, dispatch, e.target.value);
+            dispatchFields(name, section, dispatch, e.target.value, moduleId);
           }}
         />
       )}

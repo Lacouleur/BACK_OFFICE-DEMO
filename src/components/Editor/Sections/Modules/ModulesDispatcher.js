@@ -4,6 +4,7 @@
 import React from "react";
 /* import PropTypes from "prop-types"; */
 import { Draggable } from "react-beautiful-dnd";
+import { useSelector } from "react-redux";
 import { ModulesBoardDnd } from "../../../../styles/styledComponents/editor/modules/Modules.sc";
 import TextModule from "./TextModule/TextModule";
 import ImageModule from "./ImageModule/ImageModule";
@@ -16,7 +17,11 @@ const ModulesDispatcher = ({
   provided,
   aModuleIsOpen,
 }) => {
-  console.log("modulesList", modulesList);
+  const PageMainInformationState = useSelector(
+    ({ pageMainInformationReducer }) => pageMainInformationReducer
+  );
+  const { isPage } = PageMainInformationState;
+
   return (
     <ModulesBoardDnd
       isUsedDndArea={isUsedDndArea}
@@ -26,7 +31,6 @@ const ModulesDispatcher = ({
       {modulesList?.map((module, index) => {
         switch (module.type) {
           case "text": {
-            console.warn("Module", module);
             return (
               <Draggable
                 isDragDisabled={aModuleIsOpen}
@@ -49,13 +53,19 @@ const ModulesDispatcher = ({
                       }}
                     >
                       <TextModule
+                        isPage={isPage}
+                        title={isPage ? module.title : undefined}
+                        subtitle={isPage ? module.subtitle : undefined}
+                        url={isPage ? module.url?.value : undefined}
+                        openNewTabHeader={
+                          isPage ? module.url?.openNewTab : undefined
+                        }
                         text={module.text}
                         uuid={module.uuid}
                         order={module.order}
                         isChanged={module.isChanged}
                         isOpenCloseModal={module.isOpenCloseModal}
                         isNewModule={module.isNewModule}
-                        isPage={module.isPage}
                       />
                     </div>
                   );
@@ -97,7 +107,6 @@ const ModulesDispatcher = ({
                         isChanged={module.isChanged}
                         isOpenCloseModal={module.isOpenCloseModal}
                         isNewModule={module.isNewModule}
-                        isPage={module.isPage}
                       />
                     </div>
                   );
@@ -141,7 +150,6 @@ const ModulesDispatcher = ({
                         explanation={module.explanation}
                         answers={module.answers}
                         isVisible={module.isVisible}
-                        isPage={module.isPage}
                       />
                     </div>
                   );
@@ -150,6 +158,8 @@ const ModulesDispatcher = ({
             );
           }
           case "cta-button": {
+            console.log("MO_DULE", module);
+            console.log(module.link.value);
             return (
               <Draggable
                 isDragDisabled={aModuleIsOpen}
@@ -172,18 +182,66 @@ const ModulesDispatcher = ({
                       }}
                     >
                       <CtaModule
+                        isPage={isPage}
+                        title={isPage ? module.title : undefined}
+                        subtitle={isPage ? module.subtitle : undefined}
+                        url={isPage ? module.url?.value : undefined}
+                        openNewTabHeader={
+                          isPage ? module.url?.openNewTab : undefined
+                        }
                         key={module.uuid}
                         uuid={module.uuid}
                         order={module.order}
                         isChanged={module.isChanged}
                         isOpenCloseModal={module.isOpenCloseModal}
                         isNewModule={module.isNewModule}
-                        url={module.url}
+                        link={module.link.value}
+                        openNewTab={module.link.openNewTab}
                         introduction={module.introduction}
                         label={module.label}
                         description={module.description}
-                        openNewTab={module.openNewTab}
-                        isPage={module.isPage}
+                      />
+                    </div>
+                  );
+                }}
+              </Draggable>
+            );
+          }
+          case "slider": {
+            return (
+              <Draggable
+                isDragDisabled={aModuleIsOpen}
+                key={module.uuid}
+                draggableId={module.uuid}
+                index={index}
+              >
+                {(provided, snapshot) => {
+                  return (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      style={{
+                        userSelect: "none",
+                        backgroundColor: snapshot.isDragging
+                          ? "#263B4A"
+                          : "#456C86",
+                        ...provided.draggableProps.style,
+                      }}
+                    >
+                      <CtaModule
+                        title={isPage ? module.title : undefined}
+                        subtitle={isPage ? module.subtitle : undefined}
+                        url={isPage ? module.url.value : undefined}
+                        openNewTabHeader={
+                          isPage ? module.url.openNewTab : undefined
+                        }
+                        key={module.uuid}
+                        uuid={module.uuid}
+                        order={module.order}
+                        isChanged={module.isChanged}
+                        isOpenCloseModal={module.isOpenCloseModal}
+                        isNewModule={module.isNewModule}
                       />
                     </div>
                   );

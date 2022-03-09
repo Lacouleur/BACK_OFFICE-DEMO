@@ -33,6 +33,7 @@ import {
 } from "../../../../../helper/modulesHelper";
 import { setAModuleIsOpen } from "../../../../../store/actions/actionBarActions";
 import TextEditor from "../TextEditor";
+import HeaderSectionPage from "../HeaderSectionPage";
 
 const CtaModule = ({
   uuid,
@@ -40,12 +41,18 @@ const CtaModule = ({
   isChanged,
   isOpenCloseModal,
   isNewModule,
-  url,
+  link,
   introduction,
   label,
   description,
   openNewTab,
+  title,
+  subtitle,
+  url,
+  openNewTabHeader,
+  isPage,
 }) => {
+  console.log("SSSSSSSSSSS", link);
   const dispatch = useDispatch();
   const ctaModuleRef = useRef(null);
   const mainInformationState = useSelector(
@@ -131,6 +138,15 @@ const CtaModule = ({
           <FormTitle>{`${order}. CTA`}</FormTitle>
         </SectionTitle>
         {!isOpen && <Gradient />}
+        {isPage && (
+          <HeaderSectionPage
+            uuid={uuid}
+            title={title}
+            subtitle={subtitle}
+            url={url}
+            openNewTabHeader={openNewTabHeader}
+          />
+        )}
 
         <Field
           placeholder="Introduction"
@@ -158,10 +174,10 @@ const CtaModule = ({
             name="url"
             section="cta"
             moduleId={uuid}
-            edit={url || ""}
+            edit={link || ""}
           />
           <SwitchBox
-            htmlFor={`switch-${uuid}`}
+            htmlFor={`cta-switch-${uuid}`}
             onChange={() => {
               dispatch(setCtaIsNewtab({ id: uuid, value: !openNewTab }));
             }}
@@ -169,12 +185,15 @@ const CtaModule = ({
             <p>Open in new window</p>
             <Switch
               className="Switch"
-              id={`switch-${uuid}`}
+              id={`cta-switch-${uuid}`}
               type="checkbox"
               checked={openNewTab}
               readOnly
             />
-            <SwitchLabel className="SwitchLabel" htmlFor={`switch-${uuid}`} />
+            <SwitchLabel
+              className="SwitchLabel"
+              htmlFor={`cta-switch-${uuid}`}
+            />
           </SwitchBox>
         </FieldAndSwitchContainer>
 
@@ -196,6 +215,13 @@ CtaModule.defaultProps = {
   introduction: null,
   label: null,
   description: null,
+  title: "",
+  subtitle: "",
+  link: undefined,
+  openNewTabHeader: true,
+  isPage: undefined,
+  url: undefined,
+  openNewTab: true,
 };
 
 CtaModule.propTypes = {
@@ -204,10 +230,15 @@ CtaModule.propTypes = {
   isChanged: PropTypes.bool.isRequired,
   isOpenCloseModal: PropTypes.bool.isRequired,
   isNewModule: PropTypes.bool.isRequired,
-  url: PropTypes.string.isRequired,
+  url: PropTypes.string,
   introduction: PropTypes.string,
   label: PropTypes.string,
   description: PropTypes.string,
-  openNewTab: PropTypes.bool.isRequired,
+  openNewTab: PropTypes.bool,
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
+  link: PropTypes.string,
+  openNewTabHeader: PropTypes.bool,
+  isPage: PropTypes.bool,
 };
 export default CtaModule;

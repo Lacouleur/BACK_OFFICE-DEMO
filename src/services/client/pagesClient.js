@@ -60,3 +60,26 @@ export async function savePageComponent(pageId, values) {
     },
   });
 }
+
+export async function updatePageComponent(id, values, uuid) {
+  const url = `/pages/${id}/sections/${uuid}`;
+
+  return axiosConfig({
+    method: "put",
+    url: `${url}`,
+    data: values,
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}
+
+export async function deletePageComponent(id, uuid) {
+  const url = `/pages/${id}/sections/${uuid}`;
+
+  return axiosConfig.delete(`${url}`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}

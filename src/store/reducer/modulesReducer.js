@@ -29,6 +29,10 @@ import {
   SET_CTA_IS_NEWTAB,
   SET_CTA_DESCRIPTION,
   PAGE_LOADED,
+  SET_PAGE_MODULE_HEADER_URL_NEWTAB,
+  SET_PAGE_MODULE_HEADER_URL,
+  SET_PAGE_MODULE_HEADER_SUBTITLE,
+  SET_PAGE_MODULE_HEADER_TITLE,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -39,17 +43,25 @@ const initialState = {
 const modulesReducer = (state = initialState, action = {}) => {
   const oldState = { ...state };
 
+  const pageModulesHeaderField = {
+    title: "",
+    subtitle: "",
+    url: {},
+  };
+
   switch (action.type) {
     // COMMON TO MODULES
+
     case SET_NEW_MODULE: {
       const { payload } = action;
-      switch (payload) {
+      switch (payload.type) {
         case "text": {
           return {
             ...oldState,
             modulesList: [
               ...oldState.modulesList,
               {
+                ...(payload.editor === "page" && pageModulesHeaderField),
                 type: "text",
                 text: "<p></p>",
                 uuid: `${uuidv4()}`,
@@ -129,6 +141,7 @@ const modulesReducer = (state = initialState, action = {}) => {
             modulesList: [
               ...oldState.modulesList,
               {
+                ...(payload.editor === "page" && pageModulesHeaderField),
                 type: "cta-button",
                 order: state.modulesList.length + 1,
                 uuid: `${uuidv4()}`,
@@ -138,11 +151,36 @@ const modulesReducer = (state = initialState, action = {}) => {
                 isOpenCloseModal: false,
                 isVisible: true,
                 introduction: null,
-                url: "",
+                link: {
+                  value: null,
+                  openNewTab: true,
+                },
                 label: "",
                 description: "<p></p>",
-                openNewTab: true,
                 image: null,
+              },
+            ],
+          };
+        }
+
+        case "slider": {
+          return {
+            ...oldState,
+            modulesList: [
+              ...oldState.modulesList,
+              {
+                ...(payload.editor === "page" && pageModulesHeaderField),
+                type: "slider",
+                order: state.modulesList.length + 1,
+                uuid: `${uuidv4()}`,
+                isPostedModule: false,
+                isChanged: true,
+                isNewModule: true,
+                isOpenCloseModal: false,
+                isVisible: true,
+                sectionDescription: "",
+                categoryTocall: "",
+                TagsTocall: "",
               },
             ],
           };
@@ -150,6 +188,84 @@ const modulesReducer = (state = initialState, action = {}) => {
         default:
           return null;
       }
+    }
+
+    case SET_PAGE_MODULE_HEADER_URL_NEWTAB: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            url: {
+              ...oldState.modulesList[index].url,
+              openNewTab: value,
+            },
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_PAGE_MODULE_HEADER_URL: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            url: {
+              ...oldState.modulesList[index].url,
+              value,
+            },
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_PAGE_MODULE_HEADER_SUBTITLE: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            subtitle: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_PAGE_MODULE_HEADER_TITLE: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            title: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
     }
 
     case SET_MODULE_POSTED: {
@@ -230,11 +346,15 @@ const modulesReducer = (state = initialState, action = {}) => {
 
     case PAGE_LOADED: {
       const { sections } = action.payload;
+
       sections?.map((module) => {
         oldState.modulesList = [
           ...oldState.modulesList,
           {
             ...module,
+            title: module.title || "",
+            subtitle: module.subtitle || "",
+            url: module.url || {},
             isNewModule: false,
             isPostedModule: true,
             isChanged: false,
@@ -541,13 +661,17 @@ const modulesReducer = (state = initialState, action = {}) => {
     }
 
     // CTA
+
     case SET_CTA_URL: {
       const { id, value } = action.payload;
       state.modulesList.find((module, index) => {
         if (module?.uuid === id) {
           oldState.modulesList[index] = {
             ...module,
-            url: value,
+            link: {
+              ...oldState.modulesList[index].url,
+              value,
+            },
             isChanged: true,
           };
         }
@@ -619,7 +743,10 @@ const modulesReducer = (state = initialState, action = {}) => {
         if (module?.uuid === id) {
           oldState.modulesList[index] = {
             ...module,
-            openNewTab: value,
+            link: {
+              ...oldState.modulesList[index].url,
+              openNewTab: value,
+            },
             isChanged: true,
           };
         }

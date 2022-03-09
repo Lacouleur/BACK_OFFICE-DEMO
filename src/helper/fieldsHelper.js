@@ -22,6 +22,9 @@ import {
   setOpinionExplain,
   setOpinionQuestion,
   setOpinionTextAnswer,
+  setPageModuleHeaderSubtitle,
+  setPageModuleHeaderTitle,
+  setPageModuleHeaderUrl,
 } from "../store/actions/moduleActions";
 import {
   setDisplayedName,
@@ -470,6 +473,20 @@ export function dispatchFields(
 
     case name === "description" && section === "pageSeo":
       dispatch(pageSetSeoDescription(value));
+      break;
+
+    // PAGE EDITOR SECTIONS HEADER
+
+    case name === "title" && section === "sectionHeader":
+      dispatch(setPageModuleHeaderTitle({ id: moduleId, value }));
+      break;
+
+    case name === "subtitle" && section === "sectionHeader":
+      dispatch(setPageModuleHeaderSubtitle({ id: moduleId, value }));
+      break;
+
+    case name === "url" && section === "sectionHeader":
+      dispatch(setPageModuleHeaderUrl({ id: moduleId, value }));
       break;
 
     default:

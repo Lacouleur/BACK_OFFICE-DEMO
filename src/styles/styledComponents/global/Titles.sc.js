@@ -57,6 +57,7 @@ export const FormTitle = styled.h2`
   text-align: left;
   color: ${colors.white};
   text-transform: uppercase;
+  margin-bottom: 16px;
 `;
 
 export const FieldTitle = styled.h3`

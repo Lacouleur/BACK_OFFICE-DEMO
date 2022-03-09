@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 
 import "../../../../../styles/css/react-draft-wysiwyg.css";
 import { useDispatch, useSelector } from "react-redux";
+import { Switch } from "react-router-dom";
 import { FormTitle } from "../../../../../styles/styledComponents/global/Titles.sc";
 import {
   SectionBox,
@@ -15,8 +16,14 @@ import {
   ModuleContainer,
   Delete,
   ActionIcons,
+  FieldAndSwitchContainer,
+  SwitchBox,
+  SwitchLabel,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
-import { showCloseModal } from "../../../../../store/actions/moduleActions";
+import {
+  setPageModuleHeaderNewTab,
+  showCloseModal,
+} from "../../../../../store/actions/moduleActions";
 import CloseModal from "../../../../Modals/CloseModal";
 import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
 import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.thunk";
@@ -26,8 +33,15 @@ import {
   watchNewModules,
 } from "../../../../../helper/modulesHelper";
 import TextEditor from "../TextEditor";
+import Field from "../../../Field";
+import HeaderSectionPage from "../HeaderSectionPage";
 
 const TextModule = ({
+  isPage,
+  title,
+  subtitle,
+  url,
+  openNewTabHeader,
   text,
   uuid,
   isChanged,
@@ -104,6 +118,15 @@ const TextModule = ({
           <FormTitle>{`${order}. text`}</FormTitle>
         </SectionTitle>
         {!isOpen && <Gradient />}
+        {isPage && (
+          <HeaderSectionPage
+            uuid={uuid}
+            title={title}
+            subtitle={subtitle}
+            url={url}
+            openNewTabHeader={openNewTabHeader}
+          />
+        )}
         {editorState && (
           <>
             <TextEditor
@@ -118,12 +141,25 @@ const TextModule = ({
   );
 };
 
+TextModule.defaultProps = {
+  title: "",
+  subtitle: "",
+  url: "",
+  openNewTabHeader: null,
+  isPage: undefined,
+};
+
 TextModule.propTypes = {
+  isPage: PropTypes.bool,
   text: PropTypes.string.isRequired,
   uuid: PropTypes.string.isRequired,
   isChanged: PropTypes.bool.isRequired,
   isOpenCloseModal: PropTypes.bool.isRequired,
   isNewModule: PropTypes.bool.isRequired,
   order: PropTypes.number.isRequired,
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
+  url: PropTypes.string,
+  openNewTabHeader: PropTypes.bool,
 };
 export default TextModule;

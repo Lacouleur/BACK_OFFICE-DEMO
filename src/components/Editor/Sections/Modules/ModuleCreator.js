@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   TitleIcon,
   FormTitle,
@@ -15,6 +15,7 @@ import quizzIcon from "../../../../styles/assets/icons/quizz-dark.svg";
 import imageIcon from "../../../../styles/assets/icons/image-black.svg";
 import crossIcon from "../../../../styles/assets/icons/cross-white.svg";
 import ctaIcon from "../../../../styles/assets/icons/cta.svg";
+import sliderIcon from "../../../../styles/assets/icons/slider-black.svg";
 import {
   ModuleBox,
   ModulesContainer,
@@ -26,12 +27,28 @@ import { setNewModule } from "../../../../store/actions/moduleActions";
 import keyGenerator from "../../../../helper/keyGenerator";
 
 const ModuleCreator = ({ setIsOpen }) => {
-  const DefaultModules = [
-    { type: "text", icon: textIcon },
-    { type: "opinion", icon: quizzIcon },
-    { type: "image", icon: imageIcon },
-    { type: "cta", icon: ctaIcon },
-  ];
+  const PageMainInformationState = useSelector(
+    ({ pageMainInformationReducer }) => pageMainInformationReducer
+  );
+
+  const { isPage } = PageMainInformationState;
+
+  const DefaultModules = [];
+
+  if (isPage) {
+    DefaultModules.push(
+      { type: "text", icon: textIcon, name: "TEXT", editor: "page" },
+      { type: "cta", icon: ctaIcon, name: "CTA", editor: "page" },
+      { type: "slider", icon: sliderIcon, name: "SLIDER", editor: "page" }
+    );
+  } else {
+    DefaultModules.push(
+      { type: "text", icon: textIcon, name: "TEXT", editor: "article" },
+      { type: "opinion", icon: quizzIcon, name: "OPINION", editor: "article" },
+      { type: "image", icon: imageIcon, name: "IMAGE", editor: "article" },
+      { type: "cta", icon: ctaIcon, name: "CTA", editor: "article" }
+    );
+  }
 
   const moduleRef = useRef(null);
   const dispatch = useDispatch();
@@ -59,11 +76,11 @@ const ModuleCreator = ({ setIsOpen }) => {
                 key={keyGenerator(module.type)}
                 onClick={() => {
                   setIsOpen(false);
-                  dispatch(setNewModule(module.type));
+                  dispatch(setNewModule(module));
                 }}
               >
                 <ModuleIcon src={module.icon} />
-                <ModuleText>{module.type}</ModuleText>
+                <ModuleText>{module.name}</ModuleText>
               </ModuleBox>
             ))}
         </ModulesContainer>

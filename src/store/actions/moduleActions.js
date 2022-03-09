@@ -23,7 +23,31 @@ import {
   SET_CTA_LABEL,
   SET_CTA_IS_NEWTAB,
   SET_CTA_DESCRIPTION,
+  SET_PAGE_MODULE_HEADER_URL_NEWTAB,
+  SET_PAGE_MODULE_HEADER_URL,
+  SET_PAGE_MODULE_HEADER_SUBTITLE,
+  SET_PAGE_MODULE_HEADER_TITLE,
 } from "../constants";
+
+export const setPageModuleHeaderNewTab = (payload) => ({
+  type: SET_PAGE_MODULE_HEADER_URL_NEWTAB,
+  payload,
+});
+
+export const setPageModuleHeaderUrl = (payload) => ({
+  type: SET_PAGE_MODULE_HEADER_URL,
+  payload,
+});
+
+export const setPageModuleHeaderSubtitle = (payload) => ({
+  type: SET_PAGE_MODULE_HEADER_SUBTITLE,
+  payload,
+});
+
+export const setPageModuleHeaderTitle = (payload) => ({
+  type: SET_PAGE_MODULE_HEADER_TITLE,
+  payload,
+});
 
 export const setNewModule = (payload) => ({
   type: SET_NEW_MODULE,

@@ -19,7 +19,11 @@ import {
 import { setHomeImageUuid, setNavImageUuid } from "../homeNavigationActions";
 import { nameSpaceError, uploadError } from "../../../helper/errorMessages";
 import ErrorCaseClient from "../../../helper/ErrorCaseClient";
-import { savePageComponent } from "../../../services/client/pagesClient";
+import {
+  deletePageComponent,
+  savePageComponent,
+  updatePageComponent,
+} from "../../../services/client/pagesClient";
 
 export function deleteModule(articleId, moduleId) {
   console.log("%cDELETING MODULE", `${consoleTitle}`, moduleId);
@@ -28,12 +32,15 @@ export function deleteModule(articleId, moduleId) {
     if (tokenIsValid) {
       const { manifestoReducer, pageMainInformationReducer } = getState();
       const { isManifesto, manifestoId } = manifestoReducer;
-      const { pageId } = pageMainInformationReducer;
+      const { pageId, isPage } = pageMainInformationReducer;
       try {
         let response = null;
 
         if (isManifesto) {
           response = await deleteComponent(manifestoId, moduleId, isManifesto);
+        } else if (isPage) {
+          console.warn("IS PAGE");
+          response = await deletePageComponent(pageId, moduleId);
         } else {
           response = await deleteComponent(articleId, moduleId);
         }
@@ -81,10 +88,16 @@ export function saveModule(uuid, request = "save") {
         console.log("%cSAVING MODULE", `${consoleTitle}`, uuid);
         modulesList.find((module) => {
           if (module.uuid === uuid && module.isNewModule) {
+            const pageSectoionHeaderValues = {
+              title: module.title,
+              subtitle: module.subtitle,
+              url: module.url,
+            };
             switch (module.type) {
               case "text": {
                 const { type, text, order, isVisible } = module;
                 values = {
+                  ...(isPage && pageSectoionHeaderValues),
                   uuid,
                   type,
                   text,
@@ -149,10 +162,11 @@ export function saveModule(uuid, request = "save") {
                   url,
                   label,
                   description,
-                  openNewTab,
+                  link,
                 } = module;
 
                 values = {
+                  ...(isPage && pageSectoionHeaderValues),
                   uuid,
                   type,
                   order,
@@ -161,7 +175,7 @@ export function saveModule(uuid, request = "save") {
                   url,
                   label,
                   description,
-                  openNewTab,
+                  link,
                 };
                 isNewModule = true;
 
@@ -213,10 +227,17 @@ export function saveModule(uuid, request = "save") {
 
         modulesList.find((module) => {
           if (module.uuid === uuid && module.isChanged) {
+            const pageSectoionHeaderValues = {
+              title: module.title,
+              subtitle: module.subtitle,
+              url: module.url,
+            };
+
             switch (module.type) {
               case "text": {
                 const { type, text, order, isVisible } = module;
                 values = {
+                  ...(isPage && pageSectoionHeaderValues),
                   type,
                   text,
                   order,
@@ -288,10 +309,11 @@ export function saveModule(uuid, request = "save") {
                   url,
                   label,
                   description,
-                  openNewTab,
+                  link,
                 } = module;
 
                 values = {
+                  ...(isPage && pageSectoionHeaderValues),
                   type,
                   order,
                   isVisible,
@@ -299,7 +321,7 @@ export function saveModule(uuid, request = "save") {
                   url,
                   label,
                   description,
-                  openNewTab,
+                  link,
                 };
                 isChanged = true;
 
@@ -323,6 +345,9 @@ export function saveModule(uuid, request = "save") {
                 uuid,
                 isManifesto
               );
+            } else if (isPage) {
+              console.warn("IS PAGE");
+              response = await updatePageComponent(pageId, values, uuid);
             } else {
               response = await updateComponent(articleId, values, uuid);
             }

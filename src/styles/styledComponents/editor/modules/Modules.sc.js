@@ -304,3 +304,11 @@ export const HideOnDnd = styled.div`
   top: 150px;
   z-index: 99;
 `;
+
+export const SeparatorWhite = styled.div`
+  margin: 40px auto;
+  opacity: 0.5;
+  height: 1px;
+  background-color: ${colors.white};
+  width: 80%;
+`;

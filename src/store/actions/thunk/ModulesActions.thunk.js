@@ -8,16 +8,20 @@ import { isValidToken } from "../../../services/client/refreshToken";
 import { setUpdatedAt, showErrorModal } from "../actionBarActions";
 import { setModified } from "../mainInformationActions";
 import { setManifestoStatus } from "../manifestoActions";
-import { closeModule, setImageUuid, setModulePosted } from "../moduleActions";
+import {
+  closeModule,
+  setCtaImageUuid,
+  setImageUuid,
+  setModulePosted,
+} from "../moduleActions";
 
 import {
-  consoleError,
   consoleSucces,
   consoleInfo,
   consoleTitle,
 } from "../../../helper/consoleStyles";
 import { setHomeImageUuid, setNavImageUuid } from "../homeNavigationActions";
-import { nameSpaceError, uploadError } from "../../../helper/errorMessages";
+import { uploadError } from "../../../helper/errorMessages";
 import ErrorCaseClient from "../../../helper/ErrorCaseClient";
 import {
   deletePageComponent,
@@ -163,6 +167,7 @@ export function saveModule(uuid, request = "save") {
                   label,
                   description,
                   link,
+                  image,
                 } = module;
 
                 values = {
@@ -176,6 +181,11 @@ export function saveModule(uuid, request = "save") {
                   label,
                   description,
                   link,
+                  image: {
+                    alt: image.alt,
+                    source: "FTV-internal",
+                    uuid: image.uuid,
+                  },
                 };
                 isNewModule = true;
 
@@ -310,6 +320,7 @@ export function saveModule(uuid, request = "save") {
                   label,
                   description,
                   link,
+                  image,
                 } = module;
 
                 values = {
@@ -322,6 +333,11 @@ export function saveModule(uuid, request = "save") {
                   label,
                   description,
                   link,
+                  image: {
+                    alt: image.alt,
+                    source: "FTV-internal",
+                    uuid: image.uuid,
+                  },
                 };
                 isChanged = true;
 
@@ -346,7 +362,6 @@ export function saveModule(uuid, request = "save") {
                 isManifesto
               );
             } else if (isPage) {
-              console.warn("IS PAGE");
               response = await updatePageComponent(pageId, values, uuid);
             } else {
               response = await updateComponent(articleId, values, uuid);
@@ -381,25 +396,31 @@ export function saveImage(setFileTitle, name, image, moduleId) {
     if (tokenIsValid) {
       const formData = new FormData();
       formData.append("file", image);
+      console.log("IMAGGGGEE3image", image);
       try {
         const response = await uploadImage(formData);
         if (response.status < 300 && response.status > 199) {
+          setFileTitle(image.name);
+          console.log("%cRESPONSE", `${consoleInfo}`, response.data);
           if (name === "image") {
-            console.log("%cRESPONSE", `${consoleInfo}`, response.data);
             dispatch(setImageUuid({ id: moduleId, value: response.data }));
-            setFileTitle(image.name);
           }
           if (name === "homeImage") {
             dispatch(setHomeImageUuid(response.data));
-            setFileTitle(image.name);
           }
           if (name === "navImage") {
             dispatch(setNavImageUuid(response.data));
-            setFileTitle(image.name);
+          }
+          if (name === "navImage") {
+            dispatch(setNavImageUuid(response.data));
+          }
+          if (name === "ctaImage") {
+            console.log("CTAIMAGE UUID");
+            dispatch(setCtaImageUuid({ id: moduleId, value: response.data }));
           }
         }
       } catch (error) {
-        if (error?.response.status === 400) {
+        if (error?.response?.status === 400) {
           dispatch(
             showErrorModal({
               value: true,

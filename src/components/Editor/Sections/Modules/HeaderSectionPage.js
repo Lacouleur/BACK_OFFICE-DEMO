@@ -7,6 +7,7 @@ import {
   SwitchBox,
   SwitchLabel,
   Switch,
+  SeparatorWhite,
 } from "../../../../styles/styledComponents/editor/modules/Modules.sc";
 import { setPageModuleHeaderNewTab } from "../../../../store/actions/moduleActions";
 
@@ -68,6 +69,7 @@ const HeaderSectionPage = ({
           <SwitchLabel className="SwitchLabel" htmlFor={`switch-${uuid}`} />
         </SwitchBox>
       </FieldAndSwitchContainer>
+      <SeparatorWhite />
     </>
   );
 };

@@ -38,7 +38,7 @@ const ModuleCreator = ({ setIsOpen }) => {
   if (isPage) {
     DefaultModules.push(
       { type: "text", icon: textIcon, name: "TEXT", editor: "page" },
-      { type: "cta", icon: ctaIcon, name: "CTA", editor: "page" },
+      { type: "cta-button", icon: ctaIcon, name: "CTA", editor: "page" },
       { type: "slider", icon: sliderIcon, name: "SLIDER", editor: "page" }
     );
   } else {
@@ -46,7 +46,7 @@ const ModuleCreator = ({ setIsOpen }) => {
       { type: "text", icon: textIcon, name: "TEXT", editor: "article" },
       { type: "opinion", icon: quizzIcon, name: "OPINION", editor: "article" },
       { type: "image", icon: imageIcon, name: "IMAGE", editor: "article" },
-      { type: "cta", icon: ctaIcon, name: "CTA", editor: "article" }
+      { type: "cta-button", icon: ctaIcon, name: "CTA", editor: "article" }
     );
   }
 

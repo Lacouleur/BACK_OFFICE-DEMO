@@ -16,6 +16,7 @@ import {
 } from "../store/actions/mainInformationActions";
 import {
   setAltImage,
+  setCtaAltImage,
   setCtaIntro,
   setCtaLabel,
   setCtaUrl,
@@ -427,8 +428,12 @@ export function dispatchFields(
       dispatch(setCtaLabel({ id: moduleId, value }));
       break;
 
-    case name === "url" && section === "cta":
+    case name === "link" && section === "cta":
       dispatch(setCtaUrl({ id: moduleId, value }));
+      break;
+
+    case name === "altImage" && section === "cta":
+      dispatch(setCtaAltImage({ id: moduleId, value }));
       break;
 
     case name === "position" && section === "userProfile":

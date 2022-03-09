@@ -27,6 +27,8 @@ import {
   SET_PAGE_MODULE_HEADER_URL,
   SET_PAGE_MODULE_HEADER_SUBTITLE,
   SET_PAGE_MODULE_HEADER_TITLE,
+  SET_CTA_IMAGE_UUID,
+  SET_CTA_ALT_IMAGE,
 } from "../constants";
 
 export const setPageModuleHeaderNewTab = (payload) => ({
@@ -163,5 +165,15 @@ export const setCtaIsNewtab = (payload) => ({
 });
 export const setCtaLabel = (payload) => ({
   type: SET_CTA_LABEL,
+  payload,
+});
+
+export const setCtaImageUuid = (payload) => ({
+  type: SET_CTA_IMAGE_UUID,
+  payload,
+});
+
+export const setCtaAltImage = (payload) => ({
+  type: SET_CTA_ALT_IMAGE,
   payload,
 });

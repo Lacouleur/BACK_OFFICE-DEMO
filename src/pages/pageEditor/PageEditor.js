@@ -64,6 +64,12 @@ const PageEditor = () => {
       dispatch(setIsPage(true));
   }, []);
 
+  useEffect(() => {
+    console.log("%cMODULE LIST", `${consolePage}`, modulesList);
+
+}, [modulesList]);
+
+
 
   return (
     <PageContainer position="relative">

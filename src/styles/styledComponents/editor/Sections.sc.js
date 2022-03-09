@@ -119,6 +119,16 @@ const HomeImageMixin = css`
   }
 `;
 
+const ctaPageImageMixin = css`
+  top: calc(100% - 150px) !important;
+  right: 40% !important;
+  transition: all 0.3s;
+
+  &:hover {
+    height: 150px !important;
+  }
+`;
+
 const navPreviewMixin = css`
   top: 40px !important;
 `;
@@ -131,6 +141,7 @@ const avatarMixin = css`
 
 export const Thumbnail = styled.img`
   ${(props) => (props.homeImage ? HomeImageMixin : "")};
+  ${(props) => (props.ctaPageImage ? ctaPageImageMixin : "")};
   position: absolute;
   max-width: 150px;
   transform: translate(50%, -50%);

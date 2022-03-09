@@ -22,7 +22,6 @@ import {
   CREATE_OPINION_NEW_ANSWER,
   SET_IS_VISIBLE,
   SET_IS_CHANGED,
-  EDIT_MODULES_LIST,
   SET_CTA_URL,
   SET_CTA_INTRO,
   SET_CTA_LABEL,
@@ -33,6 +32,8 @@ import {
   SET_PAGE_MODULE_HEADER_URL,
   SET_PAGE_MODULE_HEADER_SUBTITLE,
   SET_PAGE_MODULE_HEADER_TITLE,
+  SET_CTA_IMAGE_UUID,
+  SET_CTA_ALT_IMAGE,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -135,7 +136,7 @@ const modulesReducer = (state = initialState, action = {}) => {
             ],
           };
         }
-        case "cta": {
+        case "cta-button": {
           return {
             ...oldState,
             modulesList: [
@@ -157,7 +158,12 @@ const modulesReducer = (state = initialState, action = {}) => {
                 },
                 label: "",
                 description: "<p></p>",
-                image: null,
+                image: {
+                  alt: null,
+                  source: "FTV-internal",
+                  uuid: null,
+                  urls: {},
+                },
               },
             ],
           };
@@ -346,7 +352,6 @@ const modulesReducer = (state = initialState, action = {}) => {
 
     case PAGE_LOADED: {
       const { sections } = action.payload;
-
       sections?.map((module) => {
         oldState.modulesList = [
           ...oldState.modulesList,
@@ -451,12 +456,13 @@ const modulesReducer = (state = initialState, action = {}) => {
       };
     }
 
-    case EDIT_MODULES_LIST: {
+    /* IF STILL NO ERROR NEXT TIME READ THIS, DELETE THIS LINE, NO IDEA WHAT IT DO */
+    /*    case EDIT_MODULES_LIST: {
       oldState.modulesList = action.payload;
       return {
         ...oldState,
       };
-    }
+    } */
 
     case SET_IS_CHANGED: {
       const id = action.payload;
@@ -750,6 +756,53 @@ const modulesReducer = (state = initialState, action = {}) => {
             isChanged: true,
           };
         }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_CTA_IMAGE_UUID: {
+      console.log("CTA IMAGE UUID CALLED", action.payload);
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          console.log("JEEEEYSUS", value);
+          oldState.modulesList[index] = {
+            ...module,
+            image: {
+              ...module.image,
+              source: "ftv-internal",
+              uuid: value.uuid,
+              urls: value.urls,
+            },
+            isChanged: true,
+          };
+        }
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_CTA_ALT_IMAGE: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            image: {
+              alt: value,
+              source: module.image.source,
+              uuid: module.image.uuid,
+              urls: module.image.urls,
+            },
+            isChanged: true,
+          };
+        }
+
         return null;
       });
 

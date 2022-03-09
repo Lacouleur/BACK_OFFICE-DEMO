@@ -8,6 +8,7 @@ import {
   SectionBox,
   SectionTitle,
   Gradient,
+  Thumbnail,
 } from "../../../../../styles/styledComponents/editor/Sections.sc";
 import trashIcon from "../../../../../styles/assets/icons/trash.svg";
 import {
@@ -51,14 +52,18 @@ const CtaModule = ({
   url,
   openNewTabHeader,
   isPage,
+  imageUuid,
+  altImage,
+  thumbnail,
 }) => {
-  console.log("SSSSSSSSSSS", link);
   const dispatch = useDispatch();
   const ctaModuleRef = useRef(null);
   const mainInformationState = useSelector(
     ({ mainInformationReducer }) => mainInformationReducer
   );
   const [editorState, setEditorState] = useState();
+  const [imageTitle, setImageTitle] = useState(undefined);
+  const [isImage, setIsImage] = useState(false);
 
   const { articleId } = mainInformationState;
 
@@ -97,6 +102,13 @@ const CtaModule = ({
       setIsOpen(true);
     }
   }, [isOpenCloseModal]);
+
+  useEffect(() => {
+    if (imageUuid) {
+      setImageTitle(imageUuid.split("/")[1]);
+      setIsImage(true);
+    }
+  }, [imageUuid]);
 
   function onClickOutside() {
     if (!isOpenCloseModal) {
@@ -171,7 +183,7 @@ const CtaModule = ({
         <FieldAndSwitchContainer>
           <Field
             placeholder="CTA Link"
-            name="url"
+            name="link"
             section="cta"
             moduleId={uuid}
             edit={link || ""}
@@ -206,6 +218,33 @@ const CtaModule = ({
             />
           </>
         )}
+        {isPage && (
+          <>
+            {thumbnail && <Thumbnail ctaPageImage src={thumbnail} />}
+            <Field
+              placeholder="Navigation Image"
+              name="ctaImage"
+              section="cta"
+              fieldType="uploader"
+              edit={imageTitle}
+              infos="Image size: 320x456 / 320x320 / 320x180 - 500ko maximum"
+              moduleId={uuid}
+            />
+            {isImage && (
+              <>
+                <Field
+                  placeholder="Alternative text for the image"
+                  name="altImage"
+                  section="cta"
+                  infos="Maximum 120 characters"
+                  maxlength="120"
+                  moduleId={uuid}
+                  edit={altImage}
+                />
+              </>
+            )}
+          </>
+        )}
       </SectionBox>
     </ModuleContainer>
   );
@@ -222,6 +261,9 @@ CtaModule.defaultProps = {
   isPage: undefined,
   url: undefined,
   openNewTab: true,
+  imageUuid: undefined,
+  altImage: undefined,
+  thumbnail: undefined,
 };
 
 CtaModule.propTypes = {
@@ -240,5 +282,8 @@ CtaModule.propTypes = {
   link: PropTypes.string,
   openNewTabHeader: PropTypes.bool,
   isPage: PropTypes.bool,
+  imageUuid: PropTypes.string,
+  altImage: PropTypes.string,
+  thumbnail: PropTypes.string,
 };
 export default CtaModule;

@@ -158,8 +158,6 @@ const ModulesDispatcher = ({
             );
           }
           case "cta-button": {
-            console.log("MO_DULE", module);
-            console.log(module.link.value);
             return (
               <Draggable
                 isDragDisabled={aModuleIsOpen}
@@ -200,6 +198,11 @@ const ModulesDispatcher = ({
                         introduction={module.introduction}
                         label={module.label}
                         description={module.description}
+                        imageUuid={module.image?.uuid}
+                        altImage={module.image?.alt}
+                        thumbnail={
+                          module.image?.urls?.thumbnail?.url || undefined
+                        }
                       />
                     </div>
                   );

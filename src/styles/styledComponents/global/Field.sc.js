@@ -304,7 +304,103 @@ export const TagBox = styled.div`
   padding: 3px 10px;
 `;
 
-export const SelectorAndCreateTag = styled(CreatableSelect)`
+export const MultiSelectorAndCreate = styled(CreatableSelect)`
+  ${(props) =>
+    props.isDisabled ? unactiveSelectorMixin : activeSelectorMixin};
+
+  & .select {
+    &__indicator &__dropdown-indicator {
+      border-color: none;
+    }
+
+    &__input {
+      color: ${colors.paleViolet};
+    }
+
+    &__multi-value {
+      background-color: ${colors.darkGrey};
+      border-radius: 20px;
+      border: 1px solid ${colors.paleViolet};
+
+      &__label {
+        color: ${colors.white};
+      }
+
+      &__remove {
+        &:hover {
+          border-top-right-radius: 25px;
+          border-bottom-right-radius: 25px;
+          background-color: ${colors.paleVioletTransp};
+        }
+      }
+    }
+
+    &__control {
+      min-height: 56px;
+      height: 100%;
+      background-color: ${colors.darkGrey};
+      border: none;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+
+      &--is-focused {
+        border: none;
+        box-shadow: none;
+      }
+    }
+
+    &__menu {
+      height: 56px;
+      margin-top: 0;
+      background-color: ${colors.darkGrey};
+      border: none;
+      box-shadow: none;
+      border-radius: 0;
+      z-index: 205;
+      &-list {
+        z-index: 205;
+        display: flex;
+        flex-wrap: wrap;
+        background-color: ${colors.darkGrey};
+        min-height: 56px;
+        max-height: 200px;
+        border: 1px solid ${colors.paleViolet};
+      }
+    }
+
+    &__option {
+      background-color: ${colors.darkGrey};
+      color: ${(props) => props.color || colors.white};
+      border-radius: 20px;
+      border: 1px solid ${colors.paleViolet};
+      width: auto !important;
+      margin: 4px;
+      height: 24px;
+      text-align: center;
+      font-size: 85%;
+      padding: 4px 8px !important;
+      cursor: pointer;
+      &--is-focused {
+        background-color: ${colors.paleViolet};
+      }
+    }
+
+    &__value {
+      &-container {
+        padding: 18px 0 18px 20px;
+      }
+    }
+
+    &__clear-indicator {
+      color: ${colors.paleVioletTransp};
+      &:hover {
+        color: ${colors.paleViolet};
+      }
+    }
+  }
+`;
+
+export const MultiSelector = styled(ReactSelect)`
   ${(props) =>
     props.isDisabled ? unactiveSelectorMixin : activeSelectorMixin};
 
@@ -517,7 +613,7 @@ export const FieldContainer = styled.div`
       }
     }
 
-    & ${SelectorAndCreateTag} {
+    & ${MultiSelectorAndCreate} {
       &:hover {
         .select__indicator-separator {
           background-color: ${colors.paleViolet} !important;

@@ -7,6 +7,7 @@ import {
   CLEAN_CONTENT_STATE,
   CLEAN_PAGE_STATE,
   SET_ARTICLE_ID,
+  SET_CATEGORIES_LIST,
 } from "../constants";
 
 export const setPosted = (payload) => ({
@@ -46,5 +47,10 @@ export const cleanPageState = (payload) => ({
 
 export const setArticleId = (payload) => ({
   type: SET_ARTICLE_ID,
+  payload,
+});
+
+export const setCategoriesList = (payload) => ({
+  type: SET_CATEGORIES_LIST,
   payload,
 });

@@ -112,7 +112,8 @@ export function onEdit(
   selectedReadTime,
   setSelectedReadTime,
   selectedColorStyle,
-  setSelectedColorStyle
+  setSelectedColorStyle,
+  setCategoriesList
 ) {
   if (edit) {
     setFileTitle(edit);
@@ -159,33 +160,28 @@ export function onEdit(
 }
 
 // Init the Author selector with fetched tags from API
-export function initAuthorsSelector(
-  edit,
-  setSelectedAuthors,
-  selectedAuthors,
-  authorsList
-) {
-  if (selectedAuthors.length === 0 && authorsList && edit) {
-    const buildAuthorList = [];
-    authorsList.map((author) => {
-      edit.map((authorId) => {
-        if (authorId === author.value) {
-          buildAuthorList.push(author);
+export function initListSelector(edit, setter, selected, list) {
+  if (selected.length === 0 && list && edit) {
+    const buildList = [];
+    list.map((element) => {
+      edit.map((edited) => {
+        if (edited === element.value) {
+          buildList.push(element);
         }
 
         return null;
       });
-      setSelectedAuthors(buildAuthorList);
+      setter(buildList);
       return null;
     });
   }
 }
 
 // build a clean array usable for dispatch
-export function dispatchAuthors(event) {
+export function dispatchElementsValue(event) {
   const arr = [];
-  event.map((author) => {
-    arr.push(author.value);
+  event.map((element) => {
+    arr.push(element.value);
     return null;
   });
   return arr;
@@ -215,11 +211,11 @@ export function initTagsSelector(
 }
 
 // Dispatch selected tags in the reducer.
-export function dispatchTags(event) {
+export function dispatchElementsId(event) {
   const arr = [];
-  event.map((tag) => {
-    if (tag._id) {
-      arr.push(tag._id);
+  event.map((element) => {
+    if (element._id) {
+      arr.push(element._id);
     }
     return null;
   });

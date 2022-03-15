@@ -10,6 +10,7 @@ import TextModule from "./TextModule/TextModule";
 import ImageModule from "./ImageModule/ImageModule";
 import OpinionModule from "./OpinionModule/OpinionModule";
 import CtaModule from "./CtaModule/CtaModule";
+import SliderModule from "./SliderModule/SliderModule";
 
 const ModulesDispatcher = ({
   modulesList,
@@ -193,8 +194,8 @@ const ModulesDispatcher = ({
                         isChanged={module.isChanged}
                         isOpenCloseModal={module.isOpenCloseModal}
                         isNewModule={module.isNewModule}
-                        link={module.link.value}
-                        openNewTab={module.link.openNewTab}
+                        link={module?.link?.value}
+                        openNewTab={module?.link?.openNewTab}
                         introduction={module.introduction}
                         label={module.label}
                         description={module.description}
@@ -232,7 +233,8 @@ const ModulesDispatcher = ({
                         ...provided.draggableProps.style,
                       }}
                     >
-                      <CtaModule
+                      <SliderModule
+                        isPage={isPage}
                         title={isPage ? module.title : undefined}
                         subtitle={isPage ? module.subtitle : undefined}
                         url={isPage ? module.url.value : undefined}
@@ -245,6 +247,7 @@ const ModulesDispatcher = ({
                         isChanged={module.isChanged}
                         isOpenCloseModal={module.isOpenCloseModal}
                         isNewModule={module.isNewModule}
+                        categories={module?.criteria?.categories.split(",")}
                       />
                     </div>
                   );

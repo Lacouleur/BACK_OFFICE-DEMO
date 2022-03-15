@@ -4,7 +4,7 @@ const initialState = {
   pagesList: [],
 };
 
-const userReducer = (state = initialState, action = {}) => {
+const pagesHubReducer = (state = initialState, action = {}) => {
   const oldState = { ...state };
 
   switch (action.type) {
@@ -20,4 +20,4 @@ const userReducer = (state = initialState, action = {}) => {
   }
 };
 
-export default userReducer;
+export default pagesHubReducer;

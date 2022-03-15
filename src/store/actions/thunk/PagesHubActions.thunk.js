@@ -1,13 +1,10 @@
 /* eslint-disable import/prefer-default-export */
-import { consoleSucces, consoleTitle } from "../../../helper/consoleStyles";
+import { consoleSucces } from "../../../helper/consoleStyles";
 import ErrorCaseClient from "../../../helper/ErrorCaseClient";
-import { nameSpaceError, uploadError } from "../../../helper/errorMessages";
+
 import { getPagesList } from "../../../services/client/pagesClient";
 import { setPagesList } from "../pagesHubActions";
-import {
-  isValidToken,
-  refreshMyToken,
-} from "../../../services/client/refreshToken";
+import { isValidToken } from "../../../services/client/refreshToken";
 
 export function fetchPages(id) {
   return async (dispatch) => {

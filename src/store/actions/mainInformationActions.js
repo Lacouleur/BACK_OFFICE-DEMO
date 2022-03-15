@@ -3,7 +3,6 @@ import {
   SET_ERROR_SLUG,
   ADD_SLUG,
   ADD_CATEGORY,
-  SET_CATEGORIES_LIST,
   ADD_TITLE,
   SET_STATUS,
   SET_MODIFIED,
@@ -39,11 +38,6 @@ export const setErrorSlug = (payload) => ({
 
 export const addCategory = (payload) => ({
   type: ADD_CATEGORY,
-  payload,
-});
-
-export const setCategoriesList = (payload) => ({
-  type: SET_CATEGORIES_LIST,
   payload,
 });
 

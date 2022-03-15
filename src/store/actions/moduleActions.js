@@ -29,6 +29,7 @@ import {
   SET_PAGE_MODULE_HEADER_TITLE,
   SET_CTA_IMAGE_UUID,
   SET_CTA_ALT_IMAGE,
+  SET_CATEGORIES_SLIDER,
 } from "../constants";
 
 export const setPageModuleHeaderNewTab = (payload) => ({
@@ -175,5 +176,10 @@ export const setCtaImageUuid = (payload) => ({
 
 export const setCtaAltImage = (payload) => ({
   type: SET_CTA_ALT_IMAGE,
+  payload,
+});
+
+export const setCategoriesSlider = (payload) => ({
+  type: SET_CATEGORIES_SLIDER,
   payload,
 });

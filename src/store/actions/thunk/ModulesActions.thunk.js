@@ -191,6 +191,31 @@ export function saveModule(uuid, request = "save") {
 
                 break;
               }
+              case "slider": {
+                const { order, isVisible, lang, criteria } = module;
+                console.log("MODULE", module);
+                values = {
+                  ...(isPage && pageSectoionHeaderValues),
+                  uuid,
+                  type: "carousel",
+                  order,
+                  isVisible,
+                  resource: "contents",
+                  display: "primary",
+                  criteria: {
+                    limit: 15,
+                    page: 1,
+                    sort: "firstPublishedAt",
+                    order: "desc",
+                    fields: "header,slug,category",
+                    lang,
+                    categories: criteria?.categories.join(",") || undefined,
+                  },
+                };
+                isNewModule = true;
+
+                break;
+              }
 
               default:
                 return null;
@@ -206,7 +231,6 @@ export function saveModule(uuid, request = "save") {
             if (isManifesto) {
               response = await saveComponent(manifestoId, values, isManifesto);
             } else if (isPage) {
-              console.warn("IS PAGE");
               response = await savePageComponent(pageId, values);
             } else {
               response = await saveComponent(articleId, values);
@@ -344,6 +368,32 @@ export function saveModule(uuid, request = "save") {
                 break;
               }
 
+              case "slider": {
+                const { order, isVisible, lang, criteria } = module;
+                console.warn("SLIDERMODULE", module);
+                values = {
+                  ...(isPage && pageSectoionHeaderValues),
+                  uuid,
+                  type: "carousel",
+                  order,
+                  isVisible,
+                  resource: "contents",
+                  display: "primary",
+                  criteria: {
+                    limit: 15,
+                    page: 1,
+                    sort: "firstPublishedAt",
+                    order: "desc",
+                    fields: "header,slug,category",
+                    lang,
+                    categories: criteria?.categories.join(",") || undefined,
+                  },
+                };
+                isNewModule = true;
+
+                break;
+              }
+
               default:
                 return null;
             }
@@ -396,7 +446,6 @@ export function saveImage(setFileTitle, name, image, moduleId) {
     if (tokenIsValid) {
       const formData = new FormData();
       formData.append("file", image);
-      console.log("IMAGGGGEE3image", image);
       try {
         const response = await uploadImage(formData);
         if (response.status < 300 && response.status > 199) {
@@ -415,7 +464,6 @@ export function saveImage(setFileTitle, name, image, moduleId) {
             dispatch(setNavImageUuid(response.data));
           }
           if (name === "ctaImage") {
-            console.log("CTAIMAGE UUID");
             dispatch(setCtaImageUuid({ id: moduleId, value: response.data }));
           }
         }

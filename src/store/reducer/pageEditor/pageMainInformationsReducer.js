@@ -12,6 +12,7 @@ import {
   CLEAN_PAGE_STATE,
   PAGE_LOADED,
   SET_IS_PAGE,
+  SET_CATEGORIES_LIST,
 } from "../../constants";
 import { verifySlug } from "../../../helper/auth/verifyFields";
 
@@ -22,6 +23,9 @@ const initialState = {
   slug: "",
   lang: "",
   status: "",
+
+  // Array
+  categoriesList: [],
 
   // bool
   regexSlugError: false,
@@ -49,6 +53,7 @@ const mainInformationReducer = (state = initialState, action = {}) => {
         lang: lang || "",
         status: action.payload?.state ?? "",
         modified: action.payload?.modified ?? null,
+        categories: action.payload.categories,
       };
     }
 
@@ -142,6 +147,16 @@ const mainInformationReducer = (state = initialState, action = {}) => {
       return {
         state,
       };
+    }
+
+    case SET_CATEGORIES_LIST: {
+      const list = [];
+      // eslint-disable-next-line no-unused-vars
+      Object.entries(action.payload).map(([key, value]) => {
+        list.push({ label: value.label, value: value._id });
+        return null;
+      });
+      return { ...oldState, categoriesList: list };
     }
 
     default:

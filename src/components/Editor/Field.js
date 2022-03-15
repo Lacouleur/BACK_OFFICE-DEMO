@@ -12,7 +12,7 @@ import {
   FieldStyle,
   Selector,
   SelectorAuthor,
-  SelectorAndCreateTag,
+  MultiSelectorAndCreate,
   FieldError,
   ErrorIcon,
   FieldContainer,
@@ -29,6 +29,7 @@ import {
   FieldTitleBox,
   WarningCreateContainer,
   WarnCreateBox,
+  MultiSelector,
 } from "../../styles/styledComponents/global/Field.sc";
 import colors from "../../styles/core/colors";
 import exclamationIcon from "../../styles/assets/icons/exclamationGrey.svg";
@@ -43,27 +44,27 @@ import {
   TooltipText,
 } from "../../styles/styledComponents/contentList/Content.sc";
 
-import { setOpinionExplain } from "../../store/actions/moduleActions";
-
 import {
-  dispatchAuthors,
-  dispatchTags,
+  dispatchElementsValue,
+  dispatchElementsId,
   dispatchFields,
   dispatchSelected,
   checkImage,
-  initAuthorsSelector,
   initTagsSelector,
   onEdit,
   optionSelector,
   valueSelector,
   fuzzyOptions,
   loadOptions,
+  initListSelector,
 } from "../../helper/fieldsHelper";
 import {
   setAuthors,
   setTags,
   setNewTag,
 } from "../../store/actions/mainInformationActions";
+import { setCategoriesSlider } from "../../store/actions/moduleActions";
+import { setCategoriesList } from "../../store/actions/commonsActions";
 
 // All necessary methods of "Field" are in "fieldsHelper.js"
 
@@ -94,13 +95,13 @@ const Field = ({
   edit,
   moduleId,
   answerId,
-  lang,
 }) => {
   const dispatch = useDispatch();
   const [editCategory, setEditCategory] = useState();
   const [selectedLang, setSelectedLang] = useState();
   const [selectedReadTime, setSelectedReadTime] = useState();
   const [selectedColorStyle, setSelectedColorStyle] = useState();
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const [fileTitle, setFileTitle] = useState("");
   const [selectedAuthors, setSelectedAuthors] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
@@ -108,10 +109,13 @@ const Field = ({
   const animatedComponents = makeAnimated();
   const [fuse, setFuse] = useState(null);
 
+  if (fieldType === "multi-value") {
+    console.log("EDIT", edit);
+  }
+
   const MainInformationState = useSelector(
     ({ mainInformationReducer }) => mainInformationReducer
   );
-
   const {
     categoriesList,
     status,
@@ -119,6 +123,16 @@ const Field = ({
     tagsList,
     newTag,
   } = MainInformationState;
+
+  const PageMainInformationState = useSelector(
+    ({ pageMainInformationReducer }) => pageMainInformationReducer
+  );
+
+  const {
+    categoriesList: pageCategoriesList,
+    isPage,
+    lang,
+  } = PageMainInformationState;
 
   // Fuse search -> dynamic tag search field
   useEffect(() => {
@@ -135,32 +149,41 @@ const Field = ({
 
   // Multi selector fiels
   useEffect(() => {
-    if (
-      name === "category" &&
-      (categoriesList?.length === 0 || !categoriesList)
-    ) {
-      dispatch(fetchCategoriesList());
+    if (fieldType === "select") {
+      if (categoriesList?.length === 0 || !categoriesList) {
+        dispatch(fetchCategoriesList());
+      }
     }
 
-    if (name === "tags" && lang) {
-      dispatch(fetchTags(lang));
+    if (fieldType === "multi-value" && lang) {
+      if (name === "tags") {
+        dispatch(fetchTags(lang));
+      }
+      if (name === "categories") {
+        dispatch(fetchCategoriesList());
+      }
     }
   }, []);
 
   // Regular selector fields
   useEffect(() => {
-    onEdit(
-      edit,
-      categoriesList,
-      setFileTitle,
-      setEditCategory,
-      selectedLang,
-      setSelectedLang,
-      selectedReadTime,
-      setSelectedReadTime,
-      selectedColorStyle,
-      setSelectedColorStyle
-    );
+    if (!isPage) {
+      onEdit(
+        edit,
+        categoriesList,
+        setFileTitle,
+        setEditCategory,
+        selectedLang,
+        setSelectedLang,
+        selectedReadTime,
+        setSelectedReadTime,
+        selectedColorStyle,
+        setSelectedColorStyle,
+        setCategoriesList
+      );
+    } else {
+      onEdit(edit, categoriesList, setCategoriesList);
+    }
 
     if (fieldType === "multi-value") {
       if (name === "tags") {
@@ -168,11 +191,20 @@ const Field = ({
       }
 
       if (name === "authors") {
-        initAuthorsSelector(
+        initListSelector(
           edit,
           setSelectedAuthors,
           selectedAuthors,
           authorsList
+        );
+      }
+
+      if (name === "categories") {
+        initListSelector(
+          edit,
+          setSelectedCategories,
+          selectedCategories,
+          categoriesList
         );
       }
     }
@@ -291,7 +323,7 @@ const Field = ({
 
               {/* tag Selector with fuse dynamic search */}
 
-              <SelectorAndCreateTag
+              <MultiSelectorAndCreate
                 isDisabled={!!isOpenTagWarn}
                 classNamePrefix="select"
                 isMulti
@@ -323,7 +355,7 @@ const Field = ({
                 loadOptions={(value) => loadOptions(value, fuse)}
                 onChange={(event) => {
                   setSelectedTags(event);
-                  dispatch(setTags(dispatchTags(event || [])));
+                  dispatch(setTags(dispatchElementsId(event || [])));
                 }}
               />
             </>
@@ -348,7 +380,44 @@ const Field = ({
                   } else {
                     setSelectedAuthors(event);
                   }
-                  dispatch(setAuthors(dispatchAuthors(event || [])));
+                  dispatch(setAuthors(dispatchElementsValue(event || [])));
+                }}
+              />
+            </>
+          )}
+
+          {/* category selector */}
+
+          {name === "categories" && (
+            <>
+              <MultiSelector
+                classNamePrefix="select"
+                isMulti
+                isSearchable
+                components={animatedComponents}
+                closeMenuOnSelect={false}
+                placeholder={placeholder}
+                defaultValue={selectedCategories}
+                value={selectedCategories}
+                getOptionValue={(option) => `${option.label}`}
+                fuzzyOptions={fuzzyOptions}
+                autoCorrect="off"
+                spellCheck="off"
+                defaultOptions={pageCategoriesList}
+                options={pageCategoriesList}
+                loadOptions={(value) => loadOptions(value, fuse)}
+                onChange={(event) => {
+                  if (!event) {
+                    setSelectedCategories([]);
+                  } else {
+                    setSelectedCategories(event);
+                  }
+                  dispatch(
+                    setCategoriesSlider({
+                      id: moduleId,
+                      value: dispatchElementsValue(event || []),
+                    })
+                  );
                 }}
               />
             </>
@@ -487,7 +556,12 @@ Field.propTypes = {
   error: PropTypes.bool,
   fieldType: PropTypes.string,
   section: PropTypes.string,
-  edit: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  edit: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.array,
+    PropTypes.bool,
+    PropTypes.number,
+  ]),
   moduleId: PropTypes.string,
   answerId: PropTypes.string,
   lang: PropTypes.string,

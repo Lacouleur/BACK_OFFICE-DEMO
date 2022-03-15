@@ -24,9 +24,9 @@ import {
   setErrorPosting,
   setErrorSpecial,
   setPosted,
+  setCategoriesList,
 } from "../commonsActions";
 import {
-  setCategoriesList,
   setErrorSlug,
   setErrorTitle,
   setModified,
@@ -36,6 +36,7 @@ import {
   setNewTag,
   setTags,
 } from "../mainInformationActions";
+
 import { deleteToken } from "../../../services/client/tokenStuff";
 
 import {
@@ -46,7 +47,7 @@ import {
 } from "../../../helper/consoleStyles";
 import { setContentsList, setPagination } from "../contentListActions";
 import ErrorCaseClient from "../../../helper/ErrorCaseClient";
-import { dispatchTags } from "../../../helper/fieldsHelper";
+import { dispatchElementsId } from "../../../helper/fieldsHelper";
 
 export function checkAndSend(type = "save", articleId = null) {
   return async (dispatch, getState) => {
@@ -421,7 +422,7 @@ export function createTag(
               ? [newTag]
               : [...selectedTags, newTag];
 
-          dispatch(setTags(dispatchTags(newSelectedTags)));
+          dispatch(setTags(dispatchElementsId(newSelectedTags)));
           setSelectedTags(newSelectedTags);
           setIsOpenTagWarn(false);
         }

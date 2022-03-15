@@ -47,13 +47,14 @@ const SliderModule = ({
   isOpenCloseModal,
   isNewModule,
   order,
+  categories,
 }) => {
   const dispatch = useDispatch();
   const sliderModuleRef = useRef(null);
-  const MainInformationState = useSelector(
-    ({ mainInformationReducer }) => mainInformationReducer
+  const PageMainInformationState = useSelector(
+    ({ pageMainInformationReducer }) => pageMainInformationReducer
   );
-  const { articleId } = MainInformationState;
+  const { articleId } = PageMainInformationState;
   const [isOpen, setIsOpen] = useState(false);
 
   function onClickOutside() {
@@ -95,7 +96,7 @@ const SliderModule = ({
         </ActionIcons>
 
         <SectionTitle>
-          <FormTitle>{`${order}. text`}</FormTitle>
+          <FormTitle>{`${order}. slider`}</FormTitle>
         </SectionTitle>
         {!isOpen && <Gradient />}
         {isPage && (
@@ -107,12 +108,14 @@ const SliderModule = ({
             openNewTabHeader={openNewTabHeader}
           />
         )}
+
         <Field
           placeholder="Category to call"
-          name="category"
+          name="categories"
           section="slider"
-          fieldType="select"
-          edit={category || null}
+          fieldType="multi-value"
+          moduleId={uuid}
+          edit={categories || null}
         />
         {/*    <Field
           placeholder="Tags to call"
@@ -131,20 +134,22 @@ SliderModule.defaultProps = {
   title: "",
   subtitle: "",
   url: "",
-  openNewTabHeader: null,
+  openNewTabHeader: true,
   isPage: undefined,
+  categories: undefined,
 };
 
 SliderModule.propTypes = {
-  isPage: PropTypes.string,
+  isPage: PropTypes.bool,
   title: PropTypes.string,
   subtitle: PropTypes.string,
   url: PropTypes.string,
-  openNewTabHeader: PropTypes.string,
+  openNewTabHeader: PropTypes.bool,
   uuid: PropTypes.string.isRequired,
-  isChanged: PropTypes.string.isRequired,
-  isOpenCloseModal: PropTypes.string.isRequired,
-  isNewModule: PropTypes.string.isRequired,
-  order: PropTypes.string.isRequired,
+  isChanged: PropTypes.bool.isRequired,
+  isOpenCloseModal: PropTypes.bool.isRequired,
+  isNewModule: PropTypes.bool.isRequired,
+  order: PropTypes.number.isRequired,
+  categories: PropTypes.arrayOf(PropTypes.string),
 };
 export default SliderModule;

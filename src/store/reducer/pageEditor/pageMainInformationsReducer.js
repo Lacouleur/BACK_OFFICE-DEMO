@@ -13,6 +13,7 @@ import {
   PAGE_LOADED,
   SET_IS_PAGE,
   SET_CATEGORIES_LIST,
+  SET_TAGS_LIST,
 } from "../../constants";
 import { verifySlug } from "../../../helper/auth/verifyFields";
 
@@ -26,6 +27,7 @@ const initialState = {
 
   // Array
   categoriesList: [],
+  tagsList: [],
 
   // bool
   regexSlugError: false,
@@ -157,6 +159,13 @@ const mainInformationReducer = (state = initialState, action = {}) => {
         return null;
       });
       return { ...oldState, categoriesList: list };
+    }
+
+    case SET_TAGS_LIST: {
+      return {
+        ...oldState,
+        tagsList: action.payload,
+      };
     }
 
     default:

@@ -438,6 +438,7 @@ export const MultiSelector = styled(ReactSelect)`
       border: none;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
+      cursor: pointer;
 
       &--is-focused {
         border: none;
@@ -446,7 +447,7 @@ export const MultiSelector = styled(ReactSelect)`
     }
 
     &__menu {
-      height: 56px;
+      min-height: 56px;
       margin-top: 0;
       background-color: ${colors.darkGrey};
       border: none;
@@ -458,7 +459,7 @@ export const MultiSelector = styled(ReactSelect)`
         display: flex;
         flex-wrap: wrap;
         background-color: ${colors.darkGrey};
-        min-height: 56px;
+        min-height: 112px;
         max-height: 200px;
         border: 1px solid ${colors.paleViolet};
       }

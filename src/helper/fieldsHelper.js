@@ -1,4 +1,3 @@
-import { showErrorModal } from "../store/actions/actionBarActions";
 import {
   addHomeTitle,
   setHomeImageAlt,
@@ -12,7 +11,6 @@ import {
   addTitle,
   setCaption,
   setColorStyle,
-  setTags,
 } from "../store/actions/mainInformationActions";
 import {
   setAltImage,
@@ -37,7 +35,6 @@ import {
 import { saveAvatar } from "../store/actions/thunk/UserAction.thunk";
 import { addSeoDescription, addSeoTitle } from "../store/actions/seoActions";
 import { saveImage } from "../store/actions/thunk/ModulesActions.thunk";
-import { sizeOrFormatError } from "./errorMessages";
 import langList from "./langList";
 import {
   pageSetlang,
@@ -112,8 +109,7 @@ export function onEdit(
   selectedReadTime,
   setSelectedReadTime,
   selectedColorStyle,
-  setSelectedColorStyle,
-  setCategoriesList
+  setSelectedColorStyle
 ) {
   if (edit) {
     setFileTitle(edit);
@@ -159,7 +155,6 @@ export function onEdit(
   }
 }
 
-// Init the Author selector with fetched tags from API
 export function initListSelector(edit, setter, selected, list) {
   if (selected.length === 0 && list && edit) {
     const buildList = [];
@@ -455,7 +450,7 @@ export function dispatchFields(
       break;
 
     case name === "explanation" && section === "opinion":
-      dispatch(setOpinionExplain({ id: moduleId, value: e.target.value }));
+      dispatch(setOpinionExplain({ id: moduleId, value }));
       break;
 
     // PAGE EDITOR
@@ -512,3 +507,64 @@ export const fuzzyOptions = {
   limit: 15,
   distance: 4,
 };
+
+export function initMultiSelectors(
+  fieldType,
+  name,
+  edit,
+  section,
+  setSelectedTags,
+  selectedTags,
+  tagsList,
+  setSelectedAuthors,
+  selectedAuthors,
+  authorsList,
+  setSelectedCategories,
+  selectedCategories,
+  categoriesList,
+  selectedTagsSlider,
+  setSelectedTagsSlider
+) {
+  if (fieldType === "multi-value") {
+    switch (name) {
+      case "tags": {
+        if (section === "slider") {
+          initTagsSelector(
+            edit,
+            setSelectedTagsSlider,
+            selectedTagsSlider,
+            tagsList
+          );
+        } else {
+          initTagsSelector(edit, setSelectedTags, selectedTags, tagsList);
+        }
+        break;
+      }
+
+      case "authors": {
+        initListSelector(
+          edit,
+          setSelectedAuthors,
+          selectedAuthors,
+          authorsList
+        );
+        break;
+      }
+
+      case "categories": {
+        initListSelector(
+          edit,
+          setSelectedCategories,
+          selectedCategories,
+          categoriesList
+        );
+        break;
+      }
+
+      default:
+        console.error({ name, section });
+        return null;
+    }
+  }
+  return null;
+}

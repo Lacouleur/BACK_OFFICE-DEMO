@@ -60,6 +60,7 @@ export function postTag(label, lang) {
     },
   });
 }
+
 export function getTags(lang) {
   return axiosConfig.get(`/tags?lang=${lang}`, {
     headers: {
@@ -135,8 +136,8 @@ export function updateContent(values, articleId, lang) {
   });
 }
 
-export async function getCategories() {
-  return axiosConfig.get(`/categories`, {
+export async function getCategories(lang) {
+  return axiosConfig.get(`/categories?lang=${lang}`, {
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },

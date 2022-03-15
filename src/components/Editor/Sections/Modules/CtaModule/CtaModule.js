@@ -58,14 +58,18 @@ const CtaModule = ({
 }) => {
   const dispatch = useDispatch();
   const ctaModuleRef = useRef(null);
-  const mainInformationState = useSelector(
+  const MainInformationState = useSelector(
     ({ mainInformationReducer }) => mainInformationReducer
+  );
+  const PageMainInformationState = useSelector(
+    ({ pageMainInformationReducer }) => pageMainInformationReducer
   );
   const [editorState, setEditorState] = useState();
   const [imageTitle, setImageTitle] = useState(undefined);
   const [isImage, setIsImage] = useState(false);
 
-  const { articleId } = mainInformationState;
+  const pageId = PageMainInformationState?.pageId || undefined;
+  const articleId = MainInformationState?.articleId || undefined;
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -130,7 +134,7 @@ const CtaModule = ({
         <CloseModal
           moduleId={uuid}
           moduleRef={ctaModuleRef}
-          articleId={articleId}
+          articleId={articleId || pageId}
         />
       )}
 
@@ -220,7 +224,7 @@ const CtaModule = ({
         )}
         {isPage && (
           <>
-            {thumbnail && <Thumbnail ctaPageImage src={thumbnail} />}
+            {thumbnail && isOpen && <Thumbnail ctaPageImage src={thumbnail} />}
             <Field
               placeholder="Navigation Image"
               name="ctaImage"

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import "../../../../../styles/css/react-draft-wysiwyg.css";
 import { useDispatch, useSelector } from "react-redux";
-import { Switch } from "react-router-dom";
+
 import { FormTitle } from "../../../../../styles/styledComponents/global/Titles.sc";
 import {
   SectionBox,
@@ -16,14 +16,8 @@ import {
   ModuleContainer,
   Delete,
   ActionIcons,
-  FieldAndSwitchContainer,
-  SwitchBox,
-  SwitchLabel,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
-import {
-  setPageModuleHeaderNewTab,
-  showCloseModal,
-} from "../../../../../store/actions/moduleActions";
+import { showCloseModal } from "../../../../../store/actions/moduleActions";
 import CloseModal from "../../../../Modals/CloseModal";
 import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
 import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.thunk";
@@ -33,7 +27,6 @@ import {
   watchNewModules,
 } from "../../../../../helper/modulesHelper";
 import TextEditor from "../TextEditor";
-import Field from "../../../Field";
 import HeaderSectionPage from "../HeaderSectionPage";
 
 const TextModule = ({
@@ -54,7 +47,13 @@ const TextModule = ({
   const MainInformationState = useSelector(
     ({ mainInformationReducer }) => mainInformationReducer
   );
-  const { articleId } = MainInformationState;
+
+  const PageMainInformationState = useSelector(
+    ({ pagemainInformationReducer }) => pagemainInformationReducer
+  );
+  const pageId = PageMainInformationState?.pageId || undefined;
+  const articleId = MainInformationState?.articleId || undefined;
+
   const [isOpen, setIsOpen] = useState(false);
   const [editorState, setEditorState] = useState();
 
@@ -96,7 +95,7 @@ const TextModule = ({
         <CloseModal
           moduleId={uuid}
           moduleRef={textModuleRef}
-          articleId={articleId}
+          articleId={articleId || pageId}
         />
       )}
 

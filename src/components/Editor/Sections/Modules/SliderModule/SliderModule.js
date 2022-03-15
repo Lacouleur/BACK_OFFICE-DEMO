@@ -1,5 +1,6 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable jsx-a11y/heading-has-content */
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import "../../../../../styles/css/react-draft-wysiwyg.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,32 +9,18 @@ import {
   SectionBox,
   SectionTitle,
   Gradient,
-  Thumbnail,
 } from "../../../../../styles/styledComponents/editor/Sections.sc";
 import trashIcon from "../../../../../styles/assets/icons/trash.svg";
 import {
   ModuleContainer,
   Delete,
   ActionIcons,
-  SwitchBox,
-  Switch,
-  SwitchLabel,
-  FieldAndSwitchContainer,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
-import {
-  setCtaIsNewtab,
-  showCloseModal,
-} from "../../../../../store/actions/moduleActions";
+import { showCloseModal } from "../../../../../store/actions/moduleActions";
 import CloseModal from "../../../../Modals/CloseModal";
 import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
 import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.thunk";
 import Field from "../../../Field";
-import {
-  setCtaModuleContent,
-  watchNewModules,
-} from "../../../../../helper/modulesHelper";
-import { setAModuleIsOpen } from "../../../../../store/actions/actionBarActions";
-import TextEditor from "../TextEditor";
 import HeaderSectionPage from "../HeaderSectionPage";
 
 const SliderModule = ({
@@ -48,13 +35,16 @@ const SliderModule = ({
   isNewModule,
   order,
   categories,
+  tags,
 }) => {
   const dispatch = useDispatch();
   const sliderModuleRef = useRef(null);
   const PageMainInformationState = useSelector(
     ({ pageMainInformationReducer }) => pageMainInformationReducer
   );
-  const { articleId } = PageMainInformationState;
+
+  const { pageId, lang } = PageMainInformationState;
+
   const [isOpen, setIsOpen] = useState(false);
 
   function onClickOutside() {
@@ -77,7 +67,7 @@ const SliderModule = ({
         <CloseModal
           moduleId={uuid}
           moduleRef={sliderModuleRef}
-          articleId={articleId}
+          articleId={pageId}
         />
       )}
 
@@ -88,7 +78,7 @@ const SliderModule = ({
           <Delete
             src={trashIcon}
             onClick={() => {
-              if (status !== "PUBLISHED") {
+              if (status !== "PUBLISHED" && uuid) {
                 dispatch(showCloseModal({ value: true, id: uuid }));
               }
             }}
@@ -117,14 +107,15 @@ const SliderModule = ({
           moduleId={uuid}
           edit={categories || null}
         />
-        {/*    <Field
+        <Field
           placeholder="Tags to call"
           name="tags"
           section="slider"
-          edit={tags || ""}
           fieldType="multi-value"
+          moduleId={uuid}
+          edit={tags || ""}
           lang={lang}
-        /> */}
+        />
       </SectionBox>
     </ModuleContainer>
   );
@@ -137,6 +128,7 @@ SliderModule.defaultProps = {
   openNewTabHeader: true,
   isPage: undefined,
   categories: undefined,
+  tags: undefined,
 };
 
 SliderModule.propTypes = {
@@ -151,5 +143,6 @@ SliderModule.propTypes = {
   isNewModule: PropTypes.bool.isRequired,
   order: PropTypes.number.isRequired,
   categories: PropTypes.arrayOf(PropTypes.string),
+  tags: PropTypes.arrayOf(PropTypes.string),
 };
 export default SliderModule;

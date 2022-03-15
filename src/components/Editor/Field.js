@@ -7,7 +7,6 @@ import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import makeAnimated from "react-select/animated";
 import Fuse from "fuse.js";
-import { addSeoDescription } from "../../store/actions/seoActions";
 import {
   FieldStyle,
   Selector,
@@ -50,21 +49,26 @@ import {
   dispatchFields,
   dispatchSelected,
   checkImage,
-  initTagsSelector,
   onEdit,
   optionSelector,
   valueSelector,
   fuzzyOptions,
   loadOptions,
-  initListSelector,
+  initMultiSelectors,
 } from "../../helper/fieldsHelper";
 import {
   setAuthors,
   setTags,
   setNewTag,
 } from "../../store/actions/mainInformationActions";
-import { setCategoriesSlider } from "../../store/actions/moduleActions";
-import { setCategoriesList } from "../../store/actions/commonsActions";
+import {
+  setSliderCategories,
+  setSliderTags,
+} from "../../store/actions/moduleActions";
+import {
+  setCategoriesList,
+  setTagsList,
+} from "../../store/actions/commonsActions";
 
 // All necessary methods of "Field" are in "fieldsHelper.js"
 
@@ -105,13 +109,10 @@ const Field = ({
   const [fileTitle, setFileTitle] = useState("");
   const [selectedAuthors, setSelectedAuthors] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedTagsSlider, setSelectedTagsSlider] = useState([]);
   const [isOpenTagWarn, setIsOpenTagWarn] = useState();
   const animatedComponents = makeAnimated();
   const [fuse, setFuse] = useState(null);
-
-  if (fieldType === "multi-value") {
-    console.log("EDIT", edit);
-  }
 
   const MainInformationState = useSelector(
     ({ mainInformationReducer }) => mainInformationReducer
@@ -122,6 +123,7 @@ const Field = ({
     authorsList,
     tagsList,
     newTag,
+    lang: contentLang,
   } = MainInformationState;
 
   const PageMainInformationState = useSelector(
@@ -130,9 +132,12 @@ const Field = ({
 
   const {
     categoriesList: pageCategoriesList,
+    tagsList: pageTagsList,
     isPage,
-    lang,
+    lang: pageLang,
   } = PageMainInformationState;
+
+  const lang = pageLang || contentLang;
 
   // Fuse search -> dynamic tag search field
   useEffect(() => {
@@ -151,16 +156,16 @@ const Field = ({
   useEffect(() => {
     if (fieldType === "select") {
       if (categoriesList?.length === 0 || !categoriesList) {
-        dispatch(fetchCategoriesList());
+        dispatch(fetchCategoriesList(lang));
       }
     }
 
     if (fieldType === "multi-value" && lang) {
-      if (name === "tags") {
+      if (name === "tags" && tagsList.length === 0) {
         dispatch(fetchTags(lang));
       }
-      if (name === "categories") {
-        dispatch(fetchCategoriesList());
+      if (name === "categories" && categoriesList.length === 0) {
+        dispatch(fetchCategoriesList(lang));
       }
     }
   }, []);
@@ -182,32 +187,32 @@ const Field = ({
         setCategoriesList
       );
     } else {
-      onEdit(edit, categoriesList, setCategoriesList);
+      onEdit(
+        edit,
+        pageCategoriesList,
+        setCategoriesList,
+        pageTagsList,
+        setTagsList
+      );
     }
 
-    if (fieldType === "multi-value") {
-      if (name === "tags") {
-        initTagsSelector(edit, setSelectedTags, selectedTags, tagsList);
-      }
-
-      if (name === "authors") {
-        initListSelector(
-          edit,
-          setSelectedAuthors,
-          selectedAuthors,
-          authorsList
-        );
-      }
-
-      if (name === "categories") {
-        initListSelector(
-          edit,
-          setSelectedCategories,
-          selectedCategories,
-          categoriesList
-        );
-      }
-    }
+    initMultiSelectors(
+      fieldType,
+      name,
+      edit,
+      section,
+      setSelectedTags,
+      selectedTags,
+      tagsList,
+      setSelectedAuthors,
+      selectedAuthors,
+      authorsList,
+      setSelectedCategories,
+      selectedCategories,
+      categoriesList,
+      selectedTagsSlider,
+      setSelectedTagsSlider
+    );
   }, [edit, categoriesList, authorsList, tagsList]);
 
   // Next functions concern File Uploader fields
@@ -274,7 +279,7 @@ const Field = ({
         <FieldBox>
           {/* tag selector */}
 
-          {name === "tags" && (
+          {name === "tags" && section === "mainInformation" && (
             <>
               {/* Warn message on new tag creation */}
               {isOpenTagWarn && newTag?.label && (
@@ -413,9 +418,45 @@ const Field = ({
                     setSelectedCategories(event);
                   }
                   dispatch(
-                    setCategoriesSlider({
+                    setSliderCategories({
                       id: moduleId,
                       value: dispatchElementsValue(event || []),
+                    })
+                  );
+                }}
+              />
+            </>
+          )}
+
+          {/* Tag selector without creation */}
+          {name === "tags" && section === "slider" && (
+            <>
+              <MultiSelector
+                classNamePrefix="select"
+                isMulti
+                isSearchable
+                components={animatedComponents}
+                closeMenuOnSelect={false}
+                placeholder={placeholder}
+                defaultValue={selectedTagsSlider}
+                value={selectedTagsSlider}
+                getOptionValue={(option) => `${option.label}`}
+                fuzzyOptions={fuzzyOptions}
+                autoCorrect="off"
+                spellCheck="off"
+                defaultOptions={pageTagsList}
+                options={pageTagsList}
+                loadOptions={(value) => loadOptions(value, fuse)}
+                onChange={(event) => {
+                  if (!event) {
+                    setSelectedTagsSlider([]);
+                  } else {
+                    setSelectedTagsSlider(event);
+                  }
+                  dispatch(
+                    setSliderTags({
+                      id: moduleId,
+                      value: dispatchElementsId(event || []),
                     })
                   );
                 }}
@@ -544,7 +585,6 @@ Field.defaultProps = {
   edit: undefined,
   moduleId: undefined,
   answerId: undefined,
-  lang: undefined,
 };
 
 Field.propTypes = {
@@ -564,7 +604,6 @@ Field.propTypes = {
   ]),
   moduleId: PropTypes.string,
   answerId: PropTypes.string,
-  lang: PropTypes.string,
 };
 
 export default Field;

@@ -36,7 +36,6 @@ const PageSeo = () => {
   function onClickOutside() {
     setIsOpen(false);
     if (isChanged) {
-      console.warn("PAGUE IDÉ", pageId);
       dispatch(pageCheckAndSend("update", pageId));
     }
   }

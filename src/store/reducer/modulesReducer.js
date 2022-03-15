@@ -34,7 +34,8 @@ import {
   SET_PAGE_MODULE_HEADER_TITLE,
   SET_CTA_IMAGE_UUID,
   SET_CTA_ALT_IMAGE,
-  SET_CATEGORIES_SLIDER,
+  SET_SLIDER_CATEGORIES,
+  SET_SLIDER_TAGS,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -187,6 +188,7 @@ const modulesReducer = (state = initialState, action = {}) => {
                 isVisible: true,
                 sectionDescription: "",
                 categories: [],
+                tags: [],
               },
             ],
           };
@@ -357,7 +359,6 @@ const modulesReducer = (state = initialState, action = {}) => {
           ...oldState.modulesList,
           {
             ...module,
-            type: module.type === "carousel" ? "slider" : module.type,
             title: module.title || "",
             subtitle: module.subtitle || "",
             url: module.url || {},
@@ -366,6 +367,7 @@ const modulesReducer = (state = initialState, action = {}) => {
             isChanged: false,
             isOpenCloseModal: false,
             isPage: true,
+            type: module.type === "carousel" ? "slider" : module.type,
           },
         ];
       });
@@ -812,15 +814,36 @@ const modulesReducer = (state = initialState, action = {}) => {
       };
     }
 
-    case SET_CATEGORIES_SLIDER: {
+    case SET_SLIDER_CATEGORIES: {
       const { id, value } = action.payload;
-      console.warn("CATEGORIE PL", action.payload);
       state.modulesList.find((module, index) => {
         if (module?.uuid === id) {
           oldState.modulesList[index] = {
             ...module,
             criteria: {
+              ...module.criteria,
               categories: value,
+            },
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_SLIDER_TAGS: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            criteria: {
+              ...module.criteria,
+              tags: value,
             },
             isChanged: true,
           };

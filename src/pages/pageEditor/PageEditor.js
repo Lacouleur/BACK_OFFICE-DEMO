@@ -9,8 +9,6 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import Footer from "../../components/Navigation/Footer";
 import Header from "../../components/Navigation/Header";
 import PageContainer from "../../styles/styledComponents/global/PageContainer.sc";
-import MainInformation from "../../components/Editor/Sections/MainInformation";
-import Seo from "../../components/Editor/Sections/Seo";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import plus from "../../styles/assets/icons/plus.svg";
 import { createNewContent } from "../../styles/styledComponents/global/Buttons/CustomButtons.sc";
@@ -24,20 +22,13 @@ import {
 } from "../../styles/styledComponents/editor/Sections.sc";
 import ActionBar from "../../components/Editor/actionBar/ActionBar";
 import ModuleCreator from "../../components/Editor/Sections/Modules/ModuleCreator";
-import { fetchContent } from "../../store/actions/thunk/ArticlesActions.thunk";
-import { setArticleId } from "../../store/actions/commonsActions";
 import {
   setErrorSlug,
   setErrorTitle,
 } from "../../store/actions/mainInformationActions";
-import {
-  setIsManifesto,
-} from "../../store/actions/manifestoActions";
 import colors from "../../styles/core/colors";
-import HomeNavigation from "../../components/Editor/Sections/HomeNavigation";
 import { HideOnDnd } from "../../styles/styledComponents/editor/modules/Modules.sc";
 import { onDragEnd } from "../../helper/Editor/dragAndDrop";
-import { setIsAccessiblePanel } from "../../store/actions/userActions";
 import ModulesDispatcher from "../../components/Editor/Sections/Modules/ModulesDispatcher";
 import { consolePage } from "../../helper/consoleStyles";
 import { pageSetId, setIsPage } from "../../store/actions/pageEditor/pageMainInformationsActions";

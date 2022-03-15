@@ -25,6 +25,7 @@ import {
   setErrorSpecial,
   setPosted,
   setCategoriesList,
+  setTagsList,
 } from "../commonsActions";
 import {
   setErrorSlug,
@@ -32,7 +33,6 @@ import {
   setModified,
   setStatus,
   setUsers,
-  setTagsList,
   setNewTag,
   setTags,
 } from "../mainInformationActions";
@@ -332,12 +332,12 @@ export function archiveContent(articleId, redirectTo, fromList = false) {
   };
 }
 
-export function fetchCategoriesList() {
+export function fetchCategoriesList(lang) {
   return async (dispatch) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
       try {
-        const response = await getCategories();
+        const response = await getCategories(lang);
         if (response.status < 300 && response.status > 199) {
           dispatch(setCategoriesList(response.data));
         }

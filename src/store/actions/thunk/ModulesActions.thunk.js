@@ -28,6 +28,7 @@ import {
   savePageComponent,
   updatePageComponent,
 } from "../../../services/client/pagesClient";
+import { checkForStringtoArray } from "../../../helper/converters";
 
 export function deleteModule(articleId, moduleId) {
   console.log("%cDELETING MODULE", `${consoleTitle}`, moduleId);
@@ -43,7 +44,6 @@ export function deleteModule(articleId, moduleId) {
         if (isManifesto) {
           response = await deleteComponent(manifestoId, moduleId, isManifesto);
         } else if (isPage) {
-          console.warn("IS PAGE");
           response = await deletePageComponent(pageId, moduleId);
         } else {
           response = await deleteComponent(articleId, moduleId);
@@ -193,7 +193,6 @@ export function saveModule(uuid, request = "save") {
               }
               case "slider": {
                 const { order, isVisible, lang, criteria } = module;
-                console.log("MODULE", module);
                 values = {
                   ...(isPage && pageSectoionHeaderValues),
                   uuid,
@@ -209,7 +208,12 @@ export function saveModule(uuid, request = "save") {
                     order: "desc",
                     fields: "header,slug,category",
                     lang,
-                    categories: criteria?.categories.join(",") || undefined,
+                    categories:
+                      checkForStringtoArray(criteria?.categories, "string") ||
+                      undefined,
+                    tags:
+                      checkForStringtoArray(criteria?.tags, "string") ||
+                      undefined,
                   },
                 };
                 isNewModule = true;
@@ -370,10 +374,8 @@ export function saveModule(uuid, request = "save") {
 
               case "slider": {
                 const { order, isVisible, lang, criteria } = module;
-                console.warn("SLIDERMODULE", module);
                 values = {
                   ...(isPage && pageSectoionHeaderValues),
-                  uuid,
                   type: "carousel",
                   order,
                   isVisible,
@@ -386,10 +388,15 @@ export function saveModule(uuid, request = "save") {
                     order: "desc",
                     fields: "header,slug,category",
                     lang,
-                    categories: criteria?.categories.join(",") || undefined,
+                    categories:
+                      checkForStringtoArray(criteria?.categories, "string") ||
+                      undefined,
+                    tags:
+                      checkForStringtoArray(criteria?.tags, "string") ||
+                      undefined,
                   },
                 };
-                isNewModule = true;
+                isChanged = true;
 
                 break;
               }

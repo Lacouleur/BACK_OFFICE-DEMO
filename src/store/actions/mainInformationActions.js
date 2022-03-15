@@ -12,7 +12,6 @@ import {
   SET_USERS,
   SET_AUTHORS,
   SET_TAGS,
-  SET_TAGS_LIST,
   SET_NEW_TAG,
 } from "../constants";
 
@@ -78,11 +77,6 @@ export const setAuthors = (payload) => ({
 
 export const setTags = (payload) => ({
   type: SET_TAGS,
-  payload,
-});
-
-export const setTagsList = (payload) => ({
-  type: SET_TAGS_LIST,
   payload,
 });
 

@@ -11,6 +11,7 @@ import ImageModule from "./ImageModule/ImageModule";
 import OpinionModule from "./OpinionModule/OpinionModule";
 import CtaModule from "./CtaModule/CtaModule";
 import SliderModule from "./SliderModule/SliderModule";
+import { checkForStringtoArray } from "../../../../helper/converters";
 
 const ModulesDispatcher = ({
   modulesList,
@@ -247,7 +248,23 @@ const ModulesDispatcher = ({
                         isChanged={module.isChanged}
                         isOpenCloseModal={module.isOpenCloseModal}
                         isNewModule={module.isNewModule}
-                        categories={module?.criteria?.categories.split(",")}
+                        // Below, we need to change category and tags string to an array, only when fetched. We use the same dunction to recreate a string from array when we need to send data to API
+                        categories={
+                          module?.criteria?.categories
+                            ? checkForStringtoArray(
+                                module?.criteria?.categories,
+                                "array"
+                              )
+                            : undefined
+                        }
+                        tags={
+                          module?.criteria?.tags
+                            ? checkForStringtoArray(
+                                module?.criteria?.tags,
+                                "array"
+                              )
+                            : undefined
+                        }
                       />
                     </div>
                   );

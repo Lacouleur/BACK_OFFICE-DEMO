@@ -161,10 +161,10 @@ const Field = ({
     }
 
     if (fieldType === "multi-value" && lang) {
-      if (name === "tags" && tagsList.length === 0) {
+      if (name === "tags" && tagsList?.length === 0) {
         dispatch(fetchTags(lang));
       }
-      if (name === "categories" && categoriesList.length === 0) {
+      if (name === "categories" && categoriesList?.length === 0) {
         dispatch(fetchCategoriesList(lang));
       }
     }

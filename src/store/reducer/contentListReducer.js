@@ -47,8 +47,8 @@ const contentListReducer = (state = initialState, action = {}) => {
 
     case SET_PAGINATION: {
       const data = action.payload;
-      const isNextPage = data.nextPage || 1;
-      const isPreviousPage = data.previousPage || 1;
+      const isNextPage = data.nextPage;
+      const isPreviousPage = data.previousPage;
       return {
         ...oldState,
         currentPage: data.currentPage,

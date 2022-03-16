@@ -10,20 +10,27 @@ import {
 } from "../../styles/styledComponents/contentList/Pagination.sc";
 import arrow from "../../styles/assets/icons/arrow-left.svg";
 import { fetchContentsList } from "../../store/actions/thunk/ArticlesActions.thunk";
+import { fetchPages } from "../../store/actions/thunk/PagesHubActions.thunk";
 
-const Pagination = ({ setContentList }) => {
-  const contentState = useSelector(
-    ({ contentListReducer }) => contentListReducer
-  );
-  const { currentPage, lastPage, contentsList: items } = contentState;
+const Pagination = ({
+  itemsList,
+  setContent,
+  pageName,
+  lastPage,
+  currentPage,
+}) => {
   const dispatch = useDispatch();
-
   useEffect(() => {
-    setContentList(items);
-  }, [items]);
+    setContent(itemsList);
+  }, [itemsList]);
 
   const handlePageClick = (event) => {
-    dispatch(fetchContentsList(event.selected + 1));
+    if (pageName === "contentList") {
+      dispatch(fetchContentsList(event.selected + 1));
+    }
+    if (pageName === "pagesList") {
+      dispatch(fetchPages(event.selected + 1));
+    }
   };
 
   return (
@@ -57,8 +64,17 @@ const Pagination = ({ setContentList }) => {
   );
 };
 
+Pagination.defaultProps = {
+  lastPage: 2,
+  currentPage: undefined,
+};
+
 Pagination.propTypes = {
-  setContentList: PropTypes.func.isRequired,
+  setContent: PropTypes.func.isRequired,
+  pageName: PropTypes.string.isRequired,
+  itemsList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  lastPage: PropTypes.number,
+  currentPage: PropTypes.number,
 };
 
 export default Pagination;

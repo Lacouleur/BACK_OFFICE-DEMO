@@ -9,6 +9,7 @@ export const PageCardsContainer = styled.div`
   width: 100%;
   background-color: ${colors.mediumGrey};
   padding: 12px;
+  margin-bottom: 150px;
 `;
 
 export const PageCardContainer = styled.div`

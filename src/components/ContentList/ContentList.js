@@ -23,6 +23,7 @@ import langList from "../../helper/langList";
 import DuplicateModal from "../Modals/DuplicateModal";
 import ArchiveModal from "../Modals/ArchiveModal";
 import ErrorModal from "../Modals/ErrorModal";
+import { setContentsList } from "../../store/actions/contentListActions";
 
 const ContentList = () => {
   const history = useHistory();
@@ -36,9 +37,13 @@ const ContentList = () => {
     ({ actionBarReducer }) => actionBarReducer
   );
 
-  const { isOpenDuplicateModal } = contentsListState;
+  const {
+    isOpenDuplicateModal,
+    lastPage,
+    currentPage,
+    contentsList,
+  } = contentsListState;
   const { isOpenErrorModal, isOpenArchiveModal } = actionBarState;
-  const [contentList, setContentList] = useState([]);
 
   useEffect(() => {
     dispatch(fetchContentsList());
@@ -72,30 +77,38 @@ const ContentList = () => {
           </Link>
         </TitleBox>
         <ListBox>
-          {contentList.map((content, index) => {
-            return (
-              <Content
-                number={index}
-                id={content._id}
-                status={content.state}
-                slug={content.slug}
-                publishScheduleFailed={content.publishScheduleFailed}
-                publishScheduledAt={content.publishScheduledAt}
-                publishedAt={content.publishedAt}
-                categoryLabel={content.category?.label}
-                modified={content.modified}
-                title={content.title}
-                lang={content.language}
-                updatedAt={content.updatedAt}
-                key={keyGenerator(content._id)}
-                modulesList={content.components}
-                retryAt={content?.publishScheduleFailData?.retryAt}
-                failCount={content?.publishScheduleFailData?.failCount}
-              />
-            );
-          })}
+          {contentsList &&
+            contentsList.map((content, index) => {
+              return (
+                <Content
+                  number={index}
+                  id={content._id}
+                  status={content.state}
+                  slug={content.slug}
+                  publishScheduleFailed={content.publishScheduleFailed}
+                  publishScheduledAt={content.publishScheduledAt}
+                  publishedAt={content.publishedAt}
+                  categoryLabel={content.category?.label}
+                  modified={content.modified}
+                  title={content.title}
+                  lang={content.language}
+                  updatedAt={content.updatedAt}
+                  key={keyGenerator(content._id)}
+                  modulesList={content.components}
+                  retryAt={content?.publishScheduleFailData?.retryAt}
+                  failCount={content?.publishScheduleFailData?.failCount}
+                />
+              );
+            })}
         </ListBox>
-        <Pagination setContentList={setContentList} />
+
+        <Pagination
+          itemsList={contentsList}
+          setContent={setContentsList}
+          pageName="contentList"
+          lastPage={lastPage}
+          currentPage={currentPage}
+        />
       </ContentSectionBox>
     </>
   );

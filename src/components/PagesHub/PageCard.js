@@ -78,16 +78,17 @@ const PageCard = ({
   );
 };
 
-/* PageCard.defaultProps = {
-  id: undefined,
-}; */
+PageCard.defaultProps = {
+  updatedAt: "",
+  publishedAt: "",
+};
 
 PageCard.propTypes = {
   id: PropTypes.string.isRequired,
   state: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  updatedAt: PropTypes.string.isRequired,
-  publishedAt: PropTypes.string.isRequired,
+  updatedAt: PropTypes.string,
+  publishedAt: PropTypes.string,
   modified: PropTypes.bool.isRequired,
   language: PropTypes.string.isRequired,
 };

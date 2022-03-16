@@ -20,6 +20,8 @@ import {
   cleanContentState,
   cleanPageState,
 } from "../store/actions/commonsActions";
+import Pagination from "../components/ContentList/Pagination";
+import { setPagesList } from "../store/actions/pagesHubActions";
 
 const PagesHub = () => {
   const dispatch = useDispatch();
@@ -30,7 +32,7 @@ const PagesHub = () => {
 
   const pagesHubState = useSelector(({ pagesHubReducer }) => pagesHubReducer);
 
-  const { pagesList } = pagesHubState;
+  const { pagesList, lastPage, nextPage, currentPage } = pagesHubState;
 
   return (
     <PageContainer position="relative">
@@ -76,6 +78,13 @@ const PagesHub = () => {
             })}
         </PageCardsContainer>
       </PageHubContainer>
+      <Pagination
+        itemsList={pagesList}
+        setContent={setPagesList}
+        pageName="pagesList"
+        lastPage={lastPage}
+        currentPage={currentPage}
+      />
       <Footer position="fixed" />
     </PageContainer>
   );

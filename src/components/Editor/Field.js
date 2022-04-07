@@ -296,8 +296,8 @@ const Field = ({
                         <ButtonWarn
                           type="button"
                           onClick={() => {
-                            dispatch(setNewTag(undefined));
                             setIsOpenTagWarn(false);
+                            dispatch(setNewTag(undefined));
                           }}
                         >
                           No

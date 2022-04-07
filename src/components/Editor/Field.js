@@ -280,13 +280,13 @@ const Field = ({
                           autoFocus
                           type="button"
                           onClick={() => {
+                            setIsOpenTagWarn(false);
                             dispatch(
                               createTag(
                                 newTag.label,
                                 lang,
                                 setSelectedTags,
-                                selectedTags,
-                                setIsOpenTagWarn
+                                selectedTags
                               )
                             );
                           }}

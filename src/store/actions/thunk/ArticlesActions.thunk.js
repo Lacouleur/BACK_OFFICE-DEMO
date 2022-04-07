@@ -400,13 +400,7 @@ export function fetchTags(lang) {
   };
 }
 
-export function createTag(
-  label,
-  lang,
-  setSelectedTags,
-  selectedTags,
-  setIsOpenTagWarn
-) {
+export function createTag(label, lang, setSelectedTags, selectedTags) {
   console.log("%cCREATING TAG =>", `${consoleTitle}`, label);
   return async (dispatch, getState) => {
     const { mainInformationReducer } = getState();
@@ -428,7 +422,6 @@ export function createTag(
 
           dispatch(setTags(dispatchElementsId(newSelectedTags)));
           setSelectedTags(newSelectedTags);
-          setIsOpenTagWarn(false);
         }
         return null;
       } catch (error) {

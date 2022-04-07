@@ -1,31 +1,34 @@
-import { setIsOpenPublishModal } from "../store/actions/actionBarActions";
-import { setIsOpenDuplicateModal } from "../store/actions/contentListActions";
+import {
+  setIsOpenPublishModal,
+  setIsOpenDuplicateModal,
+} from "../store/actions/actionBarActions";
 import {
   cancelScheduledPublication,
   duplicateArticle,
+  duplicateElement,
   publishAction,
   translateArticle,
 } from "../store/actions/thunk/ActionBarActions.thunk";
 import { getStatus } from "../store/actions/thunk/ArticlesActions.thunk";
 
-export function handlePublish(actionName, dispatch, articleId, manifestoState) {
+export function handlePublish(actionName, dispatch, id, manifestoState) {
   const { isManifesto, manifestoId } = manifestoState;
   if (!isManifesto) {
-    dispatch(publishAction(articleId, actionName));
+    dispatch(publishAction(id, actionName));
   }
   if (isManifesto) {
     dispatch(publishAction(manifestoId, actionName));
   }
 }
 
-export function handleButton(dispatch, actionName, articleId, manifestoState) {
+export function handleButton(dispatch, actionName, id, manifestoState) {
   if (actionName === "CANCEL") {
-    dispatch(cancelScheduledPublication(articleId));
-    dispatch(getStatus(articleId));
+    dispatch(cancelScheduledPublication(id));
+    dispatch(getStatus(id));
     dispatch(setIsOpenPublishModal(false));
   } else {
     const action = actionName === "UPDATE" ? "PUBLISH" : actionName;
-    handlePublish(action, dispatch, articleId, manifestoState);
+    handlePublish(action, dispatch, id, manifestoState);
     dispatch(setIsOpenPublishModal(false));
   }
 }
@@ -46,29 +49,22 @@ export function convertLang(lang, setSelectedLang) {
   }
 }
 
-export function handleDuplication(dispatch, id) {
-  dispatch(duplicateArticle(id));
-}
-
-export function handleTranslation(dispatch, id, selectedLang, history) {
-  dispatch(translateArticle(id, selectedLang.value, history));
-}
-
 export function handleCheck(
   dispatch,
   simpleChecked,
   id,
   tradChecked,
   selectedLang,
-  history
+  history,
+  type
 ) {
   if (simpleChecked) {
-    handleDuplication(dispatch, id);
+    dispatch(duplicateElement(id, type));
     dispatch(setIsOpenDuplicateModal({ value: false, id: "" }));
   }
 
   if (tradChecked && selectedLang) {
-    handleTranslation(dispatch, id, selectedLang, history);
+    dispatch(translateArticle(id, selectedLang.value, history, type));
     dispatch(setIsOpenDuplicateModal({ value: false, id: "" }));
   }
 }

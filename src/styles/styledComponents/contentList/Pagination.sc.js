@@ -3,6 +3,7 @@ import colors from "../../core/colors";
 
 export const PaginationBox = styled.div`
   min-width: 1000px;
+  width: 80%;
 
   & .paginate {
     display: flex;

@@ -12,7 +12,7 @@ import {
   ButtonsBox,
 } from "../../styles/styledComponents/modal/Modal.sc";
 
-const PublishModal = ({ actionName, articleId }) => {
+const PublishModal = ({ actionName, id }) => {
   const modal = useRef(null);
   const dispatch = useDispatch();
 
@@ -65,7 +65,7 @@ const PublishModal = ({ actionName, articleId }) => {
           <Button
             type="button"
             onClick={() => {
-              handleButton(dispatch, actionName, articleId, manifestoState);
+              handleButton(dispatch, actionName, id, manifestoState);
             }}
           >
             {actionName}
@@ -78,7 +78,7 @@ const PublishModal = ({ actionName, articleId }) => {
 
 PublishModal.propTypes = {
   actionName: PropTypes.string.isRequired,
-  articleId: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 export default PublishModal;

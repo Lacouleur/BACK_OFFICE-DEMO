@@ -4,7 +4,6 @@ import {
   ADD_SLUG,
   ADD_CATEGORY,
   ADD_TITLE,
-  SET_STATUS,
   SET_MODIFIED,
   ADD_LANG,
   SET_COLOR_STYLE,
@@ -37,16 +36,6 @@ export const setErrorSlug = (payload) => ({
 
 export const addCategory = (payload) => ({
   type: ADD_CATEGORY,
-  payload,
-});
-
-export const setStatus = (payload) => ({
-  type: SET_STATUS,
-  payload,
-});
-
-export const setModified = (payload) => ({
-  type: SET_MODIFIED,
   payload,
 });
 

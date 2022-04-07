@@ -17,6 +17,7 @@ import {
   setCtaAltImage,
   setCtaIntro,
   setCtaLabel,
+  setCtaLink,
   setCtaUrl,
   setOpinionExplain,
   setOpinionQuestion,
@@ -24,6 +25,7 @@ import {
   setPageModuleHeaderSubtitle,
   setPageModuleHeaderTitle,
   setPageModuleHeaderUrl,
+  setSliderType,
 } from "../store/actions/moduleActions";
 import {
   setDisplayedName,
@@ -37,7 +39,6 @@ import { addSeoDescription, addSeoTitle } from "../store/actions/seoActions";
 import { saveImage } from "../store/actions/thunk/ModulesActions.thunk";
 import langList from "./langList";
 import {
-  pageSetlang,
   pageSetSlug,
   pageSetTitle,
 } from "../store/actions/pageEditor/pageMainInformationsActions";
@@ -45,6 +46,7 @@ import {
   pageSetSeoDescription,
   pageSetSeoTitle,
 } from "../store/actions/pageSeoActions";
+import { fetchTags } from "../store/actions/thunk/ArticlesActions.thunk";
 
 // Hard coded reading time list for theming.
 export const readingTimeList = [
@@ -98,6 +100,18 @@ export const colorStyleList = [
   },
 ];
 
+// Hard coded Color list for SliderType.
+export const sliderTypeList = [
+  {
+    label: "Primary",
+    value: "primary",
+  },
+  {
+    label: "Secondary",
+    value: "secondary",
+  },
+];
+
 // match selection with current list for simple selector fields.
 export function onEdit(
   edit,
@@ -109,10 +123,22 @@ export function onEdit(
   selectedReadTime,
   setSelectedReadTime,
   selectedColorStyle,
-  setSelectedColorStyle
+  setSelectedColorStyle,
+  setSelectedSliderType,
+  selectedSliderType
 ) {
   if (edit) {
     setFileTitle(edit);
+  }
+
+  if (!selectedSliderType) {
+    sliderTypeList.map((option) => {
+      if (edit === option.value) {
+        setSelectedSliderType(option);
+        return null;
+      }
+      return null;
+    });
   }
 
   if (categoriesList && edit) {
@@ -120,7 +146,6 @@ export function onEdit(
       if (edit === option.value) {
         setEditCategory(option);
       }
-      return null;
     });
   }
 
@@ -233,7 +258,8 @@ export function valueSelector(
   editCategory,
   selectedLang,
   selectedReadTime,
-  selectedColorStyle
+  selectedColorStyle,
+  selectedSliderType
 ) {
   switch (name) {
     case "category":
@@ -247,6 +273,9 @@ export function valueSelector(
 
     case "colorStyle":
       return selectedColorStyle;
+
+    case "sliderType":
+      return selectedSliderType;
 
     default:
       return null;
@@ -292,6 +321,9 @@ export function optionSelector(name, list) {
     case "colorStyle":
       return colorStyleList;
 
+    case "sliderType":
+      return sliderTypeList;
+
     case "authors":
       return list;
 
@@ -305,11 +337,12 @@ export function dispatchSelected(
   event,
   dispatch,
   name,
-  section,
   setEditCategory,
   setSelectedLang,
   setSelectedReadTime,
-  setSelectedColorStyle
+  setSelectedColorStyle,
+  setSelectedSliderType,
+  moduleId
 ) {
   const { value } = event;
   if (value) {
@@ -334,9 +367,9 @@ export function dispatchSelected(
         dispatch(setColorStyle(value));
         break;
 
-      case "lang" && section === "pageMainInformation":
-        setSelectedLang(event);
-        dispatch(pageSetlang(value));
+      case "sliderType":
+        setSelectedSliderType(event);
+        dispatch(setSliderType({ id: moduleId, value }));
         break;
 
       default:
@@ -419,8 +452,12 @@ export function dispatchFields(
       dispatch(setCtaLabel({ id: moduleId, value }));
       break;
 
-    case name === "link" && section === "cta":
+    case name === "url" && section === "cta":
       dispatch(setCtaUrl({ id: moduleId, value }));
+      break;
+
+    case name === "link" && section === "cta":
+      dispatch(setCtaLink({ id: moduleId, value }));
       break;
 
     case name === "altImage" && section === "cta":
@@ -508,7 +545,7 @@ export const fuzzyOptions = {
   distance: 4,
 };
 
-export function initMultiSelectors(
+export async function initMultiSelectors(
   fieldType,
   name,
   edit,
@@ -562,9 +599,22 @@ export function initMultiSelectors(
       }
 
       default:
-        console.error({ name, section });
         return null;
     }
   }
   return null;
+}
+
+export function harmonizeLang(lang) {
+  let language = lang.slice(0, 2);
+  if (language === "ge") {
+    language = "de";
+  }
+
+  return language;
+}
+
+export function openPreview(language, slug) {
+  const lang = harmonizeLang(language);
+  window.open(`${PREVIEW_URL}/${lang.slice(0, 2)}/content/${slug}`, "_blank");
 }

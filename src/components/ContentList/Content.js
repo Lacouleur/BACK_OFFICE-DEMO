@@ -30,22 +30,14 @@ import {
   ArchiveBox,
 } from "../../styles/styledComponents/editor/ActionBar.sc";
 
-import { setIsOpenArchiveModal } from "../../store/actions/actionBarActions";
+import {
+  setIsOpenArchiveModal,
+  setIsOpenDuplicateModal,
+} from "../../store/actions/actionBarActions";
 import { watchOpinionModules } from "../../helper/actionBarHelper";
 import statIconGreen from "../../styles/assets/icons/opinion-green.svg";
 import statIconGrey from "../../styles/assets/icons/opinion-grey.svg";
-import { setIsOpenDuplicateModal } from "../../store/actions/contentListActions";
-
-function harmonizeLang(lang, slug) {
-  let language = lang.slice(0, 2);
-  if (language === "ge") {
-    language = "de";
-  }
-  window.open(
-    `${PREVIEW_URL}/${language.slice(0, 2)}/content/${slug}`,
-    "_blank"
-  );
-}
+import { harmonizeLang, openPreview } from "../../helper/fieldsHelper";
 
 const Content = ({
   number,
@@ -79,7 +71,7 @@ const Content = ({
         backgroundColor: `${even ? colors.darkGrey : colors.mediumGrey}`,
       }}
     >
-      <Lang>{lang.substring(0, 2)}</Lang>
+      <Lang>{harmonizeLang(lang)}</Lang>
       <CategoryName>{categoryLabel}</CategoryName>
       <TitleDateBox>
         <Title>{title}</Title>
@@ -97,7 +89,7 @@ const Content = ({
       />
 
       <IconActionBox>
-        <IconAction src={eye} onClick={() => harmonizeLang(lang, slug)} />
+        <IconAction src={eye} onClick={() => openPreview(lang, slug)} />
         {!isOpinionModules ? (
           <IconAction src={statIconGrey} />
         ) : (

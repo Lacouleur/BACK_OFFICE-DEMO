@@ -254,10 +254,10 @@ export async function scheduleContentPublication(articleId, date) {
   });
 }
 
-export async function cancelContentPublication(articleId) {
+export async function cancelContentPublication(id) {
   return axiosConfig({
     method: "delete",
-    url: `/contents/${articleId}/publish/schedule`,
+    url: `/contents/${id}/publish/schedule`,
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },

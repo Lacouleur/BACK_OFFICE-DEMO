@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import useClickOutside from "../../helper/cutomHooks/useClickOutside";
 import { setIsOpenArchiveModal } from "../../store/actions/actionBarActions";
 import { archiveContent } from "../../store/actions/thunk/ArticlesActions.thunk";
+import { archivePage } from "../../store/actions/thunk/PageActions.thunk";
 import crossIcon from "../../styles/assets/icons/cross-white.svg";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import {
@@ -15,7 +16,7 @@ import {
   ButtonsBox,
 } from "../../styles/styledComponents/modal/Modal.sc";
 
-const ArchiveModal = ({ id }) => {
+const ArchiveModal = ({ id, type }) => {
   const modal = useRef(null);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -28,7 +29,7 @@ const ArchiveModal = ({ id }) => {
   );
 
   const { articleToDelete } = ActionBarState;
-  const articleId = id || articleToDelete;
+  const toDeleteId = id || articleToDelete;
 
   useEffect(() => {
     modal.current.scrollIntoView({
@@ -71,13 +72,22 @@ const ArchiveModal = ({ id }) => {
             onClick={() => {
               dispatch(setIsOpenArchiveModal(false));
 
-              // Only contentList can't pass id props so we use it to know if the delete come from contentlist or from content itself
-              if (id) {
-                dispatch(archiveContent(articleId, redirectTo));
+              if (type === "content") {
+                if (id) {
+                  dispatch(archiveContent(toDeleteId, redirectTo));
+                } else {
+                  const fromList = true;
+                  dispatch(archiveContent(toDeleteId, redirectTo, fromList));
+                }
               }
-              if (!id) {
-                const fromList = true;
-                dispatch(archiveContent(articleId, redirectTo, fromList));
+
+              if (type === "page") {
+                if (id) {
+                  dispatch(archivePage(toDeleteId, redirectTo));
+                } else {
+                  const fromList = true;
+                  dispatch(archivePage(toDeleteId, redirectTo, fromList));
+                }
               }
             }}
           >
@@ -91,10 +101,12 @@ const ArchiveModal = ({ id }) => {
 
 ArchiveModal.defaultProps = {
   id: undefined,
+  type: "",
 };
 
 ArchiveModal.propTypes = {
   id: PropTypes.string,
+  type: PropTypes.string,
 };
 
 export default ArchiveModal;

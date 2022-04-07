@@ -9,7 +9,7 @@ import {
   cancelContentPublication,
 } from "../../../services/client/contentClient";
 import { setErrorAuth } from "../authActions";
-import { setModified, setStatus } from "../mainInformationActions";
+import { setStatus, setModified } from "../commonsActions";
 import { setManifestoStatus } from "../manifestoActions";
 import {
   setIsScheduled,
@@ -25,6 +25,14 @@ import {
 } from "../../../helper/consoleStyles";
 import { fetchContentsList } from "./ArticlesActions.thunk";
 import ErrorCaseClient from "../../../helper/ErrorCaseClient";
+import {
+  cancelPagePublication,
+  duplicatePage,
+  publishPage,
+  schedulePagePublication,
+  translatePage,
+} from "../../../services/client/pagesClient";
+import { fetchPages } from "./PagesHubActions.thunk";
 
 export function logUser(redirectTo) {
   console.log("%cLOGING USER", `${consoleTitle}`);
@@ -51,13 +59,15 @@ export function logUser(redirectTo) {
   };
 }
 
-export function publishAction(articleId, mode) {
-  console.log("%cPUBLISHING", `${consoleTitle}`, articleId);
+export function publishAction(id, mode) {
+  console.log("%cPUBLISHING", `${consoleTitle}`, id);
   return async (dispatch, getState) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
       const { manifestoReducer } = getState();
+      const { pageMainInformationReducer } = getState();
       const { isManifesto, manifestoId } = manifestoReducer;
+      const { isPage } = pageMainInformationReducer;
 
       let actionName = "";
       if (mode === "UPDATE") {
@@ -65,13 +75,18 @@ export function publishAction(articleId, mode) {
       } else {
         actionName = mode;
       }
+
       try {
-        const response = await publishManager(
-          isManifesto ? manifestoId : articleId,
-          actionName,
-          isManifesto
-        );
+        const response = !isPage
+          ? await publishManager(
+              isManifesto ? manifestoId : id,
+              actionName,
+              isManifesto
+            )
+          : await publishPage(id, actionName);
+
         if (response.status < 300 && response.status > 199) {
+          console.log(`%c${actionName}ED`, `${consoleSucces}`);
           dispatch(setPublishScheduleFailed(false));
           dispatch(setPublishScheduleFailData(null));
           dispatch(setIsScheduled(false));
@@ -99,15 +114,22 @@ export function publishAction(articleId, mode) {
   };
 }
 
-export function schedulePublication(articleId, date) {
-  console.log("%cPUBLISHING", `${consoleTitle}`, articleId);
+export function schedulePublication(id, date) {
+  console.log("%cSCHEDULING", `${consoleTitle}`, id);
 
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const { pageMainInformationReducer } = getState();
+    const { isPage } = pageMainInformationReducer;
+
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
       try {
-        const response = await scheduleContentPublication(articleId, date);
+        const response = !isPage
+          ? await scheduleContentPublication(id, date)
+          : await schedulePagePublication(id, date);
+
         if (response.status < 300 && response.status > 199) {
+          console.log(`%cSCHEDULED`, `${consoleSucces}`, date);
           dispatch(setIsScheduled(date));
           dispatch(setStatus("SCHEDULED"));
         }
@@ -119,16 +141,22 @@ export function schedulePublication(articleId, date) {
   };
 }
 
-export function cancelScheduledPublication(articleId) {
-  console.log("%cPUBLISHING", `${consoleTitle}`, articleId);
+export function cancelScheduledPublication(id) {
+  console.log("%cPUBLISHING", `${consoleTitle}`, id);
   return async (dispatch, getState) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
       const { manifestoReducer } = getState();
       const { status } = manifestoReducer;
+      const { pageMainInformationReducer } = getState();
+      const { isPage } = pageMainInformationReducer;
+
       try {
-        const response = await cancelContentPublication(articleId);
+        const response = isPage
+          ? await cancelPagePublication(id)
+          : await cancelContentPublication(id);
         if (response.status < 300 && response.status > 199) {
+          console.log(`%cSCHEDULE CANCELED`, `${consoleSucces}`);
           dispatch(setIsScheduled(""));
           dispatch(setStatus(status));
         }
@@ -140,15 +168,23 @@ export function cancelScheduledPublication(articleId) {
   };
 }
 
-export function duplicateArticle(articleId) {
-  console.log("%cDUPLICATION", `${consoleTitle}`, articleId);
+export function duplicateElement(id, type) {
+  console.log("%cDUPLICATION", `${consoleTitle}`, id);
   return async (dispatch) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
       try {
-        const response = await duplicateContent(articleId);
+        const response =
+          type === "content"
+            ? await duplicateContent(id)
+            : await duplicatePage(id);
         if (response.status < 300 && response.status > 199) {
-          dispatch(fetchContentsList());
+          if (type === "content") {
+            dispatch(fetchContentsList());
+          }
+          if (type === "page") {
+            dispatch(fetchPages());
+          }
           console.log("%cContent Duplicated", `${consoleSucces}`);
         }
       } catch (error) {
@@ -160,19 +196,27 @@ export function duplicateArticle(articleId) {
   };
 }
 
-export function translateArticle(articleId, lang, history) {
-  console.log("%cTRANSLATING ARTICLE", `${consoleTitle}`, articleId);
+export function translateArticle(id, lang, history, type) {
+  console.log("%cTRANSLATING ARTICLE", `${consoleTitle}`, id);
   return async (dispatch) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
       try {
-        const response = await translateContent(articleId, lang);
+        const response =
+          type === "content"
+            ? await translateContent(id, lang)
+            : await translatePage(id, lang);
         if (response.status < 300 && response.status > 199) {
           console.log(
             "%cContent Duplicated for translation",
             `${consoleSucces}`
           );
-          dispatch(fetchContentsList());
+          if (type === "content") {
+            dispatch(fetchContentsList());
+          }
+          if (type === "page") {
+            dispatch(fetchPages());
+          }
         }
       } catch (error) {
         console.error("%cError =>", `${consoleError}`, error?.response?.data);
@@ -182,9 +226,10 @@ export function translateArticle(articleId, lang, history) {
               value: true,
               message: alreadyTranslated(
                 error?.response?.data,
-                articleId,
+                id,
                 history,
-                dispatch
+                dispatch,
+                type
               ),
             })
           );

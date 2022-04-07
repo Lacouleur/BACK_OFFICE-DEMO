@@ -12,6 +12,7 @@ import {
   SET_A_MODULE_IS_OPEN,
   SET_PUBLISH_SCHEDULE_FAIL_DATA,
   SET_PUBLISH_SCHEDULE_FAILED,
+  SET_IS_OPEN_DUPLICATE_MODAL,
 } from "../constants";
 
 import {} from "../actions/actionBarActions";
@@ -38,6 +39,7 @@ const initialState = {
     moduleId: "",
     type: "",
   },
+  isOpenDuplicateModal: { value: false, id: "" },
 
   // mix
   publishedAt: null,
@@ -182,6 +184,29 @@ const actionBarReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         aModuleIsOpen: action.payload,
+      };
+    }
+
+    case SET_IS_OPEN_DUPLICATE_MODAL: {
+      const { value, id } = action.payload;
+      if (action.payload.lang) {
+        const { lang } = action.payload;
+
+        return {
+          ...oldState,
+          isOpenDuplicateModal: {
+            value,
+            id: value ? id : "",
+            lang,
+          },
+        };
+      }
+      return {
+        ...oldState,
+        isOpenDuplicateModal: {
+          value,
+          id: value ? id : "",
+        },
       };
     }
 

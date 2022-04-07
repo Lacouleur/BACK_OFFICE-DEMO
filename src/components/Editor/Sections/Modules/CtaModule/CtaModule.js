@@ -184,34 +184,75 @@ const CtaModule = ({
           edit={label || ""}
         />
 
-        <FieldAndSwitchContainer>
-          <Field
-            placeholder="CTA Link"
-            name="link"
-            section="cta"
-            moduleId={uuid}
-            edit={link || ""}
-          />
-          <SwitchBox
-            htmlFor={`cta-switch-${uuid}`}
-            onChange={() => {
-              dispatch(setCtaIsNewtab({ id: uuid, value: !openNewTab }));
-            }}
-          >
-            <p>Open in new window</p>
-            <Switch
-              className="Switch"
-              id={`cta-switch-${uuid}`}
-              type="checkbox"
-              checked={openNewTab}
-              readOnly
+        {!isPage && (
+          <FieldAndSwitchContainer>
+            <Field
+              placeholder="CTA Link"
+              name="url"
+              section="cta"
+              moduleId={uuid}
+              edit={url || ""}
             />
-            <SwitchLabel
-              className="SwitchLabel"
+            <SwitchBox
               htmlFor={`cta-switch-${uuid}`}
+              onChange={() => {
+                dispatch(
+                  setCtaIsNewtab({
+                    id: uuid,
+                    value: !openNewTab,
+                    type: "content",
+                  })
+                );
+              }}
+            >
+              <p>Open in new window</p>
+              <Switch
+                className="Switch"
+                id={`cta-switch-${uuid}`}
+                type="checkbox"
+                checked={openNewTab}
+                readOnly
+              />
+              <SwitchLabel
+                className="SwitchLabel"
+                htmlFor={`cta-switch-${uuid}`}
+              />
+            </SwitchBox>
+          </FieldAndSwitchContainer>
+        )}
+
+        {isPage && (
+          <FieldAndSwitchContainer>
+            <Field
+              placeholder="CTA Link"
+              name="link"
+              section="cta"
+              moduleId={uuid}
+              edit={link || ""}
             />
-          </SwitchBox>
-        </FieldAndSwitchContainer>
+            <SwitchBox
+              htmlFor={`cta-switch-${uuid}`}
+              onChange={() => {
+                dispatch(
+                  setCtaIsNewtab({ id: uuid, value: !openNewTab, type: "page" })
+                );
+              }}
+            >
+              <p>Open in new window</p>
+              <Switch
+                className="Switch"
+                id={`cta-switch-${uuid}`}
+                type="checkbox"
+                checked={openNewTab}
+                readOnly
+              />
+              <SwitchLabel
+                className="SwitchLabel"
+                htmlFor={`cta-switch-${uuid}`}
+              />
+            </SwitchBox>
+          </FieldAndSwitchContainer>
+        )}
 
         {editorState && (
           <>
@@ -224,7 +265,9 @@ const CtaModule = ({
         )}
         {isPage && (
           <>
-            {thumbnail && isOpen && <Thumbnail ctaPageImage src={thumbnail} />}
+            {thumbnail && isOpen && imageTitle && (
+              <Thumbnail ctaPageImage src={thumbnail} />
+            )}
             <Field
               placeholder="Navigation Image"
               name="ctaImage"

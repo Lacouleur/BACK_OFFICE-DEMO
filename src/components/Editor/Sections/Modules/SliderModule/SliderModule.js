@@ -1,9 +1,10 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable jsx-a11y/heading-has-content */
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import "../../../../../styles/css/react-draft-wysiwyg.css";
 import { useDispatch, useSelector } from "react-redux";
+import { Switch } from "react-router-dom";
 import { FormTitle } from "../../../../../styles/styledComponents/global/Titles.sc";
 import {
   SectionBox,
@@ -22,6 +23,8 @@ import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
 import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.thunk";
 import Field from "../../../Field";
 import HeaderSectionPage from "../HeaderSectionPage";
+import { setAModuleIsOpen } from "../../../../../store/actions/actionBarActions";
+import { fetchTags } from "../../../../../store/actions/thunk/ArticlesActions.thunk";
 
 const SliderModule = ({
   isPage,
@@ -36,6 +39,7 @@ const SliderModule = ({
   order,
   categories,
   tags,
+  sliderType,
 }) => {
   const dispatch = useDispatch();
   const sliderModuleRef = useRef(null);
@@ -43,9 +47,19 @@ const SliderModule = ({
     ({ pageMainInformationReducer }) => pageMainInformationReducer
   );
 
-  const { pageId, lang } = PageMainInformationState;
+  const { pageId, lang, tagsList } = PageMainInformationState;
 
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    dispatch(setAModuleIsOpen(isOpen));
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!tagsList) {
+      dispatch(fetchTags(lang));
+    }
+  }, []);
 
   function onClickOutside() {
     if (!isOpenCloseModal) {
@@ -100,6 +114,16 @@ const SliderModule = ({
         )}
 
         <Field
+          placeholder="SliderType"
+          name="sliderType"
+          section="slider"
+          fieldType="select"
+          moduleId={uuid}
+          edit={sliderType || "secondary"}
+          infos="Primary is only for Main Page"
+        />
+
+        <Field
           placeholder="Category to call"
           name="categories"
           section="slider"
@@ -144,5 +168,6 @@ SliderModule.propTypes = {
   order: PropTypes.number.isRequired,
   categories: PropTypes.arrayOf(PropTypes.string),
   tags: PropTypes.arrayOf(PropTypes.string),
+  sliderType: PropTypes.string.isRequired,
 };
 export default SliderModule;

@@ -23,6 +23,7 @@ import {
   SET_IS_VISIBLE,
   SET_IS_CHANGED,
   SET_CTA_URL,
+  SET_CTA_LINK,
   SET_CTA_INTRO,
   SET_CTA_LABEL,
   SET_CTA_IS_NEWTAB,
@@ -36,6 +37,8 @@ import {
   SET_CTA_ALT_IMAGE,
   SET_SLIDER_CATEGORIES,
   SET_SLIDER_TAGS,
+  EDIT_MODULES_LIST,
+  SET_SLIDER_TYPE,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -49,7 +52,7 @@ const modulesReducer = (state = initialState, action = {}) => {
   const pageModulesHeaderField = {
     title: "",
     subtitle: "",
-    url: {},
+    url: undefined,
   };
 
   switch (action.type) {
@@ -187,6 +190,7 @@ const modulesReducer = (state = initialState, action = {}) => {
                 isOpenCloseModal: false,
                 isVisible: true,
                 sectionDescription: "",
+                display: "secondary",
                 categories: [],
                 tags: [],
               },
@@ -347,6 +351,7 @@ const modulesReducer = (state = initialState, action = {}) => {
           },
         ];
       });
+
       return {
         ...oldState,
       };
@@ -459,13 +464,12 @@ const modulesReducer = (state = initialState, action = {}) => {
       };
     }
 
-    /* IF STILL NO ERROR NEXT TIME READ THIS, DELETE THIS LINE, NO IDEA WHAT IT DO */
-    /*    case EDIT_MODULES_LIST: {
+    case EDIT_MODULES_LIST: {
       oldState.modulesList = action.payload;
       return {
         ...oldState,
       };
-    } */
+    }
 
     case SET_IS_CHANGED: {
       const id = action.payload;
@@ -677,6 +681,23 @@ const modulesReducer = (state = initialState, action = {}) => {
         if (module?.uuid === id) {
           oldState.modulesList[index] = {
             ...module,
+            url: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_CTA_LINK: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
             link: {
               ...oldState.modulesList[index].url,
               value,
@@ -686,7 +707,6 @@ const modulesReducer = (state = initialState, action = {}) => {
         }
         return null;
       });
-
       return {
         ...oldState,
       };
@@ -747,17 +767,27 @@ const modulesReducer = (state = initialState, action = {}) => {
     }
 
     case SET_CTA_IS_NEWTAB: {
-      const { id, value } = action.payload;
+      const { id, value, type } = action.payload;
       state.modulesList.find((module, index) => {
         if (module?.uuid === id) {
-          oldState.modulesList[index] = {
-            ...module,
-            link: {
-              ...oldState.modulesList[index].url,
+          if (type === "page") {
+            oldState.modulesList[index] = {
+              ...module,
+              link: {
+                ...oldState.modulesList[index].url,
+                openNewTab: value,
+              },
+              isChanged: true,
+            };
+          }
+
+          if (type === "content") {
+            oldState.modulesList[index] = {
+              ...module,
               openNewTab: value,
-            },
-            isChanged: true,
-          };
+              isChanged: true,
+            };
+          }
         }
         return null;
       });
@@ -768,11 +798,9 @@ const modulesReducer = (state = initialState, action = {}) => {
     }
 
     case SET_CTA_IMAGE_UUID: {
-      console.log("CTA IMAGE UUID CALLED", action.payload);
       const { id, value } = action.payload;
       state.modulesList.find((module, index) => {
         if (module?.uuid === id) {
-          console.log("JEEEEYSUS", value);
           oldState.modulesList[index] = {
             ...module,
             image: {
@@ -845,6 +873,24 @@ const modulesReducer = (state = initialState, action = {}) => {
               ...module.criteria,
               tags: value,
             },
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_SLIDER_TYPE: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            display: value,
             isChanged: true,
           };
         }

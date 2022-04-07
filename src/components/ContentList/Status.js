@@ -33,7 +33,7 @@ const Status = ({
   const retryDate = buildDate(new Date(retryAt));
 
   return (
-    <StatusBox isCard>
+    <StatusBox isCard={isCard}>
       {publishScheduledAt && !publishScheduleFailed && (
         <>
           {publishedAt && (

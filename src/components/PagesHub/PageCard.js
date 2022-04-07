@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import {
   CardArchiveBox,
   CardIconAction,
@@ -12,7 +13,7 @@ import {
   CardUpdatedDate,
   PageCardContainer,
 } from "../../styles/styledComponents/pagesHub/PagesHub.sc";
-import eyeIcon from "../../styles/assets/icons/eye-circle-green.svg";
+import trashIcon from "../../styles/assets/icons/trash.svg";
 import greyTrashIcon from "../../styles/assets/icons/trash-grey.svg";
 import copy from "../../styles/assets/icons/copy.svg";
 import penVioletIcon from "../../styles/assets/icons/pen-circle-violet.svg";
@@ -21,6 +22,11 @@ import {
   TooltipText,
 } from "../../styles/styledComponents/contentList/Content.sc";
 import Status from "../ContentList/Status";
+import buildDate from "../../helper/buildDate";
+import {
+  setIsOpenArchiveModal,
+  setIsOpenDuplicateModal,
+} from "../../store/actions/actionBarActions";
 
 const PageCard = ({
   state,
@@ -30,26 +36,48 @@ const PageCard = ({
   publishedAt,
   modified,
   language,
+  publishScheduledAt,
+  publishScheduleFailed,
+  retryAt,
+  failCount,
 }) => {
   const history = useHistory();
+  const updateDate = buildDate(new Date(updatedAt));
+  const dispatch = useDispatch();
+
   return (
     <PageCardContainer id="pages" key={id}>
       <CardIconActionBox>
-        <CardIconAction
+        {/* <CardIconAction
           src={eyeIcon}
           onClick={() => console.log("it should link to preview")}
-        />
-        <CardArchiveBox role="button">
-          <CardIconAction src={greyTrashIcon} />
-          <Tooltip>
-            <TooltipText>Building :)</TooltipText>
-          </Tooltip>
-        </CardArchiveBox>
+        /> */}
+        {state !== "PUBLISHED" ? (
+          <CardArchiveBox role="button">
+            <CardIconAction
+              src={trashIcon}
+              onClick={() =>
+                dispatch(
+                  setIsOpenArchiveModal({
+                    value: true,
+                    id,
+                  })
+                  // eslint-disable-next-line prettier/prettier
+                )}
+            />
+          </CardArchiveBox>
+        ) : (
+          <CardArchiveBox role="button">
+            <CardIconAction src={greyTrashIcon} />
+            <Tooltip>
+              <TooltipText>A published content cannot be archived</TooltipText>
+            </Tooltip>
+          </CardArchiveBox>
+        )}
         <CardIconAction
           src={copy}
           onClick={() => {
-            console.log("it will open duplicate modal");
-            /* dispatch(setIsOpenDuplicateModal({ value: true, id, lang })); */
+            dispatch(setIsOpenDuplicateModal({ value: true, id, language }));
           }}
         />
         <CardIconAction
@@ -62,7 +90,7 @@ const PageCard = ({
 
       <CardTitleDateBox id="CardTitleBox">
         <CardTitle>{title}</CardTitle>
-        <CardUpdatedDate>{`Last save: `}</CardUpdatedDate>
+        <CardUpdatedDate>{`Last save: ${updateDate} `}</CardUpdatedDate>
       </CardTitleDateBox>
       <CardSatusAndLang>
         <Status
@@ -71,6 +99,10 @@ const PageCard = ({
           publishedAt={publishedAt}
           modified={modified}
           isCard
+          publishScheduledAt={publishScheduledAt}
+          publishScheduleFailed={publishScheduleFailed}
+          retryAt={retryAt}
+          failCount={failCount}
         />
         <CardLang>{language}</CardLang>
       </CardSatusAndLang>
@@ -81,6 +113,10 @@ const PageCard = ({
 PageCard.defaultProps = {
   updatedAt: "",
   publishedAt: "",
+  publishScheduledAt: "",
+  publishScheduleFailed: false,
+  retryAt: "",
+  failCount: 0,
 };
 
 PageCard.propTypes = {
@@ -91,6 +127,10 @@ PageCard.propTypes = {
   publishedAt: PropTypes.string,
   modified: PropTypes.bool.isRequired,
   language: PropTypes.string.isRequired,
+  publishScheduledAt: PropTypes.string,
+  publishScheduleFailed: PropTypes.bool,
+  retryAt: PropTypes.string,
+  failCount: PropTypes.number,
 };
 
 export default PageCard;

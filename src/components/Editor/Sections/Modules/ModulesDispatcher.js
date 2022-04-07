@@ -185,7 +185,8 @@ const ModulesDispatcher = ({
                         isPage={isPage}
                         title={isPage ? module.title : undefined}
                         subtitle={isPage ? module.subtitle : undefined}
-                        url={isPage ? module.url?.value : undefined}
+                        // Url is header url for section and module url for content.
+                        url={isPage ? module?.url?.value : module?.url}
                         openNewTabHeader={
                           isPage ? module.url?.openNewTab : undefined
                         }
@@ -196,7 +197,9 @@ const ModulesDispatcher = ({
                         isOpenCloseModal={module.isOpenCloseModal}
                         isNewModule={module.isNewModule}
                         link={module?.link?.value}
-                        openNewTab={module?.link?.openNewTab}
+                        openNewTab={
+                          isPage ? module?.link?.openNewTab : module.openNewTab
+                        }
                         introduction={module.introduction}
                         label={module.label}
                         description={module.description}
@@ -248,7 +251,8 @@ const ModulesDispatcher = ({
                         isChanged={module.isChanged}
                         isOpenCloseModal={module.isOpenCloseModal}
                         isNewModule={module.isNewModule}
-                        // Below, we need to change category and tags string to an array, only when fetched. We use the same dunction to recreate a string from array when we need to send data to API
+                        sliderType={module.display}
+                        // Below, we need to change category and tags string to an array, only when fetched. We use the same function to recreate a string from array when we need to send data to API
                         categories={
                           module?.criteria?.categories
                             ? checkForStringtoArray(

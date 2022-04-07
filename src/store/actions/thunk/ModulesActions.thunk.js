@@ -6,7 +6,7 @@ import {
 } from "../../../services/client/contentClient";
 import { isValidToken } from "../../../services/client/refreshToken";
 import { setUpdatedAt, showErrorModal } from "../actionBarActions";
-import { setModified } from "../mainInformationActions";
+import { setModified } from "../commonsActions";
 import { setManifestoStatus } from "../manifestoActions";
 import {
   closeModule,
@@ -168,6 +168,7 @@ export function saveModule(uuid, request = "save") {
                   description,
                   link,
                   image,
+                  openNewTab,
                 } = module;
 
                 values = {
@@ -177,22 +178,25 @@ export function saveModule(uuid, request = "save") {
                   order,
                   isVisible,
                   introduction,
-                  url,
                   label,
                   description,
-                  link,
-                  image: {
-                    alt: image.alt,
-                    source: "FTV-internal",
-                    uuid: image.uuid,
-                  },
+                  url,
+                  openNewTab: isPage ? openNewTab : undefined,
+                  link: isPage ? link : undefined,
+                  image: isPage
+                    ? {
+                        alt: image?.alt || undefined,
+                        source: "FTV-internal",
+                        uuid: image.uuid,
+                      }
+                    : undefined,
                 };
                 isNewModule = true;
-
                 break;
               }
+
               case "slider": {
-                const { order, isVisible, lang, criteria } = module;
+                const { order, isVisible, lang, criteria, display } = module;
                 values = {
                   ...(isPage && pageSectoionHeaderValues),
                   uuid,
@@ -200,7 +204,7 @@ export function saveModule(uuid, request = "save") {
                   order,
                   isVisible,
                   resource: "contents",
-                  display: "primary",
+                  display,
                   criteria: {
                     limit: 15,
                     page: 1,
@@ -268,7 +272,7 @@ export function saveModule(uuid, request = "save") {
             const pageSectoionHeaderValues = {
               title: module.title,
               subtitle: module.subtitle,
-              url: module.url,
+              url: module?.url?.value ? module.url : undefined,
             };
 
             switch (module.type) {
@@ -349,7 +353,10 @@ export function saveModule(uuid, request = "save") {
                   description,
                   link,
                   image,
+                  openNewTab,
                 } = module;
+
+                const pageurl = url?.value ? url : undefined;
 
                 values = {
                   ...(isPage && pageSectoionHeaderValues),
@@ -357,30 +364,33 @@ export function saveModule(uuid, request = "save") {
                   order,
                   isVisible,
                   introduction,
-                  url,
                   label,
                   description,
-                  link,
-                  image: {
-                    alt: image.alt,
-                    source: "FTV-internal",
-                    uuid: image.uuid,
-                  },
+                  url: !isPage ? url : pageurl,
+                  openNewTab: !isPage ? openNewTab : undefined,
+                  link: isPage ? link : undefined,
+                  image:
+                    isPage && image.uuid
+                      ? {
+                          alt: image?.alt || undefined,
+                          source: "FTV-internal",
+                          uuid: image.uuid,
+                        }
+                      : undefined,
                 };
                 isChanged = true;
-
                 break;
               }
 
               case "slider": {
-                const { order, isVisible, lang, criteria } = module;
+                const { order, isVisible, lang, criteria, display } = module;
                 values = {
                   ...(isPage && pageSectoionHeaderValues),
                   type: "carousel",
                   order,
                   isVisible,
                   resource: "contents",
-                  display: "primary",
+                  display,
                   criteria: {
                     limit: 15,
                     page: 1,
@@ -423,7 +433,6 @@ export function saveModule(uuid, request = "save") {
             } else {
               response = await updateComponent(articleId, values, uuid);
             }
-
             if (response.status < 300 && response.status > 199) {
               dispatch(setUpdatedAt("create"));
               dispatch(setModulePosted(uuid));

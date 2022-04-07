@@ -26,12 +26,13 @@ import {
   setPosted,
   setCategoriesList,
   setTagsList,
+  setStatus,
+  setModified,
+  pageLoaded,
 } from "../commonsActions";
 import {
   setErrorSlug,
   setErrorTitle,
-  setModified,
-  setStatus,
   setUsers,
   setNewTag,
   setTags,
@@ -48,6 +49,7 @@ import {
 import { setContentsList, setPagination } from "../contentListActions";
 import ErrorCaseClient from "../../../helper/ErrorCaseClient";
 import { dispatchElementsId } from "../../../helper/fieldsHelper";
+import { getPage } from "../../../services/client/pagesClient";
 
 export function checkAndSend(type = "save", articleId = null) {
   return async (dispatch, getState) => {
@@ -128,7 +130,6 @@ export function checkAndSend(type = "save", articleId = null) {
           authors: authors || [],
           tags: tags || [],
         };
-        console.log("VALUES.TAG ==>", values.tags);
       } else {
         values = {
           title: mainTitle,
@@ -216,11 +217,13 @@ export function checkAndSend(type = "save", articleId = null) {
 
 export function getStatus(id) {
   console.log("%cFETCHING STATUS =>", `${consoleTitle}`, id);
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const { pageMainInformationReducer } = getState();
+    const { isPage } = pageMainInformationReducer;
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
       try {
-        const response = await getContent(id);
+        const response = isPage ? await getPage(id) : await getContent(id);
         if (response.status < 300 && response.status > 199) {
           console.log(
             "%cFetched Status =>",
@@ -249,6 +252,7 @@ export function fetchContent(id) {
         if (response.status < 300 && response.status > 199) {
           console.log("%cFetched content =>", `${consoleInfo}`, response.data);
           dispatch(contentLoaded(response.data));
+          dispatch(pageLoaded(response.data));
           dispatch(setUpdatedAt(response.data.updatedAt));
           dispatch(setPublishedAt(response.data.publishedAt));
           dispatch(setIsScheduled(response.data.publishScheduledAt || ""));

@@ -9,7 +9,6 @@ export const PageCardsContainer = styled.div`
   width: 100%;
   background-color: ${colors.mediumGrey};
   padding: 12px;
-  margin-bottom: 150px;
 `;
 
 export const PageCardContainer = styled.div`
@@ -19,7 +18,7 @@ export const PageCardContainer = styled.div`
   flex-wrap: nowrap;
   width: 224px;
   height: 224px;
-  justify-content: space-around;
+  justify-content: space-between;
 `;
 
 export const PageHubContainer = styled.div`

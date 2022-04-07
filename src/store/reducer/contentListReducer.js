@@ -8,7 +8,6 @@ import {} from "../actions/commonsActions";
 
 const initialState = {
   contentsList: [],
-  isOpenDuplicateModal: { value: false, id: "" },
 };
 
 const contentListReducer = (state = initialState, action = {}) => {
@@ -19,29 +18,6 @@ const contentListReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         contentsList: [...action.payload],
-      };
-    }
-
-    case SET_IS_OPEN_DUPLICATE_MODAL: {
-      const { value, id } = action.payload;
-      if (action.payload.lang) {
-        const { lang } = action.payload;
-
-        return {
-          ...oldState,
-          isOpenDuplicateModal: {
-            value,
-            id: value ? id : "",
-            lang,
-          },
-        };
-      }
-      return {
-        ...oldState,
-        isOpenDuplicateModal: {
-          value,
-          id: value ? id : "",
-        },
       };
     }
 

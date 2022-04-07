@@ -10,6 +10,7 @@ import {
   SET_A_MODULE_IS_OPEN,
   SET_PUBLISH_SCHEDULE_FAIL_DATA,
   SET_PUBLISH_SCHEDULE_FAILED,
+  SET_IS_OPEN_DUPLICATE_MODAL,
 } from "../constants";
 
 export const setPublishScheduleFailData = (payload) => ({
@@ -64,5 +65,10 @@ export const setIsScheduled = (payload) => ({
 
 export const setAModuleIsOpen = (payload) => ({
   type: SET_A_MODULE_IS_OPEN,
+  payload,
+});
+
+export const setIsOpenDuplicateModal = (payload) => ({
+  type: SET_IS_OPEN_DUPLICATE_MODAL,
   payload,
 });

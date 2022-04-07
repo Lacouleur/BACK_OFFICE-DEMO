@@ -55,12 +55,15 @@ import {
   watchOpinionModules,
 } from "../../../helper/actionBarHelper";
 import ScheduleModal from "../../Modals/ScheduleModal";
-import { setStatus } from "../../../store/actions/mainInformationActions";
+import { setStatus } from "../../../store/actions/commonsActions";
 
 const ActionBar = () => {
   const dispatch = useDispatch();
   const MainInformationState = useSelector(
     ({ mainInformationReducer }) => mainInformationReducer
+  );
+  const PageMainInformationState = useSelector(
+    ({ pageMainInformationReducer }) => pageMainInformationReducer
   );
   const actionBarState = useSelector(
     ({ actionBarReducer }) => actionBarReducer
@@ -98,6 +101,8 @@ const ActionBar = () => {
   } = actionBarState;
 
   const { isChanged: seoChanged } = seoState;
+  const { isPage } = PageMainInformationState;
+
   const {
     title,
     slug,
@@ -107,11 +112,15 @@ const ActionBar = () => {
     postingError,
     isChanged: MainInformationChanged,
     articleId,
+    pageId,
     status,
     lang,
-  } = MainInformationState;
+    modified,
+  } = isPage ? PageMainInformationState : MainInformationState;
 
-  const isEditing = !!articleId;
+  const id = isPage ? pageId : articleId;
+
+  const isEditing = isPage ? !!isPage : !!id;
   const { modulesList } = modulesState;
   const history = useHistory();
   const [updateDate, setUpdateDate] = useState();
@@ -121,7 +130,7 @@ const ActionBar = () => {
   const [actionButtonContent, setActionButtonContent] = useState("");
   const [isDeleteButton, setIsDeleteButton] = useState(false);
   const [isPreviewButton, setIsPreviewButton] = useState(false);
-  const [isArticleError, setIsArticleError] = useState("");
+  const [isEditorError, setIsEditorError] = useState("");
   const [isOpinionModules, setIsOpinionModules] = useState(false);
   const [selectOptions, setSelectOptions] = useState([
     { value: "PUBLISH", label: "PUBLISH" },
@@ -141,7 +150,16 @@ const ActionBar = () => {
   }, [seoChanged, MainInformationChanged, modulesState, homeNavIsChanged]);
 
   useEffect(() => {
-    FieldsErrorWatcher(isManifesto, MainInformationState, setIsArticleError);
+    FieldsErrorWatcher(
+      title,
+      slug,
+      titleError,
+      slugError,
+      regexSlugError,
+      postingError,
+      isManifesto,
+      setIsEditorError
+    );
   }, [titleError, slugError, regexSlugError, postingError, title, slug]);
 
   useEffect(() => {
@@ -158,7 +176,8 @@ const ActionBar = () => {
 
   useEffect(() => {
     setButtonContent(
-      MainInformationState,
+      status,
+      modified,
       setActionButtonContent,
       setSelectOptions,
       setIsDeleteButton,
@@ -170,7 +189,8 @@ const ActionBar = () => {
   useEffect(() => {
     if (isOpenPublishModal === false) {
       setButtonContent(
-        MainInformationState,
+        status,
+        modified,
         setActionButtonContent,
         setSelectOptions,
         setIsDeleteButton,
@@ -185,7 +205,7 @@ const ActionBar = () => {
   }, [modulesList.length]);
 
   useEffect(() => {
-    if (!isManifesto && lang && slug && articleId) {
+    if (!isManifesto && lang && slug && id) {
       setIsPreviewButton(true);
       return;
     }
@@ -195,7 +215,7 @@ const ActionBar = () => {
       return;
     }
     setIsPreviewButton(false);
-  }, [articleId, lang, slug, isManifesto, manifestoLang, manifestoId]);
+  }, [id, lang, slug, isManifesto, manifestoLang, manifestoId]);
 
   return (
     <>
@@ -204,29 +224,33 @@ const ActionBar = () => {
         {isOpenPublishModal && (
           <PublishModal
             actionName={actionButtonContent}
-            articleId={isManifesto ? manifestoId : articleId}
+            id={isManifesto ? manifestoId : id}
           />
         )}
-        {isOpenArchiveModal && <ArchiveModal id={articleId} />}
-        {isOpenScheduleModal && <ScheduleModal id={articleId} />}
+        {isOpenArchiveModal && (
+          <ArchiveModal id={id} type={isPage ? "page" : "content"} />
+        )}
+        {isOpenScheduleModal && <ScheduleModal id={id} />}
         <ButtonsContainer>
           <Button
             type="button"
             styles={backButton}
-            onClick={() => history.push("/dashboard")}
+            onClick={() => {
+              history.push(isPage ? "/pages" : "/dashboard");
+            }}
           >
             <BackIcon src={backArrow} />
             <BackText>BACK</BackText>
           </Button>
           <Button
             styles={
-              contentIsChanged && !isArticleError
+              contentIsChanged && !isEditorError
                 ? saveButton
                 : saveButtonDisable
             }
             type="button"
           >
-            {contentIsChanged && !isArticleError ? "save" : "saved"}
+            {contentIsChanged && !isEditorError ? "save" : "saved"}
           </Button>
         </ButtonsContainer>
         <StatusContainer>
@@ -294,28 +318,30 @@ const ActionBar = () => {
             )}
         </StatusContainer>
         <ActionsContainer>
-          <ActionIcon
-            src={
-              isOpinionModules && !contentIsChanged
-                ? statIconGreen
-                : statIconGrey
-            }
-            onClick={() => {
-              if (isOpinionModules && !contentIsChanged) {
-                opinionLink.current.click();
+          {!isPage && (
+            <ActionIcon
+              src={
+                isOpinionModules && !contentIsChanged
+                  ? statIconGreen
+                  : statIconGrey
               }
-            }}
-          />
-          {!isManifesto && (
+              onClick={() => {
+                if (isOpinionModules && !contentIsChanged) {
+                  opinionLink.current.click();
+                }
+              }}
+            />
+          )}
+          {!isManifesto && !isPage && (
             <Link
               ref={opinionLink}
-              to={`/opinion-results/${articleId}`}
+              to={`/opinion-results/${id}`}
               target="_blank"
               style={{ display: "none" }}
             />
           )}
 
-          {isManifesto && (
+          {isManifesto && !isPage && (
             <Link
               ref={opinionLink}
               to={`/opinion-results/manifesto/${manifestoLang}/${manifestoId}`}
@@ -324,7 +350,7 @@ const ActionBar = () => {
             />
           )}
 
-          {isPreviewButton && (
+          {isPreviewButton && !isPage && (
             <ActionIcon
               src={eyeIcon}
               onClick={() => {
@@ -380,10 +406,10 @@ const ActionBar = () => {
             )}
             {!isManifesto && (
               <PublishButton
-                disabled={!(articleId && !contentIsChanged)}
+                disabled={!(id && !contentIsChanged)}
                 type="button"
                 onClick={() => {
-                  if (articleId) {
+                  if (id) {
                     if (
                       actionButtonContent === "PROGRAM" ||
                       actionButtonContent === "PROGRAM UPDATE"
@@ -398,7 +424,7 @@ const ActionBar = () => {
                 {actionButtonContent}
               </PublishButton>
             )}
-            {articleId && !contentIsChanged && selectOptions.length > 0 && (
+            {id && !contentIsChanged && selectOptions.length > 0 && (
               <Selector
                 placeholder=""
                 classNamePrefix="select"

@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable array-callback-return */
 
 import {
@@ -50,19 +51,15 @@ export function ModifiedModulesWatcher(
 }
 
 export function FieldsErrorWatcher(
+  title,
+  slug,
+  titleError,
+  slugError,
+  regexSlugError,
+  postingError,
   isManifesto,
-  MainInformationState,
-  setIsArticleError
+  setIsEditorError
 ) {
-  const {
-    title,
-    slug,
-    titleError,
-    slugError,
-    regexSlugError,
-    postingError,
-  } = MainInformationState;
-
   if (!isManifesto) {
     if (
       titleError ||
@@ -72,17 +69,17 @@ export function FieldsErrorWatcher(
       !slug ||
       !title
     ) {
-      setIsArticleError(true);
+      setIsEditorError(true);
     } else {
-      setIsArticleError(false);
+      setIsEditorError(false);
     }
   }
 
   if (isManifesto) {
     if (titleError || !title) {
-      setIsArticleError(true);
+      setIsEditorError(true);
     } else {
-      setIsArticleError(false);
+      setIsEditorError(false);
     }
   }
 }
@@ -116,7 +113,8 @@ export function timeWatcher(
 }
 
 export function setButtonContent(
-  MainInformationState,
+  status,
+  modified,
   setActionButtonContent,
   setSelectOptions,
   setIsDeleteButton,
@@ -126,7 +124,6 @@ export function setButtonContent(
   if (actionBarState) {
     const { publicationFailed } = actionBarState;
     const { isManifesto, manifestoId } = manifestoState;
-    const { status, modified } = MainInformationState;
 
     if (!isManifesto) {
       let buttonStatus = status;

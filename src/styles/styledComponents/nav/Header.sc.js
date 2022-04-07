@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import colors from "../../core/colors";
 import powerIcon from "../../assets/icons/power.svg";
 

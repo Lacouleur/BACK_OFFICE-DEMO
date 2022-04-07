@@ -47,27 +47,29 @@ const HeaderSectionPage = ({
           moduleId={uuid}
           edit={url || ""}
         />
-        <SwitchBox
-          htmlFor={`switch-${uuid}`}
-          onChange={() => {
-            dispatch(
-              setPageModuleHeaderNewTab({
-                id: uuid,
-                value: !openNewTabHeader,
-              })
-            );
-          }}
-        >
-          <p>Open in new window</p>
-          <Switch
-            className="Switch"
-            id={`switch-${uuid}`}
-            type="checkbox"
-            checked={openNewTabHeader}
-            readOnly
-          />
-          <SwitchLabel className="SwitchLabel" htmlFor={`switch-${uuid}`} />
-        </SwitchBox>
+        {url && (
+          <SwitchBox
+            htmlFor={`switch-${uuid}`}
+            onChange={() => {
+              dispatch(
+                setPageModuleHeaderNewTab({
+                  id: uuid,
+                  value: !openNewTabHeader,
+                })
+              );
+            }}
+          >
+            <p>Open in new window</p>
+            <Switch
+              className="Switch"
+              id={`switch-${uuid}`}
+              type="checkbox"
+              checked={openNewTabHeader}
+              readOnly
+            />
+            <SwitchLabel className="SwitchLabel" htmlFor={`switch-${uuid}`} />
+          </SwitchBox>
+        )}
       </FieldAndSwitchContainer>
       <SeparatorWhite />
     </>

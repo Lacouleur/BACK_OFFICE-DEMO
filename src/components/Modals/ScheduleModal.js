@@ -35,7 +35,9 @@ const scheduleModal = () => {
   const [date, setDate] = useState(
     isScheduled ? new Date(isScheduled) : new Date()
   );
-  const { articleId } = useParams();
+  const { pageId, articleId } = useParams();
+
+  const id = pageId || articleId;
   const actualDate = new Date();
   const DatePlusFiveMinutes = new Date(actualDate.getTime() + 5 * 60000);
 
@@ -97,7 +99,7 @@ const scheduleModal = () => {
             disabled={!(date >= DatePlusFiveMinutes)}
             onClick={() => {
               if (date >= DatePlusFiveMinutes) {
-                dispatch(schedulePublication(articleId, date));
+                dispatch(schedulePublication(id, date));
                 dispatch(setPublishScheduleFailed(null));
                 dispatch(setPublishScheduleFailData(null));
                 dispatch(setIsOpenScheduleModal(false));

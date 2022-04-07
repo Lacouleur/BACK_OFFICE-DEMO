@@ -1,5 +1,9 @@
 import { verifySlug } from "../../helper/auth/verifyFields";
-import { createAutorsList, createUsersList } from "../../helper/fieldsHelper";
+import {
+  createAutorsList,
+  createUsersList,
+  harmonizeLang,
+} from "../../helper/fieldsHelper";
 import {
   ADD_TITLE,
   ADD_SLUG,
@@ -178,10 +182,8 @@ const mainInformationReducer = (state = initialState, action = {}) => {
     }
 
     case CONTENT_LOADED: {
-      let lang = "fr";
-      if (action.payload.language === "german") {
-        lang = "de";
-      }
+      const lang = harmonizeLang(action.payload.language);
+
       return {
         ...oldState,
         title: action.payload?.title ?? "",

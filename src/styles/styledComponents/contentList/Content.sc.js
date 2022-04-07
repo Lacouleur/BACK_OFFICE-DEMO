@@ -94,7 +94,7 @@ export const StatusText = styled.p`
   ${(props) => (props.published ? publishedTextMixin : "")};
   ${(props) => (props.unpublished ? unPublishedTextMixin : "")};
   ${(props) => (props.scheduled ? scheduledTextMixin : "")};
-  margin-left: 40px;
+  margin-left: 34px;
   font-size: 14px;
   line-height: 20px;
   font-weight: 700;
@@ -109,7 +109,7 @@ export const LastSavedText = styled.p`
   font-style: italic;
   font-size: 12px;
   line-height: 14px;
-  margin-left: 40px;
+  margin-left: 34px;
 `;
 
 export const StatusIcon = styled.img`

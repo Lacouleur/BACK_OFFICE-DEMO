@@ -1,18 +1,24 @@
 import { isValidToken } from "../../../services/client/refreshToken";
-import { setUpdatedAt, showErrorModal } from "../actionBarActions";
 import {
-  contentLoaded,
+  setIsScheduled,
+  setPublishedAt,
+  setPublishScheduleFailData,
+  setPublishScheduleFailed,
+  setUpdatedAt,
+  showErrorModal,
+} from "../actionBarActions";
+import {
   pageLoaded,
   setErrorPosting,
   setErrorSpecial,
   setPosted,
+  setStatus,
 } from "../commonsActions";
 import {
   pageSetErrorSlug,
   pageSetErrorTitle,
   pageSetId,
   pageSetModified,
-  pageSetStatus,
 } from "../pageEditor/pageMainInformationsActions";
 
 import {
@@ -24,10 +30,12 @@ import {
 
 import ErrorCaseClient from "../../../helper/ErrorCaseClient";
 import {
+  deletePage,
   getPage,
   postPage,
   updatePage,
 } from "../../../services/client/pagesClient";
+import { fetchPages } from "./PagesHubActions.thunk";
 
 // eslint-disable-next-line import/prefer-default-export
 export function pageCheckAndSend(type = "save", pageId = null) {
@@ -61,7 +69,6 @@ export function pageCheckAndSend(type = "save", pageId = null) {
           title: mainTitle,
           slug,
         };
-        console.log("VALUES.TAG ==>", values.tags);
       } else {
         values = {
           title: mainTitle,
@@ -153,9 +160,15 @@ export function fetchPage(id) {
           console.log("%cFetched page =>", `${consoleInfo}`, response.data);
           dispatch(pageLoaded(response.data));
           dispatch(setUpdatedAt(response.data.updatedAt));
-          /*  dispatch(setPublishedAt(response.data.publishedAt));
-          dispatch(setIsScheduled(response.data.publishScheduledAt || "")); */
-          dispatch(pageSetStatus(response.data.state));
+          dispatch(setPublishedAt(response.data.publishedAt));
+          dispatch(setIsScheduled(response.data.publishScheduledAt || ""));
+          dispatch(setStatus(response.data.state));
+          dispatch(
+            setPublishScheduleFailed(response.data.publishScheduleFailed)
+          );
+          dispatch(
+            setPublishScheduleFailData(response.data.publishScheduleFailData)
+          );
         }
 
         return null;
@@ -164,6 +177,39 @@ export function fetchPage(id) {
         console.log("%cerror =>", `${consoleError}`, error?.response?.data);
 
         return null;
+      }
+    }
+    return null;
+  };
+}
+
+export function archivePage(articleId, redirectTo, fromList = false) {
+  console.log("%cDELETING", `${consoleTitle}`, articleId);
+  return async (dispatch) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
+      try {
+        const response = await deletePage(articleId);
+        if (response.status < 300 && response.status > 199) {
+          if (!fromList) {
+            redirectTo("/pages");
+            console.log(
+              `%cPage Deleted, id:${articleId} =>`,
+              `${consoleSucces}`,
+              response
+            );
+          }
+          if (fromList) {
+            dispatch(fetchPages());
+            console.log(
+              `%cPage Deleted, id:${articleId} =>`,
+              `${consoleSucces}`,
+              response
+            );
+          }
+        }
+      } catch (error) {
+        ErrorCaseClient(dispatch, error?.response?.data);
       }
     }
     return null;

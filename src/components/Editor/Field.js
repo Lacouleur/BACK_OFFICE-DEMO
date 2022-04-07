@@ -65,10 +65,6 @@ import {
   setSliderCategories,
   setSliderTags,
 } from "../../store/actions/moduleActions";
-import {
-  setCategoriesList,
-  setTagsList,
-} from "../../store/actions/commonsActions";
 
 // All necessary methods of "Field" are in "fieldsHelper.js"
 
@@ -110,6 +106,7 @@ const Field = ({
   const [selectedAuthors, setSelectedAuthors] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedTagsSlider, setSelectedTagsSlider] = useState([]);
+  const [selectedSliderType, setSelectedSliderType] = useState();
   const [isOpenTagWarn, setIsOpenTagWarn] = useState();
   const animatedComponents = makeAnimated();
   const [fuse, setFuse] = useState(null);
@@ -117,27 +114,16 @@ const Field = ({
   const MainInformationState = useSelector(
     ({ mainInformationReducer }) => mainInformationReducer
   );
-  const {
-    categoriesList,
-    status,
-    authorsList,
-    tagsList,
-    newTag,
-    lang: contentLang,
-  } = MainInformationState;
 
   const PageMainInformationState = useSelector(
     ({ pageMainInformationReducer }) => pageMainInformationReducer
   );
 
-  const {
-    categoriesList: pageCategoriesList,
-    tagsList: pageTagsList,
-    isPage,
-    lang: pageLang,
-  } = PageMainInformationState;
+  const { isPage } = PageMainInformationState;
 
-  const lang = pageLang || contentLang;
+  const { categoriesList, status, authorsList, tagsList, newTag, lang } = isPage
+    ? PageMainInformationState
+    : MainInformationState;
 
   // Fuse search -> dynamic tag search field
   useEffect(() => {
@@ -161,40 +147,34 @@ const Field = ({
     }
 
     if (fieldType === "multi-value" && lang) {
-      if (name === "tags" && tagsList?.length === 0) {
+      if (
+        (name === "tags" && tagsList?.length === 0) ||
+        tagsList === undefined
+      ) {
         dispatch(fetchTags(lang));
       }
       if (name === "categories" && categoriesList?.length === 0) {
         dispatch(fetchCategoriesList(lang));
       }
     }
-  }, []);
+  }, [fieldType, lang]);
 
   // Regular selector fields
   useEffect(() => {
-    if (!isPage) {
-      onEdit(
-        edit,
-        categoriesList,
-        setFileTitle,
-        setEditCategory,
-        selectedLang,
-        setSelectedLang,
-        selectedReadTime,
-        setSelectedReadTime,
-        selectedColorStyle,
-        setSelectedColorStyle,
-        setCategoriesList
-      );
-    } else {
-      onEdit(
-        edit,
-        pageCategoriesList,
-        setCategoriesList,
-        pageTagsList,
-        setTagsList
-      );
-    }
+    onEdit(
+      edit,
+      categoriesList,
+      setFileTitle,
+      setEditCategory,
+      selectedLang,
+      setSelectedLang,
+      selectedReadTime,
+      setSelectedReadTime,
+      selectedColorStyle,
+      setSelectedColorStyle,
+      setSelectedSliderType,
+      selectedSliderType
+    );
 
     initMultiSelectors(
       fieldType,
@@ -244,7 +224,8 @@ const Field = ({
               editCategory,
               selectedLang,
               selectedReadTime,
-              selectedColorStyle
+              selectedColorStyle,
+              selectedSliderType
             )}
             options={optionSelector(name, categoriesList)}
             classNamePrefix="select"
@@ -255,11 +236,12 @@ const Field = ({
                 event,
                 dispatch,
                 name,
-                section,
                 setEditCategory,
                 setSelectedLang,
                 setSelectedReadTime,
-                setSelectedColorStyle
+                setSelectedColorStyle,
+                setSelectedSliderType,
+                moduleId
               );
             }}
           />
@@ -408,8 +390,8 @@ const Field = ({
                 fuzzyOptions={fuzzyOptions}
                 autoCorrect="off"
                 spellCheck="off"
-                defaultOptions={pageCategoriesList}
-                options={pageCategoriesList}
+                defaultOptions={categoriesList}
+                options={categoriesList}
                 loadOptions={(value) => loadOptions(value, fuse)}
                 onChange={(event) => {
                   if (!event) {
@@ -444,8 +426,8 @@ const Field = ({
                 fuzzyOptions={fuzzyOptions}
                 autoCorrect="off"
                 spellCheck="off"
-                defaultOptions={pageTagsList}
-                options={pageTagsList}
+                defaultOptions={tagsList}
+                options={tagsList}
                 loadOptions={(value) => loadOptions(value, fuse)}
                 onChange={(event) => {
                   if (!event) {

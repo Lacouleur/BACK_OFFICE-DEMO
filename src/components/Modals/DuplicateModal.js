@@ -1,8 +1,9 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import PropTypes from "prop-types";
 import useClickOutside from "../../helper/cutomHooks/useClickOutside";
-import { setIsOpenDuplicateModal } from "../../store/actions/contentListActions";
+import { setIsOpenDuplicateModal } from "../../store/actions/actionBarActions";
 
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import {
@@ -24,7 +25,7 @@ import { Selector } from "../../styles/styledComponents/global/Field.sc";
 import langList from "../../helper/langList";
 import { convertLang, handleCheck } from "../../helper/modalsHelper";
 
-const DuplicateModal = () => {
+const DuplicateModal = ({ type }) => {
   const modal = useRef(null);
   const checkSimple = useRef(null);
   const history = useHistory();
@@ -34,11 +35,11 @@ const DuplicateModal = () => {
   const [tradChecked, setTradChecked] = useState(false);
   const [selectedLang, setSelectedLang] = useState();
 
-  const contentsListState = useSelector(
-    ({ contentListReducer }) => contentListReducer
+  const ActionBarStateState = useSelector(
+    ({ actionBarReducer }) => actionBarReducer
   );
 
-  const { id, lang } = contentsListState.isOpenDuplicateModal;
+  const { id, lang } = ActionBarStateState.isOpenDuplicateModal;
 
   useEffect(() => {
     modal.current.scrollIntoView({
@@ -147,7 +148,8 @@ const DuplicateModal = () => {
                 id,
                 tradChecked,
                 selectedLang,
-                history
+                history,
+                type
               );
             }}
           >
@@ -157,6 +159,10 @@ const DuplicateModal = () => {
       </ModalBox>
     </ModalContainer>
   );
+};
+
+DuplicateModal.propTypes = {
+  type: PropTypes.string.isRequired,
 };
 
 export default DuplicateModal;

@@ -9,10 +9,17 @@ import {
   SET_ARTICLE_ID,
   SET_CATEGORIES_LIST,
   SET_TAGS_LIST,
+  SET_STATUS,
+  SET_MODIFIED,
 } from "../constants";
 
 export const setPosted = (payload) => ({
   type: SET_POSTED,
+  payload,
+});
+
+export const setModified = (payload) => ({
+  type: SET_MODIFIED,
   payload,
 });
 
@@ -53,6 +60,11 @@ export const setArticleId = (payload) => ({
 
 export const setCategoriesList = (payload) => ({
   type: SET_CATEGORIES_LIST,
+  payload,
+});
+
+export const setStatus = (payload) => ({
+  type: SET_STATUS,
   payload,
 });
 

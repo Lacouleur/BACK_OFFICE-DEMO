@@ -9,7 +9,6 @@ const pagesHubReducer = (state = initialState, action = {}) => {
 
   switch (action.type) {
     case SET_PAGES_LIST: {
-      console.log(action.payload);
       return {
         ...oldState,
         pagesList: action.payload.pages,

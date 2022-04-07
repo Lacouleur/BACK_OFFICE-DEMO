@@ -1,19 +1,20 @@
 import {
   PAGE_SET_TITLE,
   PAGE_SET_SLUG,
-  PAGE_SET_LANG,
+  ADD_LANG,
   PAGE_SET_ID,
   PAGE_SET_MODIFIED,
   PAGE_SET_ERROR_TITLE,
   PAGE_SET_ERROR_SLUG,
   SET_ERROR_POSTING,
   SET_POSTED,
-  PAGE_SET_STATUS,
+  SET_STATUS,
   CLEAN_PAGE_STATE,
   PAGE_LOADED,
   SET_IS_PAGE,
   SET_CATEGORIES_LIST,
   SET_TAGS_LIST,
+  SET_MODIFIED,
 } from "../../constants";
 import { verifySlug } from "../../../helper/auth/verifyFields";
 
@@ -40,7 +41,7 @@ const initialState = {
   isPage: false,
 };
 
-const mainInformationReducer = (state = initialState, action = {}) => {
+const pageMainInformationReducer = (state = initialState, action = {}) => {
   const oldState = { ...state };
   switch (action.type) {
     case PAGE_LOADED: {
@@ -86,7 +87,7 @@ const mainInformationReducer = (state = initialState, action = {}) => {
       return { ...oldState, slug: action.payload, isChanged: true };
     }
 
-    case PAGE_SET_LANG: {
+    case ADD_LANG: {
       return { ...oldState, lang: action.payload, isChanged: true };
     }
 
@@ -131,7 +132,7 @@ const mainInformationReducer = (state = initialState, action = {}) => {
       };
     }
 
-    case PAGE_SET_STATUS: {
+    case SET_STATUS: {
       return {
         ...oldState,
         status: action.payload,
@@ -168,9 +169,16 @@ const mainInformationReducer = (state = initialState, action = {}) => {
       };
     }
 
+    case SET_MODIFIED: {
+      return {
+        ...oldState,
+        modified: action.payload,
+      };
+    }
+
     default:
       return state;
   }
 };
 
-export default mainInformationReducer;
+export default pageMainInformationReducer;

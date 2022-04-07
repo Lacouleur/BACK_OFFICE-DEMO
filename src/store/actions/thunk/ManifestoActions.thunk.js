@@ -9,8 +9,9 @@ import {
   setErrorPosting,
   setErrorSpecial,
   setPosted,
+  setModified,
 } from "../commonsActions";
-import { setErrorTitle, setModified } from "../mainInformationActions";
+import { setErrorTitle } from "../mainInformationActions";
 import {
   setManifestoId,
   setManifestolang,

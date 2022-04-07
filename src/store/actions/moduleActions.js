@@ -31,6 +31,8 @@ import {
   SET_CTA_ALT_IMAGE,
   SET_SLIDER_CATEGORIES,
   SET_SLIDER_TAGS,
+  SET_SLIDER_TYPE,
+  SET_CTA_LINK,
 } from "../constants";
 
 export const setPageModuleHeaderNewTab = (payload) => ({
@@ -153,6 +155,12 @@ export const setCtaUrl = (payload) => ({
   payload,
 });
 
+// Link is the URL field in page cta module (section)
+export const setCtaLink = (payload) => ({
+  type: SET_CTA_LINK,
+  payload,
+});
+
 export const setCtaDescription = (payload) => ({
   type: SET_CTA_DESCRIPTION,
   payload,
@@ -187,5 +195,10 @@ export const setSliderCategories = (payload) => ({
 
 export const setSliderTags = (payload) => ({
   type: SET_SLIDER_TAGS,
+  payload,
+});
+
+export const setSliderType = (payload) => ({
+  type: SET_SLIDER_TYPE,
   payload,
 });

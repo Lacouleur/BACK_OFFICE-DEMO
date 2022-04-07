@@ -13,7 +13,7 @@ export function uploadError(message) {
   );
 }
 
-export function alreadyTranslated(message, articleId, history, dispatch) {
+export function alreadyTranslated(message, id, history, dispatch, type) {
   return (
     <>
       <p>{message}</p>
@@ -26,11 +26,16 @@ export function alreadyTranslated(message, articleId, history, dispatch) {
         }}
         type="button"
         onClick={() => {
-          history.push(`/editor/${articleId}`);
+          if (type === "content") {
+            history.push(`/editor/${id}`);
+          }
+          if (type === "page") {
+            history.push(`/pages/${id}`);
+          }
           dispatch(showErrorModal(false));
         }}
       >
-        {`Article: ${articleId}`}
+        {`Article: ${id}`}
       </Button>
     </>
   );

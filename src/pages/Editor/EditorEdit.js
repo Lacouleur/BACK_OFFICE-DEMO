@@ -24,8 +24,8 @@ import {
 } from "../../styles/styledComponents/editor/Sections.sc";
 import ActionBar from "../../components/Editor/actionBar/ActionBar";
 import ModuleCreator from "../../components/Editor/Sections/Modules/ModuleCreator";
-import { fetchContent } from "../../store/actions/thunk/ArticlesActions.thunk";
-import { setArticleId } from "../../store/actions/commonsActions";
+import { fetchContent, fetchTags } from "../../store/actions/thunk/ArticlesActions.thunk";
+import { cleanPageState, setArticleId } from "../../store/actions/commonsActions";
 import {
   setErrorSlug,
   setErrorTitle,
@@ -37,7 +37,6 @@ import colors from "../../styles/core/colors";
 import HomeNavigation from "../../components/Editor/Sections/HomeNavigation";
 import { HideOnDnd } from "../../styles/styledComponents/editor/modules/Modules.sc";
 import { onDragEnd } from "../../helper/Editor/dragAndDrop";
-import { setIsAccessiblePanel } from "../../store/actions/userActions";
 import ModulesDispatcher from "../../components/Editor/Sections/Modules/ModulesDispatcher";
 import { consolePage } from "../../helper/consoleStyles";
 import { setIsPage } from "../../store/actions/pageEditor/pageMainInformationsActions";
@@ -60,7 +59,9 @@ const Editor = () => {
       dispatch(setIsPage(false));
       dispatch(fetchContent(articleId));
       dispatch(setArticleId(articleId));
+      dispatch(cleanPageState())
   }, []);
+
 
 
   return (

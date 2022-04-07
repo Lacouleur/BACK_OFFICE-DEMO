@@ -83,3 +83,64 @@ export async function deletePageComponent(id, uuid) {
     },
   });
 }
+
+export async function publishPage(id, action) {
+  return axiosConfig({
+    method: "put",
+    url: `/pages/${id}/${action}`,
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}
+
+export async function schedulePagePublication(id, date) {
+  return axiosConfig({
+    method: "put",
+    url: `/pages/${id}/publish/schedule`,
+    data: { publicationDate: date },
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}
+
+export async function cancelPagePublication(id) {
+  return axiosConfig({
+    method: "delete",
+    url: `/pages/${id}/publish/schedule`,
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}
+
+export async function deletePage(id) {
+  return axiosConfig({
+    method: "put",
+    url: `/pages/${id}/archive`,
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}
+
+export async function duplicatePage(id) {
+  return axiosConfig({
+    method: "post",
+    url: `/pages/${id}/duplicate`,
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}
+
+export async function translatePage(id, lang) {
+  return axiosConfig({
+    method: "post",
+    url: `/pages/${id}/translations/${lang}`,
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}

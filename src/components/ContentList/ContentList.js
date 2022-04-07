@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { TitleBox, H1 } from "../../styles/styledComponents/global/Titles.sc";
@@ -37,13 +37,13 @@ const ContentList = () => {
     ({ actionBarReducer }) => actionBarReducer
   );
 
+  const { lastPage, currentPage, contentsList } = contentsListState;
+
   const {
+    isOpenErrorModal,
+    isOpenArchiveModal,
     isOpenDuplicateModal,
-    lastPage,
-    currentPage,
-    contentsList,
-  } = contentsListState;
-  const { isOpenErrorModal, isOpenArchiveModal } = actionBarState;
+  } = actionBarState;
 
   useEffect(() => {
     dispatch(fetchContentsList());
@@ -53,8 +53,8 @@ const ContentList = () => {
 
   return (
     <>
-      {isOpenDuplicateModal.value && <DuplicateModal />}
-      {isOpenArchiveModal && <ArchiveModal />}
+      {isOpenDuplicateModal.value && <DuplicateModal type="content" />}
+      {isOpenArchiveModal && <ArchiveModal type="content" />}
 
       <ContentSectionBox>
         {isOpenErrorModal && <ErrorModal />}

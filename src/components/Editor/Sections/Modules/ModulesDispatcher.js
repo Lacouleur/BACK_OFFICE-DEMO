@@ -186,9 +186,9 @@ const ModulesDispatcher = ({
                         title={isPage ? module.title : undefined}
                         subtitle={isPage ? module.subtitle : undefined}
                         // Url is header url for section and module url for content.
-                        url={isPage ? module?.url?.value : module?.url}
+                        url={isPage && module.url ? module.url.value : module.url}
                         openNewTabHeader={
-                          isPage ? module.url?.openNewTab : undefined
+                          isPage && module.url ? module.url.openNewTab : undefined
                         }
                         key={module.uuid}
                         uuid={module.uuid}
@@ -241,9 +241,9 @@ const ModulesDispatcher = ({
                         isPage={isPage}
                         title={isPage ? module.title : undefined}
                         subtitle={isPage ? module.subtitle : undefined}
-                        url={isPage ? module.url.value : undefined}
+                        url={isPage && module.url ? module.url.value : undefined}
                         openNewTabHeader={
-                          isPage ? module.url.openNewTab : undefined
+                          isPage && module.url ? module.url.openNewTab : undefined
                         }
                         key={module.uuid}
                         uuid={module.uuid}

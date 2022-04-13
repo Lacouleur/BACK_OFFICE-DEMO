@@ -25,6 +25,9 @@ import Field from "../../../Field";
 import HeaderSectionPage from "../HeaderSectionPage";
 import { setAModuleIsOpen } from "../../../../../store/actions/actionBarActions";
 import { fetchTags } from "../../../../../store/actions/thunk/ArticlesActions.thunk";
+import {
+  watchNewModules
+} from "../../../../../helper/modulesHelper";
 
 const SliderModule = ({
   isPage,
@@ -54,6 +57,10 @@ const SliderModule = ({
   useEffect(() => {
     dispatch(setAModuleIsOpen(isOpen));
   }, [isOpen]);
+
+  useEffect(() => {
+    watchNewModules(isNewModule, sliderModuleRef, setIsOpen);
+  }, [isNewModule]);
 
   useEffect(() => {
     if (!tagsList) {

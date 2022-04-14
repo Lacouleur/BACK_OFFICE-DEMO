@@ -26,6 +26,7 @@ import {
   setPageModuleHeaderTitle,
   setPageModuleHeaderUrl,
   setSliderType,
+  setSliderLimit,
 } from "../store/actions/moduleActions";
 import {
   setDisplayedName,
@@ -520,6 +521,10 @@ export function dispatchFields(
 
     case name === "url" && section === "sectionHeader":
       dispatch(setPageModuleHeaderUrl({ id: moduleId, value }));
+      break;
+
+    case name === "limit" && section === "slider":
+      dispatch(setSliderLimit({ id: moduleId, value }));
       break;
 
     default:

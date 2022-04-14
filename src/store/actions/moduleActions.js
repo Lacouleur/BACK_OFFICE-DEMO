@@ -31,6 +31,7 @@ import {
   SET_CTA_ALT_IMAGE,
   SET_SLIDER_CATEGORIES,
   SET_SLIDER_TAGS,
+  SET_SLIDER_LIMIT,
   SET_SLIDER_TYPE,
   SET_CTA_LINK,
 } from "../constants";
@@ -197,6 +198,11 @@ export const setSliderTags = (payload) => ({
   type: SET_SLIDER_TAGS,
   payload,
 });
+
+export const setSliderLimit = (payload) => {
+  return {type: SET_SLIDER_LIMIT,
+  payload,}
+};
 
 export const setSliderType = (payload) => ({
   type: SET_SLIDER_TYPE,

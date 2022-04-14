@@ -37,6 +37,7 @@ import {
   SET_CTA_ALT_IMAGE,
   SET_SLIDER_CATEGORIES,
   SET_SLIDER_TAGS,
+  SET_SLIDER_LIMIT,
   EDIT_MODULES_LIST,
   SET_SLIDER_TYPE,
 } from "../constants";
@@ -193,6 +194,7 @@ const modulesReducer = (state = initialState, action = {}) => {
                 display: "secondary",
                 categories: [],
                 tags: [],
+                limit: 6,
               },
             ],
           };
@@ -872,6 +874,27 @@ const modulesReducer = (state = initialState, action = {}) => {
             criteria: {
               ...module.criteria,
               tags: value,
+            },
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_SLIDER_LIMIT: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            criteria: {
+              ...module.criteria,
+              limit: +value,
             },
             isChanged: true,
           };

@@ -42,6 +42,7 @@ const SliderModule = ({
   order,
   categories,
   tags,
+  limit,
   sliderType,
 }) => {
   const dispatch = useDispatch();
@@ -147,6 +148,13 @@ const SliderModule = ({
           edit={tags || ""}
           lang={lang}
         />
+        <Field
+          placeholder="Limit criteria"
+          name="limit"
+          section="slider"
+          moduleId={uuid}
+          edit={limit || 6}
+        />
       </SectionBox>
     </ModuleContainer>
   );
@@ -160,6 +168,7 @@ SliderModule.defaultProps = {
   isPage: undefined,
   categories: undefined,
   tags: undefined,
+  limit: 6,
 };
 
 SliderModule.propTypes = {
@@ -175,6 +184,7 @@ SliderModule.propTypes = {
   order: PropTypes.number.isRequired,
   categories: PropTypes.arrayOf(PropTypes.string),
   tags: PropTypes.arrayOf(PropTypes.string),
+  limit: PropTypes.number,
   sliderType: PropTypes.string.isRequired,
 };
 export default SliderModule;

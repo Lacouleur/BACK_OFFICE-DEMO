@@ -269,6 +269,7 @@ const ModulesDispatcher = ({
                               )
                             : undefined
                         }
+                        limit={+module?.criteria?.limit}
                       />
                     </div>
                   );

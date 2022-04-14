@@ -206,7 +206,7 @@ export function saveModule(uuid, request = "save") {
                   resource: "contents",
                   display,
                   criteria: {
-                    limit: 15,
+                    limit: criteria?.limit,
                     page: 1,
                     sort: "firstPublishedAt",
                     order: "desc",
@@ -381,7 +381,6 @@ export function saveModule(uuid, request = "save") {
                 isChanged = true;
                 break;
               }
-
               case "slider": {
                 const { order, isVisible, lang, criteria, display } = module;
                 values = {
@@ -392,7 +391,7 @@ export function saveModule(uuid, request = "save") {
                   resource: "contents",
                   display,
                   criteria: {
-                    limit: 15,
+                    limit: criteria?.limit,
                     page: 1,
                     sort: "firstPublishedAt",
                     order: "desc",

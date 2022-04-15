@@ -256,17 +256,17 @@ const ModulesDispatcher = ({
                         categories={
                           module?.criteria?.categories
                             ? checkForStringtoArray(
-                                module?.criteria?.categories,
-                                "array"
-                              )
+                              module?.criteria?.categories,
+                              "array"
+                            )
                             : undefined
                         }
                         tags={
                           module?.criteria?.tags
                             ? checkForStringtoArray(
-                                module?.criteria?.tags,
-                                "array"
-                              )
+                              module?.criteria?.tags,
+                              "array"
+                            )
                             : undefined
                         }
                         limit={+module?.criteria?.limit}

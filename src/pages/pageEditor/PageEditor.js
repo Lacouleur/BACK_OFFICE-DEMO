@@ -4,7 +4,7 @@
 /* eslint-disable no-return-assign */
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {  useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import Footer from "../../components/Navigation/Footer";
 import Header from "../../components/Navigation/Header";
@@ -38,7 +38,7 @@ import PageSeo from "../../components/EditorPage/Sections/PageSeo";
 
 
 const PageEditor = () => {
-  
+
   const dispatch = useDispatch();
   const { pageId } = useParams();
   const [isOpen, setIsOpen] = useState(false);
@@ -49,15 +49,15 @@ const PageEditor = () => {
   const { isOpenCloseModal, aModuleIsOpen } = actionBarState;
 
   useEffect(() => {
-      console.log("%cPAGE: PAGE-EDITOR", `${consolePage}`);
-      dispatch(fetchPage(pageId));
-      dispatch(pageSetId(pageId));
-      dispatch(setIsPage(true));
+    console.log("%cPAGE: PAGE-EDITOR", `${consolePage}`);
+    dispatch(fetchPage(pageId));
+    dispatch(pageSetId(pageId));
+    dispatch(setIsPage(true));
   }, []);
 
   useEffect(() => {
     console.log("%cMODULE LIST", `${consolePage}`, modulesList);
-}, [modulesList]);
+  }, [modulesList]);
 
   return (
     <PageContainer position="relative">
@@ -69,32 +69,29 @@ const PageEditor = () => {
           {isOpenCloseModal?.value && <HideContent />}
           <PageMainInformation />
           <PageSeo />
-          {modulesList?.length > 0 && (
-             
-          <Separator />
-             )}
-   
+          {modulesList?.length > 0 && (<Separator />)}
+
           <DragDropContext
             onDragEnd={(result) => {
               onDragEnd(result, modulesList, dispatch)
               setIsUsedDnDArea(false)
-              }}
+            }}
             onDragStart={() => setIsUsedDnDArea(true)}
-          > 
+          >
             {modulesList && modulesList.length > 0 && (
-            <Droppable droppableId={pageId}>
-              {(provided) => {
-              return (
-                <ModulesDispatcher
-                  modulesList={modulesList}
-                  isUsedDndArea={isUsedDndArea}
-                  provided={provided}
-                  aModuleIsOpen={aModuleIsOpen}
-                />
-                )
-              }}
-            </Droppable>
-          )}
+              <Droppable droppableId={pageId}>
+                {(provided) => {
+                  return (
+                    <ModulesDispatcher
+                      modulesList={modulesList}
+                      isUsedDndArea={isUsedDndArea}
+                      provided={provided}
+                      aModuleIsOpen={aModuleIsOpen}
+                    />
+                  )
+                }}
+              </Droppable>
+            )}
           </DragDropContext>
 
           {isOpen && pageId && <ModuleCreator setIsOpen={setIsOpen} />}
@@ -102,16 +99,16 @@ const PageEditor = () => {
             <Button
               type="button"
               onClick={() => {
-            setIsOpen(true);
-            dispatch(setErrorTitle(false));
-            dispatch(setErrorSlug(false));
-            }}
+                setIsOpen(true);
+                dispatch(setErrorTitle(false));
+                dispatch(setErrorSlug(false));
+              }}
               styles={{
-              ...createNewContent,
-              marginLeft: "auto",
-              maginRight: "0",
-              background: `${colors.paleViolet}`
-            }}
+                ...createNewContent,
+                marginLeft: "auto",
+                maginRight: "0",
+                background: `${colors.paleViolet}`
+              }}
             >
               <IconCreat src={plus} />
               ADD A NEW BLOCK

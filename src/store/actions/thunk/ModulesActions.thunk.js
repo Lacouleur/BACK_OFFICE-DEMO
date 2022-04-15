@@ -83,7 +83,7 @@ export function saveModule(uuid, request = "save") {
       const { articleId } = mainInformationReducer;
       const { modulesList } = modulesReducer;
       const { isManifesto, manifestoId } = manifestoReducer;
-      const { pageId, isPage } = pageMainInformationReducer;
+      const { pageId, isPage, lang } = pageMainInformationReducer;
 
       let values = {};
       let isNewModule = false;
@@ -185,10 +185,10 @@ export function saveModule(uuid, request = "save") {
                   link: isPage ? link : undefined,
                   image: isPage
                     ? {
-                        alt: image?.alt || undefined,
-                        source: "FTV-internal",
-                        uuid: image.uuid,
-                      }
+                      alt: image?.alt || undefined,
+                      source: "FTV-internal",
+                      uuid: image.uuid,
+                    }
                     : undefined,
                 };
                 isNewModule = true;
@@ -196,7 +196,7 @@ export function saveModule(uuid, request = "save") {
               }
 
               case "slider": {
-                const { order, isVisible, lang, criteria, display } = module;
+                const { order, isVisible, criteria, display } = module;
                 values = {
                   ...(isPage && pageSectoionHeaderValues),
                   uuid,
@@ -372,17 +372,17 @@ export function saveModule(uuid, request = "save") {
                   image:
                     isPage && image.uuid
                       ? {
-                          alt: image?.alt || undefined,
-                          source: "FTV-internal",
-                          uuid: image.uuid,
-                        }
+                        alt: image?.alt || undefined,
+                        source: "FTV-internal",
+                        uuid: image.uuid,
+                      }
                       : undefined,
                 };
                 isChanged = true;
                 break;
               }
               case "slider": {
-                const { order, isVisible, lang, criteria, display } = module;
+                const { order, isVisible, criteria, display } = module;
                 values = {
                   ...(isPage && pageSectoionHeaderValues),
                   type: "carousel",

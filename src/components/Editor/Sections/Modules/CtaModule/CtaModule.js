@@ -29,7 +29,7 @@ import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
 import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.thunk";
 import Field from "../../../Field";
 import {
-  setCtaModuleContent,
+  setTextHTMLContent,
   watchNewModules,
 } from "../../../../../helper/modulesHelper";
 import { setAModuleIsOpen } from "../../../../../store/actions/actionBarActions";
@@ -78,7 +78,8 @@ const CtaModule = ({
   }, [isOpen]);
 
   useEffect(() => {
-    setCtaModuleContent(
+    setTextHTMLContent(
+      "ctaModule",
       uuid,
       editorState,
       description,
@@ -88,7 +89,8 @@ const CtaModule = ({
   }, []);
 
   useEffect(() => {
-    setCtaModuleContent(
+    setTextHTMLContent(
+      "ctaModule",
       uuid,
       editorState,
       description,

@@ -23,7 +23,7 @@ import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
 import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.thunk";
 import { setAModuleIsOpen } from "../../../../../store/actions/actionBarActions";
 import {
-  setTextModuleContent,
+  setTextHTMLContent,
   watchNewModules,
 } from "../../../../../helper/modulesHelper";
 import TextEditor from "../TextEditor";
@@ -72,7 +72,14 @@ const TextModule = ({
   }, [isOpenCloseModal]);
 
   useEffect(() => {
-    setTextModuleContent(uuid, editorState, text, setEditorState, dispatch);
+    setTextHTMLContent(
+      "textModule",
+      uuid,
+      editorState,
+      text,
+      setEditorState,
+      dispatch
+    );
   }, [editorState]);
 
   function onClickOutside() {

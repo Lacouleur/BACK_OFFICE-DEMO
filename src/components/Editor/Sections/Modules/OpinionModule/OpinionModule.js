@@ -58,6 +58,8 @@ import {
   setAModuleIsOpen,
   showHideModal,
 } from "../../../../../store/actions/actionBarActions";
+import TextEditor from "../TextEditor";
+import { setTextHTMLContent } from "../../../../../helper/modulesHelper";
 
 const OpinionModule = ({
   uuid,
@@ -76,6 +78,7 @@ const OpinionModule = ({
   const dispatch = useDispatch();
   const opinionModuleRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [editorState, setEditorState] = useState();
 
   const actionBarState = useSelector(
     ({ actionBarReducer }) => actionBarReducer
@@ -87,6 +90,17 @@ const OpinionModule = ({
 
   const { articleId, status } = mainInformationState;
   const { hideModal } = actionBarState;
+
+  useEffect(() => {
+    setTextHTMLContent(
+      "opinionModule",
+      uuid,
+      editorState,
+      explanation,
+      setEditorState,
+      dispatch
+    );
+  }, [editorState]);
 
   useEffect(() => {
     if (isNewModule) {
@@ -321,15 +335,14 @@ const OpinionModule = ({
           <AddAnswerText>Add an answer</AddAnswerText>
         </AddAnswerBox>
 
-        {typeof explanation === "string" && question && (
-          <Field
-            placeholder="Type the explanation here."
-            fieldType="textarea"
-            name="explanation"
-            section="opinion"
-            moduleId={uuid}
-            edit={explanation}
-          />
+        {typeof explanation === "string" && question && editorState && (
+          <>
+            <TextEditor
+              editorState={editorState}
+              setEditorState={setEditorState}
+              isOpen={isOpen}
+            />
+          </>
         )}
       </SectionBox>
     </ModuleContainer>

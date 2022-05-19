@@ -60,6 +60,7 @@ import {
 } from "../../../../../store/actions/actionBarActions";
 import TextEditor from "../TextEditor";
 import { setTextHTMLContent } from "../../../../../helper/modulesHelper";
+import SwitchButton from "../../../../Tools/Switch";
 
 const OpinionModule = ({
   uuid,
@@ -299,32 +300,21 @@ const OpinionModule = ({
                     unactive={answers.length > 2}
                   />
                 </IconBox>
+
                 {showRight && (
-                  <SwitchBox
-                    htmlFor={`switch-${answer.uuid}`}
-                    onChange={() => {
+                  <SwitchButton
+                    action={() =>
                       dispatch(
                         SetOpinionRightAnswer({
                           moduleId: uuid,
                           answerId: answer.uuid,
                           value: !answer.right,
                         })
-                      );
-                    }}
-                  >
-                    <p>Right answer</p>
-                    <Switch
-                      className="Switch"
-                      id={`switch-${answer.uuid}`}
-                      type="checkbox"
-                      checked={!!answer.right}
-                      readOnly
-                    />
-                    <SwitchLabel
-                      className="SwitchLabel"
-                      htmlFor={`switch-${answer.uuid}`}
-                    />
-                  </SwitchBox>
+                      )}
+                    isChecked={!!answer.right}
+                    componentId={`switch-${answer.uuid}}`}
+                    displayedText="Right answer"
+                  />
                 )}
               </FieldAndSwitchContainer>
             );

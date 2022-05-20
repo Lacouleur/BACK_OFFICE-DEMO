@@ -186,9 +186,13 @@ const ModulesDispatcher = ({
                         title={isPage ? module.title : undefined}
                         subtitle={isPage ? module.subtitle : undefined}
                         // Url is header url for section and module url for content.
-                        url={isPage && module.url ? module.url.value : module.url}
+                        url={
+                          isPage && module.url ? module.url.value : module.url
+                        }
                         openNewTabHeader={
-                          isPage && module.url ? module.url.openNewTab : undefined
+                          isPage && module.url
+                            ? module.url.openNewTab
+                            : undefined
                         }
                         key={module.uuid}
                         uuid={module.uuid}
@@ -197,6 +201,7 @@ const ModulesDispatcher = ({
                         isOpenCloseModal={module.isOpenCloseModal}
                         isNewModule={module.isNewModule}
                         link={module?.link?.value}
+                        display={module.display || "primary"}
                         openNewTab={
                           isPage ? module?.link?.openNewTab : module.openNewTab
                         }
@@ -241,9 +246,13 @@ const ModulesDispatcher = ({
                         isPage={isPage}
                         title={isPage ? module.title : undefined}
                         subtitle={isPage ? module.subtitle : undefined}
-                        url={isPage && module.url ? module.url.value : undefined}
+                        url={
+                          isPage && module.url ? module.url.value : undefined
+                        }
                         openNewTabHeader={
-                          isPage && module.url ? module.url.openNewTab : undefined
+                          isPage && module.url
+                            ? module.url.openNewTab
+                            : undefined
                         }
                         key={module.uuid}
                         uuid={module.uuid}
@@ -256,17 +265,17 @@ const ModulesDispatcher = ({
                         categories={
                           module?.criteria?.categories
                             ? checkForStringtoArray(
-                              module?.criteria?.categories,
-                              "array"
-                            )
+                                module?.criteria?.categories,
+                                "array"
+                              )
                             : undefined
                         }
                         tags={
                           module?.criteria?.tags
                             ? checkForStringtoArray(
-                              module?.criteria?.tags,
-                              "array"
-                            )
+                                module?.criteria?.tags,
+                                "array"
+                              )
                             : undefined
                         }
                         limit={+module?.criteria?.limit}

@@ -28,6 +28,7 @@ import {
   SET_CTA_LABEL,
   SET_CTA_IS_NEWTAB,
   SET_CTA_DESCRIPTION,
+  SET_CTA_TYPE,
   PAGE_LOADED,
   SET_PAGE_MODULE_HEADER_URL_NEWTAB,
   SET_PAGE_MODULE_HEADER_URL,
@@ -721,6 +722,24 @@ const modulesReducer = (state = initialState, action = {}) => {
           oldState.modulesList[index] = {
             ...module,
             introduction: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_CTA_TYPE: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            display: value,
             isChanged: true,
           };
         }

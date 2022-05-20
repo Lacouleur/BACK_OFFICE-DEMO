@@ -169,6 +169,7 @@ export function saveModule(uuid, request = "save") {
                   link,
                   image,
                   openNewTab,
+                  display,
                 } = module;
 
                 values = {
@@ -185,11 +186,12 @@ export function saveModule(uuid, request = "save") {
                   link: isPage ? link : undefined,
                   image: isPage
                     ? {
-                      alt: image?.alt || undefined,
-                      source: "FTV-internal",
-                      uuid: image.uuid,
-                    }
+                        alt: image?.alt || undefined,
+                        source: "FTV-internal",
+                        uuid: image.uuid,
+                      }
                     : undefined,
+                  display: display || undefined,
                 };
                 isNewModule = true;
                 break;
@@ -354,6 +356,7 @@ export function saveModule(uuid, request = "save") {
                   link,
                   image,
                   openNewTab,
+                  display,
                 } = module;
 
                 const pageurl = url?.value ? url : undefined;
@@ -372,11 +375,12 @@ export function saveModule(uuid, request = "save") {
                   image:
                     isPage && image.uuid
                       ? {
-                        alt: image?.alt || undefined,
-                        source: "FTV-internal",
-                        uuid: image.uuid,
-                      }
+                          alt: image?.alt || undefined,
+                          source: "FTV-internal",
+                          uuid: image.uuid,
+                        }
                       : undefined,
+                  display: display || undefined,
                 };
                 isChanged = true;
                 break;

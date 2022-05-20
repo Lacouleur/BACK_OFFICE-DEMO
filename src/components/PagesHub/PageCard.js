@@ -48,10 +48,6 @@ const PageCard = ({
   return (
     <PageCardContainer id="pages" key={id}>
       <CardIconActionBox>
-        {/* <CardIconAction
-          src={eyeIcon}
-          onClick={() => console.log("it should link to preview")}
-        /> */}
         {state !== "PUBLISHED" ? (
           <CardArchiveBox role="button">
             <CardIconAction

@@ -34,6 +34,7 @@ import {
   SET_SLIDER_LIMIT,
   SET_SLIDER_TYPE,
   SET_CTA_LINK,
+  SET_CTA_TYPE,
 } from "../constants";
 
 export const setPageModuleHeaderNewTab = (payload) => ({
@@ -200,11 +201,15 @@ export const setSliderTags = (payload) => ({
 });
 
 export const setSliderLimit = (payload) => {
-  return {type: SET_SLIDER_LIMIT,
-  payload,}
+  return { type: SET_SLIDER_LIMIT, payload };
 };
 
 export const setSliderType = (payload) => ({
   type: SET_SLIDER_TYPE,
+  payload,
+});
+
+export const setCtaType = (payload) => ({
+  type: SET_CTA_TYPE,
   payload,
 });

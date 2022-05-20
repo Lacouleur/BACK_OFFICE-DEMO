@@ -48,6 +48,7 @@ const CtaModule = ({
   label,
   description,
   openNewTab,
+  display,
   title,
   subtitle,
   url,
@@ -189,18 +190,13 @@ const CtaModule = ({
 
         {!isPage && (
           <>
-            <SwitchButton
-              action={() =>
-                dispatch(
-                  SetCtaIsPrimary({
-                    moduleId: uuid,
-                    answerId: answer.uuid,
-                    value: !answer.right,
-                  })
-                )}
-              isChecked={!!answer.right}
-              componentId={`switch-${answer.uuid}}`}
-              displayedText="Right answer"
+            <Field
+              placeholder="Cta Type"
+              name="ctaType"
+              fieldType="select"
+              section="cta"
+              moduleId={uuid}
+              edit={display || null}
             />
 
             <FieldAndSwitchContainer>
@@ -314,6 +310,7 @@ CtaModule.defaultProps = {
   imageUuid: undefined,
   altImage: undefined,
   thumbnail: undefined,
+  display: undefined,
 };
 
 CtaModule.propTypes = {
@@ -335,5 +332,6 @@ CtaModule.propTypes = {
   imageUuid: PropTypes.string,
   altImage: PropTypes.string,
   thumbnail: PropTypes.string,
+  display: PropTypes.string,
 };
 export default CtaModule;

@@ -27,6 +27,7 @@ import {
   setPageModuleHeaderUrl,
   setSliderType,
   setSliderLimit,
+  setCtaType,
 } from "../store/actions/moduleActions";
 import {
   setDisplayedName,
@@ -101,8 +102,8 @@ export const colorStyleList = [
   },
 ];
 
-// Hard coded Color list for SliderType.
-export const sliderTypeList = [
+// Hard coded Color list for sliderType. && ctaType
+export const primarySecondaryTypeList = [
   {
     label: "Primary",
     value: "primary",
@@ -126,14 +127,36 @@ export function onEdit(
   selectedColorStyle,
   setSelectedColorStyle,
   setSelectedSliderType,
-  selectedSliderType
+  selectedSliderType,
+  setSelectedCtaType,
+  selectedCtaType
 ) {
   if (edit) {
     setFileTitle(edit);
   }
 
   if (!selectedSliderType) {
-    sliderTypeList.map((option) => {
+    primarySecondaryTypeList.map((option) => {
+      if (edit === option.value) {
+        setSelectedSliderType(option);
+        return null;
+      }
+      return null;
+    });
+  }
+
+  if (!selectedCtaType) {
+    primarySecondaryTypeList.map((option) => {
+      if (edit === option.value) {
+        setSelectedCtaType(option);
+        return null;
+      }
+      return null;
+    });
+  }
+
+  if (!selectedSliderType) {
+    primarySecondaryTypeList.map((option) => {
       if (edit === option.value) {
         setSelectedSliderType(option);
         return null;
@@ -253,14 +276,15 @@ export function checkImage(event, dispatch, setFileTitle, name, moduleId) {
   }
 }
 
-// feed multi-selector with fetched selected values.
+// Feed selector with the good value set
 export function valueSelector(
   name,
   editCategory,
   selectedLang,
   selectedReadTime,
   selectedColorStyle,
-  selectedSliderType
+  selectedSliderType,
+  selectedCtaType
 ) {
   switch (name) {
     case "category":
@@ -277,6 +301,9 @@ export function valueSelector(
 
     case "sliderType":
       return selectedSliderType;
+
+    case "ctaType":
+      return selectedCtaType;
 
     default:
       return null;
@@ -323,10 +350,13 @@ export function optionSelector(name, list) {
       return colorStyleList;
 
     case "sliderType":
-      return sliderTypeList;
+      return primarySecondaryTypeList;
 
     case "authors":
       return list;
+
+    case "ctaType":
+      return primarySecondaryTypeList;
 
     default:
       return null;
@@ -343,6 +373,7 @@ export function dispatchSelected(
   setSelectedReadTime,
   setSelectedColorStyle,
   setSelectedSliderType,
+  setSelectedCtaType,
   moduleId
 ) {
   const { value } = event;
@@ -371,6 +402,11 @@ export function dispatchSelected(
       case "sliderType":
         setSelectedSliderType(event);
         dispatch(setSliderType({ id: moduleId, value }));
+        break;
+
+      case "ctaType":
+        setSelectedCtaType(event);
+        dispatch(setCtaType({ id: moduleId, value }));
         break;
 
       default:

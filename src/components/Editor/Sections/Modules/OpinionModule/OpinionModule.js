@@ -310,8 +310,9 @@ const OpinionModule = ({
                           answerId: answer.uuid,
                           value: !answer.right,
                         })
-                      )}
-                    isChecked={!!answer.right}
+                      )
+                    }
+                    isChecked={!!answer?.right || false}
                     componentId={`switch-${answer.uuid}}`}
                     displayedText="Right answer"
                   />

@@ -4,11 +4,13 @@ import { useDispatch } from "react-redux";
 import Field from "../../Field";
 import {
   FieldAndSwitchContainer,
+  SeparatorWhite,
+} from "../../../../styles/styledComponents/editor/modules/Modules.sc";
+import {
   SwitchBox,
   SwitchLabel,
   Switch,
-  SeparatorWhite,
-} from "../../../../styles/styledComponents/editor/modules/Modules.sc";
+} from "../../../../styles/styledComponents/global/Switch.sc";
 import { setPageModuleHeaderNewTab } from "../../../../store/actions/moduleActions";
 
 const HeaderSectionPage = ({

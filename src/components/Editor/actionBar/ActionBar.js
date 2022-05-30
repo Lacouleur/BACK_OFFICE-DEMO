@@ -175,15 +175,17 @@ const ActionBar = () => {
   }, [updatedAt, isScheduled, publishedAt]);
 
   useEffect(() => {
-    setButtonContent(
-      status,
-      modified,
-      setActionButtonContent,
-      setSelectOptions,
-      setIsDeleteButton,
-      manifestoState,
-      actionBarState
-    );
+    if (isOpenPublishModal === false) {
+      setButtonContent(
+        status,
+        modified,
+        setActionButtonContent,
+        setSelectOptions,
+        setIsDeleteButton,
+        manifestoState,
+        actionBarState
+      );
+    }
   }, [MainInformationState, publicationFailed, status]);
 
   useEffect(() => {
@@ -225,6 +227,7 @@ const ActionBar = () => {
           <PublishModal
             actionName={actionButtonContent}
             id={isManifesto ? manifestoId : id}
+            articleStatus={status}
           />
         )}
         {isOpenArchiveModal && (
@@ -356,7 +359,7 @@ const ActionBar = () => {
               onClick={() => {
                 if (!isManifesto) {
                   window.open(
-                    `${PREVIEW_URL}/${lang}/content/${slug}`,
+                    `${PREVIEW_URL}/${lang}/contents/${slug}`,
                     "_blank"
                   );
                 }
@@ -430,7 +433,9 @@ const ActionBar = () => {
                 classNamePrefix="select"
                 options={selectOptions}
                 onChange={(e) => {
-                  actionsSelectorButton(e, dispatch, setActionButtonContent);
+                  if (!isOpenPublishModal) {
+                    actionsSelectorButton(e, dispatch, setActionButtonContent);
+                  }
                 }}
               />
             )}

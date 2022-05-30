@@ -657,5 +657,5 @@ export function harmonizeLang(lang) {
 
 export function openPreview(language, slug) {
   const lang = harmonizeLang(language);
-  window.open(`${PREVIEW_URL}/${lang.slice(0, 2)}/content/${slug}`, "_blank");
+  window.open(`${PREVIEW_URL}/${lang}/contents/${slug}`, "_blank");
 }

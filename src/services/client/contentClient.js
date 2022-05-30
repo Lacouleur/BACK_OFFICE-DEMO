@@ -196,10 +196,30 @@ export async function saveComponent(articleId, values, manifesto = false) {
   });
 }
 
-export async function publishManager(id, action, manifesto) {
-  const url = manifesto
-    ? `/manifest/${id}/${action}`
-    : `/contents/${id}/${action}`;
+export async function publishManager(
+  id,
+  action,
+  manifesto,
+  isMovedToTop,
+  canUndoMoveToTop,
+  undoMoveToTop
+) {
+  let url = "";
+
+  if (manifesto) {
+    url = `/manifest/${id}/${action}`;
+  }
+  if (!manifesto) {
+    if (isMovedToTop && !undoMoveToTop) {
+      url = `/contents/${id}/${action}?putForward=${isMovedToTop}&undoPutForward=false`;
+    }
+    if (undoMoveToTop && canUndoMoveToTop) {
+      url = `/contents/${id}/${action}?putForward=false&undoPutForward=true`;
+    }
+    if (!isMovedToTop) {
+      url = `/contents/${id}/${action}`;
+    }
+  }
 
   return axiosConfig({
     method: "put",

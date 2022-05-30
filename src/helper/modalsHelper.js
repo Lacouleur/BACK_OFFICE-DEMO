@@ -4,7 +4,6 @@ import {
 } from "../store/actions/actionBarActions";
 import {
   cancelScheduledPublication,
-  duplicateArticle,
   duplicateElement,
   publishAction,
   translateArticle,

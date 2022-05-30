@@ -185,62 +185,6 @@ export const CheckboxContainer = styled.div`
   }
 `;
 
-export const SwitchBox = styled.label`
-  position: relative;
-  margin-left: 20px;
-  margin-top: 16px;
-  font-family: Arial;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 24px;
-  letter-spacing: 1.25px;
-`;
-
-export const SwitchLabel = styled.label`
-  position: absolute;
-  left: 0;
-  width: 34px;
-  height: 14px;
-  border-radius: 15px;
-  background: #bebebe;
-  margin-top: 11px;
-  cursor: pointer;
-  background: ${colors.lightGrey};
-  &::after {
-    content: "";
-    display: block;
-    border-radius: 50%;
-    transform: translateY(-14%);
-    width: 20px;
-    height: 20px;
-    background: ${colors.fadedGrey};
-    box-shadow: 1px 3px 3px 1px rgba(0, 0, 0, 0.2);
-    transition: 0.2s;
-  }
-`;
-
-export const Switch = styled.input`
-  opacity: 0;
-  z-index: 1;
-  border-radius: 15px;
-  width: 42px;
-  height: 26px;
-
-  &:checked + ${SwitchLabel} {
-    &::after {
-      content: "";
-      display: block;
-      border-radius: 50%;
-      background: ${colors.paleViolet};
-      width: 20px;
-      height: 20px;
-      margin-left: 14px;
-      transition: 0.2s;
-    }
-  }
-`;
-
 export const FieldAndSwitchContainer = styled.div`
   display: flex;
   flex-direction: row;

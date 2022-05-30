@@ -64,11 +64,18 @@ export function publishAction(id, mode) {
   return async (dispatch, getState) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
-      const { manifestoReducer } = getState();
-      const { pageMainInformationReducer } = getState();
+      const {
+        manifestoReducer,
+        pageMainInformationReducer,
+        mainInformationReducer,
+      } = getState();
       const { isManifesto, manifestoId } = manifestoReducer;
       const { isPage } = pageMainInformationReducer;
-
+      const {
+        isMovedToTop,
+        canUndoMoveToTop,
+        undoMoveToTop,
+      } = mainInformationReducer;
       let actionName = "";
       if (mode === "UPDATE") {
         actionName = "PUBLISH";
@@ -81,7 +88,10 @@ export function publishAction(id, mode) {
           ? await publishManager(
               isManifesto ? manifestoId : id,
               actionName,
-              isManifesto
+              isManifesto,
+              isMovedToTop,
+              canUndoMoveToTop,
+              undoMoveToTop
             )
           : await publishPage(id, actionName);
 

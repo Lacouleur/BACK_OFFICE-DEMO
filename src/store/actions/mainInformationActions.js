@@ -4,7 +4,6 @@ import {
   ADD_SLUG,
   ADD_CATEGORY,
   ADD_TITLE,
-  SET_MODIFIED,
   ADD_LANG,
   SET_COLOR_STYLE,
   SET_CAPTION,
@@ -12,6 +11,9 @@ import {
   SET_AUTHORS,
   SET_TAGS,
   SET_NEW_TAG,
+  SET_CONTENT_IS_MOVED_TO_TOP,
+  SET_CONTENT_CAN_MOVE_TO_TOP,
+  SET_CONTENT_ORIGINAL_DATE,
 } from "../constants";
 
 export const addTitle = (payload) => ({
@@ -71,5 +73,20 @@ export const setTags = (payload) => ({
 
 export const setNewTag = (payload) => ({
   type: SET_NEW_TAG,
+  payload,
+});
+
+export const setContentIsMovedToTop = (payload) => ({
+  type: SET_CONTENT_IS_MOVED_TO_TOP,
+  payload,
+});
+
+export const setContentCanUndoMoveToTop = (payload) => ({
+  type: SET_CONTENT_CAN_MOVE_TO_TOP,
+  payload,
+});
+
+export const setContentOriginalDate = (payload) => ({
+  type: SET_CONTENT_ORIGINAL_DATE,
   payload,
 });

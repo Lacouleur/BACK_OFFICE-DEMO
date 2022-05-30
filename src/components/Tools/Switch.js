@@ -4,12 +4,21 @@ import {
   Switch,
   SwitchBox,
   SwitchLabel,
-} from "../../styles/styledComponents/editor/modules/Modules.sc";
+} from "../../styles/styledComponents/global/Switch.sc";
 
-const SwitchButton = ({ isChecked, componentId, displayedText, action }) => {
+const SwitchButton = ({
+  isChecked,
+  componentId,
+  displayedText,
+  action,
+  styleVariant,
+  disable,
+}) => {
   return (
     <SwitchBox
+      disable={disable || false}
       htmlFor={componentId}
+      styleVariant={styleVariant}
       onChange={() => {
         action();
       }}
@@ -17,14 +26,24 @@ const SwitchButton = ({ isChecked, componentId, displayedText, action }) => {
       <p>{displayedText}</p>
       <Switch
         className="Switch"
+        styleVariant={styleVariant}
         id={componentId}
         type="checkbox"
         checked={isChecked}
         readOnly
       />
-      <SwitchLabel className="SwitchLabel" htmlFor={componentId} />
+      <SwitchLabel
+        className="SwitchLabel"
+        styleVariant={styleVariant}
+        htmlFor={componentId}
+      />
     </SwitchBox>
   );
+};
+
+SwitchButton.defaultProps = {
+  styleVariant: "regular",
+  disable: false,
 };
 
 SwitchButton.propTypes = {
@@ -32,6 +51,8 @@ SwitchButton.propTypes = {
   componentId: PropTypes.string.isRequired,
   displayedText: PropTypes.string.isRequired,
   action: PropTypes.func.isRequired,
+  styleVariant: PropTypes.string,
+  disable: PropTypes.bool,
 };
 
 export default SwitchButton;

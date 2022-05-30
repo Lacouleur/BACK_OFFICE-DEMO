@@ -27,6 +27,9 @@ import {
   SET_TAGS,
   SET_TAGS_LIST,
   SET_NEW_TAG,
+  SET_CONTENT_IS_MOVED_TO_TOP,
+  SET_CONTENT_CAN_MOVE_TO_TOP,
+  SET_CONTENT_ORIGINAL_DATE,
 } from "../constants";
 
 const initialState = {
@@ -47,6 +50,9 @@ const initialState = {
   postingError: false,
   isChanged: false,
   isManifesto: false,
+  isMovedToTop: false,
+  undoMoveToTop: false,
+  canUndoMoveToTop: false,
 
   // arr
   options: [],
@@ -184,6 +190,26 @@ const mainInformationReducer = (state = initialState, action = {}) => {
     case CONTENT_LOADED: {
       const lang = harmonizeLang(action.payload.language);
 
+      let canUndo = false;
+      if (!action.payload.firstPublicationDate) {
+        canUndo = false;
+      }
+      if (
+        action.payload?.firstPublicationDate &&
+        action.payload.firstPublicationDate !== action.payload.firstPublishedAt
+      ) {
+        canUndo = true;
+      } else {
+        canUndo = false;
+      }
+      console.log("content Loaded", {
+        firstPublicationDate: action.payload.firstPublicationDate,
+        firstPublishedAt: action.payload.firstPublishedAt,
+        canUndo:
+          action.payload.firstPublicationDate !==
+          action.payload.firstPublishedAt,
+      });
+
       return {
         ...oldState,
         title: action.payload?.title ?? "",
@@ -197,6 +223,15 @@ const mainInformationReducer = (state = initialState, action = {}) => {
         caption: action.payload?.partnership ?? null,
         authors: action.payload?.authors,
         tags: action.payload?.tags ?? null,
+        isMovedToTop: false,
+        undoMoveToTop: false,
+        canUndoMoveToTop: canUndo,
+      };
+    }
+    case SET_CONTENT_ORIGINAL_DATE: {
+      return {
+        ...oldState,
+        undoMoveToTop: oldState.canUndoMoveToTop ? action.payload : false,
       };
     }
 
@@ -237,6 +272,20 @@ const mainInformationReducer = (state = initialState, action = {}) => {
         ...oldState,
         newTag: action.payload,
         isChanged: true,
+      };
+    }
+
+    case SET_CONTENT_IS_MOVED_TO_TOP: {
+      return {
+        ...oldState,
+        isMovedToTop: action.payload,
+      };
+    }
+
+    case SET_CONTENT_CAN_MOVE_TO_TOP: {
+      return {
+        ...oldState,
+        CanUndoMoveToTop: action.payload,
       };
     }
 

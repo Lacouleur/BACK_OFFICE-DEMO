@@ -20,9 +20,6 @@ import {
   CheckMark,
   HiddenCheckbox,
   CheckboxContainer,
-  SwitchBox,
-  SwitchLabel,
-  Switch,
   FieldAndSwitchContainer,
   AnswerTrashIcon,
   IconBox,
@@ -310,8 +307,7 @@ const OpinionModule = ({
                           answerId: answer.uuid,
                           value: !answer.right,
                         })
-                      )
-                    }
+                      )}
                     isChecked={!!answer?.right || false}
                     componentId={`switch-${answer.uuid}}`}
                     displayedText="Right answer"

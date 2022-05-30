@@ -58,6 +58,9 @@ import {
   setAModuleIsOpen,
   showHideModal,
 } from "../../../../../store/actions/actionBarActions";
+import TextEditor from "../TextEditor";
+import { setTextHTMLContent } from "../../../../../helper/modulesHelper";
+import SwitchButton from "../../../../Tools/Switch";
 
 const OpinionModule = ({
   uuid,
@@ -76,6 +79,7 @@ const OpinionModule = ({
   const dispatch = useDispatch();
   const opinionModuleRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [editorState, setEditorState] = useState();
 
   const actionBarState = useSelector(
     ({ actionBarReducer }) => actionBarReducer
@@ -87,6 +91,17 @@ const OpinionModule = ({
 
   const { articleId, status } = mainInformationState;
   const { hideModal } = actionBarState;
+
+  useEffect(() => {
+    setTextHTMLContent(
+      "opinionModule",
+      uuid,
+      editorState,
+      explanation,
+      setEditorState,
+      dispatch
+    );
+  }, [editorState]);
 
   useEffect(() => {
     if (isNewModule) {
@@ -285,32 +300,22 @@ const OpinionModule = ({
                     unactive={answers.length > 2}
                   />
                 </IconBox>
+
                 {showRight && (
-                  <SwitchBox
-                    htmlFor={`switch-${answer.uuid}`}
-                    onChange={() => {
+                  <SwitchButton
+                    action={() =>
                       dispatch(
                         SetOpinionRightAnswer({
                           moduleId: uuid,
                           answerId: answer.uuid,
                           value: !answer.right,
                         })
-                      );
-                    }}
-                  >
-                    <p>Right answer</p>
-                    <Switch
-                      className="Switch"
-                      id={`switch-${answer.uuid}`}
-                      type="checkbox"
-                      checked={!!answer.right}
-                      readOnly
-                    />
-                    <SwitchLabel
-                      className="SwitchLabel"
-                      htmlFor={`switch-${answer.uuid}`}
-                    />
-                  </SwitchBox>
+                      )
+                    }
+                    isChecked={!!answer?.right || false}
+                    componentId={`switch-${answer.uuid}}`}
+                    displayedText="Right answer"
+                  />
                 )}
               </FieldAndSwitchContainer>
             );
@@ -321,15 +326,14 @@ const OpinionModule = ({
           <AddAnswerText>Add an answer</AddAnswerText>
         </AddAnswerBox>
 
-        {typeof explanation === "string" && question && (
-          <Field
-            placeholder="Type the explanation here."
-            fieldType="textarea"
-            name="explanation"
-            section="opinion"
-            moduleId={uuid}
-            edit={explanation}
-          />
+        {typeof explanation === "string" && question && editorState && (
+          <>
+            <TextEditor
+              editorState={editorState}
+              setEditorState={setEditorState}
+              isOpen={isOpen}
+            />
+          </>
         )}
       </SectionBox>
     </ModuleContainer>

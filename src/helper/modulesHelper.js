@@ -2,11 +2,13 @@ import { EditorState } from "draft-js";
 import HTMLconverter from "./Editor/HTMLconverter";
 import {
   setCtaDescription,
+  setOpinionExplain,
   setValueTextModule,
 } from "../store/actions/moduleActions";
 import colors from "../styles/core/colors";
 
-export function setTextModuleContent(
+export function setTextHTMLContent(
+  moduleName,
   uuid,
   editorState,
   text,
@@ -24,42 +26,35 @@ export function setTextModuleContent(
     }
   } else {
     const newValue = HTMLconverter(editorState);
-    if (newValue !== text) {
-      dispatch(
-        setValueTextModule({
-          id: uuid,
-          value: newValue,
-        })
-      );
+    if (moduleName === "textModule") {
+      if (newValue !== text) {
+        dispatch(
+          setValueTextModule({
+            id: uuid,
+            value: newValue,
+          })
+        );
+      }
     }
-  }
-}
-
-export function setCtaModuleContent(
-  uuid,
-  editorState,
-  text,
-  setEditorState,
-  dispatch
-) {
-  if (!editorState) {
-    if (text) {
-      const converted = HTMLconverter(editorState, "from", text);
-      const stateWithContent = EditorState.createWithContent(converted);
-      setEditorState(stateWithContent);
-    } else {
-      const stateEmpty = EditorState.createEmpty();
-      setEditorState(stateEmpty);
+    if (moduleName === "ctaModule") {
+      if (newValue !== text) {
+        dispatch(
+          setCtaDescription({
+            id: uuid,
+            value: newValue,
+          })
+        );
+      }
     }
-  } else {
-    const newValue = HTMLconverter(editorState);
-    if (newValue !== text) {
-      dispatch(
-        setCtaDescription({
-          id: uuid,
-          value: newValue,
-        })
-      );
+    if (moduleName === "opinionModule") {
+      if (newValue !== text) {
+        dispatch(
+          setOpinionExplain({
+            id: uuid,
+            value: newValue,
+          })
+        );
+      }
     }
   }
 }

@@ -102,6 +102,7 @@ const Field = ({
   const [selectedReadTime, setSelectedReadTime] = useState();
   const [selectedColorStyle, setSelectedColorStyle] = useState();
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedCtaType, setSelectedCtaType] = useState();
   const [fileTitle, setFileTitle] = useState("");
   const [selectedAuthors, setSelectedAuthors] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
@@ -173,7 +174,9 @@ const Field = ({
       selectedColorStyle,
       setSelectedColorStyle,
       setSelectedSliderType,
-      selectedSliderType
+      selectedSliderType,
+      setSelectedCtaType,
+      selectedCtaType
     );
 
     initMultiSelectors(
@@ -225,7 +228,8 @@ const Field = ({
               selectedLang,
               selectedReadTime,
               selectedColorStyle,
-              selectedSliderType
+              selectedSliderType,
+              selectedCtaType
             )}
             options={optionSelector(name, categoriesList)}
             classNamePrefix="select"
@@ -241,6 +245,7 @@ const Field = ({
                 setSelectedReadTime,
                 setSelectedColorStyle,
                 setSelectedSliderType,
+                setSelectedCtaType,
                 moduleId
               );
             }}

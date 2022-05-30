@@ -29,12 +29,13 @@ import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
 import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.thunk";
 import Field from "../../../Field";
 import {
-  setCtaModuleContent,
+  setTextHTMLContent,
   watchNewModules,
 } from "../../../../../helper/modulesHelper";
 import { setAModuleIsOpen } from "../../../../../store/actions/actionBarActions";
 import TextEditor from "../TextEditor";
 import HeaderSectionPage from "../HeaderSectionPage";
+import SwitchButton from "../../../../Tools/Switch";
 
 const CtaModule = ({
   uuid,
@@ -47,6 +48,7 @@ const CtaModule = ({
   label,
   description,
   openNewTab,
+  display,
   title,
   subtitle,
   url,
@@ -78,7 +80,8 @@ const CtaModule = ({
   }, [isOpen]);
 
   useEffect(() => {
-    setCtaModuleContent(
+    setTextHTMLContent(
+      "ctaModule",
       uuid,
       editorState,
       description,
@@ -88,7 +91,8 @@ const CtaModule = ({
   }, []);
 
   useEffect(() => {
-    setCtaModuleContent(
+    setTextHTMLContent(
+      "ctaModule",
       uuid,
       editorState,
       description,
@@ -185,40 +189,41 @@ const CtaModule = ({
         />
 
         {!isPage && (
-          <FieldAndSwitchContainer>
+          <>
             <Field
-              placeholder="CTA Link"
-              name="url"
+              placeholder="Cta Type"
+              name="ctaType"
+              fieldType="select"
               section="cta"
               moduleId={uuid}
-              edit={url || ""}
+              edit={display || null}
             />
-            <SwitchBox
-              htmlFor={`cta-switch-${uuid}`}
-              onChange={() => {
-                dispatch(
-                  setCtaIsNewtab({
-                    id: uuid,
-                    value: !openNewTab,
-                    type: "content",
-                  })
-                );
-              }}
-            >
-              <p>Open in new window</p>
-              <Switch
-                className="Switch"
-                id={`cta-switch-${uuid}`}
-                type="checkbox"
-                checked={openNewTab}
-                readOnly
+
+            <FieldAndSwitchContainer>
+              <Field
+                placeholder="CTA Link"
+                name="url"
+                section="cta"
+                moduleId={uuid}
+                edit={url || ""}
               />
-              <SwitchLabel
-                className="SwitchLabel"
-                htmlFor={`cta-switch-${uuid}`}
+
+              <SwitchButton
+                action={() =>
+                  dispatch(
+                    setCtaIsNewtab({
+                      id: uuid,
+                      value: !openNewTab,
+                      type: "content",
+                    })
+                  )
+                }
+                isChecked={openNewTab}
+                componentId={`cta-switch-${uuid}`}
+                displayedText="Open in new window"
               />
-            </SwitchBox>
-          </FieldAndSwitchContainer>
+            </FieldAndSwitchContainer>
+          </>
         )}
 
         {isPage && (
@@ -230,27 +235,21 @@ const CtaModule = ({
               moduleId={uuid}
               edit={link || ""}
             />
-            <SwitchBox
-              htmlFor={`cta-switch-${uuid}`}
-              onChange={() => {
+
+            <SwitchButton
+              action={() =>
                 dispatch(
-                  setCtaIsNewtab({ id: uuid, value: !openNewTab, type: "page" })
-                );
-              }}
-            >
-              <p>Open in new window</p>
-              <Switch
-                className="Switch"
-                id={`cta-switch-${uuid}`}
-                type="checkbox"
-                checked={openNewTab}
-                readOnly
-              />
-              <SwitchLabel
-                className="SwitchLabel"
-                htmlFor={`cta-switch-${uuid}`}
-              />
-            </SwitchBox>
+                  setCtaIsNewtab({
+                    id: uuid,
+                    value: !openNewTab,
+                    type: "page",
+                  })
+                )
+              }
+              isChecked={openNewTab}
+              componentId={`cta-switch-${uuid}`}
+              displayedText="Open in new window"
+            />
           </FieldAndSwitchContainer>
         )}
 
@@ -311,6 +310,7 @@ CtaModule.defaultProps = {
   imageUuid: undefined,
   altImage: undefined,
   thumbnail: undefined,
+  display: undefined,
 };
 
 CtaModule.propTypes = {
@@ -332,5 +332,6 @@ CtaModule.propTypes = {
   imageUuid: PropTypes.string,
   altImage: PropTypes.string,
   thumbnail: PropTypes.string,
+  display: PropTypes.string,
 };
 export default CtaModule;

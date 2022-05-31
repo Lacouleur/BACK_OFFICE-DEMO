@@ -10,7 +10,7 @@ import TextModule from "./TextModule/TextModule";
 import ImageModule from "./ImageModule/ImageModule";
 import OpinionModule from "./OpinionModule/OpinionModule";
 import CtaModule from "./CtaModule/CtaModule";
-import SliderModule from "./SliderModule/SliderModule";
+import CollectionModule from "./CollectionModule/CollectionModule";
 import { checkForStringtoArray } from "../../../../helper/converters";
 
 const ModulesDispatcher = ({
@@ -220,7 +220,7 @@ const ModulesDispatcher = ({
               </Draggable>
             );
           }
-          case "slider": {
+          case "collection": {
             return (
               <Draggable
                 isDragDisabled={aModuleIsOpen}
@@ -242,7 +242,7 @@ const ModulesDispatcher = ({
                         ...provided.draggableProps.style,
                       }}
                     >
-                      <SliderModule
+                      <CollectionModule
                         isPage={isPage}
                         title={isPage ? module.title : undefined}
                         subtitle={isPage ? module.subtitle : undefined}
@@ -260,7 +260,9 @@ const ModulesDispatcher = ({
                         isChanged={module.isChanged}
                         isOpenCloseModal={module.isOpenCloseModal}
                         isNewModule={module.isNewModule}
-                        sliderType={module.display}
+                        collectionType={module.display}
+                        collectionFormat={module.format}
+                        paginate={module.paginate}
                         // Below, we need to change category and tags string to an array, only when fetched. We use the same function to recreate a string from array when we need to send data to API
                         categories={
                           module?.criteria?.categories

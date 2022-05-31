@@ -15,7 +15,7 @@ import quizzIcon from "../../../../styles/assets/icons/quizz-dark.svg";
 import imageIcon from "../../../../styles/assets/icons/image-black.svg";
 import crossIcon from "../../../../styles/assets/icons/cross-white.svg";
 import ctaIcon from "../../../../styles/assets/icons/cta.svg";
-import sliderIcon from "../../../../styles/assets/icons/slider-black.svg";
+import collectionIcon from "../../../../styles/assets/icons/collection-black.svg";
 import {
   ModuleBox,
   ModulesContainer,
@@ -39,7 +39,12 @@ const ModuleCreator = ({ setIsOpen }) => {
     DefaultModules.push(
       { type: "text", icon: textIcon, name: "TEXT", editor: "page" },
       { type: "cta-button", icon: ctaIcon, name: "CTA", editor: "page" },
-      { type: "slider", icon: sliderIcon, name: "SLIDER", editor: "page" }
+      {
+        type: "collection",
+        icon: collectionIcon,
+        name: "COLLECTION",
+        editor: "page",
+      }
     );
   } else {
     DefaultModules.push(

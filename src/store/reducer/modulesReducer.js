@@ -36,11 +36,13 @@ import {
   SET_PAGE_MODULE_HEADER_TITLE,
   SET_CTA_IMAGE_UUID,
   SET_CTA_ALT_IMAGE,
-  SET_SLIDER_CATEGORIES,
-  SET_SLIDER_TAGS,
-  SET_SLIDER_LIMIT,
+  SET_COLLECTION_CATEGORIES,
+  SET_COLLECTION_TAGS,
+  SET_COLLECTION_LIMIT,
   EDIT_MODULES_LIST,
-  SET_SLIDER_TYPE,
+  SET_COLLECTION_TYPE,
+  SET_COLLECTION_FORMAT,
+  SET_COLLECTION_IS_PAGINATED,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -176,14 +178,14 @@ const modulesReducer = (state = initialState, action = {}) => {
           };
         }
 
-        case "slider": {
+        case "collection": {
           return {
             ...oldState,
             modulesList: [
               ...oldState.modulesList,
               {
                 ...(payload.editor === "page" && pageModulesHeaderField),
-                type: "slider",
+                type: "collection",
                 order: state.modulesList.length + 1,
                 uuid: `${uuidv4()}`,
                 isPostedModule: false,
@@ -193,6 +195,8 @@ const modulesReducer = (state = initialState, action = {}) => {
                 isVisible: true,
                 sectionDescription: "",
                 display: "secondary",
+                format: "carousel",
+                paginate: true,
                 categories: [],
                 tags: [],
                 limit: 6,
@@ -375,7 +379,6 @@ const modulesReducer = (state = initialState, action = {}) => {
             isChanged: false,
             isOpenCloseModal: false,
             isPage: true,
-            type: module.type === "carousel" ? "slider" : module.type,
           },
         ];
       });
@@ -863,7 +866,7 @@ const modulesReducer = (state = initialState, action = {}) => {
       };
     }
 
-    case SET_SLIDER_CATEGORIES: {
+    case SET_COLLECTION_CATEGORIES: {
       const { id, value } = action.payload;
       state.modulesList.find((module, index) => {
         if (module?.uuid === id) {
@@ -884,7 +887,7 @@ const modulesReducer = (state = initialState, action = {}) => {
       };
     }
 
-    case SET_SLIDER_TAGS: {
+    case SET_COLLECTION_TAGS: {
       const { id, value } = action.payload;
       state.modulesList.find((module, index) => {
         if (module?.uuid === id) {
@@ -905,7 +908,7 @@ const modulesReducer = (state = initialState, action = {}) => {
       };
     }
 
-    case SET_SLIDER_LIMIT: {
+    case SET_COLLECTION_LIMIT: {
       const { id, value } = action.payload;
       state.modulesList.find((module, index) => {
         if (module?.uuid === id) {
@@ -926,13 +929,49 @@ const modulesReducer = (state = initialState, action = {}) => {
       };
     }
 
-    case SET_SLIDER_TYPE: {
+    case SET_COLLECTION_TYPE: {
       const { id, value } = action.payload;
       state.modulesList.find((module, index) => {
         if (module?.uuid === id) {
           oldState.modulesList[index] = {
             ...module,
             display: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_COLLECTION_FORMAT: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            format: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_COLLECTION_IS_PAGINATED: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            paginate: value,
             isChanged: true,
           };
         }

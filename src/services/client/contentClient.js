@@ -216,7 +216,7 @@ export async function publishManager(
     if (undoMoveToTop && canUndoMoveToTop) {
       url = `/contents/${id}/${action}?putForward=false&undoPutForward=true`;
     }
-    if (!isMovedToTop) {
+    if (!isMovedToTop && !undoMoveToTop) {
       url = `/contents/${id}/${action}`;
     }
   }

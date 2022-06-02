@@ -25,8 +25,9 @@ import {
   setPageModuleHeaderSubtitle,
   setPageModuleHeaderTitle,
   setPageModuleHeaderUrl,
-  setSliderType,
-  setSliderLimit,
+  setCollectionType,
+  setCollectionFormat,
+  setCollectionLimit,
   setCtaType,
 } from "../store/actions/moduleActions";
 import {
@@ -102,7 +103,7 @@ export const colorStyleList = [
   },
 ];
 
-// Hard coded Color list for sliderType. && ctaType
+// Hard coded list for CollectionType. && ctaType
 export const primarySecondaryTypeList = [
   {
     label: "Primary",
@@ -111,6 +112,17 @@ export const primarySecondaryTypeList = [
   {
     label: "Secondary",
     value: "secondary",
+  },
+];
+
+export const collectionFormatList = [
+  {
+    label: "Slider",
+    value: "carousel",
+  },
+  {
+    label: "Grid",
+    value: "grid",
   },
 ];
 
@@ -126,8 +138,10 @@ export function onEdit(
   setSelectedReadTime,
   selectedColorStyle,
   setSelectedColorStyle,
-  setSelectedSliderType,
-  selectedSliderType,
+  setSelectedCollectionType,
+  selectedCollectionType,
+  setSelectedCollectionFormat,
+  selectedCollectionFormat,
   setSelectedCtaType,
   selectedCtaType
 ) {
@@ -135,10 +149,20 @@ export function onEdit(
     setFileTitle(edit);
   }
 
-  if (!selectedSliderType) {
+  if (!selectedCollectionType) {
     primarySecondaryTypeList.map((option) => {
       if (edit === option.value) {
-        setSelectedSliderType(option);
+        setSelectedCollectionType(option);
+        return null;
+      }
+      return null;
+    });
+  }
+
+  if (!selectedCollectionFormat) {
+    collectionFormatList.map((option) => {
+      if (edit === option.value) {
+        setSelectedCollectionFormat(option);
         return null;
       }
       return null;
@@ -149,16 +173,6 @@ export function onEdit(
     primarySecondaryTypeList.map((option) => {
       if (edit === option.value) {
         setSelectedCtaType(option);
-        return null;
-      }
-      return null;
-    });
-  }
-
-  if (!selectedSliderType) {
-    primarySecondaryTypeList.map((option) => {
-      if (edit === option.value) {
-        setSelectedSliderType(option);
         return null;
       }
       return null;
@@ -283,7 +297,8 @@ export function valueSelector(
   selectedLang,
   selectedReadTime,
   selectedColorStyle,
-  selectedSliderType,
+  selectedCollectionType,
+  selectedCollectionFormat,
   selectedCtaType
 ) {
   switch (name) {
@@ -299,8 +314,11 @@ export function valueSelector(
     case "colorStyle":
       return selectedColorStyle;
 
-    case "sliderType":
-      return selectedSliderType;
+    case "collectionType":
+      return selectedCollectionType;
+
+    case "collectionFormat":
+      return selectedCollectionFormat;
 
     case "ctaType":
       return selectedCtaType;
@@ -349,8 +367,11 @@ export function optionSelector(name, list) {
     case "colorStyle":
       return colorStyleList;
 
-    case "sliderType":
+    case "collectionType":
       return primarySecondaryTypeList;
+
+    case "collectionFormat":
+      return collectionFormatList;
 
     case "authors":
       return list;
@@ -372,7 +393,8 @@ export function dispatchSelected(
   setSelectedLang,
   setSelectedReadTime,
   setSelectedColorStyle,
-  setSelectedSliderType,
+  setSelectedCollectionType,
+  setSelectedCollectionFormat,
   setSelectedCtaType,
   moduleId
 ) {
@@ -399,9 +421,14 @@ export function dispatchSelected(
         dispatch(setColorStyle(value));
         break;
 
-      case "sliderType":
-        setSelectedSliderType(event);
-        dispatch(setSliderType({ id: moduleId, value }));
+      case "collectionType":
+        setSelectedCollectionType(event);
+        dispatch(setCollectionType({ id: moduleId, value }));
+        break;
+
+      case "collectionFormat":
+        setSelectedCollectionFormat(event);
+        dispatch(setCollectionFormat({ id: moduleId, value }));
         break;
 
       case "ctaType":
@@ -559,8 +586,8 @@ export function dispatchFields(
       dispatch(setPageModuleHeaderUrl({ id: moduleId, value }));
       break;
 
-    case name === "limit" && section === "slider":
-      dispatch(setSliderLimit({ id: moduleId, value }));
+    case name === "limit" && section === "collection":
+      dispatch(setCollectionLimit({ id: moduleId, value }));
       break;
 
     default:
@@ -600,17 +627,17 @@ export async function initMultiSelectors(
   setSelectedCategories,
   selectedCategories,
   categoriesList,
-  selectedTagsSlider,
-  setSelectedTagsSlider
+  selectedTagsCollection,
+  setSelectedTagsCollection
 ) {
   if (fieldType === "multi-value") {
     switch (name) {
       case "tags": {
-        if (section === "slider") {
+        if (section === "collection") {
           initTagsSelector(
             edit,
-            setSelectedTagsSlider,
-            selectedTagsSlider,
+            setSelectedTagsCollection,
+            selectedTagsCollection,
             tagsList
           );
         } else {

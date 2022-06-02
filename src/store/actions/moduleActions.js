@@ -29,10 +29,12 @@ import {
   SET_PAGE_MODULE_HEADER_TITLE,
   SET_CTA_IMAGE_UUID,
   SET_CTA_ALT_IMAGE,
-  SET_SLIDER_CATEGORIES,
-  SET_SLIDER_TAGS,
-  SET_SLIDER_LIMIT,
-  SET_SLIDER_TYPE,
+  SET_COLLECTION_CATEGORIES,
+  SET_COLLECTION_TAGS,
+  SET_COLLECTION_LIMIT,
+  SET_COLLECTION_TYPE,
+  SET_COLLECTION_FORMAT,
+  SET_COLLECTION_IS_PAGINATED,
   SET_CTA_LINK,
   SET_CTA_TYPE,
 } from "../constants";
@@ -190,22 +192,32 @@ export const setCtaAltImage = (payload) => ({
   payload,
 });
 
-export const setSliderCategories = (payload) => ({
-  type: SET_SLIDER_CATEGORIES,
+export const setCollectionCategories = (payload) => ({
+  type: SET_COLLECTION_CATEGORIES,
   payload,
 });
 
-export const setSliderTags = (payload) => ({
-  type: SET_SLIDER_TAGS,
+export const setCollectionTags = (payload) => ({
+  type: SET_COLLECTION_TAGS,
   payload,
 });
 
-export const setSliderLimit = (payload) => {
-  return { type: SET_SLIDER_LIMIT, payload };
+export const setCollectionLimit = (payload) => {
+  return { type: SET_COLLECTION_LIMIT, payload };
 };
 
-export const setSliderType = (payload) => ({
-  type: SET_SLIDER_TYPE,
+export const setCollectionType = (payload) => ({
+  type: SET_COLLECTION_TYPE,
+  payload,
+});
+
+export const setCollectionFormat = (payload) => ({
+  type: SET_COLLECTION_FORMAT,
+  payload,
+});
+
+export const setCollectionIsPaginated = (payload) => ({
+  type: SET_COLLECTION_IS_PAGINATED,
   payload,
 });
 

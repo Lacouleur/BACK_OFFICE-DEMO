@@ -62,8 +62,8 @@ import {
   setNewTag,
 } from "../../store/actions/mainInformationActions";
 import {
-  setSliderCategories,
-  setSliderTags,
+  setCollectionCategories,
+  setCollectionTags,
 } from "../../store/actions/moduleActions";
 
 // All necessary methods of "Field" are in "fieldsHelper.js"
@@ -106,8 +106,9 @@ const Field = ({
   const [fileTitle, setFileTitle] = useState("");
   const [selectedAuthors, setSelectedAuthors] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
-  const [selectedTagsSlider, setSelectedTagsSlider] = useState([]);
-  const [selectedSliderType, setSelectedSliderType] = useState();
+  const [selectedTagsCollection, setSelectedTagsCollection] = useState([]);
+  const [selectedCollectionType, setSelectedCollectionType] = useState();
+  const [selectedCollectionFormat, setSelectedCollectionFormat] = useState();
   const [isOpenTagWarn, setIsOpenTagWarn] = useState();
   const animatedComponents = makeAnimated();
   const [fuse, setFuse] = useState(null);
@@ -173,8 +174,10 @@ const Field = ({
       setSelectedReadTime,
       selectedColorStyle,
       setSelectedColorStyle,
-      setSelectedSliderType,
-      selectedSliderType,
+      setSelectedCollectionType,
+      selectedCollectionType,
+      setSelectedCollectionFormat,
+      selectedCollectionFormat,
       setSelectedCtaType,
       selectedCtaType
     );
@@ -193,8 +196,8 @@ const Field = ({
       setSelectedCategories,
       selectedCategories,
       categoriesList,
-      selectedTagsSlider,
-      setSelectedTagsSlider
+      selectedTagsCollection,
+      setSelectedTagsCollection
     );
   }, [edit, categoriesList, authorsList, tagsList]);
 
@@ -228,7 +231,8 @@ const Field = ({
               selectedLang,
               selectedReadTime,
               selectedColorStyle,
-              selectedSliderType,
+              selectedCollectionType,
+              selectedCollectionFormat,
               selectedCtaType
             )}
             options={optionSelector(name, categoriesList)}
@@ -244,7 +248,8 @@ const Field = ({
                 setSelectedLang,
                 setSelectedReadTime,
                 setSelectedColorStyle,
-                setSelectedSliderType,
+                setSelectedCollectionType,
+                setSelectedCollectionFormat,
                 setSelectedCtaType,
                 moduleId
               );
@@ -405,7 +410,7 @@ const Field = ({
                     setSelectedCategories(event);
                   }
                   dispatch(
-                    setSliderCategories({
+                    setCollectionCategories({
                       id: moduleId,
                       value: dispatchElementsValue(event || []),
                     })
@@ -416,7 +421,7 @@ const Field = ({
           )}
 
           {/* Tag selector without creation */}
-          {name === "tags" && section === "slider" && (
+          {name === "tags" && section === "Collection" && (
             <>
               <MultiSelector
                 classNamePrefix="select"
@@ -425,8 +430,8 @@ const Field = ({
                 components={animatedComponents}
                 closeMenuOnSelect={false}
                 placeholder={placeholder}
-                defaultValue={selectedTagsSlider}
-                value={selectedTagsSlider}
+                defaultValue={selectedTagsCollection}
+                value={selectedTagsCollection}
                 getOptionValue={(option) => `${option.label}`}
                 fuzzyOptions={fuzzyOptions}
                 autoCorrect="off"
@@ -436,12 +441,12 @@ const Field = ({
                 loadOptions={(value) => loadOptions(value, fuse)}
                 onChange={(event) => {
                   if (!event) {
-                    setSelectedTagsSlider([]);
+                    setSelectedTagsCollection([]);
                   } else {
-                    setSelectedTagsSlider(event);
+                    setSelectedTagsCollection(event);
                   }
                   dispatch(
-                    setSliderTags({
+                    setCollectionTags({
                       id: moduleId,
                       value: dispatchElementsId(event || []),
                     })

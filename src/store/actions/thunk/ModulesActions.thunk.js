@@ -197,16 +197,26 @@ export function saveModule(uuid, request = "save") {
                 break;
               }
 
-              case "slider": {
-                const { order, isVisible, criteria, display } = module;
+              case "collection": {
+                console.warn(module);
+                const {
+                  order,
+                  isVisible,
+                  criteria,
+                  display,
+                  format,
+                  paginate,
+                } = module;
                 values = {
                   ...(isPage && pageSectoionHeaderValues),
                   uuid,
-                  type: "carousel",
+                  type: "collection",
                   order,
                   isVisible,
                   resource: "contents",
                   display,
+                  paginate,
+                  format: format || "carousel",
                   criteria: {
                     limit: criteria?.limit,
                     page: 1,
@@ -385,15 +395,25 @@ export function saveModule(uuid, request = "save") {
                 isChanged = true;
                 break;
               }
-              case "slider": {
-                const { order, isVisible, criteria, display } = module;
+              case "collection": {
+                console.warn(module);
+                const {
+                  order,
+                  isVisible,
+                  criteria,
+                  display,
+                  format,
+                  paginate,
+                } = module;
                 values = {
                   ...(isPage && pageSectoionHeaderValues),
-                  type: "carousel",
+                  type: "collection",
                   order,
                   isVisible,
                   resource: "contents",
                   display,
+                  paginate,
+                  format: format || "carousel",
                   criteria: {
                     limit: criteria?.limit,
                     page: 1,

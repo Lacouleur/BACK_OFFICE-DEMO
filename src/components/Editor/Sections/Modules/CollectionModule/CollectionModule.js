@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import "../../../../../styles/css/react-draft-wysiwyg.css";
 import { useDispatch, useSelector } from "react-redux";
-import { Switch } from "react-router-dom";
 import { FormTitle } from "../../../../../styles/styledComponents/global/Titles.sc";
 import {
   SectionBox,
@@ -16,8 +15,12 @@ import {
   ModuleContainer,
   Delete,
   ActionIcons,
+  FieldAndSwitchContainer,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
-import { showCloseModal } from "../../../../../store/actions/moduleActions";
+import {
+  setCollectionIsPaginated,
+  showCloseModal,
+} from "../../../../../store/actions/moduleActions";
 import CloseModal from "../../../../Modals/CloseModal";
 import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
 import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.thunk";
@@ -25,11 +28,10 @@ import Field from "../../../Field";
 import HeaderSectionPage from "../HeaderSectionPage";
 import { setAModuleIsOpen } from "../../../../../store/actions/actionBarActions";
 import { fetchTags } from "../../../../../store/actions/thunk/ArticlesActions.thunk";
-import {
-  watchNewModules
-} from "../../../../../helper/modulesHelper";
+import { watchNewModules } from "../../../../../helper/modulesHelper";
+import SwitchButton from "../../../../Tools/Switch";
 
-const SliderModule = ({
+const CollectionModule = ({
   isPage,
   title,
   subtitle,
@@ -43,10 +45,12 @@ const SliderModule = ({
   categories,
   tags,
   limit,
-  sliderType,
+  collectionType,
+  collectionFormat,
+  paginate,
 }) => {
   const dispatch = useDispatch();
-  const sliderModuleRef = useRef(null);
+  const collectionModuleRef = useRef(null);
   const PageMainInformationState = useSelector(
     ({ pageMainInformationReducer }) => pageMainInformationReducer
   );
@@ -60,7 +64,7 @@ const SliderModule = ({
   }, [isOpen]);
 
   useEffect(() => {
-    watchNewModules(isNewModule, sliderModuleRef, setIsOpen);
+    watchNewModules(isNewModule, collectionModuleRef, setIsOpen);
   }, [isNewModule]);
 
   useEffect(() => {
@@ -81,14 +85,14 @@ const SliderModule = ({
     }
   }
 
-  useClickOutside(sliderModuleRef, onClickOutside);
+  useClickOutside(collectionModuleRef, onClickOutside);
 
   return (
-    <ModuleContainer ref={sliderModuleRef}>
+    <ModuleContainer ref={collectionModuleRef}>
       {isOpenCloseModal && (
         <CloseModal
           moduleId={uuid}
-          moduleRef={sliderModuleRef}
+          moduleRef={collectionModuleRef}
           articleId={pageId}
         />
       )}
@@ -108,7 +112,7 @@ const SliderModule = ({
         </ActionIcons>
 
         <SectionTitle>
-          <FormTitle>{`${order}. slider`}</FormTitle>
+          <FormTitle>{`${order}. collection`}</FormTitle>
         </SectionTitle>
         {!isOpen && <Gradient />}
         {isPage && (
@@ -120,21 +124,46 @@ const SliderModule = ({
             openNewTabHeader={openNewTabHeader}
           />
         )}
+        <FieldAndSwitchContainer>
+          <Field
+            placeholder="Collection Format"
+            name="collectionFormat"
+            section="collection"
+            fieldType="select"
+            moduleId={uuid}
+            edit={collectionFormat || "carousel"}
+            infos="Choose if you want your collection displayed as a Grid or as a Slider"
+          />
+
+          <SwitchButton
+            action={() => {
+              dispatch(
+                setCollectionIsPaginated({
+                  id: uuid,
+                  value: !paginate,
+                })
+              );
+            }}
+            isChecked={paginate}
+            componentId={`collection-switch-${uuid}`}
+            displayedText="Paginate ?"
+          />
+        </FieldAndSwitchContainer>
 
         <Field
-          placeholder="SliderType"
-          name="sliderType"
-          section="slider"
+          placeholder="Collection Type"
+          name="collectionType"
+          section="collection"
           fieldType="select"
           moduleId={uuid}
-          edit={sliderType || "secondary"}
+          edit={collectionType || "secondary"}
           infos="Primary is only for Main Page"
         />
 
         <Field
           placeholder="Category to call"
           name="categories"
-          section="slider"
+          section="collection"
           fieldType="multi-value"
           moduleId={uuid}
           edit={categories || null}
@@ -142,7 +171,7 @@ const SliderModule = ({
         <Field
           placeholder="Tags to call"
           name="tags"
-          section="slider"
+          section="collection"
           fieldType="multi-value"
           moduleId={uuid}
           edit={tags || ""}
@@ -151,7 +180,7 @@ const SliderModule = ({
         <Field
           placeholder="Limit criteria"
           name="limit"
-          section="slider"
+          section="collection"
           moduleId={uuid}
           edit={limit || 6}
         />
@@ -160,7 +189,7 @@ const SliderModule = ({
   );
 };
 
-SliderModule.defaultProps = {
+CollectionModule.defaultProps = {
   title: "",
   subtitle: "",
   url: "",
@@ -171,7 +200,7 @@ SliderModule.defaultProps = {
   limit: 6,
 };
 
-SliderModule.propTypes = {
+CollectionModule.propTypes = {
   isPage: PropTypes.bool,
   title: PropTypes.string,
   subtitle: PropTypes.string,
@@ -185,6 +214,8 @@ SliderModule.propTypes = {
   categories: PropTypes.arrayOf(PropTypes.string),
   tags: PropTypes.arrayOf(PropTypes.string),
   limit: PropTypes.number,
-  sliderType: PropTypes.string.isRequired,
+  collectionType: PropTypes.string.isRequired,
+  collectionFormat: PropTypes.string.isRequired,
+  paginate: PropTypes.bool.isRequired,
 };
-export default SliderModule;
+export default CollectionModule;

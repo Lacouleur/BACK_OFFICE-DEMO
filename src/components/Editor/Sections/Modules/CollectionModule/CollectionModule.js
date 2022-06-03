@@ -168,6 +168,7 @@ const CollectionModule = ({
           moduleId={uuid}
           edit={categories || null}
         />
+
         <Field
           placeholder="Tags to call"
           name="tags"
@@ -177,6 +178,7 @@ const CollectionModule = ({
           edit={tags || ""}
           lang={lang}
         />
+
         <Field
           placeholder="Limit criteria"
           name="limit"

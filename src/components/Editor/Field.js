@@ -421,7 +421,7 @@ const Field = ({
           )}
 
           {/* Tag selector without creation */}
-          {name === "tags" && section === "Collection" && (
+          {name === "tags" && section === "collection" && (
             <>
               <MultiSelector
                 classNamePrefix="select"

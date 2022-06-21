@@ -1,10 +1,10 @@
 /* eslint-disable no-shadow */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
-import React from "react";
+import React, { useEffect, useState } from "react";
 /* import PropTypes from "prop-types"; */
 import { Draggable } from "react-beautiful-dnd";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ModulesBoardDnd } from "../../../../styles/styledComponents/editor/modules/Modules.sc";
 import TextModule from "./TextModule/TextModule";
 import ImageModule from "./ImageModule/ImageModule";
@@ -263,7 +263,13 @@ const ModulesDispatcher = ({
                         collectionType={module.display}
                         collectionFormat={module.format}
                         paginate={module.paginate}
-                        // Below, we need to change category and tags string to an array, only when fetched. We use the same function to recreate a string from array when we need to send data to API
+                        isCustom={!!(module.isCustom || module?.criteria?.ids)}
+                        cumulatedContentsList={module.cumulatedContentsList}
+                        fetchedCustomList={module.fetchedCustomList}
+                        customIdsList={module?.criteria?.ids || undefined}
+                        currentPage={module.currentPage}
+                        nextPage={module.nextPage}
+                        lastPage={module.lastPage}
                         categories={
                           module?.criteria?.categories
                             ? checkForStringtoArray(

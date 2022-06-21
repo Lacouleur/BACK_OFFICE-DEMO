@@ -198,7 +198,6 @@ export function saveModule(uuid, request = "save") {
               }
 
               case "collection": {
-                console.warn(module);
                 const {
                   order,
                   isVisible,
@@ -207,6 +206,7 @@ export function saveModule(uuid, request = "save") {
                   format,
                   paginate,
                 } = module;
+
                 values = {
                   ...(isPage && pageSectoionHeaderValues),
                   uuid,
@@ -222,7 +222,7 @@ export function saveModule(uuid, request = "save") {
                     page: 1,
                     sort: "firstPublishedAt",
                     order: "desc",
-                    fields: "header,slug,category",
+                    fields: "header,slug,category,theme",
                     lang,
                     categories:
                       checkForStringtoArray(criteria?.categories, "string") ||
@@ -230,6 +230,7 @@ export function saveModule(uuid, request = "save") {
                     tags:
                       checkForStringtoArray(criteria?.tags, "string") ||
                       undefined,
+                    ids: criteria?.ids || undefined,
                   },
                 };
                 isNewModule = true;
@@ -396,7 +397,6 @@ export function saveModule(uuid, request = "save") {
                 break;
               }
               case "collection": {
-                console.warn(module);
                 const {
                   order,
                   isVisible,
@@ -405,6 +405,7 @@ export function saveModule(uuid, request = "save") {
                   format,
                   paginate,
                 } = module;
+
                 values = {
                   ...(isPage && pageSectoionHeaderValues),
                   type: "collection",
@@ -419,7 +420,7 @@ export function saveModule(uuid, request = "save") {
                     page: 1,
                     sort: "firstPublishedAt",
                     order: "desc",
-                    fields: "header,slug,category",
+                    fields: "header,slug,category,theme",
                     lang,
                     categories:
                       checkForStringtoArray(criteria?.categories, "string") ||
@@ -427,6 +428,7 @@ export function saveModule(uuid, request = "save") {
                     tags:
                       checkForStringtoArray(criteria?.tags, "string") ||
                       undefined,
+                    ids: criteria.ids || undefined,
                   },
                 };
                 isChanged = true;

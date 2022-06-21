@@ -1,8 +1,10 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable jsx-a11y/heading-has-content */
 import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import "../../../../../styles/css/react-draft-wysiwyg.css";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import { FormTitle } from "../../../../../styles/styledComponents/global/Titles.sc";
 import {
@@ -16,6 +18,10 @@ import {
   Delete,
   ActionIcons,
   FieldAndSwitchContainer,
+  SeparatorWhite,
+  CollectionSectionTitleBox,
+  CollectionSectionTitle,
+  CollectionSectionDescritpion,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import {
   setCollectionIsPaginated,
@@ -27,9 +33,9 @@ import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.th
 import Field from "../../../Field";
 import HeaderSectionPage from "../HeaderSectionPage";
 import { setAModuleIsOpen } from "../../../../../store/actions/actionBarActions";
-import { fetchTags } from "../../../../../store/actions/thunk/ArticlesActions.thunk";
 import { watchNewModules } from "../../../../../helper/modulesHelper";
 import SwitchButton from "../../../../Tools/Switch";
+import DragAndDropCustomList from "./DragAndDropCustomList";
 
 const CollectionModule = ({
   isPage,
@@ -48,6 +54,12 @@ const CollectionModule = ({
   collectionType,
   collectionFormat,
   paginate,
+  customIdsList,
+  cumulatedContentsList,
+  fetchedCustomList,
+  currentPage,
+  nextPage,
+  lastPage,
 }) => {
   const dispatch = useDispatch();
   const collectionModuleRef = useRef(null);
@@ -55,23 +67,17 @@ const CollectionModule = ({
     ({ pageMainInformationReducer }) => pageMainInformationReducer
   );
 
-  const { pageId, lang, tagsList } = PageMainInformationState;
+  const { pageId, lang } = PageMainInformationState;
 
   const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    dispatch(setAModuleIsOpen(isOpen));
-  }, [isOpen]);
 
   useEffect(() => {
     watchNewModules(isNewModule, collectionModuleRef, setIsOpen);
   }, [isNewModule]);
 
   useEffect(() => {
-    if (!tagsList) {
-      dispatch(fetchTags(lang));
-    }
-  }, []);
+    dispatch(setAModuleIsOpen(isOpen));
+  }, [isOpen]);
 
   function onClickOutside() {
     if (!isOpenCloseModal) {
@@ -110,7 +116,6 @@ const CollectionModule = ({
             }}
           />
         </ActionIcons>
-
         <SectionTitle>
           <FormTitle>{`${order}. collection`}</FormTitle>
         </SectionTitle>
@@ -124,6 +129,16 @@ const CollectionModule = ({
             openNewTabHeader={openNewTabHeader}
           />
         )}
+
+        <CollectionSectionTitleBox>
+          <CollectionSectionTitle>
+            COLLECTION MAIN SETTING -
+          </CollectionSectionTitle>
+          <CollectionSectionDescritpion>
+            choose if your collection is a slider or a gird
+          </CollectionSectionDescritpion>
+        </CollectionSectionTitleBox>
+
         <FieldAndSwitchContainer>
           <Field
             placeholder="Collection Format"
@@ -134,7 +149,6 @@ const CollectionModule = ({
             edit={collectionFormat || "carousel"}
             infos="Choose if you want your collection displayed as a Grid or as a Slider"
           />
-
           <SwitchButton
             action={() => {
               dispatch(
@@ -145,8 +159,9 @@ const CollectionModule = ({
               );
             }}
             isChecked={paginate}
-            componentId={`collection-switch-${uuid}`}
+            componentId={`collection-switch-paginate-${uuid}`}
             displayedText="Paginate ?"
+            tooltipMessage="By default the collection display selected images only, in -paginate- mode it will display to user a button to load more content"
           />
         </FieldAndSwitchContainer>
 
@@ -160,6 +175,17 @@ const CollectionModule = ({
           infos="Primary is only for Main Page"
         />
 
+        <SeparatorWhite />
+        <CollectionSectionTitleBox>
+          <CollectionSectionTitle>
+            AUTOMATIC COLLECTION -
+          </CollectionSectionTitle>
+          <CollectionSectionDescritpion>
+            A collection will be self generated folowing your selected filters :
+            category, tags, limit.
+          </CollectionSectionDescritpion>
+        </CollectionSectionTitleBox>
+
         <Field
           placeholder="Category to call"
           name="categories"
@@ -168,7 +194,6 @@ const CollectionModule = ({
           moduleId={uuid}
           edit={categories || null}
         />
-
         <Field
           placeholder="Tags to call"
           name="tags"
@@ -178,13 +203,31 @@ const CollectionModule = ({
           edit={tags || ""}
           lang={lang}
         />
-
         <Field
           placeholder="Limit criteria"
           name="limit"
           section="collection"
           moduleId={uuid}
           edit={limit || 6}
+        />
+
+        <SeparatorWhite />
+        <CollectionSectionTitleBox>
+          <CollectionSectionTitle>CUSTOM COLLECTION -</CollectionSectionTitle>
+          <CollectionSectionDescritpion>
+            Please note that &quot;automatic&quot; section filters will be
+            ignored if you have items in your custom list
+          </CollectionSectionDescritpion>
+        </CollectionSectionTitleBox>
+
+        <DragAndDropCustomList
+          uuid={uuid}
+          customIdsList={customIdsList}
+          cumulatedContentsList={cumulatedContentsList}
+          fetchedCustomList={fetchedCustomList}
+          currentPage={currentPage}
+          nextPage={nextPage}
+          lastPage={lastPage}
         />
       </SectionBox>
     </ModuleContainer>
@@ -200,6 +243,12 @@ CollectionModule.defaultProps = {
   categories: undefined,
   tags: undefined,
   limit: 6,
+  customIdsList: undefined,
+  cumulatedContentsList: [],
+  fetchedCustomList: [],
+  currentPage: undefined,
+  nextPage: undefined,
+  lastPage: undefined,
 };
 
 CollectionModule.propTypes = {
@@ -219,5 +268,11 @@ CollectionModule.propTypes = {
   collectionType: PropTypes.string.isRequired,
   collectionFormat: PropTypes.string.isRequired,
   paginate: PropTypes.bool.isRequired,
+  customIdsList: PropTypes.string,
+  cumulatedContentsList: PropTypes.arrayOf(PropTypes.shape({})),
+  fetchedCustomList: PropTypes.arrayOf(PropTypes.shape({})),
+  currentPage: PropTypes.number,
+  nextPage: PropTypes.number,
+  lastPage: PropTypes.number,
 };
 export default CollectionModule;

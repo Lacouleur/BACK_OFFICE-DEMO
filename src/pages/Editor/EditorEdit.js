@@ -62,8 +62,6 @@ const Editor = () => {
       dispatch(cleanPageState())
   }, []);
 
-
-
   return (
     <PageContainer position="relative">
       <Header position="fixed" />
@@ -80,7 +78,7 @@ const Editor = () => {
           )}
           <DragDropContext
             onDragEnd={(result) => {
-              onDragEnd(result, modulesList, dispatch)
+              onDragEnd("modulesList", result, modulesList, dispatch)
               setIsUsedDnDArea(false)
               }}
             onDragStart={() => setIsUsedDnDArea(true)}

@@ -5,6 +5,10 @@ import {
   SwitchBox,
   SwitchLabel,
 } from "../../styles/styledComponents/global/Switch.sc";
+import {
+  Tooltip,
+  TooltipText,
+} from "../../styles/styledComponents/contentList/Content.sc";
 
 const SwitchButton = ({
   isChecked,
@@ -13,9 +17,11 @@ const SwitchButton = ({
   action,
   styleVariant,
   disable,
+  tooltipMessage,
 }) => {
   return (
     <SwitchBox
+      tooltip={tooltipMessage || false}
       disable={disable || false}
       htmlFor={componentId}
       styleVariant={styleVariant}
@@ -23,6 +29,10 @@ const SwitchButton = ({
         action();
       }}
     >
+      <Tooltip wide>
+        <TooltipText>{tooltipMessage}</TooltipText>
+      </Tooltip>
+
       <p>{displayedText}</p>
       <Switch
         className="Switch"
@@ -44,6 +54,7 @@ const SwitchButton = ({
 SwitchButton.defaultProps = {
   styleVariant: "regular",
   disable: false,
+  tooltipMessage: undefined,
 };
 
 SwitchButton.propTypes = {
@@ -53,6 +64,7 @@ SwitchButton.propTypes = {
   action: PropTypes.func.isRequired,
   styleVariant: PropTypes.string,
   disable: PropTypes.bool,
+  tooltipMessage: PropTypes.string,
 };
 
 export default SwitchButton;

@@ -85,3 +85,39 @@ export function processLink(link) {
 export function onEditorStateChange(e, setEditorState) {
   setEditorState(e);
 }
+
+export function removeUsedItemFromList(usedItems, originalItemsList) {
+  const onlyNewItemsList = originalItemsList.filter(
+    (originalItem) =>
+      usedItems.findIndex((usedItem) => usedItem._id === originalItem._id) < 0
+  );
+
+  return onlyNewItemsList;
+}
+
+export function updateCustomListComponent(
+  cumulatedContentsList,
+  columns,
+  setColumns,
+  fetchedCustomList
+) {
+  if (cumulatedContentsList) {
+    const filtredContentsList = removeUsedItemFromList(
+      columns.customList.items,
+      cumulatedContentsList
+    );
+    setColumns({
+      originalList: {
+        name: "Original List",
+        items: filtredContentsList,
+      },
+      customList: {
+        name: "Custom List",
+        items:
+          columns.customList.items.length === 0
+            ? fetchedCustomList
+            : columns.customList.items,
+      },
+    });
+  }
+}

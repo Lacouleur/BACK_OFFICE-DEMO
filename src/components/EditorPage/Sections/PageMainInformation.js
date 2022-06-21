@@ -20,6 +20,8 @@ import {
   slugMessage,
 } from "../../../helper/mainInformationHelper";
 import { setIsPage } from "../../../store/actions/pageEditor/pageMainInformationsActions";
+import { FieldAndSwitchContainer } from "../../../styles/styledComponents/editor/modules/Modules.sc";
+import SwitchButton from "../../Tools/Switch";
 
 const PageMainInformation = () => {
   const PageMainInformationState = useSelector(
@@ -79,18 +81,29 @@ const PageMainInformation = () => {
 
         {isOpen && (
           <>
-            <FieldTitle>Title and slug URL</FieldTitle>
-            <Field
-              placeholder="Title (internal)"
-              maxlength="40"
-              infos={
-                titleError ? "Content need a title." : "Maximum 40 characters"
-              }
-              name="title"
-              section="pageMainInformation"
-              edit={title}
-              error={titleError}
-            />
+            <FieldAndSwitchContainer>
+              <FieldTitle>Title and slug URL</FieldTitle>
+              <Field
+                placeholder="Title (internal)"
+                maxlength="40"
+                infos={
+                  titleError ? "Content need a title." : "Maximum 40 characters"
+                }
+                name="title"
+                section="pageMainInformation"
+                edit={title}
+                error={titleError}
+              />
+              <SwitchButton
+                action={() => {
+                  dispatch(setMainInfoIsSubtitle(!mainInfoIsSubtitle));
+                }}
+                isChecked={mainInfoIsSubtitle}
+                componentId="mainInfo-switch-isSubtitle"
+                displayedText="Subtitle ?"
+                tooltipMessage="By default the collection display selected images only, in -paginate- mode it will display to user a button to load more content"
+              />
+            </FieldAndSwitchContainer>
 
             <Field
               placeholder="slug URL"

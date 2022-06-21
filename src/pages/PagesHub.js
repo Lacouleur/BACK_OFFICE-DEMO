@@ -90,13 +90,16 @@ const PagesHub = () => {
               })}
           </PageCardsContainer>
         </PageHubContainer>
-        <Pagination
-          itemsList={pagesList}
-          setContent={setPagesList}
-          pageName="pagesList"
-          lastPage={lastPage}
-          currentPage={currentPage}
-        />
+
+        {lastPage > 1 && (
+          <Pagination
+            itemsList={pagesList}
+            setContent={setPagesList}
+            pageName="pagesList"
+            lastPage={lastPage}
+            currentPage={currentPage}
+          />
+        )}
         <Footer position="fixed" />
       </PageContainer>
     </>

@@ -39,8 +39,17 @@ export const ActionToolTipMixin = css`
   left: -4px !important;
 `;
 
+export const AutoSizeMixin = css`
+  left: -4px !important;
+`;
+
+export const wideMixin = css`
+  width: 500px !important;
+`;
+
 export const Tooltip = styled.div`
   ${(props) => (props.archive ? ActionToolTipMixin : "")};
+  ${(props) => (props.wide ? wideMixin : "")};
   visibility: hidden;
   min-width: 120px;
   max-width: 190px;

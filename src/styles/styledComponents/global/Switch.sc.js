@@ -107,7 +107,20 @@ const mixinSwitchBoxPublishModalToBottom = css`
   margin-left: 27px !important;
 `;
 
+const mixinToolTip = css`
+  &:hover {
+    ${(props) =>
+      props.styleVariant === "publishModal-toTop" &&
+      mixinSwitchBoxPublishModalToTop}
+    & div:nth-of-type(1) {
+      visibility: visible;
+    }
+  }
+`;
+
 export const SwitchBox = styled.label`
+  ${(props) => props.tooltip && mixinToolTip}
+
   ${(props) =>
     props.styleVariant === "publishModal-toTop" &&
     mixinSwitchBoxPublishModalToTop}
@@ -125,4 +138,13 @@ export const SwitchBox = styled.label`
   line-height: 24px;
   letter-spacing: 1.25px;
   cursor: pointer;
+`;
+
+export const SwitchSeparatorVertical = styled.div`
+  background-color: ${colors.lightGrey};
+  width: 1px;
+  height: 50px;
+  margin: 0 0 20px 20px;
+  justify-self: center;
+  align-self: center;
 `;

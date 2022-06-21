@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable array-callback-return */
 import { v4 as uuidv4 } from "uuid";
+import { removeUsedItemFromList } from "../../helper/modulesHelper";
 import {
   SET_NEW_MODULE,
   CLOSE_MODULE,
@@ -43,6 +44,11 @@ import {
   SET_COLLECTION_TYPE,
   SET_COLLECTION_FORMAT,
   SET_COLLECTION_IS_PAGINATED,
+  SET_COLLECTION_IS_CUSTOM,
+  SET_COLLECTION_CUSTOM_IDS_LIST,
+  SET_CUMULATED_CONTENTS_LIST,
+  SET_FETCHED_CUSTOM_LIST,
+  SET_COLLECTION_PAGINATION,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -197,6 +203,7 @@ const modulesReducer = (state = initialState, action = {}) => {
                 display: "secondary",
                 format: "carousel",
                 paginate: true,
+                isCustom: false,
                 categories: [],
                 tags: [],
                 limit: 6,
@@ -887,6 +894,27 @@ const modulesReducer = (state = initialState, action = {}) => {
       };
     }
 
+    case SET_COLLECTION_CUSTOM_IDS_LIST: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            criteria: {
+              ...module.criteria,
+              ids: value,
+            },
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
     case SET_COLLECTION_TAGS: {
       const { id, value } = action.payload;
       state.modulesList.find((module, index) => {
@@ -972,6 +1000,92 @@ const modulesReducer = (state = initialState, action = {}) => {
           oldState.modulesList[index] = {
             ...module,
             paginate: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_CUMULATED_CONTENTS_LIST: {
+      const { id, value } = action.payload;
+
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          const originalContentList =
+            state.modulesList[index]?.cumulatedContentsList || [];
+
+          const onlyNewItemsList = originalContentList.filter(
+            (originalItem) =>
+              value.findIndex(
+                (recievedItem) => recievedItem._id === originalItem._id
+              ) < 0
+          );
+
+          oldState.modulesList[index] = {
+            ...module,
+            cumulatedContentsList: [...onlyNewItemsList, ...value],
+            isChanged: true,
+          };
+        }
+
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_FETCHED_CUSTOM_LIST: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            fetchedCustomList: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_COLLECTION_PAGINATION: {
+      const { id, currentPage, lastPage, nextPage } = action.payload;
+
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            currentPage,
+            lastPage,
+            nextPage,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_COLLECTION_IS_CUSTOM: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            isCustom: value,
             isChanged: true,
           };
         }

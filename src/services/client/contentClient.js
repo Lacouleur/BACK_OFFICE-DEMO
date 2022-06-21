@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import { Title } from "../../styles/styledComponents/contentList/Content.sc";
 import axiosConfig from "../config/axiosConfig";
 import { getToken } from "./tokenStuff";
 
@@ -10,8 +11,18 @@ export const sendAuth = (data) => {
   });
 };
 
-export function getContentList(page = 1, limit = 15) {
-  return axiosConfig.get(`/contents?limit=${limit}&page=${page}`, {
+export function getContentList(page = 1, contentType, ids, limit = 15) {
+  let string = "";
+  if (!ids) {
+    if (contentType === "title") {
+      string = `/contents?page=${page}&limit=${limit}&fields=title`;
+    } else {
+      string = `/contents?limit=${limit}&page=${page}`;
+    }
+  } else if (contentType === "title") {
+    string = `/contents?page=${page}&fields=title&ids=${ids}`;
+  }
+  return axiosConfig.get(`${string}`, {
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },

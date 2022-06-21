@@ -35,8 +35,13 @@ import {
   SET_COLLECTION_TYPE,
   SET_COLLECTION_FORMAT,
   SET_COLLECTION_IS_PAGINATED,
+  SET_COLLECTION_IS_CUSTOM,
   SET_CTA_LINK,
   SET_CTA_TYPE,
+  SET_COLLECTION_CUSTOM_IDS_LIST,
+  SET_CUMULATED_CONTENTS_LIST,
+  SET_FETCHED_CUSTOM_LIST,
+  SET_COLLECTION_PAGINATION,
 } from "../constants";
 
 export const setPageModuleHeaderNewTab = (payload) => ({
@@ -216,12 +221,37 @@ export const setCollectionFormat = (payload) => ({
   payload,
 });
 
+export const setCtaType = (payload) => ({
+  type: SET_CTA_TYPE,
+  payload,
+});
+
 export const setCollectionIsPaginated = (payload) => ({
   type: SET_COLLECTION_IS_PAGINATED,
   payload,
 });
 
-export const setCtaType = (payload) => ({
-  type: SET_CTA_TYPE,
+export const setCollectionIsCustom = (payload) => ({
+  type: SET_COLLECTION_IS_CUSTOM,
+  payload,
+});
+
+export const setCollectionCustomIdsList = (payload) => ({
+  type: SET_COLLECTION_CUSTOM_IDS_LIST,
+  payload,
+});
+
+export const setFetchedCustomList = (payload) => ({
+  type: SET_FETCHED_CUSTOM_LIST,
+  payload,
+});
+
+export const setCumulatedContentsList = (payload) => ({
+  type: SET_CUMULATED_CONTENTS_LIST,
+  payload,
+});
+
+export const setCollectionPagination = (payload) => ({
+  type: SET_COLLECTION_PAGINATION,
   payload,
 });

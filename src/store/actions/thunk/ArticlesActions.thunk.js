@@ -1,3 +1,4 @@
+import { $CombinedState } from "redux";
 import {
   deleteContent,
   getCategories,
@@ -50,6 +51,11 @@ import { setContentsList, setPagination } from "../contentListActions";
 import ErrorCaseClient from "../../../helper/ErrorCaseClient";
 import { dispatchElementsId } from "../../../helper/fieldsHelper";
 import { getPage } from "../../../services/client/pagesClient";
+import {
+  setCollectionPagination,
+  setCumulatedContentsList,
+  setFetchedCustomList,
+} from "../moduleActions";
 
 export function checkAndSend(type = "save", articleId = null) {
   return async (dispatch, getState) => {
@@ -276,16 +282,52 @@ export function fetchContent(id) {
   };
 }
 
-export function fetchContentsList(page) {
-  console.log("%cFETCHING CONTENT LIST", `${consoleTitle}`);
+export function fetchContentsList(
+  page = 1,
+  uuid,
+  contentType,
+  ids,
+  limit = 15
+) {
   return async (dispatch) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
       try {
-        const response = await getContentList(page);
+        const response = await getContentList(page, contentType, ids, limit);
         if (response.status < 300 && response.status > 199) {
-          dispatch(setContentsList(response.data.contents));
-          dispatch(setPagination(response.data));
+          if (uuid) {
+            if (ids) {
+              dispatch(
+                setFetchedCustomList({
+                  id: uuid,
+                  value: response.data.contents,
+                })
+              );
+            }
+
+            if (!ids) {
+              dispatch(
+                setCumulatedContentsList({
+                  id: uuid,
+                  value: response.data.contents,
+                })
+              );
+            }
+
+            dispatch(
+              setCollectionPagination({
+                id: uuid,
+                currentPage: response.data.currentPage,
+                lastPage: response.data.lastPage,
+                nextPage: response.data.nextPage,
+              })
+            );
+          }
+
+          if (!ids && !uuid) {
+            dispatch(setContentsList(response.data.contents));
+            dispatch(setPagination(response.data));
+          }
         }
         console.log(
           "%c Fetched content list =>",

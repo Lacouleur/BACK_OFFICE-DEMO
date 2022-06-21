@@ -153,6 +153,7 @@ const Field = ({
         (name === "tags" && tagsList?.length === 0) ||
         tagsList === undefined
       ) {
+        console.log("plop");
         dispatch(fetchTags(lang));
       }
       if (name === "categories" && categoriesList?.length === 0) {

@@ -1,13 +1,19 @@
 import {
   SET_CONTENTS_LIST,
   SET_PAGINATION,
-  SET_IS_OPEN_DUPLICATE_MODAL,
+  SET_CUMULATED_CONTENTS_LIST,
+  SET_FETCHED_CUSTOM_LIST,
 } from "../constants";
 
 import {} from "../actions/commonsActions";
 
 const initialState = {
   contentsList: [],
+  fetchedCustomList: [],
+  currentPage: null,
+  nextPage: null,
+  previousPage: null,
+  lastPage: null,
 };
 
 const contentListReducer = (state = initialState, action = {}) => {

@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { Draggable } from "react-beautiful-dnd";
 import colors from "../../../core/colors";
 
 export const ModuleContainer = styled.div`
@@ -255,4 +256,124 @@ export const SeparatorWhite = styled.div`
   height: 1px;
   background-color: ${colors.white};
   width: 80%;
+`;
+
+export const CustomCollectionContainer = styled.div`
+  width: 100%;
+  height: fit-content;
+  max-height: 900px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: relative;
+`;
+
+export const ListContainer = styled.div`
+  background-color: ${colors.darkGrey};
+  width: 48%;
+  min-height: 400px;
+  max-height: 550px;
+  overflow: auto;
+  position: relative;
+`;
+
+export const ArticleBox = styled.div`
+  border: 1px solid ${colors.paleViolet};
+  background-color: ${colors.paleVioletTransp};
+  border-radius: 25px;
+  margin: 8px;
+  width: fit-content;
+  &:hover {
+    transform: scale(1.02);
+  }
+`;
+
+export const ArticleTitle = styled.div`
+  margin: 8px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 460px;
+`;
+
+export const CustomListVerticalSeparator = styled.div`
+  position: absolute;
+  top: 0;
+  left: 50%;
+  right: 50%;
+  height: 100%;
+  width: 1px;
+  background-color: ${colors.lightGrey};
+`;
+
+export function DnDCustomCollectionStyles(snapshot, providedStyle) {
+  return {
+    userSelect: "none",
+    ...providedStyle,
+  };
+}
+
+export const LoadMoreCustomList = styled.div`
+  border: 1px solid
+    ${(props) => (props.disabled ? colors.lightGrey : colors.paleVioletTransp)};
+  background-color: ${(props) =>
+    props.disabled ? colors.lightGrey : colors.paleVioletTransp};
+  border-radius: 25px;
+  text-align: center;
+  margin: 8px;
+  padding: 8px;
+  width: fit-content;
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+
+  &:hover {
+    background-color: ${(props) =>
+      props.disabled ? colors.lightGrey : colors.paleViolet};
+  }
+`;
+
+export const TitleAndFieldContainer = styled.div`
+  height: 100%;
+  width: 100%;
+  position: relative;
+`;
+
+const rightColumnMixin = css``;
+
+const leftColumnMixin = css``;
+
+export const DndTitleBox = styled.div`
+  color: ${colors.lightGrey};
+  margin: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+export const DndColumnTitle = styled.p`
+  ${(props) => props.right && rightColumnMixin};
+  ${(props) => props.left && leftColumnMixin};
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+export const ListBox = styled.div`
+  padding: 8px;
+  scroll-padding: 20px;
+`;
+
+export const CollectionSectionTitleBox = styled.div`
+  display: felx;
+  justify-content: flex-start;
+  text-align: left;
+  margin-bottom: 32px;
+`;
+
+export const CollectionSectionTitle = styled.h4`
+  color: ${colors.lightGrey};
+  margin-right: 16px;
+`;
+
+export const CollectionSectionDescritpion = styled.p`
+  color: ${colors.lightGrey};
 `;

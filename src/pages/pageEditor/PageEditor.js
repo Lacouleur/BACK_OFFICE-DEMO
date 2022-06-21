@@ -28,14 +28,13 @@ import {
 } from "../../store/actions/mainInformationActions";
 import colors from "../../styles/core/colors";
 import { HideOnDnd } from "../../styles/styledComponents/editor/modules/Modules.sc";
-import { onDragEnd } from "../../helper/Editor/dragAndDrop";
+import { onDragEnd } from "../../helper/Editor/dragAndDropHelper";
 import ModulesDispatcher from "../../components/Editor/Sections/Modules/ModulesDispatcher";
 import { consolePage } from "../../helper/consoleStyles";
 import { pageSetId, setIsPage } from "../../store/actions/pageEditor/pageMainInformationsActions";
 import PageMainInformation from "../../components/EditorPage/Sections/PageMainInformation";
 import { fetchPage } from "../../store/actions/thunk/PageActions.thunk";
 import PageSeo from "../../components/EditorPage/Sections/PageSeo";
-
 
 const PageEditor = () => {
 

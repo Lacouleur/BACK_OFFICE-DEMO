@@ -894,27 +894,6 @@ const modulesReducer = (state = initialState, action = {}) => {
       };
     }
 
-    case SET_COLLECTION_CUSTOM_IDS_LIST: {
-      const { id, value } = action.payload;
-      state.modulesList.find((module, index) => {
-        if (module?.uuid === id) {
-          oldState.modulesList[index] = {
-            ...module,
-            criteria: {
-              ...module.criteria,
-              ids: value,
-            },
-            isChanged: true,
-          };
-        }
-        return null;
-      });
-
-      return {
-        ...oldState,
-      };
-    }
-
     case SET_COLLECTION_TAGS: {
       const { id, value } = action.payload;
       state.modulesList.find((module, index) => {
@@ -1011,6 +990,27 @@ const modulesReducer = (state = initialState, action = {}) => {
       };
     }
 
+    case SET_COLLECTION_CUSTOM_IDS_LIST: {
+      const { id, value, isChanged } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            criteria: {
+              ...module.criteria,
+              ids: value,
+            },
+            isChanged: isChanged !== false,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
     case SET_CUMULATED_CONTENTS_LIST: {
       const { id, value } = action.payload;
 
@@ -1061,7 +1061,6 @@ const modulesReducer = (state = initialState, action = {}) => {
 
     case SET_COLLECTION_PAGINATION: {
       const { id, currentPage, lastPage, nextPage } = action.payload;
-
       state.modulesList.find((module, index) => {
         if (module?.uuid === id) {
           oldState.modulesList[index] = {

@@ -314,14 +314,16 @@ export function fetchContentsList(
               );
             }
 
-            dispatch(
-              setCollectionPagination({
-                id: uuid,
-                currentPage: response.data.currentPage,
-                lastPage: response.data.lastPage,
-                nextPage: response.data.nextPage,
-              })
-            );
+            if (response.data.currentPage) {
+              dispatch(
+                setCollectionPagination({
+                  id: uuid,
+                  currentPage: response.data.currentPage,
+                  lastPage: response.data.lastPage,
+                  nextPage: response.data.nextPage,
+                })
+              );
+            }
           }
 
           if (!ids && !uuid) {

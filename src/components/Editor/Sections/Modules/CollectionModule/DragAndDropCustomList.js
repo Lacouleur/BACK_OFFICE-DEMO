@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   CustomCollectionContainer,
   ListContainer,
@@ -19,7 +19,7 @@ import {
 import { setCollectionCustomIdsList } from "../../../../../store/actions/moduleActions";
 import { fetchContentsList } from "../../../../../store/actions/thunk/ArticlesActions.thunk";
 import { updateCustomListComponent } from "../../../../../helper/modulesHelper";
-import { onDragEnd2 } from "../../../../../helper/Editor/dragAndDrop";
+import { onDragEnd2 } from "../../../../../helper/Editor/dragAndDropHelper";
 
 import { checkForStringtoArray } from "../../../../../helper/converters";
 
@@ -70,10 +70,12 @@ const DragAndDropCustomList = ({
         buildCustomIdsList.push(item._id);
         return null;
       });
+
       dispatch(
         setCollectionCustomIdsList({
           id: uuid,
           value: checkForStringtoArray(buildCustomIdsList, "string"),
+          isChanged: fetchedCustomList !== columns.customList.items,
         })
       );
     } else {

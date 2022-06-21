@@ -91,7 +91,6 @@ export function removeUsedItemFromList(usedItems, originalItemsList) {
     (originalItem) =>
       usedItems.findIndex((usedItem) => usedItem._id === originalItem._id) < 0
   );
-
   return onlyNewItemsList;
 }
 

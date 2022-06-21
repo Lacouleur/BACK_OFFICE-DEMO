@@ -43,6 +43,7 @@ import { saveImage } from "../store/actions/thunk/ModulesActions.thunk";
 import langList from "./langList";
 import {
   pageSetSlug,
+  pageSetSubtitle,
   pageSetTitle,
 } from "../store/actions/pageEditor/pageMainInformationsActions";
 import {
@@ -562,6 +563,10 @@ export function dispatchFields(
 
     case name === "slug" && section === "pageMainInformation":
       dispatch(pageSetSlug(value));
+      break;
+
+    case name === "subtitle" && section === "pageMainInformation":
+      dispatch(pageSetSubtitle(value));
       break;
 
     case name === "title" && section === "pageSeo":

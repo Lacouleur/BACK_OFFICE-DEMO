@@ -15,6 +15,8 @@ import {
   SET_CATEGORIES_LIST,
   SET_TAGS_LIST,
   SET_MODIFIED,
+  PAGE_SET_DISPLAY_TITLE,
+  PAGE_SET_SUBTITLE,
 } from "../../constants";
 import { verifySlug } from "../../../helper/auth/verifyFields";
 
@@ -22,6 +24,7 @@ const initialState = {
   // string
   pageId: "",
   title: "",
+  subtitle: undefined,
   slug: "",
   lang: "",
   status: "",
@@ -31,6 +34,7 @@ const initialState = {
   tagsList: [],
 
   // bool
+  displayTitle: false,
   regexSlugError: false,
   slugError: false,
   titleError: false,
@@ -52,6 +56,8 @@ const pageMainInformationReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         title: action.payload?.title ?? "",
+        subtitle: action.payload.subtitle ?? undefined,
+        displayTitle: action.payload.displayTitle ?? false,
         slug: action.payload?.slug ?? "",
         lang: lang || "",
         status: action.payload?.state ?? "",
@@ -67,6 +73,22 @@ const pageMainInformationReducer = (state = initialState, action = {}) => {
         oldState.titleError = true;
       }
       return { ...oldState, title: action.payload, isChanged: true };
+    }
+
+    case PAGE_SET_DISPLAY_TITLE: {
+      return {
+        ...oldState,
+        displayTitle: action.payload,
+        isChanged: true,
+      };
+    }
+
+    case PAGE_SET_SUBTITLE: {
+      return {
+        ...oldState,
+        subtitle: action.payload,
+        isChanged: true,
+      };
     }
 
     case PAGE_SET_SLUG: {

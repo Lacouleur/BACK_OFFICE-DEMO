@@ -504,6 +504,9 @@ const Field = ({
           <FieldButton>UPLOAD</FieldButton>
         </FieldBox>
       )}
+
+      {/* regular fields */}
+
       {!fieldType && (
         <FieldBox>
           <FieldStyle

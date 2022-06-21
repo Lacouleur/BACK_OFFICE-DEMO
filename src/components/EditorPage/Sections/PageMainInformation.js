@@ -19,7 +19,10 @@ import {
   checkPageAndSend,
   slugMessage,
 } from "../../../helper/mainInformationHelper";
-import { setIsPage } from "../../../store/actions/pageEditor/pageMainInformationsActions";
+import {
+  pageSetDisplayTitle,
+  setIsPage,
+} from "../../../store/actions/pageEditor/pageMainInformationsActions";
 import { FieldAndSwitchContainer } from "../../../styles/styledComponents/editor/modules/Modules.sc";
 import SwitchButton from "../../Tools/Switch";
 
@@ -40,6 +43,8 @@ const PageMainInformation = () => {
     slugError,
     titleError,
     postingError,
+    displayTitle,
+    subtitle,
   } = PageMainInformationState;
 
   useEffect(() => {
@@ -81,8 +86,8 @@ const PageMainInformation = () => {
 
         {isOpen && (
           <>
+            <FieldTitle>Title and slug URL</FieldTitle>
             <FieldAndSwitchContainer>
-              <FieldTitle>Title and slug URL</FieldTitle>
               <Field
                 placeholder="Title (internal)"
                 maxlength="40"
@@ -96,14 +101,24 @@ const PageMainInformation = () => {
               />
               <SwitchButton
                 action={() => {
-                  dispatch(setMainInfoIsSubtitle(!mainInfoIsSubtitle));
+                  dispatch(pageSetDisplayTitle(!displayTitle));
                 }}
-                isChecked={mainInfoIsSubtitle}
+                isChecked={displayTitle}
                 componentId="mainInfo-switch-isSubtitle"
-                displayedText="Subtitle ?"
-                tooltipMessage="By default the collection display selected images only, in -paginate- mode it will display to user a button to load more content"
+                displayedText="Display Title ?"
+                tooltipMessage="If you choose to display title it will apear on front website. If checked you can also add a subtitle to be displayed"
               />
             </FieldAndSwitchContainer>
+
+            {displayTitle && (
+              <Field
+                placeholder="subtitle"
+                infos="Subtitle to display on this page"
+                name="subtitle"
+                section="pageMainInformation"
+                edit={subtitle}
+              />
+            )}
 
             <Field
               placeholder="slug URL"

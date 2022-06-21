@@ -36,7 +36,7 @@ import {
 import colors from "../../styles/core/colors";
 import HomeNavigation from "../../components/Editor/Sections/HomeNavigation";
 import { HideOnDnd } from "../../styles/styledComponents/editor/modules/Modules.sc";
-import { onDragEnd } from "../../helper/Editor/dragAndDrop";
+import { onDragEnd } from "../../helper/Editor/dragAndDropHelper";
 import ModulesDispatcher from "../../components/Editor/Sections/Modules/ModulesDispatcher";
 import { consolePage } from "../../helper/consoleStyles";
 import { setIsPage } from "../../store/actions/pageEditor/pageMainInformationsActions";

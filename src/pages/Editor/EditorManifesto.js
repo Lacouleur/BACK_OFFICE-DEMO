@@ -33,7 +33,7 @@ import colors from "../../styles/core/colors";
 import HomeNavigation from "../../components/Editor/Sections/HomeNavigation";
 import { ManifestoLang, ManifestoTitle, TitleBox } from "../../styles/styledComponents/global/Titles.sc";
 import { setIsManifesto } from "../../store/actions/manifestoActions";
-import { onDragEnd } from "../../helper/Editor/dragAndDrop";
+import { onDragEnd } from "../../helper/Editor/dragAndDropHelper";
 import { HideOnDnd} from "../../styles/styledComponents/editor/modules/Modules.sc";
 import { setIsAccessiblePanel } from "../../store/actions/userActions";
 import ModulesDispatcher from "../../components/Editor/Sections/Modules/ModulesDispatcher";

@@ -282,6 +282,7 @@ export const ArticleBox = styled.div`
   background-color: ${colors.paleVioletTransp};
   border-radius: 25px;
   margin: 8px;
+  max-width: 90%;
   width: fit-content;
   &:hover {
     transform: scale(1.02);
@@ -293,7 +294,6 @@ export const ArticleTitle = styled.div`
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  max-width: 460px;
 `;
 
 export const CustomListVerticalSeparator = styled.div`

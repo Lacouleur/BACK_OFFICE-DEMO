@@ -687,7 +687,14 @@ export function harmonizeLang(lang) {
   return language;
 }
 
-export function openPreview(language, slug) {
+export function openPreview(language, slug, type = "contents") {
   const lang = harmonizeLang(language);
-  window.open(`${PREVIEW_URL}/${lang}/contents/${slug}`, "_blank");
+  let string = "";
+  if (type === "contents") {
+    string = `${PREVIEW_URL}/${lang}/${type}/${slug}`;
+  }
+  if (type === "pages") {
+    string = `${PREVIEW_URL}/${lang}/${slug}`;
+  }
+  window.open(`${string}`, "_blank");
 }

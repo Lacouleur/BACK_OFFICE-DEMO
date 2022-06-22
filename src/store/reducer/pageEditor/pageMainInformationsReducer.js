@@ -19,6 +19,7 @@ import {
   PAGE_SET_SUBTITLE,
 } from "../../constants";
 import { verifySlug } from "../../../helper/auth/verifyFields";
+import { harmonizeLang } from "../../../helper/fieldsHelper";
 
 const initialState = {
   // string
@@ -49,17 +50,13 @@ const pageMainInformationReducer = (state = initialState, action = {}) => {
   const oldState = { ...state };
   switch (action.type) {
     case PAGE_LOADED: {
-      let lang = "fr";
-      if (action.payload.language === "german") {
-        lang = "de";
-      }
       return {
         ...oldState,
         title: action.payload?.title ?? "",
         subtitle: action.payload.subtitle ?? undefined,
         displayTitle: action.payload.displayTitle ?? false,
         slug: action.payload?.slug ?? "",
-        lang: lang || "",
+        lang: harmonizeLang(action.payload.language),
         status: action.payload?.state ?? "",
         modified: action.payload?.modified ?? null,
         categories: action.payload.categories,

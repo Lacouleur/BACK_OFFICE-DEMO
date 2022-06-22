@@ -80,12 +80,13 @@ const CollectionModule = ({
   }, [isOpen]);
 
   function onClickOutside() {
+    console.warn("CLICK OUTSIDE");
     if (!isOpenCloseModal) {
       setIsOpen(false);
-      if (isChanged && isNewModule) {
+      if (isChanged || isNewModule) {
         dispatch(saveModule(uuid, "save"));
       }
-      if (isChanged && !isNewModule) {
+      if (isChanged || !isNewModule) {
         dispatch(saveModule(uuid, "update"));
       }
     }

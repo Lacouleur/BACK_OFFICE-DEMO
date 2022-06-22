@@ -31,7 +31,7 @@ export function ModifiedModulesWatcher(
 ) {
   const modifiedModules = [];
   modulesList.map((module) => {
-    if (module.isChanged) {
+    if (module.isChanged || module.isNewModule) {
       modifiedModules.push(module);
       return null;
     }

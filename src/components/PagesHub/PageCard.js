@@ -27,6 +27,8 @@ import {
   setIsOpenArchiveModal,
   setIsOpenDuplicateModal,
 } from "../../store/actions/actionBarActions";
+import eyeIcon from "../../styles/assets/icons/eye-circle-green.svg";
+import { openPreview } from "../../helper/fieldsHelper";
 
 const PageCard = ({
   state,
@@ -35,11 +37,12 @@ const PageCard = ({
   updatedAt,
   publishedAt,
   modified,
-  language,
   publishScheduledAt,
   publishScheduleFailed,
   retryAt,
   failCount,
+  lang,
+  slug,
 }) => {
   const history = useHistory();
   const updateDate = buildDate(new Date(updatedAt));
@@ -71,9 +74,13 @@ const PageCard = ({
           </CardArchiveBox>
         )}
         <CardIconAction
+          src={eyeIcon}
+          onClick={() => openPreview(lang, slug, "pages")}
+        />
+        <CardIconAction
           src={copy}
           onClick={() => {
-            dispatch(setIsOpenDuplicateModal({ value: true, id, language }));
+            dispatch(setIsOpenDuplicateModal({ value: true, id, lang }));
           }}
         />
         <CardIconAction
@@ -100,7 +107,7 @@ const PageCard = ({
           retryAt={retryAt}
           failCount={failCount}
         />
-        <CardLang>{language}</CardLang>
+        <CardLang>{lang}</CardLang>
       </CardSatusAndLang>
     </PageCardContainer>
   );
@@ -122,11 +129,12 @@ PageCard.propTypes = {
   updatedAt: PropTypes.string,
   publishedAt: PropTypes.string,
   modified: PropTypes.bool.isRequired,
-  language: PropTypes.string.isRequired,
   publishScheduledAt: PropTypes.string,
   publishScheduleFailed: PropTypes.bool,
   retryAt: PropTypes.string,
   failCount: PropTypes.number,
+  lang: PropTypes.string.isRequired,
+  slug: PropTypes.string.isRequired,
 };
 
 export default PageCard;

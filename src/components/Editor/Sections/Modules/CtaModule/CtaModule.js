@@ -121,7 +121,7 @@ const CtaModule = ({
   function onClickOutside() {
     if (!isOpenCloseModal) {
       setIsOpen(false);
-      if (isChanged && isNewModule) {
+      if (isChanged || isNewModule) {
         dispatch(saveModule(uuid, "save"));
       }
       if (isChanged && !isNewModule) {
@@ -216,7 +216,8 @@ const CtaModule = ({
                       value: !openNewTab,
                       type: "content",
                     })
-                  )}
+                  )
+                }
                 isChecked={openNewTab}
                 componentId={`cta-switch-${uuid}`}
                 displayedText="Open in new window"
@@ -243,7 +244,8 @@ const CtaModule = ({
                     value: !openNewTab,
                     type: "page",
                   })
-                )}
+                )
+              }
               isChecked={openNewTab}
               componentId={`cta-switch-${uuid}`}
               displayedText="Open in new window"

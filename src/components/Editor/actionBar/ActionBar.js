@@ -56,6 +56,7 @@ import {
 } from "../../../helper/actionBarHelper";
 import ScheduleModal from "../../Modals/ScheduleModal";
 import { setStatus } from "../../../store/actions/commonsActions";
+import { openPreview } from "../../../helper/fieldsHelper";
 
 const ActionBar = () => {
   const dispatch = useDispatch();
@@ -353,22 +354,20 @@ const ActionBar = () => {
             />
           )}
 
-          {isPreviewButton && !isPage && (
+          {isPreviewButton && (
             <ActionIcon
               src={eyeIcon}
               onClick={() => {
-                if (!isManifesto) {
-                  window.open(
-                    `${PREVIEW_URL}/${lang}/contents/${slug}`,
-                    "_blank"
-                  );
-                }
+                if (!isPage) {
+                  if (!isManifesto) {
+                    openPreview(lang, slug);
+                  }
 
-                if (isManifesto) {
-                  window.open(
-                    `${PREVIEW_URL}/${manifestoLang}/manifest`,
-                    "_blank"
-                  );
+                  if (isManifesto) {
+                    openPreview(manifestoLang, slug);
+                  }
+                } else {
+                  openPreview(lang, slug);
                 }
               }}
             />

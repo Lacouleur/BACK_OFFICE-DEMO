@@ -367,7 +367,7 @@ const ActionBar = () => {
                     openPreview(manifestoLang, slug);
                   }
                 } else {
-                  openPreview(lang, slug);
+                  openPreview(lang, slug, "pages");
                 }
               }}
             />

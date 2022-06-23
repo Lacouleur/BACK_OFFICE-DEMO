@@ -79,12 +79,13 @@ const PagesHub = () => {
                     updatedDate={page.updatedAt}
                     publishedAt={page.publishedAt}
                     modified={page.modified}
-                    language={harmonizeLang(page.language)}
+                    lang={harmonizeLang(page.language)}
                     publishScheduleFailed={page.publishScheduleFailed}
                     publishScheduledAt={page.publishScheduledAt}
                     updatedAt={page.updatedAt}
                     retryAt={page?.publishScheduleFailData?.retryAt}
                     failCount={page?.publishScheduleFailData?.failCount}
+                    slug={page.slug}
                   />
                 );
               })}

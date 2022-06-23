@@ -43,7 +43,13 @@ export function pageCheckAndSend(type = "save", pageId = null) {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
       const { pageMainInformationReducer, pageSeoReducer } = getState();
-      const { title: mainTitle, slug, lang } = pageMainInformationReducer;
+      const {
+        title: mainTitle,
+        slug,
+        lang,
+        subtitle,
+        displayTitle,
+      } = pageMainInformationReducer;
       const { title: seoTitle, description } = pageSeoReducer;
 
       const slugError = !slug;
@@ -64,17 +70,12 @@ export function pageCheckAndSend(type = "save", pageId = null) {
         slug,
       };
 
-      if (type === "update") {
-        values = {
-          title: mainTitle,
-          slug,
-        };
-      } else {
-        values = {
-          title: mainTitle,
-          slug,
-        };
-      }
+      values = {
+        title: mainTitle,
+        subtitle: subtitle || undefined,
+        displayTitle,
+        slug,
+      };
 
       if (seoTitle || description) {
         values.seo = {};

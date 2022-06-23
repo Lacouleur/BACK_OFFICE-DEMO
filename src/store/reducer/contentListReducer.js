@@ -1,9 +1,4 @@
-import {
-  SET_CONTENTS_LIST,
-  SET_PAGINATION,
-  SET_CUMULATED_CONTENTS_LIST,
-  SET_FETCHED_CUSTOM_LIST,
-} from "../constants";
+import { SET_CONTENTS_LIST, SET_PAGINATION } from "../constants";
 
 import {} from "../actions/commonsActions";
 

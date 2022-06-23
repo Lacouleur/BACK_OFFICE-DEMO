@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable array-callback-return */
 import { v4 as uuidv4 } from "uuid";
+import { consoleTitle } from "../../helper/consoleStyles";
 import { removeUsedItemFromList } from "../../helper/modulesHelper";
 import {
   SET_NEW_MODULE,
@@ -188,7 +189,7 @@ const modulesReducer = (state = initialState, action = {}) => {
           return {
             ...oldState,
             modulesList: [
-              ...oldState.modulesList,
+              ...state.modulesList,
               {
                 ...(payload.editor === "page" && pageModulesHeaderField),
                 type: "collection",

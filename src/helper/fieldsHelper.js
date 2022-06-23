@@ -121,10 +121,10 @@ export const collectionFormatList = [
     label: "Slider",
     value: "carousel",
   },
-  {
+  /*   {
     label: "Grid",
     value: "grid",
-  },
+  }, */
 ];
 
 // match selection with current list for simple selector fields.

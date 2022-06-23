@@ -80,7 +80,6 @@ const CollectionModule = ({
   }, [isOpen]);
 
   function onClickOutside() {
-    console.warn("CLICK OUTSIDE");
     if (!isOpenCloseModal) {
       setIsOpen(false);
       if (isChanged || isNewModule) {
@@ -136,7 +135,8 @@ const CollectionModule = ({
             COLLECTION MAIN SETTING -
           </CollectionSectionTitle>
           <CollectionSectionDescritpion>
-            choose if your collection is a slider or a gird
+            choose your collection type
+            {/* choose if your collection is a slider or a gird */}
           </CollectionSectionDescritpion>
         </CollectionSectionTitleBox>
 
@@ -148,7 +148,7 @@ const CollectionModule = ({
             fieldType="select"
             moduleId={uuid}
             edit={collectionFormat || "carousel"}
-            infos="Choose if you want your collection displayed as a Grid or as a Slider"
+            /*  infos="Choose if you want your collection displayed as a Grid or as a Slider" */
           />
           <SwitchButton
             action={() => {

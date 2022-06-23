@@ -19,7 +19,12 @@ import {
   checkPageAndSend,
   slugMessage,
 } from "../../../helper/mainInformationHelper";
-import { setIsPage } from "../../../store/actions/pageEditor/pageMainInformationsActions";
+import {
+  pageSetDisplayTitle,
+  setIsPage,
+} from "../../../store/actions/pageEditor/pageMainInformationsActions";
+import { FieldAndSwitchContainer } from "../../../styles/styledComponents/editor/modules/Modules.sc";
+import SwitchButton from "../../Tools/Switch";
 
 const PageMainInformation = () => {
   const PageMainInformationState = useSelector(
@@ -38,6 +43,8 @@ const PageMainInformation = () => {
     slugError,
     titleError,
     postingError,
+    displayTitle,
+    subtitle,
   } = PageMainInformationState;
 
   useEffect(() => {
@@ -80,17 +87,38 @@ const PageMainInformation = () => {
         {isOpen && (
           <>
             <FieldTitle>Title and slug URL</FieldTitle>
-            <Field
-              placeholder="Title (internal)"
-              maxlength="40"
-              infos={
-                titleError ? "Content need a title." : "Maximum 40 characters"
-              }
-              name="title"
-              section="pageMainInformation"
-              edit={title}
-              error={titleError}
-            />
+            <FieldAndSwitchContainer>
+              <Field
+                placeholder="Title (internal)"
+                maxlength="40"
+                infos={
+                  titleError ? "Content need a title." : "Maximum 40 characters"
+                }
+                name="title"
+                section="pageMainInformation"
+                edit={title}
+                error={titleError}
+              />
+              <SwitchButton
+                action={() => {
+                  dispatch(pageSetDisplayTitle(!displayTitle));
+                }}
+                isChecked={displayTitle}
+                componentId="mainInfo-switch-isSubtitle"
+                displayedText="Display Title ?"
+                tooltipMessage="If you choose to display title it will apear on front website. If checked you can also add a subtitle to be displayed"
+              />
+            </FieldAndSwitchContainer>
+
+            {displayTitle && (
+              <Field
+                placeholder="subtitle"
+                infos="Subtitle to display on this page"
+                name="subtitle"
+                section="pageMainInformation"
+                edit={subtitle}
+              />
+            )}
 
             <Field
               placeholder="slug URL"

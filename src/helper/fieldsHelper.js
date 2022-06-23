@@ -43,6 +43,7 @@ import { saveImage } from "../store/actions/thunk/ModulesActions.thunk";
 import langList from "./langList";
 import {
   pageSetSlug,
+  pageSetSubtitle,
   pageSetTitle,
 } from "../store/actions/pageEditor/pageMainInformationsActions";
 import {
@@ -564,6 +565,10 @@ export function dispatchFields(
       dispatch(pageSetSlug(value));
       break;
 
+    case name === "subtitle" && section === "pageMainInformation":
+      dispatch(pageSetSubtitle(value));
+      break;
+
     case name === "title" && section === "pageSeo":
       dispatch(pageSetSeoTitle(value));
       break;
@@ -682,7 +687,14 @@ export function harmonizeLang(lang) {
   return language;
 }
 
-export function openPreview(language, slug) {
+export function openPreview(language, slug, type = "contents") {
   const lang = harmonizeLang(language);
-  window.open(`${PREVIEW_URL}/${lang}/contents/${slug}`, "_blank");
+  let string = "";
+  if (type === "contents") {
+    string = `${PREVIEW_URL}/${lang}/${type}/${slug}`;
+  }
+  if (type === "pages") {
+    string = `${PREVIEW_URL}/${lang}/${slug}`;
+  }
+  window.open(`${string}`, "_blank");
 }

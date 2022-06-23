@@ -15,13 +15,17 @@ import {
   SET_CATEGORIES_LIST,
   SET_TAGS_LIST,
   SET_MODIFIED,
+  PAGE_SET_DISPLAY_TITLE,
+  PAGE_SET_SUBTITLE,
 } from "../../constants";
 import { verifySlug } from "../../../helper/auth/verifyFields";
+import { harmonizeLang } from "../../../helper/fieldsHelper";
 
 const initialState = {
   // string
   pageId: "",
   title: "",
+  subtitle: undefined,
   slug: "",
   lang: "",
   status: "",
@@ -31,6 +35,7 @@ const initialState = {
   tagsList: [],
 
   // bool
+  displayTitle: false,
   regexSlugError: false,
   slugError: false,
   titleError: false,
@@ -45,15 +50,13 @@ const pageMainInformationReducer = (state = initialState, action = {}) => {
   const oldState = { ...state };
   switch (action.type) {
     case PAGE_LOADED: {
-      let lang = "fr";
-      if (action.payload.language === "german") {
-        lang = "de";
-      }
       return {
         ...oldState,
         title: action.payload?.title ?? "",
+        subtitle: action.payload.subtitle ?? undefined,
+        displayTitle: action.payload.displayTitle ?? false,
         slug: action.payload?.slug ?? "",
-        lang: lang || "",
+        lang: harmonizeLang(action.payload.language),
         status: action.payload?.state ?? "",
         modified: action.payload?.modified ?? null,
         categories: action.payload.categories,
@@ -67,6 +70,22 @@ const pageMainInformationReducer = (state = initialState, action = {}) => {
         oldState.titleError = true;
       }
       return { ...oldState, title: action.payload, isChanged: true };
+    }
+
+    case PAGE_SET_DISPLAY_TITLE: {
+      return {
+        ...oldState,
+        displayTitle: action.payload,
+        isChanged: true,
+      };
+    }
+
+    case PAGE_SET_SUBTITLE: {
+      return {
+        ...oldState,
+        subtitle: action.payload,
+        isChanged: true,
+      };
     }
 
     case PAGE_SET_SLUG: {

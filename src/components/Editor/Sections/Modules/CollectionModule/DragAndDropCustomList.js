@@ -31,6 +31,7 @@ const DragAndDropCustomList = ({
   currentPage,
   nextPage,
   lastPage,
+  lang,
 }) => {
   const dispatch = useDispatch();
 
@@ -48,9 +49,9 @@ const DragAndDropCustomList = ({
   });
 
   useEffect(() => {
-    dispatch(fetchContentsList(1, uuid, "title"));
+    dispatch(fetchContentsList(1, uuid, "title", lang));
     if (customIdsList) {
-      dispatch(fetchContentsList(1, uuid, "title", customIdsList));
+      dispatch(fetchContentsList(1, uuid, "title", "", customIdsList));
     }
   }, []);
 
@@ -160,7 +161,7 @@ const DragAndDropCustomList = ({
           <LoadMoreCustomList
             onClick={() => {
               if (cumulatedContentsList.length > 0) {
-                dispatch(fetchContentsList(nextPage, uuid, "title"));
+                dispatch(fetchContentsList(nextPage, uuid, "title", lang));
               }
             }}
           >
@@ -184,6 +185,7 @@ DragAndDropCustomList.defaultProps = {
   currentPage: undefined,
   nextPage: undefined,
   lastPage: undefined,
+  lang: undefined,
 };
 
 DragAndDropCustomList.propTypes = {
@@ -194,6 +196,7 @@ DragAndDropCustomList.propTypes = {
   currentPage: PropTypes.number,
   nextPage: PropTypes.number,
   lastPage: PropTypes.number,
+  lang: PropTypes.string,
 };
 
 export default DragAndDropCustomList;

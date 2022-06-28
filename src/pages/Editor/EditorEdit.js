@@ -78,7 +78,7 @@ const Editor = () => {
           )}
           <DragDropContext
             onDragEnd={(result) => {
-              onDragEnd("modulesList", result, modulesList, dispatch)
+              onDragEnd(result, modulesList, dispatch)
               setIsUsedDnDArea(false)
               }}
             onDragStart={() => setIsUsedDnDArea(true)}

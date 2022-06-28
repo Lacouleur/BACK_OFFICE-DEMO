@@ -216,7 +216,7 @@ export function saveModule(uuid, request = "save") {
                   resource: "contents",
                   display,
                   paginate,
-                  format: format || "carousel",
+                  format: format || "",
                   criteria: {
                     limit: criteria?.limit,
                     page: 1,

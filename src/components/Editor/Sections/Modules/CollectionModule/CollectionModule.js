@@ -80,7 +80,6 @@ const CollectionModule = ({
   }, [isOpen]);
 
   function onClickOutside() {
-    console.warn("CLICK OUTSIDE");
     if (!isOpenCloseModal) {
       setIsOpen(false);
       if (isChanged || isNewModule) {
@@ -230,6 +229,7 @@ const CollectionModule = ({
           currentPage={currentPage}
           nextPage={nextPage}
           lastPage={lastPage}
+          lang={lang}
         />
       </SectionBox>
     </ModuleContainer>

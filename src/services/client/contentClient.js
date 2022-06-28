@@ -11,16 +11,17 @@ export const sendAuth = (data) => {
   });
 };
 
-export function getContentList(page = 1, contentType, ids, limit = 15) {
+export function getContentList(page = 1, contentType, lang, ids, limit = 15) {
   let string = "";
+  const langString = lang ? `&lang=${lang}` : "";
   if (!ids) {
     if (contentType === "title") {
-      string = `/contents?page=${page}&limit=${limit}&fields=title`;
+      string = `/contents?page=${page}&limit=${limit}&fields=title${langString}`;
     } else {
-      string = `/contents?limit=${limit}&page=${page}`;
+      string = `/contents?limit=${limit}&page=${page}${langString}`;
     }
   } else if (contentType === "title") {
-    string = `/contents?page=${page}&fields=title&ids=${ids}`;
+    string = `/contents?page=${page}&fields=title&ids=${ids}${langString}`;
   }
   return axiosConfig.get(`${string}`, {
     headers: {

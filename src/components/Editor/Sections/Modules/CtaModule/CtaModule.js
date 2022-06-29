@@ -181,8 +181,8 @@ const CtaModule = ({
         <Field
           placeholder="CTA Text"
           name="label"
-          infos="Maximum 35 characters"
-          maxlength="35"
+          infos="Maximum 80 characters"
+          maxlength="80"
           section="cta"
           moduleId={uuid}
           edit={label || ""}
@@ -216,8 +216,7 @@ const CtaModule = ({
                       value: !openNewTab,
                       type: "content",
                     })
-                  )
-                }
+                  )}
                 isChecked={openNewTab}
                 componentId={`cta-switch-${uuid}`}
                 displayedText="Open in new window"
@@ -244,8 +243,7 @@ const CtaModule = ({
                     value: !openNewTab,
                     type: "page",
                   })
-                )
-              }
+                )}
               isChecked={openNewTab}
               componentId={`cta-switch-${uuid}`}
               displayedText="Open in new window"

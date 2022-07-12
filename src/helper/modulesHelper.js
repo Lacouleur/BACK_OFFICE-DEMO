@@ -1,11 +1,14 @@
 import { EditorState } from "draft-js";
 import HTMLconverter from "./Editor/HTMLconverter";
 import {
+  setCollectionCustomIdsList,
+  setCollectionIsPined,
   setCtaDescription,
   setOpinionExplain,
   setValueTextModule,
 } from "../store/actions/moduleActions";
 import colors from "../styles/core/colors";
+import { checkForStringtoArray } from "./converters";
 
 export function setTextHTMLContent(
   moduleName,
@@ -77,46 +80,11 @@ export const styleMap = {
   },
 };
 
-// Functrion to avoid "mailto params" to be escaped
+// Function to avoid "mailto params" to be escaped
 export function processLink(link) {
   return link;
 }
 
 export function onEditorStateChange(e, setEditorState) {
   setEditorState(e);
-}
-
-export function removeUsedItemFromList(usedItems, originalItemsList) {
-  const onlyNewItemsList = originalItemsList.filter(
-    (originalItem) =>
-      usedItems.findIndex((usedItem) => usedItem._id === originalItem._id) < 0
-  );
-  return onlyNewItemsList;
-}
-
-export function updateCustomListComponent(
-  cumulatedContentsList,
-  columns,
-  setColumns,
-  fetchedCustomList
-) {
-  if (cumulatedContentsList) {
-    const filtredContentsList = removeUsedItemFromList(
-      columns.customList.items,
-      cumulatedContentsList
-    );
-    setColumns({
-      originalList: {
-        name: "Original List",
-        items: filtredContentsList,
-      },
-      customList: {
-        name: "Custom List",
-        items:
-          columns.customList.items.length === 0
-            ? fetchedCustomList
-            : columns.customList.items,
-      },
-    });
-  }
 }

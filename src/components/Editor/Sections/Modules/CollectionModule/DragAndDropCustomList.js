@@ -15,22 +15,32 @@ import {
   TitleAndFieldContainer,
   DndColumnTitle,
   DndTitleBox,
+  DndTitleContainer,
+  DndElementBox,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
-import { setCollectionCustomIdsList } from "../../../../../store/actions/moduleActions";
 import { fetchContentsList } from "../../../../../store/actions/thunk/ArticlesActions.thunk";
-import { updateCustomListComponent } from "../../../../../helper/modulesHelper";
-import { onDragEnd2 } from "../../../../../helper/Editor/dragAndDropHelper";
+import {
+  onDragEndCustomList,
+  changePinnedButtonState,
+  customIdsListBuilder,
+  manageInitialCustomList,
+  removeCustomItemFromOriginalList,
+} from "../../../../../helper/Editor/dragAndDropHelper";
 
-import { checkForStringtoArray } from "../../../../../helper/converters";
+import SwitchButton from "../../../../Tools/Switch";
+import { setCollectionIsPined } from "../../../../../store/actions/moduleActions";
 
 const DragAndDropCustomList = ({
   uuid,
   customIdsList,
+  pinnedContents,
+  ids,
   cumulatedContentsList,
   fetchedCustomList,
   currentPage,
   nextPage,
   lastPage,
+  isPined,
   lang,
 }) => {
   const dispatch = useDispatch();
@@ -50,51 +60,80 @@ const DragAndDropCustomList = ({
 
   useEffect(() => {
     dispatch(fetchContentsList(1, uuid, "title", lang));
-    if (customIdsList) {
-      dispatch(fetchContentsList(1, uuid, "title", "", customIdsList));
-    }
+    dispatch(fetchContentsList(1, uuid, "title", "", pinnedContents || ids));
+    manageInitialCustomList(pinnedContents, uuid, dispatch);
   }, []);
 
   useEffect(() => {
-    updateCustomListComponent(
-      cumulatedContentsList,
+    customIdsListBuilder(
       columns,
-      setColumns,
-      fetchedCustomList
+      uuid,
+      ids,
+      pinnedContents,
+      dispatch,
+      customIdsList
     );
-  }, [cumulatedContentsList, fetchedCustomList]);
+  }, [columns]);
 
   useEffect(() => {
-    if (columns?.customList.items && columns?.customList.items !== 0) {
-      const buildCustomIdsList = [];
-      columns.customList.items.map((item) => {
-        buildCustomIdsList.push(item._id);
-        return null;
-      });
+    removeCustomItemFromOriginalList(
+      cumulatedContentsList,
+      columns,
+      setColumns
+    );
+  }, [cumulatedContentsList, columns.customList.items]);
 
-      dispatch(
-        setCollectionCustomIdsList({
-          id: uuid,
-          value: checkForStringtoArray(buildCustomIdsList, "string"),
-          isChanged: fetchedCustomList !== columns.customList.items,
-        })
-      );
-    } else {
-      dispatch(setCollectionCustomIdsList(uuid, undefined));
-    }
-  }, [columns]);
+  useEffect(() => {
+    setColumns({
+      ...columns,
+      customList: {
+        name: "Original List",
+        items: fetchedCustomList,
+      },
+    });
+  }, [fetchedCustomList]);
 
   return (
     <DragDropContext
       onDragEnd={(result) => {
-        onDragEnd2(result, columns, setColumns, uuid, dispatch);
+        onDragEndCustomList(result, columns, setColumns, uuid, dispatch);
       }}
     >
       <TitleAndFieldContainer moduleRef={dndRef}>
-        <DndTitleBox>
-          <DndColumnTitle right>All articles list</DndColumnTitle>
-          <DndColumnTitle left>Your custom List</DndColumnTitle>
-        </DndTitleBox>
+        <DndTitleContainer>
+          <DndTitleBox>
+            <DndElementBox>
+              <DndColumnTitle left>All articles list</DndColumnTitle>
+            </DndElementBox>
+          </DndTitleBox>
+          <DndTitleBox>
+            <DndElementBox>
+              <DndColumnTitle right>Custom List</DndColumnTitle>
+              <SwitchButton
+                styleVariant="CustomListDnd"
+                disable={columns.customList.items.length === 0}
+                action={() => {
+                  if (columns.customList.items.length > 0) {
+                    changePinnedButtonState(
+                      dispatch,
+                      customIdsList,
+                      uuid,
+                      isPined
+                    );
+                  }
+                }}
+                isChecked={isPined}
+                componentId={`collection-switch-pined-${uuid}`}
+                displayedText="Pin above article ?"
+                tooltipMessage={
+                  customIdsList !== undefined
+                    ? `If active, contents from above section " automatic collection " will be appened to your custom list. If unactive and at least one element is in your custom list, only custom content will be displayed.`
+                    : `To pin article you need to have at least one element in your custom list`
+                }
+              />
+            </DndElementBox>
+          </DndTitleBox>
+        </DndTitleContainer>
         {columns && (
           <CustomCollectionContainer>
             {Object.entries(columns).map(([columnId, column]) => {
@@ -154,7 +193,6 @@ const DragAndDropCustomList = ({
           </CustomCollectionContainer>
         )}
       </TitleAndFieldContainer>
-
       {/* LOAD MORE BUTTON */}
       {currentPage !== lastPage && (
         <>
@@ -185,7 +223,9 @@ DragAndDropCustomList.defaultProps = {
   currentPage: undefined,
   nextPage: undefined,
   lastPage: undefined,
-  lang: undefined,
+  isPined: false,
+  pinnedContents: undefined,
+  ids: undefined,
 };
 
 DragAndDropCustomList.propTypes = {
@@ -196,7 +236,10 @@ DragAndDropCustomList.propTypes = {
   currentPage: PropTypes.number,
   nextPage: PropTypes.number,
   lastPage: PropTypes.number,
-  lang: PropTypes.string,
+  isPined: PropTypes.bool,
+  lang: PropTypes.string.isRequired,
+  pinnedContents: PropTypes.string,
+  ids: PropTypes.string,
 };
 
 export default DragAndDropCustomList;

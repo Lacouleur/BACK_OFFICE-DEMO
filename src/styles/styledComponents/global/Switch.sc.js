@@ -15,6 +15,10 @@ const mixinSwitchBoxPublishModalToBottomLabel = css`
   margin: 0 !important;
 `;
 
+const mixinSwitchCustomListDndLabel = css`
+  position: relative !important;
+`;
+
 export const SwitchLabel = styled.label`
   ${(props) =>
     props.styleVariant === "publishModal-toTop" &&
@@ -22,12 +26,14 @@ export const SwitchLabel = styled.label`
   ${(props) =>
     props.styleVariant === "publishModal-toBottom" &&
     mixinSwitchBoxPublishModalToBottomLabel}
+        ${(props) =>
+    props.styleVariant === "CustomListDnd" && mixinSwitchCustomListDndLabel}
   position: absolute;
   left: 0;
   width: 34px;
   height: 14px;
   border-radius: 15px;
-  background: #bebebe;
+  background: hotpink;
   margin-top: 11px;
   cursor: pointer;
   background: ${colors.lightGrey};
@@ -54,6 +60,10 @@ const mixinSwitchBoxPublishModalToBottomSwitch = css`
   display: contents !important;
 `;
 
+const mixinSwitchCustomListDndSwitch = css`
+  width: 8px !important;
+`;
+
 export const Switch = styled.input`
   ${(props) =>
     props.styleVariant === "publishModal-toTop" &&
@@ -61,6 +71,9 @@ export const Switch = styled.input`
   ${(props) =>
     props.styleVariant === "publishModal-toBottom" &&
     mixinSwitchBoxPublishModalToBottomSwitch}
+  ${(props) =>
+    props.styleVariant === "CustomListDnd" && mixinSwitchCustomListDndSwitch}
+
   opacity: 0;
   z-index: 1;
   border-radius: 15px;
@@ -85,6 +98,9 @@ const mixinDisabled = css`
   & > * {
     cursor: not-allowed !important;
     opacity: 0.5;
+  }
+  & ${Switch} {
+    visibility: hidden;
   }
 `;
 
@@ -118,6 +134,14 @@ const mixinToolTip = css`
   }
 `;
 
+const mixinSwitchBoxCustomListDnd = css`
+  display: flex;
+  line-height: 32px !important;
+  justify-content: space-between;
+  width: auto !important;
+  margin-top: 0 !important;
+`;
+
 export const SwitchBox = styled.label`
   ${(props) => props.tooltip && mixinToolTip}
 
@@ -128,7 +152,11 @@ export const SwitchBox = styled.label`
     props.styleVariant === "publishModal-toBottom" &&
     mixinSwitchBoxPublishModalToBottom}
     ${(props) => props.disable && mixinDisabled}
+
+    ${(props) =>
+    props.styleVariant === "CustomListDnd" && mixinSwitchBoxCustomListDnd}
   position: relative;
+
   margin-left: 20px;
   margin-top: 16px;
   font-family: Arial;

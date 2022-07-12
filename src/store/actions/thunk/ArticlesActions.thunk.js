@@ -320,7 +320,6 @@ export function fetchContentsList(
                 })
               );
             }
-
             if (response.data.currentPage) {
               dispatch(
                 setCollectionPagination({

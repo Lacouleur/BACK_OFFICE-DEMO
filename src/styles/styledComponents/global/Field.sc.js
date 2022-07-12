@@ -647,6 +647,16 @@ export const FieldStyle = styled.input`
   font-size: 16px;
   line-height: 24px;
 
+  /* to hide up/down button on number fields */
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  & [type="number"] {
+    -moz-appearance: textfield;
+  }
+
   &::-webkit-file-upload-button {
     display: none;
   }

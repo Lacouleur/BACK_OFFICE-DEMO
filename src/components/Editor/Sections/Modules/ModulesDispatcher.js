@@ -1,10 +1,10 @@
 /* eslint-disable no-shadow */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useEffect, useState } from "react";
+import React from "react";
 /* import PropTypes from "prop-types"; */
 import { Draggable } from "react-beautiful-dnd";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { ModulesBoardDnd } from "../../../../styles/styledComponents/editor/modules/Modules.sc";
 import TextModule from "./TextModule/TextModule";
 import ImageModule from "./ImageModule/ImageModule";
@@ -263,13 +263,16 @@ const ModulesDispatcher = ({
                         collectionType={module.display}
                         collectionFormat={module.format}
                         paginate={module.paginate}
-                        isCustom={!!(module.isCustom || module?.criteria?.ids)}
+                        isPined={module?.isPined}
                         cumulatedContentsList={module.cumulatedContentsList}
                         fetchedCustomList={module.fetchedCustomList}
-                        customIdsList={module?.criteria?.ids || undefined}
+                        customIdsList={module.customIdsList}
+                        pinnedContents={module?.criteria?.pinnedContents}
+                        ids={module?.criteria?.ids}
                         currentPage={module.currentPage}
                         nextPage={module.nextPage}
                         lastPage={module.lastPage}
+                        customListLoaded={module.customListLoaded}
                         categories={
                           module?.criteria?.categories
                             ? checkForStringtoArray(
@@ -286,7 +289,11 @@ const ModulesDispatcher = ({
                               )
                             : undefined
                         }
-                        limit={+module?.criteria?.limit}
+                        limit={
+                          parseInt(module?.criteria?.limit, 10) > 0
+                            ? parseInt(module?.criteria?.limit, 10)
+                            : 0
+                        }
                       />
                     </div>
                   );
@@ -302,13 +309,5 @@ const ModulesDispatcher = ({
     </ModulesBoardDnd>
   );
 };
-
-/* ModulesDispatcher.defaultProps = {
-  position: undefined,
-};
-
-ModulesDispatcher.propTypes = {
-  position: PropTypes.string,
-}; */
 
 export default ModulesDispatcher;

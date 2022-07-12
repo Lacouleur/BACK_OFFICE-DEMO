@@ -1,8 +1,6 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable array-callback-return */
 import { v4 as uuidv4 } from "uuid";
-import { consoleTitle } from "../../helper/consoleStyles";
-import { removeUsedItemFromList } from "../../helper/modulesHelper";
 import {
   SET_NEW_MODULE,
   CLOSE_MODULE,
@@ -50,6 +48,7 @@ import {
   SET_CUMULATED_CONTENTS_LIST,
   SET_FETCHED_CUSTOM_LIST,
   SET_COLLECTION_PAGINATION,
+  SET_COLLECTION_IS_PINED,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -924,7 +923,7 @@ const modulesReducer = (state = initialState, action = {}) => {
             ...module,
             criteria: {
               ...module.criteria,
-              limit: +value,
+              limit: value,
             },
             isChanged: true,
           };
@@ -980,7 +979,24 @@ const modulesReducer = (state = initialState, action = {}) => {
           oldState.modulesList[index] = {
             ...module,
             paginate: value,
-            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_COLLECTION_IS_PINED: {
+      const { id, value, isChanged } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            isPined: value,
+            isChanged: isChanged || module.isChanged,
           };
         }
         return null;
@@ -992,16 +1008,13 @@ const modulesReducer = (state = initialState, action = {}) => {
     }
 
     case SET_COLLECTION_CUSTOM_IDS_LIST: {
-      const { id, value, isChanged } = action.payload;
+      const { id, value } = action.payload;
+
       state.modulesList.find((module, index) => {
         if (module?.uuid === id) {
           oldState.modulesList[index] = {
             ...module,
-            criteria: {
-              ...module.criteria,
-              ids: value,
-            },
-            isChanged: isChanged !== false,
+            customIdsList: value,
           };
         }
         return null;
@@ -1030,7 +1043,7 @@ const modulesReducer = (state = initialState, action = {}) => {
           oldState.modulesList[index] = {
             ...module,
             cumulatedContentsList: [...onlyNewItemsList, ...value],
-            isChanged: true,
+            /*  isChanged: true, */
           };
         }
 
@@ -1049,7 +1062,7 @@ const modulesReducer = (state = initialState, action = {}) => {
           oldState.modulesList[index] = {
             ...module,
             fetchedCustomList: value,
-            isChanged: true,
+            /* isChanged: true, */
           };
         }
         return null;
@@ -1069,24 +1082,6 @@ const modulesReducer = (state = initialState, action = {}) => {
             currentPage,
             lastPage,
             nextPage,
-          };
-        }
-        return null;
-      });
-
-      return {
-        ...oldState,
-      };
-    }
-
-    case SET_COLLECTION_IS_CUSTOM: {
-      const { id, value } = action.payload;
-      state.modulesList.find((module, index) => {
-        if (module?.uuid === id) {
-          oldState.modulesList[index] = {
-            ...module,
-            isCustom: value,
-            isChanged: true,
           };
         }
         return null;

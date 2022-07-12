@@ -24,6 +24,7 @@ import DuplicateModal from "../Modals/DuplicateModal";
 import ArchiveModal from "../Modals/ArchiveModal";
 import ErrorModal from "../Modals/ErrorModal";
 import { setContentsList } from "../../store/actions/contentListActions";
+import { CreateNewContentButton } from "../../styles/styledComponents/contentList/Content.sc";
 
 const ContentList = () => {
   const history = useHistory();
@@ -70,10 +71,10 @@ const ContentList = () => {
             }}
           />
           <Link to="/editor">
-            <Button styles={createNewContent}>
+            <CreateNewContentButton styles={createNewContent}>
               <IconCreat src={plus} />
-              CREATE NEW CONTENT
-            </Button>
+              Create New Content
+            </CreateNewContentButton>
           </Link>
         </TitleBox>
         <ListBox>

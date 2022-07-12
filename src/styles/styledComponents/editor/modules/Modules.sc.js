@@ -341,11 +341,23 @@ const rightColumnMixin = css``;
 
 const leftColumnMixin = css``;
 
-export const DndTitleBox = styled.div`
+export const DndTitleContainer = styled.div`
   color: ${colors.lightGrey};
-  margin: 16px;
+  margin: 16px 0;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+`;
+
+export const DndTitleBox = styled.div`
+  width: 48%;
+`;
+
+export const DndElementBox = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
   justify-content: space-between;
 `;
 
@@ -355,6 +367,7 @@ export const DndColumnTitle = styled.p`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  height: 16px;
 `;
 
 export const ListBox = styled.div`

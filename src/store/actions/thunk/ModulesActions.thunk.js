@@ -205,6 +205,8 @@ export function saveModule(uuid, request = "save") {
                   display,
                   format,
                   paginate,
+                  isPined,
+                  customIdsList,
                 } = module;
 
                 values = {
@@ -218,7 +220,7 @@ export function saveModule(uuid, request = "save") {
                   paginate,
                   format: format || "",
                   criteria: {
-                    limit: criteria?.limit,
+                    limit: criteria?.limit || 6,
                     page: 1,
                     sort: "firstPublishedAt",
                     order: "desc",
@@ -230,7 +232,9 @@ export function saveModule(uuid, request = "save") {
                     tags:
                       checkForStringtoArray(criteria?.tags, "string") ||
                       undefined,
-                    ids: criteria?.ids || undefined,
+                    ids: !isPined && customIdsList ? customIdsList : undefined,
+                    pinnedContents:
+                      isPined && customIdsList ? customIdsList : undefined,
                   },
                 };
                 isNewModule = true;
@@ -404,6 +408,8 @@ export function saveModule(uuid, request = "save") {
                   display,
                   format,
                   paginate,
+                  isPined,
+                  customIdsList,
                 } = module;
 
                 values = {
@@ -428,7 +434,9 @@ export function saveModule(uuid, request = "save") {
                     tags:
                       checkForStringtoArray(criteria?.tags, "string") ||
                       undefined,
-                    ids: criteria.ids || undefined,
+                    ids: !isPined && customIdsList ? customIdsList : undefined,
+                    pinnedContents:
+                      isPined && customIdsList ? customIdsList : undefined,
                   },
                 };
                 isChanged = true;

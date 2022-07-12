@@ -72,6 +72,7 @@ const OpinionModule = ({
   answers,
   isVisible,
   order,
+  language,
 }) => {
   const dispatch = useDispatch();
   const opinionModuleRef = useRef(null);
@@ -307,7 +308,8 @@ const OpinionModule = ({
                           answerId: answer.uuid,
                           value: !answer.right,
                         })
-                      )}
+                      )
+                    }
                     isChecked={!!answer?.right || false}
                     componentId={`switch-${answer.uuid}}`}
                     displayedText="Right answer"
@@ -354,5 +356,6 @@ OpinionModule.propTypes = {
   isVisible: PropTypes.bool,
   answers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   order: PropTypes.number.isRequired,
+  language: PropTypes.string.isRequired,
 };
 export default OpinionModule;

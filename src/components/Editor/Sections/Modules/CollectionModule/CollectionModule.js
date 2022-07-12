@@ -4,7 +4,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import "../../../../../styles/css/react-draft-wysiwyg.css";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import { FormTitle } from "../../../../../styles/styledComponents/global/Titles.sc";
 import {
@@ -54,7 +53,10 @@ const CollectionModule = ({
   collectionType,
   collectionFormat,
   paginate,
+  isPined,
   customIdsList,
+  pinnedContents,
+  ids,
   cumulatedContentsList,
   fetchedCustomList,
   currentPage,
@@ -82,10 +84,10 @@ const CollectionModule = ({
   function onClickOutside() {
     if (!isOpenCloseModal) {
       setIsOpen(false);
-      if (isChanged || isNewModule) {
+      if (isNewModule && isChanged) {
         dispatch(saveModule(uuid, "save"));
       }
-      if (isChanged || !isNewModule) {
+      if (isChanged && !isNewModule) {
         dispatch(saveModule(uuid, "update"));
       }
     }
@@ -208,6 +210,7 @@ const CollectionModule = ({
           placeholder="Limit criteria"
           name="limit"
           section="collection"
+          type="number"
           moduleId={uuid}
           edit={limit || 6}
         />
@@ -229,7 +232,10 @@ const CollectionModule = ({
           currentPage={currentPage}
           nextPage={nextPage}
           lastPage={lastPage}
+          isPined={isPined}
           lang={lang}
+          pinnedContents={pinnedContents}
+          ids={ids}
         />
       </SectionBox>
     </ModuleContainer>
@@ -251,6 +257,9 @@ CollectionModule.defaultProps = {
   currentPage: undefined,
   nextPage: undefined,
   lastPage: undefined,
+  isPined: false,
+  pinnedContents: undefined,
+  ids: undefined,
 };
 
 CollectionModule.propTypes = {
@@ -276,5 +285,8 @@ CollectionModule.propTypes = {
   currentPage: PropTypes.number,
   nextPage: PropTypes.number,
   lastPage: PropTypes.number,
+  isPined: PropTypes.bool,
+  pinnedContents: PropTypes.string,
+  ids: PropTypes.string,
 };
 export default CollectionModule;

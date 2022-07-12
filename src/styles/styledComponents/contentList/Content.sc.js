@@ -2,15 +2,27 @@ import styled, { css } from "styled-components";
 import colors from "../../core/colors";
 import { CardStatusBoxMixin } from "../pagesHub/PagesHub.sc";
 
-export const LineContentBox = styled.div`
+export const TitleDateBox = styled.div`
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  flex-grow: 1;
+  width: 260px;
+  padding-right: 18px;
+  cursor: pointer;
+`;
+
+export const Title = styled.div`
+  text-transform: uppercase;
+  line-height: 100%;
+  font-size: 14px;
+  justify-self: flex-end;
   width: 100%;
-  height: 59px;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0 0;
-  padding: 0 24px;
-  background-color: ${(props) => props.styles.backgroundColor};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
 `;
 
 const ContentStatusBoxMixin = css`
@@ -127,16 +139,6 @@ export const StatusIcon = styled.img`
   left: 10px;
 `;
 
-export const TitleDateBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  flex-grow: 1;
-  width: 312px;
-  padding-right: 18px;
-`;
-
 export const UpdatedDate = styled.p`
   font-size: 12px;
   line-height: 20px;
@@ -146,34 +148,24 @@ export const UpdatedDate = styled.p`
 export const Lang = styled.p`
   text-transform: uppercase;
   margin-right: 18px;
+  cursor: pointer;
 `;
 
 export const CategoryName = styled.div`
   text-transform: uppercase;
   line-height: 100%;
   font-size: 14px;
-  min-width: 120px;
-  max-width: 120px;
+  width: 85px;
   margin-right: 20px;
   margin: 0 20px;
-`;
-
-export const Title = styled.div`
-  text-transform: uppercase;
-  line-height: 100%;
-  font-size: 14px;
-  justify-self: flex-end;
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  cursor: pointer;
 `;
 
 export const IconActionBox = styled.div`
   cursor: pointer;
   display: flex;
   flex-direction: row;
-  width: 200px;
+  width: 250px;
   padding: 0 20px 0 20px;
   justify-content: space-between;
 `;
@@ -186,4 +178,96 @@ export const ButtonIcon = styled.img`
   margin-left: 7px;
   width: 10px;
   color: ${colors.paleViolet};
+`;
+
+export const CreateNewContentButton = styled.button`
+  width: 230px;
+  height: 44px;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  transform: translateY(-50%);
+  margin-left: 32px;
+  display: flex;
+  border-radius: 5px;
+  border: none;
+  font-size: 16px;
+  justify-content: space-evenly;
+  background-color: ${colors.paleViolet};
+  color: ${colors.black};
+
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+    box-shadow: 0px 0px 13px 4px ${colors.paleVioletTransp};
+  }
+`;
+
+export const hoverMixin = css`
+  ${Title} {
+    text-decoration: underline;
+    color: ${colors.paleViolet};
+  }
+  ${UpdatedDate} {
+    color: ${colors.paleViolet};
+  }
+  ${Lang} {
+    color: ${colors.paleViolet};
+  }
+  ${CategoryName} {
+    color: ${colors.paleViolet};
+  }
+`;
+
+export const LineContentBox = styled.div`
+  display: flex;
+  width: 100%;
+  height: 59px;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0;
+  padding: 0 8px;
+  background-color: ${(props) => props.styles.backgroundColor};
+  ${(props) => props.hover && hoverMixin};
+
+  &:hover {
+    outline: 1px solid ${colors.paleViolet};
+    box-shadow: 0px 0px 8px 2px ${colors.paleVioletTransp};
+  }
+`;
+
+export const InformationBox = styled.div`
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    ${hoverMixin}
+  }
+`;
+
+const buttonHoverMixin = css`
+  opacity: 1 !important;
+  box-shadow: 0px 0px 13px 4px ${colors.paleVioletTransp}!important;
+`;
+
+export const EditButton = styled.button`
+  width: 70px;
+  height: 44px;
+  background-color: transparent;
+  border-color: ${colors.paleViolet};
+  border-radius: 5px;
+  color: ${colors.paleViolet};
+  opacity: 0.8;
+  ${(props) => props.hoverInfos && buttonHoverMixin};
+
+  &:hover {
+    opacity: 1;
+    box-shadow: 0px 0px 13px 4px ${colors.paleVioletTransp};
+  }
+
+  &::active {
+    background-color: ${colors.paleVioletTransp};
+    box-shadow: inset 0px 0px 13px 4px #000000;
+  }
 `;

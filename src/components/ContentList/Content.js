@@ -14,6 +14,8 @@ import {
   ButtonIcon,
   Tooltip,
   TooltipText,
+  EditButton,
+  InformationBox,
 } from "../../styles/styledComponents/contentList/Content.sc";
 import isEven from "../../helper/isEven";
 import colors from "../../styles/core/colors";
@@ -60,33 +62,49 @@ const Content = ({
   const updateDate = buildDate(new Date(updatedAt));
   const dispatch = useDispatch();
   const [isOpinionModules, setIsOpinionModules] = useState(false);
-
+  const [hover, setHover] = useState(false);
+  const [hoverInfos, setHoverInfos] = useState(false);
   useEffect(() => {
     setIsOpinionModules(watchOpinionModules(modulesList));
   }, [modulesList.length]);
 
   return (
     <LineContentBox
+      hover={hover}
       styles={{
         backgroundColor: `${even ? colors.darkGrey : colors.mediumGrey}`,
       }}
     >
-      <Lang>{harmonizeLang(lang)}</Lang>
-      <CategoryName>{categoryLabel}</CategoryName>
-      <TitleDateBox>
-        <Title>{title}</Title>
-        <UpdatedDate>{`Last save: ${updateDate}`}</UpdatedDate>
-      </TitleDateBox>
-      <Status
-        status={status}
-        updatedAt={updatedAt}
-        publishScheduledAt={publishScheduledAt}
-        publishedAt={publishedAt}
-        modified={modified}
-        publishScheduleFailed={publishScheduleFailed}
-        retryAt={retryAt}
-        failCount={failCount}
-      />
+      <Link
+        to={{
+          pathname: `/editor/${id}`,
+        }}
+      >
+        <InformationBox
+          onMouseEnter={() => setHoverInfos(true)}
+          onMouseLeave={() => setHoverInfos(false)}
+        >
+          <Lang>{harmonizeLang(lang)}</Lang>
+
+          <CategoryName>{categoryLabel}</CategoryName>
+
+          <TitleDateBox>
+            <Title>{title}</Title>
+            <UpdatedDate>{`Last save: ${updateDate}`}</UpdatedDate>
+          </TitleDateBox>
+
+          <Status
+            status={status}
+            updatedAt={updatedAt}
+            publishScheduledAt={publishScheduledAt}
+            publishedAt={publishedAt}
+            modified={modified}
+            publishScheduleFailed={publishScheduleFailed}
+            retryAt={retryAt}
+            failCount={failCount}
+          />
+        </InformationBox>
+      </Link>
 
       <IconActionBox>
         <IconAction src={eye} onClick={() => openPreview(lang, slug)} />
@@ -132,17 +150,14 @@ const Content = ({
           pathname: `/editor/${id}`,
         }}
       >
-        <Button
-          styles={{
-            background: "transparent",
-            fontColor: `${colors.paleViolet}`,
-            border: `1px solid ${colors.paleViolet}`,
-            fontWeight: "700",
-          }}
+        <EditButton
+          hoverInfos={hoverInfos}
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
         >
-          Modify
+          Edit
           <ButtonIcon src={pen} />
-        </Button>
+        </EditButton>
       </Link>
     </LineContentBox>
   );

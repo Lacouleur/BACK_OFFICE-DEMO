@@ -1,6 +1,7 @@
 import {
   editModulesList,
   setCollectionCustomIdsList,
+  setCollectionIsPined,
   setIsChanged,
 } from "../../store/actions/moduleActions";
 import { saveModule } from "../../store/actions/thunk/ModulesActions.thunk";
@@ -34,24 +35,14 @@ export function onDragEnd(result, List, dispatch) {
   }
 }
 
-function sendSelectedIdsToState(columns, uuid, dispatch) {
-  if (columns.customList.items && columns.customList.items.length !== 0) {
-    const customIdsList = [];
-    columns.customList.items.map((item) => {
-      customIdsList.push(item._id);
-      return null;
-    });
-    dispatch(
-      setCollectionCustomIdsList({
-        id: uuid,
-        value: checkForStringtoArray(customIdsList, "string"),
-      })
-    );
-  }
-}
-
 // OnDragEnd function for drag & drop into "Collection module" as custom List
-export const onDragEnd2 = (result, columns, setColumns, uuid, dispatch) => {
+export const onDragEndCustomList = (
+  result,
+  columns,
+  setColumns,
+  uuid,
+  dispatch
+) => {
   if (!result.destination) {
     console.error("%cD&D : unvalid destination", `${consoleError}`);
   }
@@ -88,5 +79,118 @@ export const onDragEnd2 = (result, columns, setColumns, uuid, dispatch) => {
       },
     });
   }
-  sendSelectedIdsToState(columns, uuid, dispatch);
+  dispatch(setIsChanged(uuid));
 };
+
+function removeUsedItemFromList(usedItems, originalItemsList) {
+  const onlyNewItemsList = originalItemsList.filter(
+    (originalItem) =>
+      usedItems.findIndex((usedItem) => usedItem._id === originalItem._id) < 0
+  );
+  return onlyNewItemsList;
+}
+
+export function removeCustomItemFromOriginalList(
+  cumulatedContentsList,
+  columns,
+  setColumns
+) {
+  if (cumulatedContentsList) {
+    const filtredContentsList = removeUsedItemFromList(
+      columns.customList.items,
+      cumulatedContentsList
+    );
+
+    setColumns({
+      ...columns,
+      originalList: {
+        name: "Original List",
+        items: filtredContentsList,
+      },
+    });
+  }
+}
+
+export function customIdsListBuilder(
+  columns,
+  uuid,
+  ids,
+  pinnedContents,
+  dispatch,
+  customIdsList
+) {
+  let buildCustomIdsList = [];
+  if (!customIdsList) {
+    if (ids && !pinnedContents) {
+      buildCustomIdsList = checkForStringtoArray(ids, "array");
+    }
+    if (pinnedContents) {
+      buildCustomIdsList = checkForStringtoArray(pinnedContents, "array");
+    }
+  }
+  if (columns?.customList.items) {
+    buildCustomIdsList = columns?.customList.items.map((item) => item._id);
+  }
+
+  const stringBuildedCustomList = checkForStringtoArray(
+    buildCustomIdsList,
+    "string"
+  );
+
+  dispatch(
+    setCollectionCustomIdsList({
+      id: uuid,
+      value: stringBuildedCustomList,
+    })
+  );
+}
+
+export function changePinnedButtonState(
+  dispatch,
+  customIdsList,
+  uuid,
+  isPined
+) {
+  if ((!customIdsList, !uuid)) {
+    return;
+  }
+  if (customIdsList === undefined) {
+    dispatch(
+      setCollectionIsPined({
+        id: uuid,
+        value: false,
+        isChanged: true,
+      })
+    );
+  } else {
+    dispatch(
+      setCollectionIsPined({
+        id: uuid,
+        value: !isPined,
+        isChanged: true,
+      })
+    );
+  }
+}
+
+export function manageInitialCustomList(pinnedContents, uuid, dispatch) {
+  if (!pinnedContents) {
+    dispatch(
+      setCollectionIsPined({
+        id: uuid,
+        value: false,
+        isChanged: false,
+      })
+    );
+  }
+
+  if (pinnedContents) {
+    dispatch(
+      setCollectionIsPined({
+        id: uuid,
+        value: true,
+        isChanged: false,
+      })
+    );
+  }
+}

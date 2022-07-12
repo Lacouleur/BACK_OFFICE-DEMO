@@ -19,6 +19,12 @@ export const PageCardContainer = styled.div`
   width: 224px;
   height: 224px;
   justify-content: space-between;
+
+  &:hover {
+    transform: scale(1.02);
+    outline: 1px solid ${colors.paleViolet};
+    box-shadow: 0px 0px 8px 2px ${colors.paleVioletTransp};
+  }
 `;
 
 export const PageHubContainer = styled.div`

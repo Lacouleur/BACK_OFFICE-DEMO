@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
+import Fuse from "fuse.js";
 import {
   CustomCollectionContainer,
   ListContainer,
@@ -28,7 +29,7 @@ import {
 } from "../../../../../helper/Editor/dragAndDropHelper";
 
 import SwitchButton from "../../../../Tools/Switch";
-import { setCollectionIsPined } from "../../../../../store/actions/moduleActions";
+import { fuzzyOptions } from "../../../../../helper/fieldsHelper";
 
 const DragAndDropCustomList = ({
   uuid,
@@ -42,6 +43,7 @@ const DragAndDropCustomList = ({
   lastPage,
   isPined,
   lang,
+  searchedInput,
 }) => {
   const dispatch = useDispatch();
 
@@ -58,11 +60,40 @@ const DragAndDropCustomList = ({
     },
   });
 
+  const loadButtonWording = {
+    moreResults: "Load more results",
+    noMoreResults: "No more results to load",
+    moreArticles: "Load more articles",
+    noMoreArticles: "No more articles to load",
+  };
+
+  const [fuseResult, setFuseResult] = useState([]);
+  const [fuse, setFuse] = useState(null);
+
+  function initFuse() {
+    const fuse = new Fuse(cumulatedContentsList, {
+      keys: ["title"],
+    });
+    setFuse(fuse);
+  }
+
   useEffect(() => {
-    dispatch(fetchContentsList(1, uuid, "title", lang));
-    dispatch(fetchContentsList(1, uuid, "title", "", pinnedContents || ids));
+    initFuse();
+  }, [cumulatedContentsList]);
+
+  useEffect(() => {
+    dispatch(fetchContentsList(1, uuid, "title", lang, 100));
+    dispatch(
+      fetchContentsList(1, uuid, "title", "", 100, pinnedContents || ids)
+    );
     manageInitialCustomList(pinnedContents, uuid, dispatch);
   }, []);
+
+  useEffect(() => {
+    if (fuse) {
+      setFuseResult(fuse.search(searchedInput || "", fuzzyOptions));
+    }
+  }, [searchedInput, fuse]);
 
   useEffect(() => {
     customIdsListBuilder(
@@ -78,10 +109,11 @@ const DragAndDropCustomList = ({
   useEffect(() => {
     removeCustomItemFromOriginalList(
       cumulatedContentsList,
+      fuseResult,
       columns,
       setColumns
     );
-  }, [cumulatedContentsList, columns.customList.items]);
+  }, [cumulatedContentsList, columns.customList.items, fuseResult]);
 
   useEffect(() => {
     setColumns({
@@ -199,17 +231,21 @@ const DragAndDropCustomList = ({
           <LoadMoreCustomList
             onClick={() => {
               if (cumulatedContentsList.length > 0) {
-                dispatch(fetchContentsList(nextPage, uuid, "title", lang));
+                dispatch(fetchContentsList(nextPage, uuid, "title", lang, 100));
               }
             }}
           >
-            Load More Articles
+            {searchedInput
+              ? `${loadButtonWording.moreResults}`
+              : `${loadButtonWording.moreArticles}`}
           </LoadMoreCustomList>
         </>
       )}
       {currentPage === lastPage && (
         <LoadMoreCustomList disabled>
-          No more Article to load
+          {searchedInput
+            ? `${loadButtonWording.noMoreResults}`
+            : `${loadButtonWording.noMoreArticles}`}
         </LoadMoreCustomList>
       )}
     </DragDropContext>
@@ -226,6 +262,7 @@ DragAndDropCustomList.defaultProps = {
   isPined: false,
   pinnedContents: undefined,
   ids: undefined,
+  searchedInput: undefined,
 };
 
 DragAndDropCustomList.propTypes = {
@@ -240,6 +277,7 @@ DragAndDropCustomList.propTypes = {
   lang: PropTypes.string.isRequired,
   pinnedContents: PropTypes.string,
   ids: PropTypes.string,
+  searchedInput: PropTypes.string,
 };
 
 export default DragAndDropCustomList;

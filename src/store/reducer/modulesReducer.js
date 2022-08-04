@@ -43,12 +43,13 @@ import {
   SET_COLLECTION_TYPE,
   SET_COLLECTION_FORMAT,
   SET_COLLECTION_IS_PAGINATED,
-  SET_COLLECTION_IS_CUSTOM,
   SET_COLLECTION_CUSTOM_IDS_LIST,
   SET_CUMULATED_CONTENTS_LIST,
   SET_FETCHED_CUSTOM_LIST,
   SET_COLLECTION_PAGINATION,
   SET_COLLECTION_IS_PINED,
+  SET_COLLECTION_SEARCH_INPUT,
+  SET_COLLECTION_SEARCHED_CONTENT_LIST,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -1072,6 +1073,41 @@ const modulesReducer = (state = initialState, action = {}) => {
         ...oldState,
       };
     }
+
+    case SET_COLLECTION_SEARCH_INPUT: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            searchedInput: value,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    // case    SET_COLLECTION_SEARCHED_CONTENT_LIST: {
+    //   const { id, value } = action.payload;
+    //   state.modulesList.find((module, index) => {
+    //     if (module?.uuid === id) {
+    //       oldState.modulesList[index] = {
+    //         ...module,
+    //         fetchedCustomList: value,
+    //         /* isChanged: true, */
+    //       };
+    //     }
+    //     return null;
+    //   });
+
+    //   return {
+    //     ...oldState,
+    //   };
+    // }
 
     case SET_COLLECTION_PAGINATION: {
       const { id, currentPage, lastPage, nextPage } = action.payload;

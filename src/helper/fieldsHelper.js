@@ -50,47 +50,6 @@ import {
   pageSetSeoDescription,
   pageSetSeoTitle,
 } from "../store/actions/pageSeoActions";
-import { fetchTags } from "../store/actions/thunk/ArticlesActions.thunk";
-
-// Hard coded reading time list for theming.
-export const readingTimeList = [
-  {
-    label: "1 min",
-    value: 1,
-  },
-  {
-    label: "2 min",
-    value: 2,
-  },
-  {
-    label: "3 min",
-    value: 3,
-  },
-  {
-    label: "5 min",
-    value: 5,
-  },
-  {
-    label: "10 min",
-    value: 10,
-  },
-  {
-    label: "15 min",
-    value: 15,
-  },
-  {
-    label: "20 min",
-    value: 20,
-  },
-  {
-    label: "25 min",
-    value: 25,
-  },
-  {
-    label: "30 min",
-    value: 30,
-  },
-];
 
 // Hard coded Color list for theming.
 export const colorStyleList = [
@@ -135,8 +94,6 @@ export function onEdit(
   setEditCategory,
   selectedLang,
   setSelectedLang,
-  selectedReadTime,
-  setSelectedReadTime,
   selectedColorStyle,
   setSelectedColorStyle,
   setSelectedCollectionType,
@@ -192,16 +149,6 @@ export function onEdit(
     langList.map((option) => {
       if (edit === option.value) {
         setSelectedLang(option);
-        return null;
-      }
-      return null;
-    });
-  }
-
-  if (!selectedReadTime) {
-    readingTimeList.map((option) => {
-      if (parseInt(edit, 10) === option.value) {
-        setSelectedReadTime(option);
         return null;
       }
       return null;
@@ -362,9 +309,6 @@ export function optionSelector(name, list) {
     case "lang":
       return langList;
 
-    case "readTime":
-      return readingTimeList;
-
     case "colorStyle":
       return colorStyleList;
 
@@ -482,6 +426,10 @@ export function dispatchFields(
 
     case name === "title" && section === "homeNavigation":
       dispatch(addHomeTitle(value));
+      break;
+
+    case name === "readTime" && section === "homeNavigation":
+      dispatch(setReadingTime(value));
       break;
 
     case name === "altImage" && section === "imageModule":

@@ -143,62 +143,62 @@ const HomeNavigation = () => {
               section="homeNavigation"
               edit={homeTitle || undefined}
             />
-            {homeTitle && (
-              <>
-                <Field
-                  placeholder="Reading Time"
-                  name="readTime"
-                  infos="Average reading time."
-                  fieldType="select"
-                  section="HomeNavigation"
-                  edit={readingTime?.toString() || undefined}
-                />
 
-                <Field
-                  placeholder="Home Image"
-                  name="homeImage"
-                  section="homeModule"
-                  fieldType="uploader"
-                  edit={homeImgTitle || undefined}
-                  infos="Image size: 320x568px - 500ko maximum"
-                />
+            <>
+              <Field
+                placeholder="Reading Time"
+                name="readTime"
+                section="homeNavigation"
+                infos="Average reading time, min 1 minute - max 15 minutes"
+                type="number"
+                maxlength="2"
+                edit={readingTime?.toString() || undefined}
+              />
 
-                {isHomeImage && (
-                  <>
-                    <Field
-                      placeholder="Alternative text for home image"
-                      name="altHomeImage"
-                      infos="Maximum 120 characters"
-                      maxlength="120"
-                      section="homeNavigation"
-                      edit={homeImgAlt || undefined}
-                    />
-                  </>
-                )}
+              <Field
+                placeholder="Home Image"
+                name="homeImage"
+                section="HomeNavigation"
+                fieldType="uploader"
+                edit={homeImgTitle || undefined}
+                infos="Image size: 320x568px - 500ko maximum"
+              />
 
-                <Field
-                  placeholder="Navigation Image"
-                  name="navImage"
-                  section="homeModule"
-                  fieldType="uploader"
-                  edit={navImgTitle || undefined}
-                  infos="Image size: 56x56px - 500ko maximum"
-                />
+              {isHomeImage && (
+                <>
+                  <Field
+                    placeholder="Alternative text for home image"
+                    name="altHomeImage"
+                    infos="Maximum 120 characters"
+                    maxlength="120"
+                    section="homeNavigation"
+                    edit={homeImgAlt || undefined}
+                  />
+                </>
+              )}
 
-                {isNavImage && (
-                  <>
-                    <Field
-                      placeholder="Alternative text for home image"
-                      name="altNavImage"
-                      infos="Maximum 120 characters"
-                      maxlength="120"
-                      section="homeNavigation"
-                      edit={navImgAlt || undefined}
-                    />
-                  </>
-                )}
-              </>
-            )}
+              <Field
+                placeholder="Navigation Image"
+                name="navImage"
+                section="HomeNavigation"
+                fieldType="uploader"
+                edit={navImgTitle || undefined}
+                infos="Image size: 56x56px - 500ko maximum"
+              />
+
+              {isNavImage && (
+                <>
+                  <Field
+                    placeholder="Alternative text for home image"
+                    name="altNavImage"
+                    infos="Maximum 120 characters"
+                    maxlength="120"
+                    section="homeNavigation"
+                    edit={navImgAlt || undefined}
+                  />
+                </>
+              )}
+            </>
           </>
         )}
       </SectionBox>

@@ -25,7 +25,6 @@ import eye from "../../styles/assets/icons/eye-circle-green.svg";
 import copy from "../../styles/assets/icons/copy.svg";
 import pen from "../../styles/assets/icons/pen.svg";
 import buildDate from "../../helper/buildDate";
-import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import Status from "./Status";
 import {
   ActionIcon,

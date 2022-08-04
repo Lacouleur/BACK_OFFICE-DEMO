@@ -287,8 +287,8 @@ export function fetchContentsList(
   uuid,
   contentType,
   lang,
-  ids,
-  limit = 15
+  limit = 15,
+  ids
 ) {
   return async (dispatch) => {
     const tokenIsValid = await isValidToken(dispatch);
@@ -298,8 +298,8 @@ export function fetchContentsList(
           page,
           contentType,
           lang,
-          ids,
-          limit
+          limit,
+          ids
         );
         if (response.status < 300 && response.status > 199) {
           if (uuid) {

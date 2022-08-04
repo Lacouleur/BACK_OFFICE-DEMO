@@ -313,22 +313,19 @@ export function DnDCustomCollectionStyles(snapshot, providedStyle) {
   };
 }
 
-export const LoadMoreCustomList = styled.div`
+export const LoadMoreCustomList = styled.button`
   border: 1px solid
-    ${(props) => (props.disabled ? colors.lightGrey : colors.paleVioletTransp)};
-  background-color: ${(props) =>
-    props.disabled ? colors.lightGrey : colors.paleVioletTransp};
-  border-radius: 25px;
+    ${(props) => (props.disabled ? colors.lightGrey : colors.paleViolet)};
+  background-color: transparent;
+  border-radius: 5px;
   text-align: center;
-  margin: 8px;
+  color: ${(props) => (props.disabled ? colors.lightGrey : colors.paleViolet)};
+  margin: 8px 0;
   padding: 8px;
+  height: 44px;
   width: fit-content;
+  font-size: 16px;
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
-
-  &:hover {
-    background-color: ${(props) =>
-      props.disabled ? colors.lightGrey : colors.paleViolet};
-  }
 `;
 
 export const TitleAndFieldContainer = styled.div`

@@ -43,6 +43,7 @@ import {
   SET_FETCHED_CUSTOM_LIST,
   SET_COLLECTION_PAGINATION,
   SET_COLLECTION_IS_PINED,
+  SET_COLLECTION_SEARCH_INPUT,
 } from "../constants";
 
 export const setPageModuleHeaderNewTab = (payload) => ({
@@ -254,5 +255,10 @@ export const setCumulatedContentsList = (payload) => ({
 
 export const setCollectionPagination = (payload) => ({
   type: SET_COLLECTION_PAGINATION,
+  payload,
+});
+
+export const setCollectionSearchInput = (payload) => ({
+  type: SET_COLLECTION_SEARCH_INPUT,
   payload,
 });

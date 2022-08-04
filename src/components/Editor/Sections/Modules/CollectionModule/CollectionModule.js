@@ -24,6 +24,7 @@ import {
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import {
   setCollectionIsPaginated,
+  setCollectionSearchInput,
   showCloseModal,
 } from "../../../../../store/actions/moduleActions";
 import CloseModal from "../../../../Modals/CloseModal";
@@ -35,6 +36,10 @@ import { setAModuleIsOpen } from "../../../../../store/actions/actionBarActions"
 import { watchNewModules } from "../../../../../helper/modulesHelper";
 import SwitchButton from "../../../../Tools/Switch";
 import DragAndDropCustomList from "./DragAndDropCustomList";
+import {
+  FilterFieldContainer,
+  FilterInput,
+} from "../../../../../styles/styledComponents/global/FilterField.sc";
 
 const CollectionModule = ({
   isPage,
@@ -55,6 +60,7 @@ const CollectionModule = ({
   paginate,
   isPined,
   customIdsList,
+  searchedInput,
   pinnedContents,
   ids,
   cumulatedContentsList,
@@ -224,6 +230,18 @@ const CollectionModule = ({
           </CollectionSectionDescritpion>
         </CollectionSectionTitleBox>
 
+        <FilterFieldContainer>
+          <FilterInput
+            type="search"
+            placeholder="Search articles"
+            onChange={(e) => {
+              dispatch(
+                setCollectionSearchInput({ id: uuid, value: e.target.value })
+              );
+            }}
+          />
+        </FilterFieldContainer>
+
         <DragAndDropCustomList
           uuid={uuid}
           customIdsList={customIdsList}
@@ -236,6 +254,7 @@ const CollectionModule = ({
           lang={lang}
           pinnedContents={pinnedContents}
           ids={ids}
+          searchedInput={searchedInput}
         />
       </SectionBox>
     </ModuleContainer>
@@ -260,6 +279,7 @@ CollectionModule.defaultProps = {
   isPined: false,
   pinnedContents: undefined,
   ids: undefined,
+  searchedInput: undefined,
 };
 
 CollectionModule.propTypes = {
@@ -288,5 +308,6 @@ CollectionModule.propTypes = {
   isPined: PropTypes.bool,
   pinnedContents: PropTypes.string,
   ids: PropTypes.string,
+  searchedInput: PropTypes.string,
 };
 export default CollectionModule;

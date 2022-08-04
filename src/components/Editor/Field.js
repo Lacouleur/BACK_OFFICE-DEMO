@@ -170,8 +170,6 @@ const Field = ({
       setEditCategory,
       selectedLang,
       setSelectedLang,
-      selectedReadTime,
-      setSelectedReadTime,
       selectedColorStyle,
       setSelectedColorStyle,
       setSelectedCollectionType,
@@ -514,6 +512,10 @@ const Field = ({
             maxLength={maxlength}
             disabled={name === "slug" && !(status === "DRAFT" || !status)}
             onInput={(e) => {
+              if (type === "number" && e.target.value > 15) {
+                e.target.value = 15;
+              }
+
               dispatchFields(
                 name,
                 section,

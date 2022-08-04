@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-import { Title } from "../../styles/styledComponents/contentList/Content.sc";
 import axiosConfig from "../config/axiosConfig";
 import { getToken } from "./tokenStuff";
 
@@ -11,7 +10,7 @@ export const sendAuth = (data) => {
   });
 };
 
-export function getContentList(page = 1, contentType, lang, ids, limit = 15) {
+export function getContentList(page = 1, contentType, lang, limit = 15, ids) {
   let string = "";
   const langString = lang ? `&lang=${lang}` : "";
   if (!ids) {

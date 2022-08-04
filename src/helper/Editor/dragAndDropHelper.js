@@ -92,23 +92,35 @@ function removeUsedItemFromList(usedItems, originalItemsList) {
 
 export function removeCustomItemFromOriginalList(
   cumulatedContentsList,
+  fuseResult,
   columns,
   setColumns
 ) {
-  if (cumulatedContentsList) {
-    const filtredContentsList = removeUsedItemFromList(
+  let filtredContentsList;
+  if (cumulatedContentsList && fuseResult.length === 0) {
+    filtredContentsList = removeUsedItemFromList(
       columns.customList.items,
       cumulatedContentsList
     );
-
-    setColumns({
-      ...columns,
-      originalList: {
-        name: "Original List",
-        items: filtredContentsList,
-      },
-    });
   }
+
+  if (cumulatedContentsList && fuseResult.length > 0) {
+    const resultList = [];
+    fuseResult.map((result) => {
+      resultList.push(result.item);
+    });
+    filtredContentsList = removeUsedItemFromList(
+      columns.customList.items,
+      resultList
+    );
+  }
+  setColumns({
+    ...columns,
+    originalList: {
+      name: "Original List",
+      items: filtredContentsList,
+    },
+  });
 }
 
 export function customIdsListBuilder(

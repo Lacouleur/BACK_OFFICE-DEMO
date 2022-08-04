@@ -273,6 +273,7 @@ const ModulesDispatcher = ({
                         nextPage={module.nextPage}
                         lastPage={module.lastPage}
                         customListLoaded={module.customListLoaded}
+                        searchedInput={module?.searchedInput}
                         categories={
                           module?.criteria?.categories
                             ? checkForStringtoArray(

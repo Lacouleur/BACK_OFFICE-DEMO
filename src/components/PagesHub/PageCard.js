@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
   CardArchiveBox,
@@ -47,6 +47,7 @@ const PageCard = ({
   const history = useHistory();
   const updateDate = buildDate(new Date(updatedAt));
   const dispatch = useDispatch();
+  const [hover, setHover] = useState(false);
 
   return (
     <PageCardContainer id="pages" key={id}>
@@ -88,27 +89,37 @@ const PageCard = ({
           onClick={() => {
             history.push(`/page-editor/${id}`);
           }}
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
         />
       </CardIconActionBox>
-
-      <CardTitleDateBox id="CardTitleBox">
-        <CardTitle>{title}</CardTitle>
-        <CardUpdatedDate>{`Last save: ${updateDate} `}</CardUpdatedDate>
-      </CardTitleDateBox>
-      <CardSatusAndLang>
-        <Status
-          status={state}
-          updatedAt={updatedAt}
-          publishedAt={publishedAt}
-          modified={modified}
-          isCard
-          publishScheduledAt={publishScheduledAt}
-          publishScheduleFailed={publishScheduleFailed}
-          retryAt={retryAt}
-          failCount={failCount}
-        />
-        <CardLang>{lang}</CardLang>
-      </CardSatusAndLang>
+      <Link
+        to={{
+          pathname: `/page-editor/${id}`,
+        }}
+      >
+        <CardTitleDateBox hover={hover} id="CardTitleBox">
+          <CardTitle>{title}</CardTitle>
+          <CardUpdatedDate>{`Last save: ${updateDate} `}</CardUpdatedDate>
+        </CardTitleDateBox>
+        <CardSatusAndLang
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
+        >
+          <Status
+            status={state}
+            updatedAt={updatedAt}
+            publishedAt={publishedAt}
+            modified={modified}
+            isCard
+            publishScheduledAt={publishScheduledAt}
+            publishScheduleFailed={publishScheduleFailed}
+            retryAt={retryAt}
+            failCount={failCount}
+          />
+          <CardLang>{lang}</CardLang>
+        </CardSatusAndLang>
+      </Link>
     </PageCardContainer>
   );
 };

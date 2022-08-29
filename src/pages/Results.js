@@ -20,6 +20,9 @@ import {
   Section,
   PercentBox,
   IconBox,
+  NavBarContainer,
+  NavElement,
+  NavLine,
 } from "../styles/styledComponents/global/Results.sc";
 import {
   MainTitleBox,
@@ -38,11 +41,13 @@ import eyeIconDisabled from "../styles/assets/icons/eye-white-disabled.svg";
 import { IsVisibleIcon } from "../styles/styledComponents/editor/modules/Modules.sc";
 import { cleanContentState } from "../store/actions/commonsActions";
 import { consolePage } from "../helper/consoleStyles";
+import { getData, percentage } from "../helper/resultsHelper";
 
 const Results = () => {
   console.log("%cPAGE: QUIZZ RESULTS", `${consolePage}`);
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
   const [data, setData] = useState([]);
+  const [isActive, setIsActive] = useState("opinions");
   const dispatch = useDispatch();
   const { articleId, manifestoId, manifestoLang } = useParams();
   const history = useHistory();
@@ -55,54 +60,18 @@ const Results = () => {
 
   const { manifestoData } = manifestoState;
 
-  function getData() {
-    const storedData = [];
-    if (articleId) {
-      modulesList.map((module) => {
-        if (module.type === "opinion" && articleId) {
-          storedData.push({
-            id: module.uuid,
-            question: module.question,
-            participantsCount: module.participantsCount,
-            answers: module.answers,
-            showRight: module.showRight,
-            isVisible: module.isVisible,
-          });
-        }
-        return null;
-      });
-    }
-
-    if (manifestoData.components && manifestoId) {
-      manifestoData.components.map((module) => {
-        if (module.type === "opinion") {
-          storedData.push({
-            id: module.uuid,
-            question: module.question,
-            participantsCount: module.participantsCount,
-            answers: module.answers,
-            showRight: module.showRight,
-            isVisible: module.isVisible,
-          });
-        }
-        return null;
-      });
-    }
-    setData(storedData);
-  }
-
-  function percentage(partialValue, totalValue) {
-    const calc = Math.floor((100 * partialValue) / totalValue);
-    if (Number.isNaN(calc)) {
-      return "0";
-    }
-    return calc;
-  }
-
   useEffect(() => {
     setData([]);
-    getData();
-  }, [modulesList, manifestoData]);
+
+    getData(
+      articleId,
+      modulesList,
+      manifestoData,
+      manifestoId,
+      setData,
+      isActive
+    );
+  }, [isActive, modulesList, manifestoData]);
 
   useEffect(() => {
     setData([]);
@@ -141,6 +110,34 @@ const Results = () => {
           </Button>
         </MainTitleBox>
 
+        <NavBarContainer>
+          <NavElement
+            onClick={() => {
+              setIsActive("opinions");
+            }}
+            isActive={isActive === "opinions"}
+          >
+            OPINIONS
+          </NavElement>
+          {/*    <NavElement
+            onClick={() => {
+              setIsActive("feedback");
+            }}
+            isActive={isActive === "feedback"}
+          >
+            FEEDBACK
+          </NavElement> */}
+          <NavElement
+            onClick={() => {
+              setIsActive("reaction");
+            }}
+            isActive={isActive === "reaction"}
+          >
+            REACTION
+          </NavElement>
+          <NavLine />
+        </NavBarContainer>
+
         {data.map((question) => {
           return (
             <Section key={question.id} isOpen>
@@ -174,9 +171,13 @@ const Results = () => {
                           </PercentBox>
                           {answer.text !== "" && question.showRight && (
                             <IconBox>
-                              <IsRightIcon
-                                src={answer.right ? checkIcon : crossIcon}
-                              />
+                              {isActive !== "reaction" && (
+                                <>
+                                  <IsRightIcon
+                                    src={answer.right ? checkIcon : crossIcon}
+                                  />
+                                </>
+                              )}
                             </IconBox>
                           )}
                           <LightText>

@@ -15,9 +15,6 @@ import {
   ModuleContainer,
   Delete,
   ActionIcons,
-  SwitchBox,
-  Switch,
-  SwitchLabel,
   FieldAndSwitchContainer,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import {
@@ -216,7 +213,8 @@ const CtaModule = ({
                       value: !openNewTab,
                       type: "content",
                     })
-                  )}
+                  )
+                }
                 isChecked={openNewTab}
                 componentId={`cta-switch-${uuid}`}
                 displayedText="Open in new window"
@@ -243,7 +241,8 @@ const CtaModule = ({
                     value: !openNewTab,
                     type: "page",
                   })
-                )}
+                )
+              }
               isChecked={openNewTab}
               componentId={`cta-switch-${uuid}`}
               displayedText="Open in new window"

@@ -4,6 +4,12 @@ import ReactSelect from "react-select";
 import CreatableSelect from "react-select/async-creatable";
 import colors from "../../core/colors";
 
+export const TextOpinion = styled.p`
+  font-size: 14px;
+  font-weight: bold;
+  color: ${colors.white};
+  margin: 16px 8px;
+`;
 export const FieldTitle = styled.p`
   margin-left: 16px;
   z-index: 21;
@@ -503,6 +509,7 @@ export const TextArea = styled(TextareaAutosize)`
   max-width: 100%;
   min-width: 100%;
   height: auto;
+  max-height: ${(props) => (props.maxheight === "feedback" ? "100px" : "auto")};
   min-height: 56px;
   font-size: 16px;
   line-height: 24px;

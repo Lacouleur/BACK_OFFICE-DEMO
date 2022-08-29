@@ -16,6 +16,7 @@ import imageIcon from "../../../../styles/assets/icons/image-black.svg";
 import crossIcon from "../../../../styles/assets/icons/cross-white.svg";
 import ctaIcon from "../../../../styles/assets/icons/cta.svg";
 import collectionIcon from "../../../../styles/assets/icons/collection-black.svg";
+import feedBackIcon from "../../../../styles/assets/icons/talkbubbles-black.svg";
 import {
   ModuleBox,
   ModulesContainer,
@@ -51,7 +52,13 @@ const ModuleCreator = ({ setIsOpen }) => {
       { type: "text", icon: textIcon, name: "TEXT", editor: "article" },
       { type: "opinion", icon: quizzIcon, name: "OPINION", editor: "article" },
       { type: "image", icon: imageIcon, name: "IMAGE", editor: "article" },
-      { type: "cta-button", icon: ctaIcon, name: "CTA", editor: "article" }
+      { type: "cta-button", icon: ctaIcon, name: "CTA", editor: "article" },
+      {
+        type: "feedback",
+        icon: feedBackIcon,
+        name: "FEEDBACK",
+        editor: "article",
+      }
     );
   }
 

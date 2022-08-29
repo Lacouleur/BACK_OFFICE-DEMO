@@ -38,6 +38,7 @@ import {
   showCloseModal,
   createOpinionNewAnswer,
   deleteOpinionAnswer,
+  setOpinionIsReaction,
 } from "../../../../../store/actions/moduleActions";
 import CloseModal from "../../../../Modals/CloseModal";
 import HideModal from "../../../../Modals/HideModal";
@@ -56,8 +57,12 @@ import {
   showHideModal,
 } from "../../../../../store/actions/actionBarActions";
 import TextEditor from "../TextEditor";
-import { setTextHTMLContent } from "../../../../../helper/modulesHelper";
+import {
+  manageReactionAnswers,
+  setTextHTMLContent,
+} from "../../../../../helper/modulesHelper";
 import SwitchButton from "../../../../Tools/Switch";
+import { TextOpinion } from "../../../../../styles/styledComponents/global/Field.sc";
 
 const OpinionModule = ({
   uuid,
@@ -72,7 +77,7 @@ const OpinionModule = ({
   answers,
   isVisible,
   order,
-  language,
+  isReaction,
 }) => {
   const dispatch = useDispatch();
   const opinionModuleRef = useRef(null);
@@ -89,17 +94,26 @@ const OpinionModule = ({
 
   const { articleId, status } = mainInformationState;
   const { hideModal } = actionBarState;
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
-    setTextHTMLContent(
-      "opinionModule",
-      uuid,
-      editorState,
-      explanation,
-      setEditorState,
-      dispatch
-    );
-  }, [editorState]);
+    if (isReaction === false) {
+      setTextHTMLContent(
+        "opinionModule",
+        uuid,
+        editorState,
+        explanation,
+        setEditorState,
+        dispatch
+      );
+    }
+  }, [editorState, isReaction]);
+
+  useEffect(() => {
+    if (isReaction) {
+      manageReactionAnswers(answers, dispatch, uuid);
+    }
+  }, [isReaction]);
 
   useEffect(() => {
     if (isNewModule) {
@@ -111,6 +125,16 @@ const OpinionModule = ({
       setIsOpen(true);
     }
   }, [isNewModule]);
+
+  useEffect(() => {
+    if (isReaction && explanation) {
+      if (explanation === "<p></p>") {
+        setDescription("");
+      } else {
+        setDescription(explanation);
+      }
+    }
+  }, [explanation]);
 
   useEffect(() => {
     dispatch(setAModuleIsOpen(isOpen));
@@ -172,165 +196,235 @@ const OpinionModule = ({
         </ActionIcons>
 
         <SectionTitle>
-          <FormTitle>{`${order}. opinion`}</FormTitle>
+          <FormTitle>
+            {`${order}. opinion ${isReaction ? "(reaction)" : "(Quizz)"}`}
+          </FormTitle>
         </SectionTitle>
         {!isOpen && <Gradient />}
-
-        <QuestionSettingContainer>
-          <QuestionSettingboxOne>
-            <QuestionLabel
-              htmlFor="r/w"
-              onClick={() => {
-                dispatch(
-                  SetOpinionShowRightAnswer({ id: uuid, value: !showRight })
-                );
+        {isReaction === undefined && (
+          <>
+            <TextOpinion>
+              What type of opinion do you want to create ?
+            </TextOpinion>
+            <SwitchButton
+              styleVariant="isReaction"
+              action={() => {
+                dispatch(setOpinionIsReaction({ id: uuid, value: true }));
               }}
-            >
-              <CheckboxContainer checked={showRight} readOnly>
-                <HiddenCheckbox checked={showRight} readOnly />
-                <CheckBox id="r/w">
-                  <CheckMark src={checkIcon} />
-                </CheckBox>
-              </CheckboxContainer>
-              <p>Right/Wrong</p>
-            </QuestionLabel>
+              isChecked={false}
+              componentId="switch-is-reaction"
+              displayedText="Reaction"
+            />
 
-            <QuestionLabel
-              htmlFor="%"
-              onClick={() => {
-                dispatch(
-                  setOpinionshowPercentage({ id: uuid, value: !showPercentage })
-                );
+            <SwitchButton
+              styleVariant="isReaction"
+              action={() => {
+                dispatch(setOpinionIsReaction({ id: uuid, value: false }));
               }}
-            >
-              <CheckboxContainer checked={showPercentage} readOnly>
-                <HiddenCheckbox checked={showPercentage} readOnly />
-                <CheckBox id="%">
-                  <CheckMark src={checkIcon} />
-                </CheckBox>
-              </CheckboxContainer>
-              <p>Show %</p>
-            </QuestionLabel>
+              isChecked={false}
+              componentId="switch-is-quizz"
+              displayedText="Quizz"
+            />
+          </>
+        )}
+        {isReaction !== undefined && (
+          <>
+            {answers && !isReaction && (
+              <QuestionSettingContainer>
+                <QuestionSettingboxOne>
+                  <QuestionLabel
+                    htmlFor="r/w"
+                    onClick={() => {
+                      dispatch(
+                        SetOpinionShowRightAnswer({
+                          id: uuid,
+                          value: !showRight,
+                        })
+                      );
+                    }}
+                  >
+                    <CheckboxContainer checked={showRight} readOnly>
+                      <HiddenCheckbox checked={showRight} readOnly />
+                      <CheckBox id="r/w">
+                        <CheckMark src={checkIcon} />
+                      </CheckBox>
+                    </CheckboxContainer>
+                    <p>Right/Wrong</p>
+                  </QuestionLabel>
 
-            <QuestionLabel
-              htmlFor="addTxt"
-              onClick={() => {
-                if (explanation === null) {
-                  dispatch(setOpinionExplain({ id: uuid, value: "" }));
-                } else {
-                  dispatch(setOpinionExplain({ id: uuid, value: null }));
-                }
-              }}
-            >
-              <CheckboxContainer
-                checked={typeof explanation === "string"}
-                readOnly
-              >
-                <HiddenCheckbox
-                  checked={typeof explanation === "string"}
-                  readOnly
-                />
-                <CheckBox id="addTxt">
-                  <CheckMark src={checkIcon} />
-                </CheckBox>
-              </CheckboxContainer>
-              <p>Add a text</p>
-            </QuestionLabel>
+                  <QuestionLabel
+                    htmlFor="%"
+                    onClick={() => {
+                      dispatch(
+                        setOpinionshowPercentage({
+                          id: uuid,
+                          value: !showPercentage,
+                        })
+                      );
+                    }}
+                  >
+                    <CheckboxContainer checked={showPercentage} readOnly>
+                      <HiddenCheckbox checked={showPercentage} readOnly />
+                      <CheckBox id="%">
+                        <CheckMark src={checkIcon} />
+                      </CheckBox>
+                    </CheckboxContainer>
+                    <p>Show %</p>
+                  </QuestionLabel>
 
-            <QuestionLabel
-              htmlFor="showResult"
-              onClick={() => {
-                dispatch(
-                  setOpinionShowResponse({ id: uuid, value: !showResponse })
-                );
-              }}
-            >
-              <CheckboxContainer checked={showResponse} readOnly>
-                <HiddenCheckbox checked={showResponse} readOnly />
-                <CheckBox id="showResult">
-                  <CheckMark src={checkIcon} />
-                </CheckBox>
-              </CheckboxContainer>
-              <p>Show results</p>
-            </QuestionLabel>
-          </QuestionSettingboxOne>
-        </QuestionSettingContainer>
+                  <QuestionLabel
+                    htmlFor="addTxt"
+                    onClick={() => {
+                      if (explanation === null) {
+                        dispatch(setOpinionExplain({ id: uuid, value: "" }));
+                      } else {
+                        dispatch(setOpinionExplain({ id: uuid, value: null }));
+                      }
+                    }}
+                  >
+                    <CheckboxContainer
+                      checked={typeof explanation === "string"}
+                      readOnly
+                    >
+                      <HiddenCheckbox
+                        checked={typeof explanation === "string"}
+                        readOnly
+                      />
+                      <CheckBox id="addTxt">
+                        <CheckMark src={checkIcon} />
+                      </CheckBox>
+                    </CheckboxContainer>
+                    <p>Add a text</p>
+                  </QuestionLabel>
 
-        <Field
-          placeholder="Question"
-          maxlength="70"
-          infos="Maximum 70 characters"
-          name="question"
-          section="opinion"
-          moduleId={uuid}
-          edit={question}
-        />
-        {question &&
-          answers &&
-          answers.map((answer) => {
-            return (
-              <FieldAndSwitchContainer key={answer.uuid}>
+                  <QuestionLabel
+                    htmlFor="showResult"
+                    onClick={() => {
+                      dispatch(
+                        setOpinionShowResponse({
+                          id: uuid,
+                          value: !showResponse,
+                        })
+                      );
+                    }}
+                  >
+                    <CheckboxContainer checked={showResponse} readOnly>
+                      <HiddenCheckbox checked={showResponse} readOnly />
+                      <CheckBox id="showResult">
+                        <CheckMark src={checkIcon} />
+                      </CheckBox>
+                    </CheckboxContainer>
+                    <p>Show results</p>
+                  </QuestionLabel>
+                </QuestionSettingboxOne>
+              </QuestionSettingContainer>
+            )}
+
+            <Field
+              placeholder="Question"
+              maxlength="70"
+              infos="Maximum 70 characters"
+              name="question"
+              section="opinion"
+              moduleId={uuid}
+              edit={question}
+            />
+
+            {isReaction === true && (
+              <>
                 <Field
-                  placeholder="Answer"
-                  maxlength="90"
-                  infos="Maximum 90 characters"
-                  name="answer"
+                  placeholder="Emoji Theme"
+                  infos="Only one Emoji set for the time being, more soon"
+                  name="emojiTheme"
+                  section="opinion"
+                  maxlength="5"
+                  moduleId={uuid}
+                  edit="😍🤔👏😥😡"
+                />
+                <Field
+                  placeholder="Description"
+                  fieldType="textarea"
+                  maxlength="150"
+                  infos="Maximum 150 characters"
+                  name="description"
                   section="opinion"
                   moduleId={uuid}
-                  answerId={answer.uuid}
-                  edit={answer.text}
+                  edit={description}
                 />
-                <IconBox>
-                  <AnswerTrashIcon
-                    onClick={() =>
-                      dispatch(
-                        deleteOpinionAnswer({
-                          moduleId: uuid,
-                          answerId: answer.uuid,
-                        })
-                        // eslint-disable-next-line prettier/prettier
-                      )}
-                    src={
-                      answers.length > 2
-                        ? trashIconViolet
-                        : trashIconGreyNoCircle
-                    }
-                    unactive={answers.length > 2}
-                  />
-                </IconBox>
+              </>
+            )}
+            {answers &&
+              !isReaction &&
+              answers.map((answer) => {
+                return (
+                  <FieldAndSwitchContainer key={answer.uuid}>
+                    <Field
+                      placeholder="Answer"
+                      maxlength="90"
+                      infos="Maximum 90 characters"
+                      name="answer"
+                      section="opinion"
+                      moduleId={uuid}
+                      answerId={answer.uuid}
+                      edit={answer.text}
+                    />
+                    <IconBox>
+                      <AnswerTrashIcon
+                        onClick={() =>
+                          dispatch(
+                            deleteOpinionAnswer({
+                              moduleId: uuid,
+                              answerId: answer.uuid,
+                            })
+                          )
+                        }
+                        src={
+                          answers.length > 2
+                            ? trashIconViolet
+                            : trashIconGreyNoCircle
+                        }
+                        unactive={answers.length > 2}
+                      />
+                    </IconBox>
 
-                {showRight && (
-                  <SwitchButton
-                    action={() =>
-                      dispatch(
-                        SetOpinionRightAnswer({
-                          moduleId: uuid,
-                          answerId: answer.uuid,
-                          value: !answer.right,
-                        })
-                      )
-                    }
-                    isChecked={!!answer?.right || false}
-                    componentId={`switch-${answer.uuid}}`}
-                    displayedText="Right answer"
-                  />
-                )}
-              </FieldAndSwitchContainer>
-            );
-          })}
-
-        <AddAnswerBox onClick={() => dispatch(createOpinionNewAnswer(uuid))}>
-          <AddAnswerIcon src={plusIcon} />
-          <AddAnswerText>Add an answer</AddAnswerText>
-        </AddAnswerBox>
-
-        {typeof explanation === "string" && question && editorState && (
-          <>
-            <TextEditor
-              editorState={editorState}
-              setEditorState={setEditorState}
-              isOpen={isOpen}
-            />
+                    {showRight && (
+                      <SwitchButton
+                        action={() =>
+                          dispatch(
+                            SetOpinionRightAnswer({
+                              moduleId: uuid,
+                              answerId: answer.uuid,
+                              value: !answer.right,
+                            })
+                          )
+                        }
+                        isChecked={!!answer?.right || false}
+                        componentId={`switch-${answer.uuid}}`}
+                        displayedText="Right answer"
+                      />
+                    )}
+                  </FieldAndSwitchContainer>
+                );
+              })}
+            {answers && !isReaction && (
+              <AddAnswerBox
+                onClick={() =>
+                  dispatch(createOpinionNewAnswer({ moduleId: uuid }))
+                }
+              >
+                <AddAnswerIcon src={plusIcon} />
+                <AddAnswerText>Add an answer</AddAnswerText>
+              </AddAnswerBox>
+            )}
+            {typeof explanation === "string" && editorState && !isReaction && (
+              <>
+                <TextEditor
+                  editorState={editorState}
+                  setEditorState={setEditorState}
+                  isOpen={isOpen}
+                />
+              </>
+            )}
           </>
         )}
       </SectionBox>
@@ -341,6 +435,7 @@ const OpinionModule = ({
 OpinionModule.defaultProps = {
   explanation: null,
   isVisible: true,
+  isReaction: undefined,
 };
 
 OpinionModule.propTypes = {
@@ -356,6 +451,6 @@ OpinionModule.propTypes = {
   isVisible: PropTypes.bool,
   answers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   order: PropTypes.number.isRequired,
-  language: PropTypes.string.isRequired,
+  isReaction: PropTypes.bool,
 };
 export default OpinionModule;

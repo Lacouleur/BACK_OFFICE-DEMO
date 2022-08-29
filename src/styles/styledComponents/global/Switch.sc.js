@@ -19,14 +19,21 @@ const mixinSwitchCustomListDndLabel = css`
   position: relative !important;
 `;
 
+const mixinSwitchLabelIsReaction = css`
+  left: 100% !important;
+  margin-left: 8px;
+`;
+
 export const SwitchLabel = styled.label`
+  ${(props) =>
+    props.styleVariant === "isReaction" && mixinSwitchLabelIsReaction}
   ${(props) =>
     props.styleVariant === "publishModal-toTop" &&
     mixinSwitchBoxPublishModalToTopLabel}
   ${(props) =>
     props.styleVariant === "publishModal-toBottom" &&
     mixinSwitchBoxPublishModalToBottomLabel}
-        ${(props) =>
+  ${(props) =>
     props.styleVariant === "CustomListDnd" && mixinSwitchCustomListDndLabel}
   position: absolute;
   left: 0;
@@ -142,7 +149,16 @@ const mixinSwitchBoxCustomListDnd = css`
   margin-top: 0 !important;
 `;
 
+const mixinSwitchBoxIsReaction = css`
+  display: flex;
+  line-height: 32px !important;
+  justify-content: space-between;
+  width: 110px !important;
+  margin: 8px !important;
+`;
+
 export const SwitchBox = styled.label`
+  ${(props) => props.styleVariant === "isReaction" && mixinSwitchBoxIsReaction}
   ${(props) => props.tooltip && mixinToolTip}
 
   ${(props) =>

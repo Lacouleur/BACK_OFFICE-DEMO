@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import ReactSelect from "react-select";
 import colors from "../../core/colors";
 
@@ -103,4 +103,47 @@ export const ManifestoLangSelector = styled(ReactSelect)`
       }
     }
   }
+`;
+
+export const FilteringBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 32px;
+  margin: 16px 0;
+`;
+
+export const LangFilter = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 120px;
+  height: 32px;
+`;
+
+const firstOptionMixin = css`
+  border-radius: 25px 0 0 25px;
+`;
+
+const lastOptionMixin = css`
+  border-radius: 0 25px 25px 0;
+`;
+
+const selectedMixin = css`
+  background-color: ${colors.white} !important;
+  color: ${colors.black} !important;
+`;
+
+export const OptionFilter = styled.div`
+  ${(props) => props.first && firstOptionMixin}
+  ${(props) => props.last && lastOptionMixin}
+  width: calc(120px / 3);
+  ${(props) => props.selected && selectedMixin}
+  width: calc(120px / 3);
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  text-transform: capitalize;
+  outline: 1px solid ${colors.white};
+  background-color: ${colors.mediumGrey};
+  cursor: pointer;
 `;

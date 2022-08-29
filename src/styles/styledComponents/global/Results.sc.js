@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import colors from "../../core/colors";
 
 export const ModulesContainer = styled.div`
@@ -98,4 +98,36 @@ export const IconBox = styled.div`
 export const PercentBox = styled.div`
   display: flex;
   width: 120px;
+`;
+
+const isActiveMixin = css`
+  color: ${colors.paleViolet}!important;
+  border-bottom: 4px solid ${colors.paleViolet};
+`;
+
+export const NavLine = styled.div`
+  height: 1px;
+  background-color: ${colors.lightGrey};
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+`;
+
+export const NavBarContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  height: 32px;
+  margin-bottom: 8px;
+  position: relative;
+`;
+
+export const NavElement = styled.div`
+  width: 103px;
+  height: 100%;
+  padding-top: 8px;
+  text-align: center;
+  align-self: center;
+  cursor: pointer;
+  ${(props) => props.isActive && isActiveMixin};
 `;

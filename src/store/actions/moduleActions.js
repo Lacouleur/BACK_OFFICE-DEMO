@@ -35,7 +35,6 @@ import {
   SET_COLLECTION_TYPE,
   SET_COLLECTION_FORMAT,
   SET_COLLECTION_IS_PAGINATED,
-  SET_COLLECTION_IS_CUSTOM,
   SET_CTA_LINK,
   SET_CTA_TYPE,
   SET_COLLECTION_CUSTOM_IDS_LIST,
@@ -44,6 +43,9 @@ import {
   SET_COLLECTION_PAGINATION,
   SET_COLLECTION_IS_PINED,
   SET_COLLECTION_SEARCH_INPUT,
+  SET_FEEDBACK_QUESTION,
+  SET_OPINION_IS_REACTION,
+  SET_OPINION_DESCRIPTION,
 } from "../constants";
 
 export const setPageModuleHeaderNewTab = (payload) => ({
@@ -93,6 +95,11 @@ export const setImageUuid = (payload) => ({
 
 export const setAltImage = (payload) => ({
   type: SET_ALT_IMAGE,
+  payload,
+});
+
+export const setOpinionIsReaction = (payload) => ({
+  type: SET_OPINION_IS_REACTION,
   payload,
 });
 
@@ -199,6 +206,11 @@ export const setCtaAltImage = (payload) => ({
   payload,
 });
 
+export const setCtaType = (payload) => ({
+  type: SET_CTA_TYPE,
+  payload,
+});
+
 export const setCollectionCategories = (payload) => ({
   type: SET_COLLECTION_CATEGORIES,
   payload,
@@ -220,11 +232,6 @@ export const setCollectionType = (payload) => ({
 
 export const setCollectionFormat = (payload) => ({
   type: SET_COLLECTION_FORMAT,
-  payload,
-});
-
-export const setCtaType = (payload) => ({
-  type: SET_CTA_TYPE,
   payload,
 });
 
@@ -260,5 +267,10 @@ export const setCollectionPagination = (payload) => ({
 
 export const setCollectionSearchInput = (payload) => ({
   type: SET_COLLECTION_SEARCH_INPUT,
+  payload,
+});
+
+export const setFeedbackQuestion = (payload) => ({
+  type: SET_FEEDBACK_QUESTION,
   payload,
 });

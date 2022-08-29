@@ -29,6 +29,8 @@ import {
   setCollectionFormat,
   setCollectionLimit,
   setCtaType,
+  setFeedbackQuestion,
+  setOpinionDescription,
 } from "../store/actions/moduleActions";
 import {
   setDisplayedName,
@@ -457,6 +459,11 @@ export function dispatchFields(
         })
       );
       break;
+
+    case name === "description" && section === "opinion":
+      dispatch(setOpinionExplain({ id: moduleId, value }));
+      break;
+
     case name === "intro" && section === "cta":
       dispatch(setCtaIntro({ id: moduleId, value }));
       break;
@@ -475,6 +482,10 @@ export function dispatchFields(
 
     case name === "altImage" && section === "cta":
       dispatch(setCtaAltImage({ id: moduleId, value }));
+      break;
+
+    case name === "question" && section === "feedback":
+      dispatch(setFeedbackQuestion({ id: moduleId, value }));
       break;
 
     case name === "position" && section === "userProfile":
@@ -645,4 +656,15 @@ export function openPreview(language, slug, type = "contents") {
     string = `${PREVIEW_URL}/${lang}/${slug}`;
   }
   window.open(`${string}`, "_blank");
+}
+
+export function checkAndDisable(name, status) {
+  if (name === "emojiTheme") {
+    return true;
+  }
+  if (name === "slug" && !(status === "DRAFT" || !status)) {
+    return true;
+  }
+
+  return false;
 }

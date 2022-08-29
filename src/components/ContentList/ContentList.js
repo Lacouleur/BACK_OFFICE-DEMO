@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { TitleBox, H1 } from "../../styles/styledComponents/global/Titles.sc";
-import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import Content from "./Content";
 import plus from "../../styles/assets/icons/plus.svg";
 import {
@@ -10,6 +9,9 @@ import {
   ContentSectionBox,
   ListBox,
   ManifestoLangSelector,
+  FilteringBox,
+  LangFilter,
+  OptionFilter,
 } from "../../styles/styledComponents/contentList/ContentList.sc";
 import { createNewContent } from "../../styles/styledComponents/global/Buttons/CustomButtons.sc";
 import Pagination from "./Pagination";
@@ -25,6 +27,7 @@ import ArchiveModal from "../Modals/ArchiveModal";
 import ErrorModal from "../Modals/ErrorModal";
 import { setContentsList } from "../../store/actions/contentListActions";
 import { CreateNewContentButton } from "../../styles/styledComponents/contentList/Content.sc";
+import { harmonizeLang } from "../../helper/fieldsHelper";
 
 const ContentList = () => {
   const history = useHistory();
@@ -34,11 +37,19 @@ const ContentList = () => {
     ({ contentListReducer }) => contentListReducer
   );
 
+  const userState = useSelector(({ userReducer }) => userReducer);
+
   const actionBarState = useSelector(
     ({ actionBarReducer }) => actionBarReducer
   );
 
+  const { locale } = userState;
+
   const { lastPage, currentPage, contentsList } = contentsListState;
+
+  const [filterLang, setFilterLang] = useState("");
+
+  const [filteredList, setFilteredList] = useState("");
 
   const {
     isOpenErrorModal,
@@ -47,10 +58,29 @@ const ContentList = () => {
   } = actionBarState;
 
   useEffect(() => {
-    dispatch(fetchContentsList());
     dispatch(cleanContentState());
     dispatch(cleanPageState());
   }, []);
+
+  useEffect(() => {
+    setFilterLang(locale || "");
+  }, [locale]);
+
+  useEffect(() => {
+    dispatch(
+      fetchContentsList(currentPage || 1, undefined, "lang", filterLang)
+    );
+  }, [filterLang, currentPage]);
+
+  useEffect(() => {
+    const filtering = [];
+    contentsList.map((content) => {
+      if (harmonizeLang(content.language) === filterLang || filterLang === "") {
+        filtering.push(content);
+      }
+      setFilteredList(filtering);
+    });
+  }, [filterLang, contentsList]);
 
   return (
     <>
@@ -77,9 +107,35 @@ const ContentList = () => {
             </CreateNewContentButton>
           </Link>
         </TitleBox>
+
+        <FilteringBox>
+          <LangFilter>
+            <OptionFilter
+              first
+              selected={filterLang === "fr"}
+              onClick={() => setFilterLang("fr")}
+            >
+              FR
+            </OptionFilter>
+            <OptionFilter
+              selected={filterLang === "de"}
+              onClick={() => setFilterLang("de")}
+            >
+              DE
+            </OptionFilter>
+            <OptionFilter
+              last
+              selected={filterLang === ""}
+              onClick={() => setFilterLang("")}
+            >
+              ALL
+            </OptionFilter>
+          </LangFilter>
+        </FilteringBox>
+
         <ListBox>
-          {contentsList &&
-            contentsList.map((content, index) => {
+          {filteredList &&
+            filteredList.map((content, index) => {
               return (
                 <Content
                   number={index}

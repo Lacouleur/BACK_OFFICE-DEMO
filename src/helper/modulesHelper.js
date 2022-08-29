@@ -1,14 +1,14 @@
 import { EditorState } from "draft-js";
 import HTMLconverter from "./Editor/HTMLconverter";
 import {
-  setCollectionCustomIdsList,
-  setCollectionIsPined,
+  createOpinionNewAnswer,
+  deleteOpinionAnswer,
   setCtaDescription,
   setOpinionExplain,
+  setOpinionTextAnswer,
   setValueTextModule,
 } from "../store/actions/moduleActions";
 import colors from "../styles/core/colors";
-import { checkForStringtoArray } from "./converters";
 
 export function setTextHTMLContent(
   moduleName,
@@ -87,4 +87,20 @@ export function processLink(link) {
 
 export function onEditorStateChange(e, setEditorState) {
   setEditorState(e);
+}
+
+export function manageReactionAnswers(answers, dispatch, uuid) {
+  // CREATE EMOJI MODE
+  const emojis = ["😍", "🤔", "👏", "😥", "😡"];
+  dispatch(
+    deleteOpinionAnswer({
+      moduleId: uuid,
+      answerId: undefined,
+      eraseAll: true,
+    })
+  );
+
+  emojis.map((emoji) => {
+    dispatch(createOpinionNewAnswer({ moduleId: uuid, text: emoji }));
+  });
 }

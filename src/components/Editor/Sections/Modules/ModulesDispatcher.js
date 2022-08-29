@@ -12,6 +12,7 @@ import OpinionModule from "./OpinionModule/OpinionModule";
 import CtaModule from "./CtaModule/CtaModule";
 import CollectionModule from "./CollectionModule/CollectionModule";
 import { checkForStringtoArray } from "../../../../helper/converters";
+import FeedBackModule from "./FeedBackModule/FeedBackModule";
 
 const ModulesDispatcher = ({
   modulesList,
@@ -149,9 +150,14 @@ const ModulesDispatcher = ({
                         showPercentage={module.showPercentage}
                         showResponse={module.showResponse}
                         showRight={module.showRight}
-                        explanation={module.explanation}
+                        explanation={
+                          module.idReaction
+                            ? module.description
+                            : module.explanation
+                        }
                         answers={module.answers}
                         isVisible={module.isVisible}
+                        isReaction={module.isReaction}
                       />
                     </div>
                   );
@@ -295,6 +301,44 @@ const ModulesDispatcher = ({
                             ? parseInt(module?.criteria?.limit, 10)
                             : 0
                         }
+                      />
+                    </div>
+                  );
+                }}
+              </Draggable>
+            );
+          }
+          case "feedback": {
+            return (
+              <Draggable
+                isDragDisabled={aModuleIsOpen}
+                key={module.uuid}
+                draggableId={module.uuid}
+                index={index}
+              >
+                {(provided, snapshot) => {
+                  return (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      style={{
+                        userSelect: "none",
+                        backgroundColor: snapshot.isDragging
+                          ? "#263B4A"
+                          : "#456C86",
+                        ...provided.draggableProps.style,
+                      }}
+                    >
+                      <FeedBackModule
+                        key={module.uuid}
+                        uuid={module.uuid}
+                        order={module.order}
+                        isOpenCloseModal={module.isOpenCloseModal}
+                        isNewModule={module.isNewModule}
+                        isChanged={module.isChanged}
+                        isVisible={module.isVisible}
+                        question={module?.question}
                       />
                     </div>
                   );

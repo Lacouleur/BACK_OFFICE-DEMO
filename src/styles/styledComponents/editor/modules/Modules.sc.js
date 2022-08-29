@@ -5,7 +5,7 @@ import colors from "../../../core/colors";
 export const ModuleContainer = styled.div`
   position: relative;
   &:hover {
-    max-height: ${(props) => props.styles?.maxHeight || `100%`};
+    max-height: ${(props) => props.styles?.maxheight || `100%`};
   }
 `;
 

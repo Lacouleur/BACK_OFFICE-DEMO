@@ -139,6 +139,7 @@ export function saveModule(uuid, request = "save") {
                   explanation,
                   question,
                   isVisible,
+                  isReaction,
                 } = module;
 
                 values = {
@@ -152,6 +153,7 @@ export function saveModule(uuid, request = "save") {
                   answers,
                   order,
                   isVisible,
+                  isReaction,
                 };
                 isNewModule = true;
 
@@ -236,6 +238,22 @@ export function saveModule(uuid, request = "save") {
                     pinnedContents:
                       isPined && customIdsList ? customIdsList : undefined,
                   },
+                };
+                isNewModule = true;
+
+                break;
+              }
+
+              case "feedback": {
+                const { order, isVisible, question, label } = module;
+
+                values = {
+                  uuid,
+                  type: "feedback",
+                  order,
+                  isVisible,
+                  question,
+                  label,
                 };
                 isNewModule = true;
 
@@ -332,6 +350,7 @@ export function saveModule(uuid, request = "save") {
                   explanation,
                   question,
                   isVisible,
+                  isReaction,
                 } = module;
 
                 const formatedAnswers = [];
@@ -354,6 +373,7 @@ export function saveModule(uuid, request = "save") {
                   answers: formatedAnswers,
                   order,
                   isVisible,
+                  isReaction,
                 };
                 isChanged = true;
 
@@ -438,6 +458,21 @@ export function saveModule(uuid, request = "save") {
                     pinnedContents:
                       isPined && customIdsList ? customIdsList : undefined,
                   },
+                };
+                isChanged = true;
+
+                break;
+              }
+
+              case "feedback": {
+                const { order, isVisible, question, label } = module;
+
+                values = {
+                  type: "feedback",
+                  order,
+                  isVisible,
+                  question,
+                  label,
                 };
                 isChanged = true;
 

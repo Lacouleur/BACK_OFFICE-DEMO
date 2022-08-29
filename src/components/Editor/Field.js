@@ -55,6 +55,7 @@ import {
   fuzzyOptions,
   loadOptions,
   initMultiSelectors,
+  checkAndDisable,
 } from "../../helper/fieldsHelper";
 import {
   setAuthors,
@@ -213,9 +214,7 @@ const Field = ({
           <Line />
         </FieldTitleBox>
       )}
-
       {/* regular selector fields */}
-
       {fieldType && fieldType === "select" && (
         <FieldBox>
           <Selector
@@ -262,9 +261,7 @@ const Field = ({
           )}
         </FieldBox>
       )}
-
       {/* multi value Selector */}
-
       {fieldType && fieldType === "multi-value" && (
         <FieldBox>
           {/* tag selector */}
@@ -455,9 +452,7 @@ const Field = ({
           )}
         </FieldBox>
       )}
-
       {/* text area fields */}
-
       {fieldType && fieldType === "textarea" && (
         <TextArea
           placeholder={placeholder}
@@ -466,11 +461,10 @@ const Field = ({
           onInput={(e) => {
             dispatchFields(name, section, dispatch, e.target.value, moduleId);
           }}
+          maxheight={section}
         />
       )}
-
       {/* uploaders fields */}
-
       {fieldType && fieldType === "uploader" && (
         <FieldBox
           onClick={(e) => {
@@ -503,14 +497,13 @@ const Field = ({
       )}
 
       {/* regular fields */}
-
       {!fieldType && (
         <FieldBox>
           <FieldStyle
             type={type}
             placeholder={placeholder}
             maxLength={maxlength}
-            disabled={name === "slug" && !(status === "DRAFT" || !status)}
+            disabled={checkAndDisable(name, status)}
             onInput={(e) => {
               if (type === "number" && e.target.value > 15) {
                 e.target.value = 15;

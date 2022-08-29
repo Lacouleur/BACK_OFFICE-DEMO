@@ -48,8 +48,8 @@ const HideModal = () => {
               If you hide this component, data will still valid.
             </Message>
             <Message>
-              Please note that the component will be hide on front side on your
-              next publishing action.
+              Please note that the component will be hidden on front side on
+              your next publishing action.
             </Message>
           </>
         )}

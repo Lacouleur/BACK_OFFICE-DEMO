@@ -303,7 +303,7 @@ CtaModule.defaultProps = {
   openNewTabHeader: true,
   isPage: undefined,
   url: undefined,
-  openNewTab: true,
+  openNewTab: false,
   imageUuid: undefined,
   altImage: undefined,
   thumbnail: undefined,

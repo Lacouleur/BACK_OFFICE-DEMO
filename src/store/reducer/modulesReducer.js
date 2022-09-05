@@ -186,7 +186,7 @@ const modulesReducer = (state = initialState, action = {}) => {
                 introduction: null,
                 link: {
                   value: null,
-                  openNewTab: true,
+                  openNewTab: false,
                 },
                 label: "",
                 description: "<p></p>",

@@ -13,7 +13,6 @@ import MainInformation from "../../components/Editor/Sections/MainInformation";
 import Seo from "../../components/Editor/Sections/Seo";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import plus from "../../styles/assets/icons/plus.svg";
-import { createNewContent } from "../../styles/styledComponents/global/Buttons/CustomButtons.sc";
 import { IconCreat } from "../../styles/styledComponents/contentList/ContentList.sc";
 import {
   Form,
@@ -24,7 +23,7 @@ import {
 } from "../../styles/styledComponents/editor/Sections.sc";
 import ActionBar from "../../components/Editor/actionBar/ActionBar";
 import ModuleCreator from "../../components/Editor/Sections/Modules/ModuleCreator";
-import { fetchContent, fetchTags } from "../../store/actions/thunk/ArticlesActions.thunk";
+import { fetchContent } from "../../store/actions/thunk/ArticlesActions.thunk";
 import { cleanPageState, setArticleId } from "../../store/actions/commonsActions";
 import {
   setErrorSlug,
@@ -33,7 +32,6 @@ import {
 import {
   setIsManifesto,
 } from "../../store/actions/manifestoActions";
-import colors from "../../styles/core/colors";
 import HomeNavigation from "../../components/Editor/Sections/HomeNavigation";
 import { HideOnDnd } from "../../styles/styledComponents/editor/modules/Modules.sc";
 import { onDragEnd } from "../../helper/Editor/dragAndDropHelper";
@@ -41,6 +39,7 @@ import ModulesDispatcher from "../../components/Editor/Sections/Modules/ModulesD
 import { consolePage } from "../../helper/consoleStyles";
 import { setIsPage } from "../../store/actions/pageEditor/pageMainInformationsActions";
 
+// Editor is the main editor tool of the site used to create and fill Article. 
 
 const Editor = () => {
   
@@ -108,12 +107,7 @@ const Editor = () => {
             dispatch(setErrorTitle(false));
             dispatch(setErrorSlug(false));
             }}
-              styles={{
-              ...createNewContent,
-              marginLeft: "auto",
-              maginRight: "0",
-              background: `${colors.paleViolet}`
-            }}
+              addNewBlockButton
             >
               <IconCreat src={plus} />
               ADD A NEW BLOCK

@@ -11,7 +11,6 @@ import Header from "../../components/Navigation/Header";
 import PageContainer from "../../styles/styledComponents/global/PageContainer.sc";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import plus from "../../styles/assets/icons/plus.svg";
-import { createNewContent } from "../../styles/styledComponents/global/Buttons/CustomButtons.sc";
 import { IconCreat } from "../../styles/styledComponents/contentList/ContentList.sc";
 import {
   Form,
@@ -26,7 +25,6 @@ import {
   setErrorSlug,
   setErrorTitle,
 } from "../../store/actions/mainInformationActions";
-import colors from "../../styles/core/colors";
 import { HideOnDnd } from "../../styles/styledComponents/editor/modules/Modules.sc";
 import { onDragEnd } from "../../helper/Editor/dragAndDropHelper";
 import ModulesDispatcher from "../../components/Editor/Sections/Modules/ModulesDispatcher";
@@ -35,6 +33,8 @@ import { pageSetId, setIsPage } from "../../store/actions/pageEditor/pageMainInf
 import PageMainInformation from "../../components/EditorPage/Sections/PageMainInformation";
 import { fetchPage } from "../../store/actions/thunk/PageActions.thunk";
 import PageSeo from "../../components/EditorPage/Sections/PageSeo";
+
+// This files is the main editor for Pages - it work similarly as article editor : editorEdit.js
 
 const PageEditor = () => {
 
@@ -102,12 +102,7 @@ const PageEditor = () => {
                 dispatch(setErrorTitle(false));
                 dispatch(setErrorSlug(false));
               }}
-              styles={{
-                ...createNewContent,
-                marginLeft: "auto",
-                maginRight: "0",
-                background: `${colors.paleViolet}`
-              }}
+              addNewBlockButtonMixin
             >
               <IconCreat src={plus} />
               ADD A NEW BLOCK

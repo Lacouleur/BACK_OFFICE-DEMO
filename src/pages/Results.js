@@ -13,8 +13,6 @@ import {
   ResponseList,
   ElementBox,
   ModulesContainer,
-  returnButton,
-  modifyButton,
   ReturnText,
   IsRightIcon,
   Section,
@@ -42,6 +40,8 @@ import { IsVisibleIcon } from "../styles/styledComponents/editor/modules/Modules
 import { cleanContentState } from "../store/actions/commonsActions";
 import { consolePage } from "../helper/consoleStyles";
 import { getData, percentage } from "../helper/resultsHelper";
+
+// this is the main page of result section, it is used to display results from quizz, feedback, reaction comming from users of the front website
 
 const Results = () => {
   console.log("%cPAGE: QUIZZ RESULTS", `${consolePage}`);
@@ -89,17 +89,17 @@ const Results = () => {
       <Header />
       <Button
         type="button"
-        styles={returnButton}
+        returnButton
         onClick={() => history.push(`/dashboard`)}
       >
         <BackIcon src={backArrow} />
         <ReturnText>CONTENT LIST</ReturnText>
       </Button>
       <ModulesContainer>
-        <MainTitleBox margin="32px 0">
+        <MainTitleBox resultTitle>
           <H1>OPINIONS RESULTS</H1>
           <Button
-            styles={modifyButton}
+            modifyButton
             onClick={() => {
               dispatch(cleanContentState());
               history.push(`/editor/${articleId}`);

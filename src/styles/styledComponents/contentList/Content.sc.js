@@ -180,30 +180,6 @@ export const ButtonIcon = styled.img`
   color: ${colors.paleViolet};
 `;
 
-export const CreateNewContentButton = styled.button`
-  width: 230px;
-  height: 44px;
-  align-items: center;
-  position: absolute;
-  right: 0;
-  transform: translateY(-50%);
-  margin-left: 32px;
-  display: flex;
-  border-radius: 5px;
-  border: none;
-  font-size: 16px;
-  justify-content: space-evenly;
-  background-color: ${colors.paleViolet};
-  color: ${colors.black};
-
-  opacity: 0.8;
-
-  &:hover {
-    opacity: 1;
-    box-shadow: 0px 0px 13px 4px ${colors.paleVioletTransp};
-  }
-`;
-
 export const hoverMixin = css`
   ${Title} {
     text-decoration: underline;
@@ -220,6 +196,10 @@ export const hoverMixin = css`
   }
 `;
 
+export const isEvenMixin = css`
+  background-color: ${colors.darkGrey};
+`;
+
 export const LineContentBox = styled.div`
   display: flex;
   width: 100%;
@@ -228,8 +208,9 @@ export const LineContentBox = styled.div`
   justify-content: space-between;
   margin: 0 0;
   padding: 0 8px;
-  background-color: ${(props) => props.styles.backgroundColor};
+  background-color: ${colors.mediumGrey};
   ${(props) => props.hover && hoverMixin};
+  ${(props) => props.isEven && isEvenMixin};
 
   &:hover {
     outline: 1px solid ${colors.paleViolet};
@@ -243,31 +224,5 @@ export const InformationBox = styled.div`
 
   &:hover {
     ${hoverMixin}
-  }
-`;
-
-const buttonHoverMixin = css`
-  opacity: 1 !important;
-  box-shadow: 0px 0px 13px 4px ${colors.paleVioletTransp}!important;
-`;
-
-export const EditButton = styled.button`
-  width: 70px;
-  height: 44px;
-  background-color: transparent;
-  border-color: ${colors.paleViolet};
-  border-radius: 5px;
-  color: ${colors.paleViolet};
-  opacity: 0.8;
-  ${(props) => props.hoverInfos && buttonHoverMixin};
-
-  &:hover {
-    opacity: 1;
-    box-shadow: 0px 0px 13px 4px ${colors.paleVioletTransp};
-  }
-
-  &::active {
-    background-color: ${colors.paleVioletTransp};
-    box-shadow: inset 0px 0px 13px 4px #000000;
   }
 `;

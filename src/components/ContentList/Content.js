@@ -14,11 +14,9 @@ import {
   ButtonIcon,
   Tooltip,
   TooltipText,
-  EditButton,
   InformationBox,
 } from "../../styles/styledComponents/contentList/Content.sc";
 import isEven from "../../helper/isEven";
-import colors from "../../styles/core/colors";
 import trashIcon from "../../styles/assets/icons/trash.svg";
 import greyTrashIcon from "../../styles/assets/icons/trash-grey.svg";
 import eye from "../../styles/assets/icons/eye-circle-green.svg";
@@ -39,6 +37,9 @@ import { watchOpinionModules } from "../../helper/actionBarHelper";
 import statIconGreen from "../../styles/assets/icons/opinion-green.svg";
 import statIconGrey from "../../styles/assets/icons/opinion-grey.svg";
 import { harmonizeLang, openPreview } from "../../helper/fieldsHelper";
+import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
+
+// This file is managing a line in content list, it is called once for every content in contentList.
 
 const Content = ({
   number,
@@ -68,12 +69,7 @@ const Content = ({
   }, [modulesList.length]);
 
   return (
-    <LineContentBox
-      hover={hover}
-      styles={{
-        backgroundColor: `${even ? colors.darkGrey : colors.mediumGrey}`,
-      }}
-    >
+    <LineContentBox hover={hover} isEven={even}>
       <Link
         to={{
           pathname: `/editor/${id}`,
@@ -149,14 +145,15 @@ const Content = ({
           pathname: `/editor/${id}`,
         }}
       >
-        <EditButton
+        <Button
+          editButton
           hoverInfos={hoverInfos}
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
         >
           Edit
           <ButtonIcon src={pen} />
-        </EditButton>
+        </Button>
       </Link>
     </LineContentBox>
   );

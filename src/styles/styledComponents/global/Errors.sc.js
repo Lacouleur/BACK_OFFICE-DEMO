@@ -2,10 +2,9 @@ import styled from "styled-components";
 import colors from "../../core/colors";
 
 export const ErrorNotification = styled.div`
-  width: ${(props) => props.styles.width || "392px"};
-  border: solid 2px ${(props) => props.styles.borderColor || colors.paleViolet};
-  margin: ${(props) => props.styles.margin || "0 0 36px 50%"};
-  transform: translateX(-50%);
+  margin-top: 32px;
+  width: 392px;
+  border: solid 2px ${colors.paleViolet};
   padding: 15px 27px 15px 27px;
   display: flex;
   transition: all ease 0.3;
@@ -13,7 +12,8 @@ export const ErrorNotification = styled.div`
 
 export const ErrorNotificationIcon = styled.img`
   width: 20px;
-  align-self: flex-start;
+  margin-right: 16px;
+  align-self: center;
 `;
 
 export const ErrorNotificationText = styled.p`

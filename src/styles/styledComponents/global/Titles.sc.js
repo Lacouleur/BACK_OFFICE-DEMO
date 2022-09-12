@@ -1,6 +1,5 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import colors from "../../core/colors";
-import media from "../../core/mediaQuery";
 
 export const H1 = styled.h1`
   text-transform: uppercase;
@@ -26,13 +25,23 @@ export const TitleBox = styled.div`
   height: 36px;
 `;
 
+const resultTitleMixin = css`
+  margin: 32px 0;
+`;
+
+const authTitleMixin = css`
+  text-align: center;
+`;
+
 export const MainTitleBox = styled.div`
-  margin: ${(props) => props.margin || "auto"};
+  margin: auto;
   width: 392px;
   height: 90px;
   margin-bottom: 19px;
   color: ${colors.white};
   white-space: nowrap;
+  ${(props) => props.resultTitle && resultTitleMixin}
+  ${(props) => props.authTitle && authTitleMixin}
 `;
 
 export const TitleArrow = styled.img`
@@ -105,4 +114,9 @@ export const ManifestoLang = styled.div`
   line-height: 24px;
   text-transform: uppercase;
   margin: 32px 16px;
+`;
+
+export const GreenText = styled.p`
+  color: ${colors.green};
+  display: inline;
 `;

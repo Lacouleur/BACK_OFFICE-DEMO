@@ -82,11 +82,7 @@ const scheduleModal = () => {
         <ButtonsBox>
           <Button
             type="button"
-            styles={{
-              background: "transparent",
-              fontColor: "white",
-              border: "1px solid white",
-            }}
+            modalCancelButton
             onClick={() => {
               dispatch(setIsOpenScheduleModal(false));
             }}

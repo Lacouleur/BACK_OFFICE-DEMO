@@ -45,11 +45,7 @@ const CloseModal = ({ moduleId, moduleRef, articleId }) => {
         <ButtonsBox>
           <Button
             type="button"
-            styles={{
-              background: "transparent",
-              fontColor: "white",
-              border: "1px solid white",
-            }}
+            modalCancelButton
             onClick={() => {
               moduleRef?.current.scrollIntoView({
                 behavior: "smooth",

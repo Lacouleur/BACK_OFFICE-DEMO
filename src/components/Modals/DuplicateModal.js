@@ -39,7 +39,7 @@ const DuplicateModal = ({ type }) => {
     ({ actionBarReducer }) => actionBarReducer
   );
 
-  const { id, lang } = ActionBarStateState.isOpenDuplicateModal;
+  const { id, lang, title } = ActionBarStateState.isOpenDuplicateModal;
 
   useEffect(() => {
     modal.current.scrollIntoView({
@@ -127,11 +127,7 @@ const DuplicateModal = ({ type }) => {
         <ButtonsBox>
           <Button
             type="button"
-            styles={{
-              background: "transparent",
-              fontColor: "white",
-              border: "1px solid white",
-            }}
+            modalCancelButton
             onClick={() => {
               dispatch(setIsOpenDuplicateModal({ value: false, id: "" }));
             }}

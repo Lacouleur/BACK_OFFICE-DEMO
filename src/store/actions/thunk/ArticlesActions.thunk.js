@@ -1,4 +1,3 @@
-import { $CombinedState } from "redux";
 import {
   deleteContent,
   getCategories,
@@ -17,7 +16,6 @@ import {
   setPublishScheduleFailed,
   setPublishScheduleFailData,
   setUpdatedAt,
-  showErrorModal,
 } from "../actionBarActions";
 import {
   contentLoaded,
@@ -56,6 +54,8 @@ import {
   setCumulatedContentsList,
   setFetchedCustomList,
 } from "../moduleActions";
+
+// This file is an action file for Articles using redux-thunk
 
 export function checkAndSend(type = "save", articleId = null) {
   return async (dispatch, getState) => {
@@ -172,20 +172,15 @@ export function checkAndSend(type = "save", articleId = null) {
               console.log("%cContent saved", `${consoleSucces}`);
             }
           } catch (error) {
-            if (error.response.status === 409) {
+            console.warn("This case", error.response);
+            if (error.response?.status === 409) {
+              console.warn("Enter here ?", error.response.status);
               dispatch(setErrorPosting(true));
               dispatch(setPosted(false));
-              console.log(
-                "%cError =>",
-                `${consoleError}`,
-                error?.response?.data
-              );
               ErrorCaseClient(dispatch, error?.response?.data);
             } else {
               ErrorCaseClient(dispatch, error.response.data);
             }
-
-            dispatch(showErrorModal(true));
           }
         }
       }

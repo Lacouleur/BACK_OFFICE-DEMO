@@ -55,28 +55,6 @@ export const ElementBox = styled.li`
   margin: 20px 0;
 `;
 
-export const returnButton = {
-  height: "42px",
-  width: "176px",
-  display: "flex",
-  background: "transparent",
-  position: "absolute",
-  top: "88px",
-  left: "24px",
-  justifyContent: "space-between",
-  alignItems: "center",
-  padding: "9px 26px",
-  border: `1px solid ${colors.white}`,
-};
-
-export const modifyButton = {
-  background: "transparent",
-  fontColor: `${colors.paleViolet}`,
-  border: `1px solid ${colors.paleViolet}`,
-  fontWeight: "700",
-  marginTop: "12px",
-};
-
 export const ReturnText = styled.p`
   font-size: 14px;
   text-transform: uppercase;

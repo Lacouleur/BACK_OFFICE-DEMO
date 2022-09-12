@@ -584,12 +584,18 @@ export const FieldButton = styled.div`
   top: 50%;
 `;
 
+const authFieldContainerMixin = css`
+  width: 100%;
+`;
+
 export const FieldContainer = styled.div`
-  width: ${(props) => props.styles?.width || "50%"};
+  width: 50%;
   flex-direction: column;
   margin-bottom: 30px;
   margin: 16px 0 16px 0;
   position: relative;
+
+  ${(props) => props.authFieldContainer && authFieldContainerMixin};
 
   &:focus-within {
     & ${FieldTitle} {
@@ -639,21 +645,49 @@ export const FieldContainer = styled.div`
   }
 `;
 
+const authFieldMixin = css`
+  padding-left: 56px;
+  color: ${colors.paleViolet};
+  height: 56px;
+  border: 2px solid ${colors.paleViolet};
+`;
+
+const authFieldNoStatusMixin = css`
+  color: ${colors.white};
+  border: none;
+`;
+
+const authFieldFocusedMixin = css`
+  border: 2px solid ${colors.paleViolet};
+`;
+
+const uploaderFieldMixin = css`
+  height: 56px;
+  cursor: pointer;
+  padding-right: 104px;
+  text-overflow: ellipsis;
+`;
+
 export const FieldStyle = styled.input`
-  width: ${(props) => props.styles.width || "100%"};
-  height: ${(props) => props.styles.height || "100%"};
+  width: 100%;
+  height: 56px;
   background-color: ${colors.darkGrey};
-  border: ${(props) => props.styles.border || "none"};
-  padding-left: ${(props) => props.styles.paddingLeft || "20px"};
-  padding-right: ${(props) => props.styles.paddingRight || "0"};
-  color: ${(props) => props.styles.color || colors.white};
-  cursor: ${(props) => props.styles.cursor || "auto"};
-  text-overflow: ${(props) => props.styles.textOverflow || "clip"};
+  border: none;
+  padding-left: 20px;
+  padding-right: 0;
+  color: ${colors.white};
+  cursor: auto;
+  caret-color: ${colors.white};
+  text-overflow: clip;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
   font-size: 16px;
   line-height: 24px;
-
+  ${(props) => props.authFieldContainer && authFieldContainerMixin};
+  ${(props) => props.authField && authFieldMixin};
+  ${(props) => !props.authField?.status && authFieldNoStatusMixin};
+  ${(props) => props.authField?.focused && authFieldFocusedMixin};
+  ${(props) => props.uploaderField && uploaderFieldMixin};
   /* to hide up/down button on number fields */
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {

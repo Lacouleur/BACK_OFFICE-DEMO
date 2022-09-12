@@ -13,7 +13,6 @@ import MainInformation from "../../components/Editor/Sections/MainInformation";
 import Seo from "../../components/Editor/Sections/Seo";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import plus from "../../styles/assets/icons/plus.svg";
-import { createNewContent } from "../../styles/styledComponents/global/Buttons/CustomButtons.sc";
 import { IconCreat } from "../../styles/styledComponents/contentList/ContentList.sc";
 import {
   Form,
@@ -29,13 +28,11 @@ import {
   setErrorSlug,
   setErrorTitle,
 } from "../../store/actions/mainInformationActions";
-import colors from "../../styles/core/colors";
 import HomeNavigation from "../../components/Editor/Sections/HomeNavigation";
 import { ManifestoLang, ManifestoTitle, TitleBox } from "../../styles/styledComponents/global/Titles.sc";
 import { setIsManifesto } from "../../store/actions/manifestoActions";
 import { onDragEnd } from "../../helper/Editor/dragAndDropHelper";
 import { HideOnDnd} from "../../styles/styledComponents/editor/modules/Modules.sc";
-import { setIsAccessiblePanel } from "../../store/actions/userActions";
 import ModulesDispatcher from "../../components/Editor/Sections/Modules/ModulesDispatcher";
 import { consolePage } from "../../helper/consoleStyles";
 import { setIsPage } from "../../store/actions/pageEditor/pageMainInformationsActions";
@@ -54,6 +51,8 @@ const EditorManifesto = () => {
   const actionBarState = useSelector(({ actionBarReducer }) => actionBarReducer);
  const { manifestoId} = manifestoState;
  const { isOpenCloseModal, aModuleIsOpen} = actionBarState;
+
+ // This page is used to Edit the manifesto, but at this time manifesto is not so mutch used, in a short time this will be deleted/changed
 
   useEffect(() => {
     console.log("%cPAGE: EDIT MANIFESTO", `${consolePage}`);
@@ -115,13 +114,7 @@ const EditorManifesto = () => {
             dispatch(setErrorTitle(false));
             dispatch(setErrorSlug(false));
             }}
-              styles={{
-              ...createNewContent,
-              marginLeft: "auto",
-              maginRight: "0",
-              background: `${colors.paleViolet}`,
-              position: "absolute",
-            }}
+              addNewBlockButtonMixin
             >
               <IconCreat src={plus} />
               ADD A NEW BLOCK

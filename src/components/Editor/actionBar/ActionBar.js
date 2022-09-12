@@ -4,9 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   ActionBarContainer,
   BackIcon,
-  backButton,
-  saveButton,
-  saveButtonDisable,
   BackText,
   StatusContainer,
   LastSavedBox,
@@ -238,7 +235,7 @@ const ActionBar = () => {
         <ButtonsContainer>
           <Button
             type="button"
-            styles={backButton}
+            backButton
             onClick={() => {
               history.push(isPage ? "/pages" : "/dashboard");
             }}
@@ -247,11 +244,8 @@ const ActionBar = () => {
             <BackText>BACK</BackText>
           </Button>
           <Button
-            styles={
-              contentIsChanged && !isEditorError
-                ? saveButton
-                : saveButtonDisable
-            }
+            saveButton={contentIsChanged && !isEditorError}
+            saveButtonDisable={!contentIsChanged || isEditorError}
             type="button"
           >
             {contentIsChanged && !isEditorError ? "save" : "saved"}

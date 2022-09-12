@@ -30,6 +30,8 @@ import {
 } from "../../../services/client/pagesClient";
 import { checkForStringtoArray } from "../../../helper/converters";
 
+// This file is an action file for modules using redux-thunk
+
 export function deleteModule(articleId, moduleId) {
   console.log("%cDELETING MODULE", `${consoleTitle}`, moduleId);
   return async (dispatch, getState) => {

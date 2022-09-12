@@ -31,39 +31,6 @@ export const ButtonsContainer = styled.div`
   margin-right: 25px;
 `;
 
-export const backButton = {
-  height: "42px",
-  width: "124px",
-  display: "flex",
-  background: "transparent",
-  position: "relative",
-  marginRight: "20px",
-  marginLeft: "20px",
-  justifyContent: "space-between",
-  alignItems: "center",
-  padding: "9px 26px",
-  border: `1px solid ${colors.white}`,
-};
-
-export const saveButton = {
-  height: "42px",
-  width: "79px",
-  position: "absolute",
-  left: "15%",
-  transform: "translateY(-50%)",
-  top: "50%",
-};
-
-export const saveButtonDisable = {
-  height: "42px",
-  width: "79px",
-  position: "absolute",
-  left: "15%",
-  transform: "translateY(-50%)",
-  top: "50%",
-  background: `${colors.mediumGrey}`,
-};
-
 export const BackIcon = styled.img`
   width: 8px;
 `;

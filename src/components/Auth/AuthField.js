@@ -28,7 +28,7 @@ const AuthField = ({ icon, eye, type, placeholder, status }) => {
     setPasswordShown(!passwordShown);
   };
   return (
-    <FieldContainer styles={{ width: "100%" }}>
+    <FieldContainer authFieldContainer>
       <FieldBox>
         <FieldIcon src={icon} info="fieldIcon" />
         {eye && (
@@ -42,14 +42,7 @@ const AuthField = ({ icon, eye, type, placeholder, status }) => {
         <FieldStyle
           type={type === "password" && passwordShown === true ? "text" : type}
           placeholder={placeholder}
-          styles={{
-            paddingLeft: "56px",
-            color: `${status ? colors.paleViolet : colors.white}`,
-            height: "56px",
-            border: `${
-              focused || status ? `2px solid ${colors.paleViolet}` : `none`
-            }`,
-          }}
+          authField={{ status, focused }}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           onChange={(e) => {

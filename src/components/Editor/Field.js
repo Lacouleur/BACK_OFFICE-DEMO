@@ -67,6 +67,8 @@ import {
   setCollectionTags,
 } from "../../store/actions/moduleActions";
 
+// Field.js is a unique file for all types of fields in the app.
+
 // All necessary methods of "Field" are in "fieldsHelper.js"
 
 /*
@@ -464,6 +466,7 @@ const Field = ({
           maxheight={section}
         />
       )}
+
       {/* uploaders fields */}
       {fieldType && fieldType === "uploader" && (
         <FieldBox
@@ -472,12 +475,7 @@ const Field = ({
           }}
         >
           <FieldStyle
-            styles={{
-              height: "56px",
-              cursor: "pointer",
-              paddingRight: "104px",
-              textOverflow: "ellipsis",
-            }}
+            uploaderField
             placeholder={placeholder}
             defaultValue={fileTitle}
             type="text"
@@ -549,11 +547,7 @@ const Field = ({
         </FieldBox>
       )}
       {infos && (
-        <FieldInfosBox
-          styles={{
-            marginTop: "8px",
-          }}
-        >
+        <FieldInfosBox>
           <ErrorIcon src={error ? exclamationVioletIcon : exclamationIcon} />
           <FieldError color={error ? colors.paleViolet : colors.lightGrey}>
             {infos}

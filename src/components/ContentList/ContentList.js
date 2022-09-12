@@ -13,7 +13,6 @@ import {
   LangFilter,
   OptionFilter,
 } from "../../styles/styledComponents/contentList/ContentList.sc";
-import { createNewContent } from "../../styles/styledComponents/global/Buttons/CustomButtons.sc";
 import Pagination from "./Pagination";
 import keyGenerator from "../../helper/keyGenerator";
 import { fetchContentsList } from "../../store/actions/thunk/ArticlesActions.thunk";
@@ -26,8 +25,10 @@ import DuplicateModal from "../Modals/DuplicateModal";
 import ArchiveModal from "../Modals/ArchiveModal";
 import ErrorModal from "../Modals/ErrorModal";
 import { setContentsList } from "../../store/actions/contentListActions";
-import { CreateNewContentButton } from "../../styles/styledComponents/contentList/Content.sc";
 import { harmonizeLang } from "../../helper/fieldsHelper";
+import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
+
+// Content list is used to display a list of Content.js by passing props from the fetched content list
 
 const ContentList = () => {
   const history = useHistory();
@@ -101,10 +102,10 @@ const ContentList = () => {
             }}
           />
           <Link to="/editor">
-            <CreateNewContentButton styles={createNewContent}>
+            <Button createNewContentButton>
               <IconCreat src={plus} />
-              Create New Content
-            </CreateNewContentButton>
+              create new content
+            </Button>
           </Link>
         </TitleBox>
 

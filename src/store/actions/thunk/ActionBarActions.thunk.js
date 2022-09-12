@@ -34,6 +34,8 @@ import {
 } from "../../../services/client/pagesClient";
 import { fetchPages } from "./PagesHubActions.thunk";
 
+// this file is an Action file for the ActionBar used in Article/Page/manifesto Editor. it use redux thunk.
+
 export function logUser(redirectTo) {
   console.log("%cLOGING USER", `${consoleTitle}`);
   return async (dispatch, getState) => {

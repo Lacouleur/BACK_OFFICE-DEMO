@@ -20,10 +20,7 @@ export function alreadyTranslated(message, id, history, dispatch, type) {
       <Br />
       <p>You can acces to the translated content by clicking below :</p>
       <Button
-        styles={{
-          width: "50%",
-          marginTop: "18px",
-        }}
+        modalAlreadyTranslatedButton
         type="button"
         onClick={() => {
           if (type === "content") {

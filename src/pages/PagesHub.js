@@ -8,7 +8,6 @@ import PageCard from "../components/PagesHub/PageCard";
 import { fetchPages } from "../store/actions/thunk/PagesHubActions.thunk";
 import { IconCreat } from "../styles/styledComponents/contentList/ContentList.sc";
 import Button from "../styles/styledComponents/global/Buttons/Buttons.sc";
-import { createNewContent } from "../styles/styledComponents/global/Buttons/CustomButtons.sc";
 import PageContainer from "../styles/styledComponents/global/PageContainer.sc";
 import { H1, TitleBox } from "../styles/styledComponents/global/Titles.sc";
 import {
@@ -26,6 +25,8 @@ import DuplicateModal from "../components/Modals/DuplicateModal";
 import ArchiveModal from "../components/Modals/ArchiveModal";
 import ErrorModal from "../components/Modals/ErrorModal";
 import { harmonizeLang } from "../helper/fieldsHelper";
+
+// PageHub file is a list of the pages existing in the bo, it is used to manage them or create new ones
 
 const PagesHub = () => {
   const dispatch = useDispatch();
@@ -61,9 +62,9 @@ const PagesHub = () => {
           <TitleBox>
             <H1 id="PageManager"> PAGE MANAGER </H1>
             <Link to="/page-editor/create">
-              <Button styles={createNewContent}>
+              <Button createNewContentButton>
                 <IconCreat src={plusIcon} />
-                CREATE NEW PAGE
+                create new page
               </Button>
             </Link>
           </TitleBox>

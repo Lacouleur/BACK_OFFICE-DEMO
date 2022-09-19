@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import Home from "./pages/Home";
 import Auth from "./pages/Auth";
-import Results from "./pages/Results";
+import Results from "./pages/Results/Results";
 import Error404 from "./pages/404";
 import PrivateRoute from "./services/routes/PrivatesRoutes";
 import EditorCreate from "./pages/Editor/EditorCreate";

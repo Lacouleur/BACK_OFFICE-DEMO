@@ -14,6 +14,7 @@ import {
   SET_CONTENT_IS_MOVED_TO_TOP,
   SET_CONTENT_CAN_MOVE_TO_TOP,
   SET_CONTENT_ORIGINAL_DATE,
+  SET_FEEDBACK_RESULTS,
 } from "../constants";
 
 export const addTitle = (payload) => ({
@@ -88,5 +89,10 @@ export const setContentCanUndoMoveToTop = (payload) => ({
 
 export const setContentOriginalDate = (payload) => ({
   type: SET_CONTENT_ORIGINAL_DATE,
+  payload,
+});
+
+export const setFeedbackResults = (payload) => ({
+  type: SET_FEEDBACK_RESULTS,
   payload,
 });

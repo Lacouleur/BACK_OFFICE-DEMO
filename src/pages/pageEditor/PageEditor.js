@@ -102,7 +102,7 @@ const PageEditor = () => {
                 dispatch(setErrorTitle(false));
                 dispatch(setErrorSlug(false));
               }}
-              addNewBlockButtonMixin
+              addNewBlockButton
             >
               <IconCreat src={plus} />
               ADD A NEW BLOCK

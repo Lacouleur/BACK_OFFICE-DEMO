@@ -3,7 +3,6 @@ export function getData(
   modulesList,
   manifestoData,
   manifestoId,
-
   setData,
   isActive
 ) {

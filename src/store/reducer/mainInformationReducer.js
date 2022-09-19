@@ -30,6 +30,7 @@ import {
   SET_CONTENT_IS_MOVED_TO_TOP,
   SET_CONTENT_CAN_MOVE_TO_TOP,
   SET_CONTENT_ORIGINAL_DATE,
+  SET_FEEDBACK_RESULTS,
 } from "../constants";
 
 const initialState = {
@@ -62,6 +63,7 @@ const initialState = {
   authors: [],
   tagsList: [],
   tags: [],
+  feedBackResults: [],
 
   // obj
   newTag: {},
@@ -286,6 +288,13 @@ const mainInformationReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         CanUndoMoveToTop: action.payload,
+      };
+    }
+
+    case SET_FEEDBACK_RESULTS: {
+      return {
+        ...oldState,
+        feedBackResults: action.payload,
       };
     }
 

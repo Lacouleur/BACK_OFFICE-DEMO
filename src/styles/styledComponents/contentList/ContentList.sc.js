@@ -16,6 +16,7 @@ export const ListBox = styled.div`
 
 export const IconCreat = styled.img`
   width: 12px;
+  margin-right: 8px;
 `;
 
 export const ManifestoLangSelector = styled(ReactSelect)`

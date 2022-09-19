@@ -1,5 +1,6 @@
 import {
   deleteComponent,
+  getFeedBackResults,
   saveComponent,
   updateComponent,
   uploadImage,
@@ -29,6 +30,7 @@ import {
   updatePageComponent,
 } from "../../../services/client/pagesClient";
 import { checkForStringtoArray } from "../../../helper/converters";
+import { setFeedbackResults } from "../mainInformationActions";
 
 // This file is an action file for modules using redux-thunk
 
@@ -247,7 +249,7 @@ export function saveModule(uuid, request = "save") {
               }
 
               case "feedback": {
-                const { order, isVisible, question, label } = module;
+                const { order, isVisible, question } = module;
 
                 values = {
                   uuid,
@@ -255,7 +257,7 @@ export function saveModule(uuid, request = "save") {
                   order,
                   isVisible,
                   question,
-                  label,
+                  label: "question",
                 };
                 isNewModule = true;
 
@@ -467,14 +469,14 @@ export function saveModule(uuid, request = "save") {
               }
 
               case "feedback": {
-                const { order, isVisible, question, label } = module;
+                const { order, isVisible, question } = module;
 
                 values = {
                   type: "feedback",
                   order,
                   isVisible,
                   question,
-                  label,
+                  label: "question",
                 };
                 isChanged = true;
 
@@ -565,6 +567,25 @@ export function saveImage(setFileTitle, name, image, moduleId) {
         } else {
           ErrorCaseClient(dispatch, error?.response?.data);
         }
+      }
+    }
+    return null;
+  };
+}
+
+export function fetchFeedBackResults(aticleId) {
+  console.log("%cFETCHING FEEDBACK RESULTS", `${consoleTitle}`, aticleId);
+  return async (dispatch) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
+      try {
+        const response = await getFeedBackResults(aticleId);
+        if (response.status < 300 && response.status > 199) {
+          console.log("%cFEEDBACK RESULTS", `${consoleInfo}`, response.data);
+          dispatch(setFeedbackResults(response.data));
+        }
+      } catch (error) {
+        ErrorCaseClient(dispatch, error?.response?.data);
       }
     }
     return null;

@@ -172,9 +172,7 @@ export function checkAndSend(type = "save", articleId = null) {
               console.log("%cContent saved", `${consoleSucces}`);
             }
           } catch (error) {
-            console.warn("This case", error.response);
             if (error.response?.status === 409) {
-              console.warn("Enter here ?", error.response.status);
               dispatch(setErrorPosting(true));
               dispatch(setPosted(false));
               ErrorCaseClient(dispatch, error?.response?.data);

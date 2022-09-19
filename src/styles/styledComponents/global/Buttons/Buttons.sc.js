@@ -73,7 +73,7 @@ const createNewContentButtonMixin = css`
 `;
 
 const addNewBlockButtonMixin = css`
-  width: 50%;
+  width: 200px;
   margin-top: 18px;
   margin-left: auto;
   margin-right: 0;
@@ -122,7 +122,14 @@ const modifyButtonMixin = css`
   color: ${colors.paleViolet};
   border: 1px solid ${colors.paleViolet};
   font-weight: 700;
-  margin-top: 12px;
+  width: 180px;
+  padding-left: 16px;
+  position: relative;
+`;
+
+const previewArticleButtonMixin = css`
+  width: 150px;
+  margin-left: 16px;
 `;
 
 const editButtonMixin = css`
@@ -176,6 +183,7 @@ const Button = styled.button`
   ${(props) => props.loginButtonUnClickable && loginButtonUnClickableMixin};
   ${(props) => props.editManifestoButton && editManifestoButtonMixin};
   ${(props) => props.modifyButton && modifyButtonMixin};
+  ${(props) => props.previewArticleButton && previewArticleButtonMixin};
   ${(props) => props.returnButton && returnButtonMixin};
   ${(props) => props.addNewBlockButton && addNewBlockButtonMixin};
   ${(props) => props.editButton && editButtonMixin};

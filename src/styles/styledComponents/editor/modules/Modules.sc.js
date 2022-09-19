@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import { Draggable } from "react-beautiful-dnd";
 import colors from "../../../core/colors";
 
 export const ModuleContainer = styled.div`

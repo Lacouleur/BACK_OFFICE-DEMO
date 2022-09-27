@@ -9,9 +9,6 @@ import {
   ContentSectionBox,
   ListBox,
   ManifestoLangSelector,
-  FilteringBox,
-  LangFilter,
-  OptionFilter,
 } from "../../styles/styledComponents/contentList/ContentList.sc";
 import Pagination from "./Pagination";
 import keyGenerator from "../../helper/keyGenerator";
@@ -27,6 +24,7 @@ import ErrorModal from "../Modals/ErrorModal";
 import { setContentsList } from "../../store/actions/contentListActions";
 import { harmonizeLang } from "../../helper/fieldsHelper";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
+import ListFilters from "./ListFilters";
 
 // Content list is used to display a list of Content.js by passing props from the fetched content list
 
@@ -109,30 +107,7 @@ const ContentList = () => {
           </Link>
         </TitleBox>
 
-        <FilteringBox>
-          <LangFilter>
-            <OptionFilter
-              first
-              selected={filterLang === "fr"}
-              onClick={() => setFilterLang("fr")}
-            >
-              FR
-            </OptionFilter>
-            <OptionFilter
-              selected={filterLang === "de"}
-              onClick={() => setFilterLang("de")}
-            >
-              DE
-            </OptionFilter>
-            <OptionFilter
-              last
-              selected={filterLang === ""}
-              onClick={() => setFilterLang("")}
-            >
-              ALL
-            </OptionFilter>
-          </LangFilter>
-        </FilteringBox>
+        <ListFilters filterLang={filterLang} setFilterLang={setFilterLang} />
 
         <ListBox>
           {filteredList &&

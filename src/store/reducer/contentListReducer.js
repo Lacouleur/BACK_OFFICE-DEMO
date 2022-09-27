@@ -1,4 +1,8 @@
-import { SET_CONTENTS_LIST, SET_PAGINATION } from "../constants";
+import {
+  SET_CONTENTS_LIST,
+  SET_PAGINATION,
+  SET_RESEARCH_ARTICLE,
+} from "../constants";
 
 import {} from "../actions/commonsActions";
 
@@ -9,6 +13,7 @@ const initialState = {
   nextPage: null,
   previousPage: null,
   lastPage: null,
+  searchedArticle: "",
 };
 
 const contentListReducer = (state = initialState, action = {}) => {
@@ -19,6 +24,13 @@ const contentListReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         contentsList: [...action.payload],
+      };
+    }
+
+    case SET_RESEARCH_ARTICLE: {
+      return {
+        ...oldState,
+        searchedArticle: action.payload,
       };
     }
 

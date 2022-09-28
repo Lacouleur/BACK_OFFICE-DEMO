@@ -113,6 +113,12 @@ const OpinionModule = ({
   useEffect(() => {
     if (isReaction) {
       manageReactionAnswers(answers, dispatch, uuid);
+      dispatch(
+        SetOpinionShowRightAnswer({
+          id: uuid,
+          value: false,
+        })
+      );
     }
   }, [isReaction]);
 
@@ -382,8 +388,7 @@ const OpinionModule = ({
                               moduleId: uuid,
                               answerId: answer.uuid,
                             })
-                          )
-                        }
+                          )}
                         src={
                           answers.length > 2
                             ? trashIconViolet
@@ -402,8 +407,7 @@ const OpinionModule = ({
                               answerId: answer.uuid,
                               value: !answer.right,
                             })
-                          )
-                        }
+                          )}
                         isChecked={!!answer?.right || false}
                         componentId={`switch-${answer.uuid}}`}
                         displayedText="Right answer"
@@ -415,8 +419,7 @@ const OpinionModule = ({
             {answers && !isReaction && (
               <AddAnswerBox
                 onClick={() =>
-                  dispatch(createOpinionNewAnswer({ moduleId: uuid }))
-                }
+                  dispatch(createOpinionNewAnswer({ moduleId: uuid }))}
               >
                 <AddAnswerIcon src={plusIcon} />
                 <AddAnswerText>Add an answer</AddAnswerText>

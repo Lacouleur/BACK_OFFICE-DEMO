@@ -13,7 +13,6 @@ import {
   SET_PUBLISH_SCHEDULE_FAIL_DATA,
   SET_PUBLISH_SCHEDULE_FAILED,
   SET_IS_OPEN_DUPLICATE_MODAL,
-  SET_CONTENT_IS_MOVED_TO_TOP,
 } from "../constants";
 
 import {} from "../actions/actionBarActions";

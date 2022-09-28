@@ -573,13 +573,13 @@ export function saveImage(setFileTitle, name, image, moduleId) {
   };
 }
 
-export function fetchFeedBackResults(aticleId) {
-  console.log("%cFETCHING FEEDBACK RESULTS", `${consoleTitle}`, aticleId);
+export function fetchFeedBackResults(id, resultType) {
+  console.log("%cFETCHING FEEDBACK RESULTS", `${consoleTitle}`, id);
   return async (dispatch) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
       try {
-        const response = await getFeedBackResults(aticleId);
+        const response = await getFeedBackResults(id, resultType);
         if (response.status < 300 && response.status > 199) {
           console.log("%cFEEDBACK RESULTS", `${consoleInfo}`, response.data);
           dispatch(setFeedbackResults(response.data));

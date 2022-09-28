@@ -295,14 +295,11 @@ export async function cancelContentPublication(id) {
   });
 }
 
-export function getFeedBackResults(articleId) {
-  console.log(`/feedbacks?resourceType=content&resourceId=${articleId}`);
-  return axiosConfig.get(
-    `/feedbacks?resourceType=content&resourceId=${articleId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`,
-      },
-    }
-  );
+export function getFeedBackResults(id, resultType) {
+  const type = resultType === "page" ? "page" : "content";
+  return axiosConfig.get(`/feedbacks?resourceType=${type}&resourceId=${id}`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 }

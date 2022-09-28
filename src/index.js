@@ -12,7 +12,7 @@ import Results from "./pages/Results/Results";
 import Error404 from "./pages/404";
 import PrivateRoute from "./services/routes/PrivatesRoutes";
 import EditorCreate from "./pages/Editor/EditorCreate";
-import EditorEdit from "./pages/Editor/EditorEdit";
+import ContentEditor from "./pages/Editor/ContentEditor";
 import EditorManifesto from "./pages/Editor/EditorManifesto";
 import EditorCreateManifesto from "./pages/Editor/EditorCreateManifesto";
 import combineReducers from "./store/combineReducers";
@@ -61,15 +61,20 @@ const rootComponent = (
           component={EditorManifesto}
           replace
         />
-        <PrivateRoute path="/editor/:articleId" exact component={EditorEdit} />
         <PrivateRoute
-          path="/opinion-results/:articleId"
+          path="/editor/:articleId"
+          exact
+          component={ContentEditor}
+        />
+        <PrivateRoute
+          path="/:resultType-results/:resourceId"
           exact
           component={Results}
         />
         <PrivateRoute
-          path="/opinion-results/manifesto/:manifestoLang/:manifestoId"
+          path="/manifesto-results/:manifestoLang/:manifestoId"
           exact
+          state={{ resultType: "manifesto" }}
           component={Results}
         />
 

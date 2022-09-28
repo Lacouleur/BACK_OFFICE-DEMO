@@ -36,8 +36,7 @@ export function getData(
       return null;
     });
   }
-
-  if (manifestoData.components && manifestoId) {
+  if (manifestoData?.components && manifestoId) {
     manifestoData.components.map((module) => {
       if (module.type === "opinion") {
         storedData.push({

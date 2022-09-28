@@ -39,6 +39,7 @@ import {
   createOpinionNewAnswer,
   deleteOpinionAnswer,
   setOpinionIsReaction,
+  closeModule,
 } from "../../../../../store/actions/moduleActions";
 import CloseModal from "../../../../Modals/CloseModal";
 import HideModal from "../../../../Modals/HideModal";
@@ -174,7 +175,12 @@ const OpinionModule = ({
               <Delete
                 src={trashIcon}
                 onClick={() => {
-                  dispatch(showCloseModal({ value: true, id: uuid }));
+                  if (isNewModule) {
+                    dispatch(closeModule(uuid));
+                  }
+                  if (!isNewModule) {
+                    dispatch(showCloseModal({ value: true, id: uuid }));
+                  }
                 }}
               />
             </>

@@ -45,7 +45,15 @@ const ModuleCreator = ({ setIsOpen }) => {
         icon: collectionIcon,
         name: "COLLECTION",
         editor: "page",
-      }
+      },
+      {
+        type: "feedback",
+        icon: feedBackIcon,
+        name: "FEEDBACK",
+        editor: "page",
+      },
+      { type: "opinion", icon: quizzIcon, name: "OPINION", editor: "page" },
+      { type: "image", icon: imageIcon, name: "IMAGE", editor: "page" }
     );
   } else {
     DefaultModules.push(

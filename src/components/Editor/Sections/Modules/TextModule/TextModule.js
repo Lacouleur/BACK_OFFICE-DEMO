@@ -17,7 +17,10 @@ import {
   Delete,
   ActionIcons,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
-import { showCloseModal } from "../../../../../store/actions/moduleActions";
+import {
+  closeModule,
+  showCloseModal,
+} from "../../../../../store/actions/moduleActions";
 import CloseModal from "../../../../Modals/CloseModal";
 import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
 import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.thunk";
@@ -113,7 +116,10 @@ const TextModule = ({
           <Delete
             src={trashIcon}
             onClick={() => {
-              if (status !== "PUBLISHED") {
+              if (isNewModule) {
+                dispatch(closeModule(uuid));
+              }
+              if (status !== "PUBLISHED" && uuid) {
                 dispatch(showCloseModal({ value: true, id: uuid }));
               }
             }}

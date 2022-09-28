@@ -106,7 +106,7 @@ const Content = ({
         {!isOpinionModules ? (
           <IconAction src={statIconGrey} />
         ) : (
-          <Link to={`/opinion-results/${id}`} target="_blank">
+          <Link to={`/article-results/${id}`}>
             <IconAction src={statIconGreen} />
           </Link>
         )}

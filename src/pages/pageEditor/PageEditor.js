@@ -34,7 +34,7 @@ import PageMainInformation from "../../components/EditorPage/Sections/PageMainIn
 import { fetchPage } from "../../store/actions/thunk/PageActions.thunk";
 import PageSeo from "../../components/EditorPage/Sections/PageSeo";
 
-// This files is the main editor for Pages - it work similarly as article editor : editorEdit.js
+// This files is the main editor for Pages - it work similarly as article editor : ContentEditor.js
 
 const PageEditor = () => {
 

@@ -41,7 +41,7 @@ import { setIsPage } from "../../store/actions/pageEditor/pageMainInformationsAc
 
 // Editor is the main editor tool of the site used to create and fill Article. 
 
-const Editor = () => {
+const ContentEditor = () => {
   
   const dispatch = useDispatch();
   const { articleId } = useParams();
@@ -53,7 +53,7 @@ const Editor = () => {
   const { isOpenCloseModal, aModuleIsOpen } = actionBarState;
 
   useEffect(() => {
-      console.log("%cPAGE: EDIT CONTENT", `${consolePage}`);
+      console.log("%cPAGE: CONTENT EDITOR", `${consolePage}`);
       dispatch(setIsManifesto(false))
       dispatch(setIsPage(false));
       dispatch(fetchContent(articleId));
@@ -92,6 +92,7 @@ const Editor = () => {
                   provided={provided}
                   aModuleIsOpen={aModuleIsOpen}
                 />
+                
                 )
               }}
             </Droppable>
@@ -120,4 +121,4 @@ const Editor = () => {
   );
 };
 
-export default Editor;
+export default ContentEditor;

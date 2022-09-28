@@ -6,16 +6,7 @@ import Header from "../../components/Navigation/Header";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import PageContainer from "../../styles/styledComponents/global/PageContainer.sc";
 import {
-  BoldText,
-  LightText,
-  TotalInfo,
-  ResponseList,
-  ElementBox,
   ModulesContainer,
-  IsRightIcon,
-  Section,
-  PercentBox,
-  IconBox,
   NavBarContainer,
   NavElement,
   NavLine,
@@ -31,45 +22,47 @@ import {
 } from "../../styles/styledComponents/global/Results.sc";
 import {
   H1,
-  FormTitle,
   MainTitleBox,
 } from "../../styles/styledComponents/global/Titles.sc";
 import pen from "../../styles/assets/icons/pen-violet.svg";
-import checkIcon from "../../styles/assets/icons/check-circle-green.svg";
 import surveyIcon from "../../styles/assets/icons/opinion-white-no-circle.svg";
-import crossIcon from "../../styles/assets/icons/cross-circle-red.svg";
 import arrow from "../../styles/assets/icons/arrow-left.svg";
 import homeIcon from "../../styles/assets/icons/home.svg";
 import { fetchContent } from "../../store/actions/thunk/ArticlesActions.thunk";
 import { fetchManifesto } from "../../store/actions/thunk/ManifestoActions.thunk";
-import eyeIcon from "../../styles/assets/icons/eye-white.svg";
-import eyeIconDisabled from "../../styles/assets/icons/eye-white-disabled.svg";
-import { IsVisibleIcon } from "../../styles/styledComponents/editor/modules/Modules.sc";
-import { cleanContentState } from "../../store/actions/commonsActions";
+
+import {
+  cleanContentState,
+  cleanPageState,
+} from "../../store/actions/commonsActions";
 import { consolePage } from "../../helper/consoleStyles";
-import { getData, percentage } from "../../helper/resultsHelper";
+import { getData } from "../../helper/resultsHelper";
 import { openPreview } from "../../helper/fieldsHelper";
 import { fetchFeedBackResults } from "../../store/actions/thunk/ModulesActions.thunk";
 import keyGenerator from "../../helper/keyGenerator";
 import FeedBackResults from "./FeedbackResults";
+import { fetchPage } from "../../store/actions/thunk/PageActions.thunk";
+import QuizzResults from "./QuizzResults";
 
 // this is the main page of result section, it is used to display results from quizz, feedback, reaction comming from users of the front website
 
 const Results = () => {
-  console.log("%cPAGE: QUIZZ RESULTS", `${consolePage}`);
   const modulesState = useSelector(({ modulesReducer }) => modulesReducer);
   const [data, setData] = useState([]);
-
   const [isActive, setIsActive] = useState("opinions");
   const dispatch = useDispatch();
-  const { articleId, manifestoId, manifestoLang } = useParams();
+  const { resourceId, manifestoId, manifestoLang, resultType } = useParams();
   const history = useHistory();
-
-  const mainInformationState = useSelector(
+  const MainInformationState = useSelector(
     ({ mainInformationReducer }) => mainInformationReducer
   );
 
-  const { title, lang, slug, feedBackResults } = mainInformationState;
+  const PageMainInformationState = useSelector(
+    ({ pageMainInformationReducer }) => pageMainInformationReducer
+  );
+
+  const { title, lang, slug, feedBackResults } =
+    resultType === "page" ? PageMainInformationState : MainInformationState;
 
   const { modulesList } = modulesState;
 
@@ -83,7 +76,7 @@ const Results = () => {
     setData([]);
 
     getData(
-      articleId,
+      resourceId,
       modulesList,
       manifestoData,
       manifestoId,
@@ -93,11 +86,19 @@ const Results = () => {
   }, [isActive, modulesList, manifestoData]);
 
   useEffect(() => {
-    dispatch(fetchFeedBackResults(articleId));
+    // Just indicative line to keep clear logs
+    console.log(`%cPAGE: QUIZZ RESULTS`, `${consolePage}`);
+
+    dispatch(fetchFeedBackResults(resourceId, resultType));
 
     setData([]);
-    if (!manifestoId) {
-      dispatch(fetchContent(articleId));
+
+    if (!manifestoId && resultType === "article") {
+      dispatch(fetchContent(resourceId));
+    }
+
+    if (!manifestoId && resultType === "page") {
+      dispatch(fetchPage(resourceId));
     }
 
     if (manifestoId) {
@@ -110,20 +111,32 @@ const Results = () => {
       <Header />
 
       {/* Article Edit link, preview  and info */}
-      {/* title */}
+      {/* Module Header */}
 
       <ModulesContainer>
-        {/* Fil d'ariane */}
+        {/* Bread Crumb */}
         <ActionHeadContainer>
-          <Link to="/editor">
+          <Link to={resultType === "page" ? "/pages" : "/dashboard"}>
             <BreadCrumBox>
               <HomeIcon src={homeIcon} />
-              <BreadCrumLink>Content list</BreadCrumLink>
+              <BreadCrumLink>
+                {resultType === "page" ? "Page list" : "Content List"}
+              </BreadCrumLink>
               <BreadCrumArrow src={arrow} />
             </BreadCrumBox>
           </Link>
 
-          <Link to={`/editor/${articleId}`}>
+          <Link
+            to={
+              resultType === "page"
+                ? `/page-editor/${resourceId}`
+                : `/editor/${resourceId}`
+            }
+            onClick={() => {
+              dispatch(cleanContentState());
+              dispatch(cleanPageState());
+            }}
+          >
             <BreadCrumBox>
               <BreadCrumLink>{title}</BreadCrumLink>
               <BreadCrumArrow src={arrow} />
@@ -135,19 +148,26 @@ const Results = () => {
           </BreadCrumBox>
         </ActionHeadContainer>
 
+        {/* Module Title */}
         <MainTitleBox resultTitle>
           <ButtonsAndInfosContainer>
+            {/* Edition Button */}
             <Button
               modifyButton
               onClick={() => {
                 dispatch(cleanContentState());
-                history.push(`/editor/${articleId}`);
+                history.push(
+                  resultType === "page"
+                    ? `/page-editor/${resourceId}`
+                    : `/editor/${resourceId}`
+                );
               }}
             >
               <ButtonImage src={pen} />
-              article edition
+              {resultType === "page" ? "Page Edition" : "Article Edition"}
             </Button>
 
+            {/* Preview Button */}
             <Button
               previewArticleButton
               onClick={() => {
@@ -163,6 +183,8 @@ const Results = () => {
             <H1>{`OPINIONS RESULTS - ${title}`}</H1>
           </ResultTitleBox>
         </MainTitleBox>
+
+        {/* Tabs menu */}
         <NavBarContainer>
           <NavElement
             onClick={() => {
@@ -191,7 +213,9 @@ const Results = () => {
           <NavLine />
         </NavBarContainer>
 
+        {/* Feedback results list component */}
         {isActive === "feedback" &&
+          feedBackResults &&
           feedBackResults.map((result) => {
             return (
               <FeedBackResults
@@ -203,60 +227,23 @@ const Results = () => {
             );
           })}
 
+        {/* Reaction & Opinions results component */}
         {(isActive === "reaction" || isActive === "opinions") &&
           isActive !== "feedback" &&
+          data &&
           data.map((question) => {
+            console.warn(question);
             return (
-              <Section key={question.id} isOpen>
-                <FormTitle>{question.question || "Empty question"}</FormTitle>
-                <IsVisibleIcon
-                  src={question.isVisible ? eyeIcon : eyeIconDisabled}
-                />
-                {question.question !== "" && (
-                  <>
-                    <TotalInfo>{`Total = ${question.participantsCount} answers`}</TotalInfo>
-                    <ResponseList>
-                      {question.answers.map((answer) => {
-                        return (
-                          <ElementBox key={`${answer.uuid}`}>
-                            <PercentBox>
-                              <BoldText>
-                                {answer.text
-                                  ? `${String.fromCharCode(
-                                      8226
-                                    )}${String.fromCharCode(160)}${percentage(
-                                      answer.responsesCount,
-                                      question.participantsCount
-                                    )}%`
-                                  : "Empty"}
-                              </BoldText>
-                              <LightText>
-                                {`${String.fromCharCode(160)}(${
-                                  answer.responsesCount
-                                })`}
-                              </LightText>
-                            </PercentBox>
-                            {answer.text !== "" && question.showRight && (
-                              <IconBox>
-                                {isActive !== "reaction" && (
-                                  <>
-                                    <IsRightIcon
-                                      src={answer.right ? checkIcon : crossIcon}
-                                    />
-                                  </>
-                                )}
-                              </IconBox>
-                            )}
-                            <LightText>
-                              {answer.text || "Empty response"}
-                            </LightText>
-                          </ElementBox>
-                        );
-                      })}
-                    </ResponseList>
-                  </>
-                )}
-              </Section>
+              <QuizzResults
+                key={question.id}
+                id={question.id}
+                question={question.question}
+                isVisible={question.isVisible}
+                participantsCount={question.participantsCount}
+                answers={question.answers}
+                showRight={question.showRight}
+                isActive={isActive}
+              />
             );
           })}
       </ModulesContainer>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -29,6 +29,9 @@ import {
 } from "../../store/actions/actionBarActions";
 import eyeIcon from "../../styles/assets/icons/eye-circle-green.svg";
 import { openPreview } from "../../helper/fieldsHelper";
+import { watchOpinionModules } from "../../helper/actionBarHelper";
+import statIconGreen from "../../styles/assets/icons/opinion-green.svg";
+import statIconGrey from "../../styles/assets/icons/opinion-grey.svg";
 
 const PageCard = ({
   state,
@@ -43,11 +46,17 @@ const PageCard = ({
   failCount,
   lang,
   slug,
+  modulesList,
 }) => {
   const history = useHistory();
   const updateDate = buildDate(new Date(updatedAt));
   const dispatch = useDispatch();
   const [hover, setHover] = useState(false);
+  const [isOpinionModules, setIsOpinionModules] = useState(false);
+
+  useEffect(() => {
+    setIsOpinionModules(watchOpinionModules(modulesList));
+  }, [modulesList.length]);
 
   return (
     <PageCardContainer id="pages" key={id}>
@@ -78,6 +87,13 @@ const PageCard = ({
           src={eyeIcon}
           onClick={() => openPreview(lang, slug, "pages")}
         />
+        {!isOpinionModules ? (
+          <CardIconAction src={statIconGrey} />
+        ) : (
+          <Link to={{ pathname: `/page-results/${id}` }}>
+            <CardIconAction src={statIconGreen} />
+          </Link>
+        )}
         <CardIconAction
           src={copy}
           onClick={() => {
@@ -146,6 +162,7 @@ PageCard.propTypes = {
   failCount: PropTypes.number,
   lang: PropTypes.string.isRequired,
   slug: PropTypes.string.isRequired,
+  modulesList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 export default PageCard;

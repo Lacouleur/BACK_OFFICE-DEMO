@@ -39,7 +39,7 @@ const DuplicateModal = ({ type }) => {
     ({ actionBarReducer }) => actionBarReducer
   );
 
-  const { id, lang, title } = ActionBarStateState.isOpenDuplicateModal;
+  const { id, lang } = ActionBarStateState.isOpenDuplicateModal;
 
   useEffect(() => {
     modal.current.scrollIntoView({

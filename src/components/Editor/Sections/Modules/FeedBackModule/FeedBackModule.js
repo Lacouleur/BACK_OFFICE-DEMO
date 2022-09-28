@@ -14,7 +14,10 @@ import {
   SectionTitle,
 } from "../../../../../styles/styledComponents/editor/Sections.sc";
 import trashIcon from "../../../../../styles/assets/icons/trash.svg";
-import { showCloseModal } from "../../../../../store/actions/moduleActions";
+import {
+  closeModule,
+  showCloseModal,
+} from "../../../../../store/actions/moduleActions";
 import { FormTitle } from "../../../../../styles/styledComponents/global/Titles.sc";
 import Field from "../../../Field";
 import {
@@ -101,7 +104,12 @@ const FeedBackModule = ({
             <Delete
               src={trashIcon}
               onClick={() => {
-                dispatch(showCloseModal({ value: true, id: uuid }));
+                if (isNewModule) {
+                  dispatch(closeModule(uuid));
+                }
+                if (!isNewModule) {
+                  dispatch(showCloseModal({ value: true, id: uuid }));
+                }
               }}
             />
           )}

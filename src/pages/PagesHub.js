@@ -87,6 +87,7 @@ const PagesHub = () => {
                     retryAt={page?.publishScheduleFailData?.retryAt}
                     failCount={page?.publishScheduleFailData?.failCount}
                     slug={page.slug}
+                    modulesList={page?.sections}
                   />
                 );
               })}

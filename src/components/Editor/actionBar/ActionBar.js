@@ -316,25 +316,31 @@ const ActionBar = () => {
             )}
         </StatusContainer>
         <ActionsContainer>
-          {!isPage && (
-            <ActionIcon
-              src={
-                isOpinionModules && !contentIsChanged
-                  ? statIconGreen
-                  : statIconGrey
+          <ActionIcon
+            src={
+              isOpinionModules && !contentIsChanged
+                ? statIconGreen
+                : statIconGrey
+            }
+            onClick={() => {
+              if (isOpinionModules && !contentIsChanged) {
+                opinionLink.current.click();
               }
-              onClick={() => {
-                if (isOpinionModules && !contentIsChanged) {
-                  opinionLink.current.click();
-                }
-              }}
-            />
-          )}
+            }}
+          />
+
           {!isManifesto && !isPage && (
             <Link
               ref={opinionLink}
-              to={`/opinion-results/${id}`}
-              target="_blank"
+              to={`/article-results/${id}`}
+              style={{ display: "none" }}
+            />
+          )}
+
+          {!isManifesto && isPage && (
+            <Link
+              ref={opinionLink}
+              to={`/page-results/${id}`}
               style={{ display: "none" }}
             />
           )}
@@ -342,8 +348,7 @@ const ActionBar = () => {
           {isManifesto && !isPage && (
             <Link
               ref={opinionLink}
-              to={`/opinion-results/manifesto/${manifestoLang}/${manifestoId}`}
-              target="_blank"
+              to={`/manifesto-results/${manifestoLang}/${manifestoId}`}
               style={{ display: "none" }}
             />
           )}

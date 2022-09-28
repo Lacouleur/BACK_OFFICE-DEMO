@@ -16,7 +16,10 @@ import {
   Delete,
   ActionIcons,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
-import { showCloseModal } from "../../../../../store/actions/moduleActions";
+import {
+  closeModule,
+  showCloseModal,
+} from "../../../../../store/actions/moduleActions";
 import CloseModal from "../../../../Modals/CloseModal";
 import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
 import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.thunk";
@@ -92,7 +95,12 @@ const ImageModule = ({
           <Delete
             src={trashIcon}
             onClick={() => {
-              dispatch(showCloseModal({ value: true, id: uuid }));
+              if (isNewModule) {
+                dispatch(closeModule(uuid));
+              }
+              if (!isNewModule) {
+                dispatch(showCloseModal({ value: true, id: uuid }));
+              }
             }}
           />
         </ActionIcons>

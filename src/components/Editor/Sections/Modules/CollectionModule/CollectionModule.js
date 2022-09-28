@@ -23,6 +23,7 @@ import {
   CollectionSectionDescritpion,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import {
+  closeModule,
   setCollectionIsPaginated,
   setCollectionSearchInput,
   showCloseModal,
@@ -118,6 +119,9 @@ const CollectionModule = ({
           <Delete
             src={trashIcon}
             onClick={() => {
+              if (isNewModule) {
+                dispatch(closeModule(uuid));
+              }
               if (status !== "PUBLISHED" && uuid) {
                 dispatch(showCloseModal({ value: true, id: uuid }));
               }

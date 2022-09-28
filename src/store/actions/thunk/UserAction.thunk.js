@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import { consoleSucces, consoleTitle } from "../../../helper/consoleStyles";
 import ErrorCaseClient from "../../../helper/ErrorCaseClient";
-import { nameSpaceError, uploadError } from "../../../helper/errorMessages";
+import { uploadError } from "../../../helper/errorMessages";
 import { dispatchUserInfo } from "../../../helper/userHelper";
 import {
   getUser,

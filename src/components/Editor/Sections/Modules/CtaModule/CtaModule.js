@@ -18,6 +18,7 @@ import {
   FieldAndSwitchContainer,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import {
+  closeModule,
   setCtaIsNewtab,
   showCloseModal,
 } from "../../../../../store/actions/moduleActions";
@@ -146,7 +147,12 @@ const CtaModule = ({
           <Delete
             src={trashIcon}
             onClick={() => {
-              dispatch(showCloseModal({ value: true, id: uuid }));
+              if (isNewModule) {
+                dispatch(closeModule(uuid));
+              }
+              if (!isNewModule) {
+                dispatch(showCloseModal({ value: true, id: uuid }));
+              }
             }}
           />
         </ActionIcons>
@@ -241,8 +247,7 @@ const CtaModule = ({
                     value: !openNewTab,
                     type: "page",
                   })
-                )
-              }
+                )}
               isChecked={openNewTab}
               componentId={`cta-switch-${uuid}`}
               displayedText="Open in new window"

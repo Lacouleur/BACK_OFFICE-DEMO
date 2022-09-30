@@ -2,6 +2,7 @@ import {
   SET_CONTENTS_LIST,
   SET_PAGINATION,
   SET_RESEARCH_ARTICLE,
+  SET_SEARCHED_LIST,
 } from "../constants";
 
 import {} from "../actions/commonsActions";
@@ -9,6 +10,7 @@ import {} from "../actions/commonsActions";
 const initialState = {
   contentsList: [],
   fetchedCustomList: [],
+  searchedList: [],
   currentPage: null,
   nextPage: null,
   previousPage: null,
@@ -31,6 +33,13 @@ const contentListReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         searchedArticle: action.payload,
+      };
+    }
+
+    case SET_SEARCHED_LIST: {
+      return {
+        ...oldState,
+        searchedList: action.payload,
       };
     }
 

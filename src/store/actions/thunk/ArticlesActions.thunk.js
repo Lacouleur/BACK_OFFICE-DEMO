@@ -3,6 +3,7 @@ import {
   getCategories,
   getContent,
   getContentList,
+  getContentListResearch,
   getTags,
   getUsers,
   postContent,
@@ -45,7 +46,11 @@ import {
   consoleSucces,
   consoleTitle,
 } from "../../../helper/consoleStyles";
-import { setContentsList, setPagination } from "../contentListActions";
+import {
+  setContentsList,
+  setPagination,
+  setSearchedList,
+} from "../contentListActions";
 import ErrorCaseClient from "../../../helper/ErrorCaseClient";
 import { dispatchElementsId } from "../../../helper/fieldsHelper";
 import { getPage } from "../../../services/client/pagesClient";
@@ -329,6 +334,44 @@ export function fetchContentsList(
             dispatch(setContentsList(response.data.contents));
             dispatch(setPagination(response.data));
           }
+        }
+        console.log(
+          "%c Fetched content list =>",
+          `${consoleInfo}`,
+          response.data
+        );
+
+        return null;
+      } catch (error) {
+        console.error("%cError =>", `${consoleError}`, error?.response?.data);
+        return null;
+      }
+    }
+    return null;
+  };
+}
+
+export function fetchResearchedContentsList(
+  searched,
+  lang,
+  isCaseSensitive,
+  page,
+  limit
+) {
+  return async (dispatch) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
+      try {
+        const response = await getContentListResearch(
+          searched,
+          lang,
+          isCaseSensitive,
+          page,
+          limit
+        );
+        if (response.status < 300 && response.status > 199) {
+          dispatch(setSearchedList(response.data.contents));
+          dispatch(setPagination(response.data));
         }
         console.log(
           "%c Fetched content list =>",

@@ -12,7 +12,10 @@ import {
 } from "../../styles/styledComponents/contentList/ContentList.sc";
 import Pagination from "./Pagination";
 import keyGenerator from "../../helper/keyGenerator";
-import { fetchContentsList } from "../../store/actions/thunk/ArticlesActions.thunk";
+import {
+  fetchContentsList,
+  fetchResearchedContentsList,
+} from "../../store/actions/thunk/ArticlesActions.thunk";
 import {
   cleanContentState,
   cleanPageState,
@@ -21,7 +24,10 @@ import langList from "../../helper/langList";
 import DuplicateModal from "../Modals/DuplicateModal";
 import ArchiveModal from "../Modals/ArchiveModal";
 import ErrorModal from "../Modals/ErrorModal";
-import { setContentsList } from "../../store/actions/contentListActions";
+import {
+  setContentsList,
+  setSearchedList,
+} from "../../store/actions/contentListActions";
 import { harmonizeLang } from "../../helper/fieldsHelper";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import ListFilters from "./ListFilters";
@@ -44,7 +50,13 @@ const ContentList = () => {
 
   const { locale } = userState;
 
-  const { lastPage, currentPage, contentsList } = contentsListState;
+  const {
+    lastPage,
+    currentPage,
+    contentsList,
+    searchedList,
+    searchedArticle,
+  } = contentsListState;
 
   const [filterLang, setFilterLang] = useState("");
 
@@ -66,20 +78,38 @@ const ContentList = () => {
   }, [locale]);
 
   useEffect(() => {
-    dispatch(
-      fetchContentsList(currentPage || 1, undefined, "lang", filterLang)
-    );
+    if (searchedArticle === "") {
+      dispatch(
+        fetchContentsList(currentPage || 1, undefined, "lang", filterLang)
+      );
+    } else {
+      dispatch(fetchResearchedContentsList(searchedArticle, filterLang));
+    }
   }, [filterLang, currentPage]);
 
   useEffect(() => {
+    if (searchedArticle === "") {
+      dispatch(setSearchedList(null));
+    }
+  }, [searchedArticle]);
+
+  useEffect(() => {
+    console.warn("searchedList", searchedList);
     const filtering = [];
-    contentsList.map((content) => {
-      if (harmonizeLang(content.language) === filterLang || filterLang === "") {
-        filtering.push(content);
-      }
-      setFilteredList(filtering);
-    });
-  }, [filterLang, contentsList]);
+    if (!searchedList) {
+      contentsList.map((content) => {
+        if (
+          harmonizeLang(content.language) === filterLang ||
+          filterLang === ""
+        ) {
+          filtering.push(content);
+        }
+        setFilteredList(filtering);
+      });
+    } else {
+      setFilteredList(searchedList);
+    }
+  }, [filterLang, searchedList, contentsList]);
 
   return (
     <>

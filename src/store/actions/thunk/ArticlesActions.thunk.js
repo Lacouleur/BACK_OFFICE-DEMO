@@ -354,19 +354,26 @@ export function fetchContentsList(
 export function fetchResearchedContentsList(
   searched,
   lang,
-  isCaseSensitive,
-  page,
-  limit
+  page = 1,
+  isCaseSensitive = false,
+  limit = 15
 ) {
   return async (dispatch) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
       try {
+        console.warn("Attributs", {
+          searched,
+          lang,
+          page,
+          isCaseSensitive,
+          limit,
+        });
         const response = await getContentListResearch(
           searched,
           lang,
-          isCaseSensitive,
           page,
+          isCaseSensitive,
           limit
         );
         if (response.status < 300 && response.status > 199) {
@@ -374,7 +381,7 @@ export function fetchResearchedContentsList(
           dispatch(setPagination(response.data));
         }
         console.log(
-          "%c Fetched content list =>",
+          "%c Fetched searched list =>",
           `${consoleInfo}`,
           response.data
         );

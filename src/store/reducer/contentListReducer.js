@@ -10,7 +10,7 @@ import {} from "../actions/commonsActions";
 const initialState = {
   contentsList: [],
   fetchedCustomList: [],
-  searchedList: [],
+  searchedList: null,
   currentPage: null,
   nextPage: null,
   previousPage: null,

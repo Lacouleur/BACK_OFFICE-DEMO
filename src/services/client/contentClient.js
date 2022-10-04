@@ -12,12 +12,14 @@ export const sendAuth = (data) => {
 
 export function getContentListResearch(
   searched,
-  lang = "en",
-  isCaseSensitive = false,
+  lang,
   page = 1,
+  isCaseSensitive = false,
   limit = 15
 ) {
-  const string = `/contents?search=${searched}&searchLanguage=${lang}&searchCaseSensitive=${isCaseSensitive}&page=${page}&limit=${limit}`;
+  const langString = lang ? `&lang=${lang}` : "";
+  const string = `/contents?search=${searched}${langString}&searchCaseSensitive=${isCaseSensitive}&page=${page}&limit=${limit}`;
+  console.warn("string", string);
   return axiosConfig.get(`${string}`, {
     headers: {
       Authorization: `Bearer ${getToken()}`,

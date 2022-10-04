@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import ReactSelect from "react-select";
 import colors from "../../core/colors";
 
 export const FilteringBox = styled.div`
@@ -71,7 +72,7 @@ export const ResearchFilterField = styled.input`
 export const ResearchIcon = styled.img`
   position: absolute;
   width: 12px;
-  left: 16px;
+  right: 6px;
   top: 50%;
   transform: translate(-50%, -50%);
 `;
@@ -81,3 +82,23 @@ export const ResearchFilterBox = styled.div`
   width: 250px;
   margin-left: 32px;
 `;
+
+export const ResearchButton = styled.div`
+  background-color: ${colors.mediumGrey};
+  width: 32px;
+  height: 100%;
+  position: absolute;
+  right: 0px;
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
+  border: 1px solid ${colors.white};
+  top: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  &:hover {
+    background-color: ${colors.paleViolet};
+  }
+`;
+
+export const LangOfResearchButton = styled(ReactSelect)``;

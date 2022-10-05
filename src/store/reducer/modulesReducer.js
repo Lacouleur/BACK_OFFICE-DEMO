@@ -412,9 +412,11 @@ const modulesReducer = (state = initialState, action = {}) => {
             isChanged: false,
             isOpenCloseModal: false,
             isPage: true,
+            sapin: "arbre",
           },
         ];
       });
+
       return {
         ...oldState,
       };
@@ -582,13 +584,13 @@ const modulesReducer = (state = initialState, action = {}) => {
     }
 
     case SET_OPINION_SHOW_RIGHT_ANSWER: {
-      const { id, value } = action.payload;
+      const { id, value, changed } = action.payload;
       state.modulesList.find((module, index) => {
         if (module?.uuid === id) {
           oldState.modulesList[index] = {
             ...module,
             showRight: value,
-            isChanged: true,
+            isChanged: changed === undefined,
           };
         }
         return null;
@@ -698,7 +700,7 @@ const modulesReducer = (state = initialState, action = {}) => {
 
           oldState.modulesList[index] = {
             ...module,
-            isChanged: !oldState.modulesList[index].isReaction,
+            isChanged: !!eraseAll,
           };
         }
         return null;
@@ -709,12 +711,12 @@ const modulesReducer = (state = initialState, action = {}) => {
     }
 
     case CREATE_OPINION_NEW_ANSWER: {
-      const { moduleId, text } = action.payload;
+      const { moduleId, text, changed } = action.payload;
       state.modulesList.find((module, index) => {
         if (module?.uuid === moduleId) {
           oldState.modulesList[index] = {
             ...module,
-            isChanged: !oldState.modulesList[index].isReaction,
+            isChanged: !!changed,
             answers: [
               ...module.answers,
               {

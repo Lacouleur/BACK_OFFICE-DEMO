@@ -101,6 +101,8 @@ export function manageReactionAnswers(answers, dispatch, uuid) {
   );
 
   emojis.map((emoji) => {
-    dispatch(createOpinionNewAnswer({ moduleId: uuid, text: emoji }));
+    dispatch(
+      createOpinionNewAnswer({ moduleId: uuid, text: emoji, changed: false })
+    );
   });
 }

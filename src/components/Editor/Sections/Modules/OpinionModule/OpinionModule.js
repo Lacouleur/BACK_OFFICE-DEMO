@@ -117,6 +117,7 @@ const OpinionModule = ({
         SetOpinionShowRightAnswer({
           id: uuid,
           value: false,
+          changed: false,
         })
       );
     }

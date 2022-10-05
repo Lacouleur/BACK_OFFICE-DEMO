@@ -17,6 +17,7 @@ import {
   SET_MODIFIED,
   PAGE_SET_DISPLAY_TITLE,
   PAGE_SET_SUBTITLE,
+  SET_FEEDBACK_RESULTS,
 } from "../../constants";
 import { verifySlug } from "../../../helper/auth/verifyFields";
 import { harmonizeLang } from "../../../helper/fieldsHelper";
@@ -33,6 +34,7 @@ const initialState = {
   // Array
   categoriesList: [],
   tagsList: [],
+  feedBackResults: [],
 
   // bool
   displayTitle: false,
@@ -192,6 +194,13 @@ const pageMainInformationReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         modified: action.payload,
+      };
+    }
+
+    case SET_FEEDBACK_RESULTS: {
+      return {
+        ...oldState,
+        feedBackResults: action.payload,
       };
     }
 

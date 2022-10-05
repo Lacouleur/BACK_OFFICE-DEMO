@@ -52,7 +52,10 @@ import {
   watchOpinionModules,
 } from "../../../helper/actionBarHelper";
 import ScheduleModal from "../../Modals/ScheduleModal";
-import { setStatus } from "../../../store/actions/commonsActions";
+import {
+  cleanContentState,
+  setStatus,
+} from "../../../store/actions/commonsActions";
 import { openPreview } from "../../../helper/fieldsHelper";
 
 const ActionBar = () => {
@@ -331,6 +334,7 @@ const ActionBar = () => {
 
           {!isManifesto && !isPage && (
             <Link
+              onClick={() => dispatch(cleanContentState())}
               ref={opinionLink}
               to={`/article-results/${id}`}
               style={{ display: "none" }}
@@ -339,6 +343,7 @@ const ActionBar = () => {
 
           {!isManifesto && isPage && (
             <Link
+              onClick={() => dispatch(cleanContentState())}
               ref={opinionLink}
               to={`/page-results/${id}`}
               style={{ display: "none" }}
@@ -347,6 +352,7 @@ const ActionBar = () => {
 
           {isManifesto && !isPage && (
             <Link
+              onClick={() => dispatch(cleanContentState())}
               ref={opinionLink}
               to={`/manifesto-results/${manifestoLang}/${manifestoId}`}
               style={{ display: "none" }}

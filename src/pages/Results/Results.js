@@ -19,6 +19,7 @@ import {
   ButtonsAndInfosContainer,
   ResultTitleBox,
   ResultTitleIcon,
+  NoElement,
 } from "../../styles/styledComponents/global/Results.sc";
 import {
   H1,
@@ -74,7 +75,6 @@ const Results = () => {
 
   useEffect(() => {
     setData([]);
-
     getData(
       resourceId,
       modulesList,
@@ -90,8 +90,6 @@ const Results = () => {
     console.log(`%cPAGE: QUIZZ RESULTS`, `${consolePage}`);
 
     dispatch(fetchFeedBackResults(resourceId, resultType));
-
-    setData([]);
 
     if (!manifestoId && resultType === "article") {
       dispatch(fetchContent(resourceId));
@@ -215,7 +213,7 @@ const Results = () => {
 
         {/* Feedback results list component */}
         {isActive === "feedback" &&
-          feedBackResults &&
+          feedBackResults.length !== 0 &&
           feedBackResults.map((result) => {
             return (
               <FeedBackResults
@@ -229,10 +227,8 @@ const Results = () => {
 
         {/* Reaction & Opinions results component */}
         {(isActive === "reaction" || isActive === "opinions") &&
-          isActive !== "feedback" &&
-          data &&
+          data.length !== 0 &&
           data.map((question) => {
-            console.warn(question);
             return (
               <QuizzResults
                 key={question.id}
@@ -246,6 +242,13 @@ const Results = () => {
               />
             );
           })}
+        {(isActive === "reaction" || isActive === "opinions") &&
+          data.length === 0 && (
+            <NoElement>{`- No ${isActive} to display yet -`}</NoElement>
+          )}
+        {isActive === "feedback" && feedBackResults.length === 0 && (
+          <NoElement>{`- No ${isActive} to display yet -`}</NoElement>
+        )}
       </ModulesContainer>
 
       <Footer />

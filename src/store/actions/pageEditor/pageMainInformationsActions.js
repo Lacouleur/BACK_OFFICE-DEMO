@@ -8,6 +8,7 @@ import {
   SET_IS_PAGE,
   PAGE_SET_DISPLAY_TITLE,
   PAGE_SET_SUBTITLE,
+  SET_FEEDBACK_RESULTS,
 } from "../../constants";
 
 export const pageSetTitle = (payload) => ({
@@ -52,5 +53,10 @@ export const pageSetErrorSlug = (payload) => ({
 
 export const setIsPage = (payload) => ({
   type: SET_IS_PAGE,
+  payload,
+});
+
+export const setFeedbackResults = (payload) => ({
+  type: SET_FEEDBACK_RESULTS,
   payload,
 });

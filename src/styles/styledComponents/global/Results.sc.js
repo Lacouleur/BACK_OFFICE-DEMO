@@ -347,3 +347,13 @@ export const FeedBackSeeMore = styled.button`
   border-radius: 5px;
   margin: 16px 0 0 32px;
 `;
+
+export const NoElement = styled.p`
+  width: 250px;
+  height: 52px;
+  line-height: 52px;
+  text-align: center;
+  margin: 10% auto;
+  border-radius: 5px;
+  color: ${colors.paleViolet};
+`;

@@ -45,38 +45,36 @@ export const OptionFilter = styled.div`
   cursor: pointer;
 `;
 
-export const ResearchFilterField = styled.input`
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 32px;
-  background-color: ${colors.mediumGrey};
-  border: 1px solid ${colors.lightGrey};
-  padding-left: 68px;
-  padding-right: 0;
-  color: ${colors.white};
-  cursor: auto;
-  caret-color: ${colors.white};
-  text-overflow: clip;
-  border-radius: 25px;
-  font-size: 16px;
-  line-height: 24px;
-
-  &:hover {
-    border: 1px solid ${colors.white};
-  }
-
-  &:focus {
-    border: 1px solid ${colors.paleViolet};
-  }
-`;
-
 export const ResearchIcon = styled.img`
   position: absolute;
   width: 12px;
   right: 6px;
   top: 50%;
   transform: translate(-50%, -50%);
+`;
+
+export const CloseIcon = styled.img`
+  position: absolute;
+  width: 12px;
+  right: 3px;
+  top: 50%;
+  transform: translateY(-50%);
+`;
+
+export const CloseButton = styled.div`
+  background-color: none;
+  width: 20px;
+  height: 100%;
+  position: absolute;
+  right: 38px;
+  opacity: 0.8;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 export const ResearchFilterBox = styled.div`
@@ -106,9 +104,6 @@ export const ResearchButton = styled.div`
 `;
 
 export const LangOfResearchButton = styled(ReactSelect)`
-  /*  position: absolute;
-  top: 0px;
-  z-index: 1; */
   & #react-select-3-option-0 {
     word-spacing: 5px;
   }
@@ -128,6 +123,8 @@ export const LangOfResearchButton = styled(ReactSelect)`
     }
 
     &__control {
+      position: absolute;
+      top: 0px;
       width: 64px;
       min-height: 32px;
       background-color: ${colors.mediumGrey};
@@ -144,6 +141,10 @@ export const LangOfResearchButton = styled(ReactSelect)`
         border-bottom: none;
         box-shadow: none;
       }
+
+      &:hover {
+        border-color: ${colors.paleViolet};
+      }
     }
 
     &__placeholder {
@@ -152,7 +153,8 @@ export const LangOfResearchButton = styled(ReactSelect)`
 
     &__menu {
       margin-top: -1px;
-      z-index: -1;
+      position: absolute;
+      top: 32px;
       background-color: ${colors.darkGrey};
       border: 1px solid ${colors.white};
       box-shadow: none;
@@ -175,6 +177,9 @@ export const LangOfResearchButton = styled(ReactSelect)`
     &__option {
       &--is-focused {
         background-color: ${colors.paleViolet};
+      }
+      &--is-selected {
+        background-color: ${colors.green};
       }
     }
 
@@ -200,6 +205,60 @@ export const LangOfResearchButton = styled(ReactSelect)`
       &-container {
         line-height: 32px;
       }
+    }
+  }
+`;
+
+export const ResearchFilterField = styled.input`
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 32px;
+  background-color: ${colors.mediumGrey};
+  border: 1px solid ${colors.lightGrey};
+  padding-left: 70px;
+  padding-right: 63px;
+  color: ${colors.white};
+  cursor: auto;
+  caret-color: ${colors.white};
+  text-overflow: clip;
+  border-radius: 25px;
+  font-size: 16px;
+  line-height: 24px;
+
+  &:hover {
+    border: 1px solid ${colors.white};
+  }
+
+  &:focus {
+    border: 1px solid ${colors.paleViolet};
+
+    & + ${ResearchButton} {
+      border: 1px solid ${colors.paleViolet} !important;
+    }
+    & + ${LangOfResearchButton} {
+      .selectFlag__control {
+        border-color: ${colors.paleViolet} !important;
+      }
+    }
+  }
+
+  &:not(:placeholder-shown) {
+    & + ${ResearchButton} {
+      border: 1px solid ${colors.paleViolet} !important;
+      background-color: ${colors.transpGrey};
+
+      &:hover {
+        background-color: ${colors.paleViolet};
+      }
+    }
+  }
+
+  &:not(:placeholder-shown):not(:focus) {
+    border: 1px solid ${colors.white};
+    & + ${ResearchButton} {
+      border: 1px solid ${colors.white} !important;
+      background-color: ${colors.transpGrey};!important;
     }
   }
 `;

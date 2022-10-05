@@ -10,13 +10,17 @@ import {
   ResearchFilterBox,
   ResearchFilterField,
   ResearchIcon,
+  CloseIcon,
+  CloseButton,
 } from "../../styles/styledComponents/contentList/ListFilters.sc";
 import { setResearchArticle } from "../../store/actions/contentListActions";
 import searchIcon from "../../styles/assets/icons/search.svg";
+import crossPurpleIcon from "../../styles/assets/icons/cross-purple.svg";
 import { fetchResearchedContentsList } from "../../store/actions/thunk/ArticlesActions.thunk";
 
 const ListFilters = ({ filterLang, setFilterLang }) => {
   const dispatch = useDispatch();
+  const searchField = React.useRef(null);
   const contentsListState = useSelector(
     ({ contentListReducer }) => contentListReducer
   );
@@ -58,27 +62,41 @@ const ListFilters = ({ filterLang, setFilterLang }) => {
 
       <ResearchFilterBox>
         <ResearchFilterField
+          ref={searchField}
           onChange={(e) => dispatch(setResearchArticle(e.target.value))}
           placeholder="search article"
         />
+
+        <ResearchButton
+          onClick={() =>
+            dispatch(fetchResearchedContentsList(searchedArticle, filterLang))}
+        >
+          <ResearchIcon src={searchIcon} />
+          {console.warn(LangOfResearchOptions[2])}
+        </ResearchButton>
+
+        <CloseButton>
+          {searchedArticle !== "" && (
+            <CloseIcon
+              onClick={() => {
+                console.warn("Searched value", searchField.current.value);
+                searchField.current.value = "";
+                dispatch(setResearchArticle(""));
+              }}
+              src={crossPurpleIcon}
+            />
+          )}
+        </CloseButton>
         <LangOfResearchButton
           classNamePrefix="selectFlag"
           closeMenuOnSelect={false}
+          isClearable
           isSearchable={false}
           value={LangOfResearch}
           getOptionValue={(option) => `${option.label}`}
           options={LangOfResearchOptions}
           onChange={(event) => setLangOfResearch(event)}
         />
-
-        <ResearchButton
-          onClick={() =>
-            dispatch(fetchResearchedContentsList(searchedArticle, filterLang))
-          }
-        >
-          <ResearchIcon src={searchIcon} />
-          {console.warn(LangOfResearchOptions[2])}
-        </ResearchButton>
       </ResearchFilterBox>
     </FilteringBox>
   );

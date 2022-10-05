@@ -20,7 +20,16 @@ const ListFilters = ({ filterLang, setFilterLang }) => {
   const contentsListState = useSelector(
     ({ contentListReducer }) => contentListReducer
   );
-  const [LangOfResearch, setLangOfResearch] = useState([]);
+  const [LangOfResearch, setLangOfResearch] = useState([
+    { value: "", label: "En 🇬🇧" },
+  ]);
+
+  const LangOfResearchOptions = [
+    { value: "fr", label: "Fr 🇫🇷" },
+    { value: "de", label: "De 🇩🇪" },
+    { value: "", label: "En 🇬🇧" },
+  ];
+
   const { searchedArticle } = contentsListState;
   return (
     <FilteringBox>
@@ -52,33 +61,24 @@ const ListFilters = ({ filterLang, setFilterLang }) => {
           onChange={(e) => dispatch(setResearchArticle(e.target.value))}
           placeholder="search article"
         />
-        <ResearchButton
-          onClick={() =>
-            dispatch(fetchResearchedContentsList(searchedArticle, filterLang))}
-        >
-          <ResearchIcon src={searchIcon} />
-        </ResearchButton>
         <LangOfResearchButton
-          classNamePrefix="select"
+          classNamePrefix="selectFlag"
           closeMenuOnSelect={false}
           isSearchable={false}
-          defaultValue={[{ value: "fr", label: "Fr" }]}
           value={LangOfResearch}
           getOptionValue={(option) => `${option.label}`}
-          /*  defaultOptions={[
-            { value: "fr", label: "Fr" },
-            { value: "de", label: "De" },
-            { value: "", label: "En" },
-          ]} */
-          options={[
-            { value: "fr", label: "Fr" },
-            { value: "de", label: "De" },
-            { value: "", label: "En" },
-          ]}
+          options={LangOfResearchOptions}
           onChange={(event) => setLangOfResearch(event)}
+        />
+
+        <ResearchButton
+          onClick={() =>
+            dispatch(fetchResearchedContentsList(searchedArticle, filterLang))
+          }
         >
           <ResearchIcon src={searchIcon} />
-        </LangOfResearchButton>
+          {console.warn(LangOfResearchOptions[2])}
+        </ResearchButton>
       </ResearchFilterBox>
     </FilteringBox>
   );

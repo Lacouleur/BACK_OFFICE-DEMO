@@ -139,16 +139,6 @@ const modulesReducer = (state = initialState, action = {}) => {
                     uuid: `${uuidv4()}`,
                     text: "",
                   },
-                  {
-                    right: false,
-                    uuid: `${uuidv4()}`,
-                    text: "",
-                  },
-                  {
-                    right: false,
-                    uuid: `${uuidv4()}`,
-                    text: "",
-                  },
                 ],
 
                 isVisible: true,

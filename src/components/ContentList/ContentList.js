@@ -94,7 +94,6 @@ const ContentList = () => {
   }, [searchedArticle]);
 
   useEffect(() => {
-    console.warn("searchedList", searchedList);
     const filtering = [];
     if (!searchedList) {
       contentsList.map((content) => {

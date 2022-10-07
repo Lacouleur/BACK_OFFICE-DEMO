@@ -354,6 +354,7 @@ export function fetchContentsList(
 export function fetchResearchedContentsList(
   searched,
   lang,
+  langOfResearch,
   page = 1,
   isCaseSensitive = false,
   limit = 15
@@ -362,16 +363,10 @@ export function fetchResearchedContentsList(
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
       try {
-        console.warn("Attributs", {
-          searched,
-          lang,
-          page,
-          isCaseSensitive,
-          limit,
-        });
         const response = await getContentListResearch(
           searched,
           lang,
+          langOfResearch,
           page,
           isCaseSensitive,
           limit

@@ -69,17 +69,22 @@ const ListFilters = ({ filterLang, setFilterLang }) => {
 
         <ResearchButton
           onClick={() =>
-            dispatch(fetchResearchedContentsList(searchedArticle, filterLang))}
+            dispatch(
+              fetchResearchedContentsList(
+                searchedArticle,
+                filterLang,
+                LangOfResearch.value
+              )
+            )
+          }
         >
           <ResearchIcon src={searchIcon} />
-          {console.warn(LangOfResearchOptions[2])}
         </ResearchButton>
 
         <CloseButton>
           {searchedArticle !== "" && (
             <CloseIcon
               onClick={() => {
-                console.warn("Searched value", searchField.current.value);
                 searchField.current.value = "";
                 dispatch(setResearchArticle(""));
               }}

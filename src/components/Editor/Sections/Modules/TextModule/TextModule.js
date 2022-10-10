@@ -19,6 +19,7 @@ import {
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import {
   closeModule,
+  setCollapseTextModule,
   showCloseModal,
 } from "../../../../../store/actions/moduleActions";
 import CloseModal from "../../../../Modals/CloseModal";
@@ -31,6 +32,7 @@ import {
 } from "../../../../../helper/modulesHelper";
 import TextEditor from "../TextEditor";
 import HeaderSectionPage from "../HeaderSectionPage";
+import SwitchButton from "../../../../Tools/Switch";
 
 const TextModule = ({
   isPage,
@@ -43,6 +45,7 @@ const TextModule = ({
   isChanged,
   isOpenCloseModal,
   isNewModule,
+  collapse,
   order,
 }) => {
   const dispatch = useDispatch();
@@ -139,6 +142,21 @@ const TextModule = ({
             openNewTabHeader={openNewTabHeader}
           />
         )}
+        <SwitchButton
+          action={() => {
+            dispatch(
+              setCollapseTextModule({
+                id: uuid,
+                value: !collapse,
+              })
+            );
+          }}
+          isChecked={collapse}
+          styleVariant="collapseText"
+          componentId={`collapse-text-module-${uuid}`}
+          displayedText="Foldable ?"
+          tooltipMessage="If this option is enabled this bloc of text will be folded on front. Users will be able to unfold/fold it. Please note that the first line will be visible all the time, so it's better to use H1 or H2 on top of your text bloc."
+        />
         {editorState && (
           <>
             <TextEditor
@@ -173,5 +191,6 @@ TextModule.propTypes = {
   subtitle: PropTypes.string,
   url: PropTypes.string,
   openNewTabHeader: PropTypes.bool,
+  collapse: PropTypes.bool.isRequired,
 };
 export default TextModule;

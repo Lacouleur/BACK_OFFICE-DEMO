@@ -51,6 +51,7 @@ import {
   SET_COLLECTION_IS_PINED,
   SET_COLLECTION_SEARCH_INPUT,
   SET_FEEDBACK_QUESTION,
+  SET_COLLAPSE_TEXTMODULE,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -447,6 +448,24 @@ const modulesReducer = (state = initialState, action = {}) => {
           oldState.modulesList[index] = {
             ...module,
             text: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_COLLAPSE_TEXTMODULE: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            collapse: value,
             isChanged: true,
           };
         }

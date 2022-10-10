@@ -103,12 +103,13 @@ export function saveModule(uuid, request = "save") {
             };
             switch (module.type) {
               case "text": {
-                const { type, text, order, isVisible } = module;
+                const { type, text, order, isVisible, collapse } = module;
                 values = {
                   ...(isPage && pageSectoionHeaderValues),
                   uuid,
                   type,
                   text,
+                  collapse,
                   order,
                   isVisible,
                 };
@@ -316,13 +317,14 @@ export function saveModule(uuid, request = "save") {
 
             switch (module.type) {
               case "text": {
-                const { type, text, order, isVisible } = module;
+                const { type, text, order, isVisible, collapse } = module;
                 values = {
                   ...(isPage && pageSectoionHeaderValues),
                   type,
                   text,
                   order,
                   isVisible,
+                  collapse,
                 };
                 isChanged = true;
                 break;

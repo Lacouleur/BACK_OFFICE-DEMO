@@ -13,7 +13,10 @@ import {
   CloseIcon,
   CloseButton,
 } from "../../styles/styledComponents/contentList/ListFilters.sc";
-import { setResearchArticle } from "../../store/actions/contentListActions";
+import {
+  setLangOfResearch,
+  setResearchArticle,
+} from "../../store/actions/contentListActions";
 import searchIcon from "../../styles/assets/icons/search.svg";
 import crossPurpleIcon from "../../styles/assets/icons/cross-purple.svg";
 import { fetchResearchedContentsList } from "../../store/actions/thunk/ArticlesActions.thunk";
@@ -24,9 +27,6 @@ const ListFilters = ({ filterLang, setFilterLang }) => {
   const contentsListState = useSelector(
     ({ contentListReducer }) => contentListReducer
   );
-  const [LangOfResearch, setLangOfResearch] = useState([
-    { value: "", label: "En 🇬🇧" },
-  ]);
 
   const LangOfResearchOptions = [
     { value: "fr", label: "Fr 🇫🇷" },
@@ -34,7 +34,7 @@ const ListFilters = ({ filterLang, setFilterLang }) => {
     { value: "", label: "En 🇬🇧" },
   ];
 
-  const { searchedArticle } = contentsListState;
+  const { searchedArticle, langOfResearch } = contentsListState;
   return (
     <FilteringBox>
       <LangFilter>
@@ -64,6 +64,17 @@ const ListFilters = ({ filterLang, setFilterLang }) => {
         <ResearchFilterField
           ref={searchField}
           onChange={(e) => dispatch(setResearchArticle(e.target.value))}
+          onKeyPress={(e) => {
+            if (e.key === "Enter" && e.target.value !== "") {
+              dispatch(
+                fetchResearchedContentsList(
+                  e.target.value,
+                  filterLang,
+                  langOfResearch.value
+                )
+              );
+            }
+          }}
           placeholder="search article"
         />
 
@@ -73,10 +84,9 @@ const ListFilters = ({ filterLang, setFilterLang }) => {
               fetchResearchedContentsList(
                 searchedArticle,
                 filterLang,
-                LangOfResearch.value
+                langOfResearch.value
               )
-            )
-          }
+            )}
         >
           <ResearchIcon src={searchIcon} />
         </ResearchButton>
@@ -97,10 +107,10 @@ const ListFilters = ({ filterLang, setFilterLang }) => {
           closeMenuOnSelect={false}
           isClearable
           isSearchable={false}
-          value={LangOfResearch}
+          value={langOfResearch}
           getOptionValue={(option) => `${option.label}`}
           options={LangOfResearchOptions}
-          onChange={(event) => setLangOfResearch(event)}
+          onChange={(event) => dispatch(setLangOfResearch(event))}
         />
       </ResearchFilterBox>
     </FilteringBox>

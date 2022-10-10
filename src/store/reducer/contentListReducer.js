@@ -1,5 +1,6 @@
 import {
   SET_CONTENTS_LIST,
+  SET_LANG_OF_RESEARCH,
   SET_PAGINATION,
   SET_RESEARCH_ARTICLE,
   SET_SEARCHED_LIST,
@@ -16,6 +17,7 @@ const initialState = {
   previousPage: null,
   lastPage: null,
   searchedArticle: "",
+  langOfResearch: [{ value: "", label: "En 🇬🇧" }],
 };
 
 const contentListReducer = (state = initialState, action = {}) => {
@@ -43,15 +45,20 @@ const contentListReducer = (state = initialState, action = {}) => {
       };
     }
 
+    case SET_LANG_OF_RESEARCH: {
+      return {
+        ...oldState,
+        LangOfResearch: action.payload,
+      };
+    }
+
     case SET_PAGINATION: {
       const data = action.payload;
-      const isNextPage = data.nextPage;
-      const isPreviousPage = data.previousPage;
       return {
         ...oldState,
         currentPage: data.currentPage,
-        nextPage: isNextPage,
-        previousPage: isPreviousPage,
+        nextPage: data.nextPage || "",
+        previousPage: data.previousPage || "",
         lastPage: data.lastPage,
       };
     }

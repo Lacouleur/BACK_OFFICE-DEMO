@@ -56,11 +56,14 @@ const ContentList = () => {
     contentsList,
     searchedList,
     searchedArticle,
+    langOfResearch,
   } = contentsListState;
 
   const [filterLang, setFilterLang] = useState("");
 
   const [filteredList, setFilteredList] = useState("");
+
+  const [askedPage, setAskedPage] = useState(1);
 
   const {
     isOpenErrorModal,
@@ -78,14 +81,26 @@ const ContentList = () => {
   }, [locale]);
 
   useEffect(() => {
-    if (searchedArticle === "") {
-      dispatch(
-        fetchContentsList(currentPage || 1, undefined, "lang", filterLang)
-      );
-    } else {
-      dispatch(fetchResearchedContentsList(searchedArticle, filterLang));
+    dispatch(
+      fetchContentsList(currentPage || 1, undefined, "lang", filterLang)
+    );
+  }, []);
+
+  useEffect(() => {
+    if (searchedArticle === "" && currentPage && currentPage !== askedPage) {
+      dispatch(fetchContentsList(askedPage, undefined, "lang", filterLang));
     }
-  }, [filterLang, currentPage]);
+    if (searchedArticle !== "") {
+      dispatch(
+        fetchResearchedContentsList(
+          searchedArticle,
+          filterLang,
+          langOfResearch.value,
+          currentPage === askedPage ? currentPage : askedPage
+        )
+      );
+    }
+  }, [filterLang, currentPage, askedPage]);
 
   useEffect(() => {
     if (searchedArticle === "") {
@@ -164,13 +179,18 @@ const ContentList = () => {
             })}
         </ListBox>
 
-        <Pagination
-          itemsList={contentsList}
-          setContent={setContentsList}
-          pageName="contentList"
-          lastPage={lastPage}
-          currentPage={currentPage}
-        />
+        {currentPage && (
+          <Pagination
+            itemsList={searchedList || contentsList}
+            setContent={
+              searchedArticle !== "" ? setSearchedList : setContentsList
+            }
+            pageName="contentList"
+            lastPage={lastPage}
+            currentPage={currentPage}
+            setAskedPage={setAskedPage}
+          />
+        )}
       </ContentSectionBox>
     </>
   );

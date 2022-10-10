@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Footer from "../components/Navigation/Footer";
@@ -30,11 +30,18 @@ import { harmonizeLang } from "../helper/fieldsHelper";
 
 const PagesHub = () => {
   const dispatch = useDispatch();
+
+  const [askedPage, setAskedPage] = useState(1);
+
   useEffect(() => {
     dispatch(fetchPages());
     dispatch(cleanContentState());
     dispatch(cleanPageState());
   }, []);
+
+  useEffect(() => {
+    dispatch(fetchPages(askedPage));
+  }, [askedPage]);
 
   const pagesHubState = useSelector(({ pagesHubReducer }) => pagesHubReducer);
 
@@ -101,6 +108,7 @@ const PagesHub = () => {
             pageName="pagesList"
             lastPage={lastPage}
             currentPage={currentPage}
+            setAskedPage={setAskedPage}
           />
         )}
         <Footer position="fixed" />

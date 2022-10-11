@@ -64,6 +64,7 @@ const ModulesDispatcher = ({
                           isPage ? module.url?.openNewTab : undefined
                         }
                         text={module.text}
+                        collapse={module.collapse || false}
                         uuid={module.uuid}
                         order={module.order}
                         isChanged={module.isChanged}

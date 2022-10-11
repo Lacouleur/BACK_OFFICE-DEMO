@@ -2,29 +2,45 @@ import styled, { css } from "styled-components";
 import colors from "../../core/colors";
 
 const mixinSwitchBoxPublishModalToTopLabel = css`
-  position: relative !important;
+  position: relative;
   justify-self: flex-end;
   align-self: center;
-  margin: 0 !important;
+  margin: 0;
 `;
 
 const mixinSwitchBoxPublishModalToBottomLabel = css`
-  position: relative !important;
+  position: relative;
   justify-self: flex-end;
   align-self: center;
-  margin: 0 !important;
+  margin: 0;
 `;
 
 const mixinSwitchCustomListDndLabel = css`
-  position: relative !important;
+  position: relative;
 `;
 
 const mixinSwitchLabelIsReaction = css`
-  left: 100% !important;
+  left: 100%;
   margin-left: 8px;
 `;
 
+const mixinSwitchLabelCollapseText = css`
+  margin-left: 8px;
+  margin-top: 8px;
+  position: relative;
+`;
+
 export const SwitchLabel = styled.label`
+  position: absolute;
+  left: 0;
+  width: 34px;
+  height: 14px;
+  border-radius: 15px;
+  background: hotpink;
+  margin-top: 11px;
+  cursor: pointer;
+  background: ${colors.lightGrey};
+
   ${(props) =>
     props.styleVariant === "isReaction" && mixinSwitchLabelIsReaction}
   ${(props) =>
@@ -35,15 +51,9 @@ export const SwitchLabel = styled.label`
     mixinSwitchBoxPublishModalToBottomLabel}
   ${(props) =>
     props.styleVariant === "CustomListDnd" && mixinSwitchCustomListDndLabel}
-  position: absolute;
-  left: 0;
-  width: 34px;
-  height: 14px;
-  border-radius: 15px;
-  background: hotpink;
-  margin-top: 11px;
-  cursor: pointer;
-  background: ${colors.lightGrey};
+     ${(props) =>
+    props.styleVariant === "collapseText" && mixinSwitchLabelCollapseText}
+
   &::after {
     content: "";
     display: block;
@@ -59,19 +69,28 @@ export const SwitchLabel = styled.label`
 
 const mixinSwitchBoxPublishModalToTopSwitch = css`
   justify-self: flex-end;
-  display: contents !important;
+  display: contents;
 `;
 
 const mixinSwitchBoxPublishModalToBottomSwitch = css`
   justify-self: flex-end;
-  display: contents !important;
+  display: contents;
 `;
 
 const mixinSwitchCustomListDndSwitch = css`
-  width: 8px !important;
+  width: 8px;
 `;
-
+const mixinSwitchCollapseText = css`
+  justify-self: flex-end;
+  display: contents;
+`;
 export const Switch = styled.input`
+  opacity: 0;
+  z-index: 1;
+  border-radius: 15px;
+  width: 42px;
+  height: 26px;
+
   ${(props) =>
     props.styleVariant === "publishModal-toTop" &&
     mixinSwitchBoxPublishModalToTopSwitch}
@@ -80,12 +99,8 @@ export const Switch = styled.input`
     mixinSwitchBoxPublishModalToBottomSwitch}
   ${(props) =>
     props.styleVariant === "CustomListDnd" && mixinSwitchCustomListDndSwitch}
-
-  opacity: 0;
-  z-index: 1;
-  border-radius: 15px;
-  width: 42px;
-  height: 26px;
+      ${(props) =>
+    props.styleVariant === "collapseText" && mixinSwitchCollapseText}
 
   &:checked + ${SwitchLabel} {
     &::after {
@@ -103,7 +118,7 @@ export const Switch = styled.input`
 
 const mixinDisabled = css`
   & > * {
-    cursor: not-allowed !important;
+    cursor: not-allowed;
     opacity: 0.5;
   }
   & ${Switch} {
@@ -118,7 +133,7 @@ const mixinSwitchBoxPublishModalToTop = css`
   width: 100%;
   width: 290px;
   align-items: center;
-  margin-left: 27px !important;
+  margin-left: 27px;
 `;
 
 const mixinSwitchBoxPublishModalToBottom = css`
@@ -127,7 +142,7 @@ const mixinSwitchBoxPublishModalToBottom = css`
   justify-content: space-between;
   width: 290px;
   align-items: center;
-  margin-left: 27px !important;
+  margin-left: 27px;
 `;
 
 const mixinToolTip = css`
@@ -143,21 +158,39 @@ const mixinToolTip = css`
 
 const mixinSwitchBoxCustomListDnd = css`
   display: flex;
-  line-height: 32px !important;
+  line-height: 32px;
   justify-content: space-between;
-  width: auto !important;
-  margin-top: 0 !important;
+  width: auto;
+  margin-top: 0;
 `;
 
 const mixinSwitchBoxIsReaction = css`
   display: flex;
-  line-height: 32px !important;
+  line-height: 32px;
   justify-content: space-between;
-  width: 110px !important;
-  margin: 8px !important;
+  width: 110px;
+  margin: 8px;
+`;
+
+const mixinSwitchBoxCollapseText = css`
+  width: 128px;
+  display: flex;
+  line-height: 32px;
+  justify-content: space-between;
+  margin-left: 0;
 `;
 
 export const SwitchBox = styled.label`
+  margin-left: 20px;
+  margin-top: 16px;
+  font-family: Arial;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: 1.25px;
+  cursor: pointer;
+
   ${(props) => props.styleVariant === "isReaction" && mixinSwitchBoxIsReaction}
   ${(props) => props.tooltip && mixinToolTip}
 
@@ -172,16 +205,8 @@ export const SwitchBox = styled.label`
     ${(props) =>
     props.styleVariant === "CustomListDnd" && mixinSwitchBoxCustomListDnd}
   position: relative;
-
-  margin-left: 20px;
-  margin-top: 16px;
-  font-family: Arial;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 24px;
-  letter-spacing: 1.25px;
-  cursor: pointer;
+  ${(props) =>
+    props.styleVariant === "collapseText" && mixinSwitchBoxCollapseText}
 `;
 
 export const SwitchSeparatorVertical = styled.div`

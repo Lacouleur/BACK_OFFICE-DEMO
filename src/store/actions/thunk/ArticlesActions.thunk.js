@@ -89,6 +89,7 @@ export function checkAndSend(type = "save", articleId = null) {
         homeImgAlt,
         navImgUuid,
         navImgAlt,
+        shortDescription,
       } = homeNavigationReducer;
 
       const slugError = !slug;
@@ -120,6 +121,7 @@ export function checkAndSend(type = "save", articleId = null) {
             ? {
                 readingTime: readingTime || undefined,
                 title: homeTitle || undefined,
+                excerpt: shortDescription || undefined,
                 type: "header",
                 image: homeImgUuid
                   ? {

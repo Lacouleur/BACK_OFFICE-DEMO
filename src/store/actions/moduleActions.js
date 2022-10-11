@@ -45,7 +45,7 @@ import {
   SET_COLLECTION_SEARCH_INPUT,
   SET_FEEDBACK_QUESTION,
   SET_OPINION_IS_REACTION,
-  SET_OPINION_DESCRIPTION,
+  SET_COLLAPSE_TEXTMODULE,
 } from "../constants";
 
 export const setPageModuleHeaderNewTab = (payload) => ({
@@ -75,6 +75,11 @@ export const setNewModule = (payload) => ({
 
 export const setValueTextModule = (payload) => ({
   type: SET_VALUE_TEXTMODULE,
+  payload,
+});
+
+export const setCollapseTextModule = (payload) => ({
+  type: SET_COLLAPSE_TEXTMODULE,
   payload,
 });
 

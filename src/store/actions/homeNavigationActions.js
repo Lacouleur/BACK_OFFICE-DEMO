@@ -5,6 +5,7 @@ import {
   SET_HOME_IMAGE_ALT,
   SET_NAV_IMAGE_UUID,
   SET_NAV_IMAGE_ALT,
+  SET_HOME_SHORT_DESCRIPTION,
 } from "../constants";
 
 export const setReadingTime = (payload) => ({
@@ -34,5 +35,10 @@ export const setNavImageUuid = (payload) => ({
 
 export const setNavImageAlt = (payload) => ({
   type: SET_NAV_IMAGE_ALT,
+  payload,
+});
+
+export const setHomeShortDescription = (payload) => ({
+  type: SET_HOME_SHORT_DESCRIPTION,
   payload,
 });

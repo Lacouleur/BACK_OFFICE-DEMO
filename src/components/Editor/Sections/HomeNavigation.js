@@ -48,6 +48,7 @@ const HomeNavigation = () => {
     homeNavIsChanged,
     homeImgUrls,
     navImgUrls,
+    shortDescription,
   } = homeNavigationState;
 
   const { manifestoId, isManifesto } = manifestoState;
@@ -144,6 +145,15 @@ const HomeNavigation = () => {
               edit={homeTitle || undefined}
             />
 
+            {/*             <Field
+              placeholder="Short Description"
+              maxlength="80"
+              infos="Maximum 120 characters"
+              name="shortDescription"
+              section="homeNavigation"
+              edit={shortDescription || undefined}
+            />
+ */}
             <>
               <Field
                 placeholder="Reading Time"

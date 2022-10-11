@@ -5,7 +5,6 @@ import {
   deleteOpinionAnswer,
   setCtaDescription,
   setOpinionExplain,
-  setOpinionTextAnswer,
   setValueTextModule,
 } from "../store/actions/moduleActions";
 import colors from "../styles/core/colors";
@@ -19,6 +18,7 @@ export function setTextHTMLContent(
   dispatch
 ) {
   if (!editorState) {
+    console.warn("TEXT", text);
     if (text) {
       const converted = HTMLconverter(editorState, "from", text);
       const stateWithContent = EditorState.createWithContent(converted);

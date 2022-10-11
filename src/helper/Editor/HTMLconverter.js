@@ -27,7 +27,12 @@ function HTMLconverter(editorState, mode = "to", data = "") {
     entityToHTML: (entity) => {
       if (entity.type === "LINK") {
         // This object structure is important to avoid this text éditor to replace ' by html entities in links. If you modify this, please check links in editor before. ex: I'm a link.
-
+        console.warn("LINK", {
+          start: `<a href="${entity.data.url.replace(/\/$/, "")}" target="${
+            entity.data.targetOption
+          }" rel="noreferrer">`,
+          end: "</a>",
+        });
         return {
           start: `<a href="${entity.data.url.replace(/\/$/, "")}" target="${
             entity.data.targetOption

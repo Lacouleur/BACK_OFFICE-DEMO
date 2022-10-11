@@ -90,7 +90,7 @@ const PageMainInformation = () => {
             <FieldAndSwitchContainer>
               <Field
                 placeholder="Title (internal)"
-                maxlength="40"
+                maxlength="80"
                 infos={
                   titleError ? "Content need a title." : "Maximum 40 characters"
                 }

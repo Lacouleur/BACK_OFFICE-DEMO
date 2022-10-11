@@ -1,6 +1,7 @@
 import {
   addHomeTitle,
   setHomeImageAlt,
+  setHomeShortDescription,
   setNavImageAlt,
   setReadingTime,
 } from "../store/actions/homeNavigationActions";
@@ -30,7 +31,6 @@ import {
   setCollectionLimit,
   setCtaType,
   setFeedbackQuestion,
-  setOpinionDescription,
 } from "../store/actions/moduleActions";
 import {
   setDisplayedName,
@@ -428,6 +428,10 @@ export function dispatchFields(
 
     case name === "title" && section === "homeNavigation":
       dispatch(addHomeTitle(value));
+      break;
+
+    case name === "shortDescription" && section === "homeNavigation":
+      dispatch(setHomeShortDescription(value));
       break;
 
     case name === "readTime" && section === "homeNavigation":

@@ -8,11 +8,13 @@ import {
   SET_NAV_IMAGE_ALT,
   SET_POSTED,
   CONTENT_LOADED,
+  SET_HOME_SHORT_DESCRIPTION,
 } from "../constants";
 
 const initialState = {
   // string
   homeTitle: "",
+  shortDescription: "",
   navImgUuid: "",
   navImgAlt: "",
 
@@ -36,6 +38,7 @@ const homeNavigationReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         homeTitle: payload?.header?.title || "",
+        shortDescription: payload?.header?.excerpt || "",
         readingTime: payload?.header?.readingTime || undefined,
         homeImgUuid: payload?.header?.image?.uuid || "",
         homeImgAlt: payload?.header?.image?.alt || "",
@@ -65,6 +68,14 @@ const homeNavigationReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         homeTitle: action.payload,
+        homeNavIsChanged: true,
+      };
+    }
+
+    case SET_HOME_SHORT_DESCRIPTION: {
+      return {
+        ...oldState,
+        shortDescription: action.payload,
         homeNavIsChanged: true,
       };
     }

@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import ReactPaginate from "react-paginate";
 import {
@@ -9,8 +8,6 @@ import {
   PageListNoArrow,
 } from "../../styles/styledComponents/contentList/Pagination.sc";
 import arrow from "../../styles/assets/icons/arrow-left.svg";
-import { fetchContentsList } from "../../store/actions/thunk/ArticlesActions.thunk";
-import { fetchPages } from "../../store/actions/thunk/PagesHubActions.thunk";
 
 const Pagination = ({
   itemsList,
@@ -18,18 +15,18 @@ const Pagination = ({
   pageName,
   lastPage,
   currentPage,
+  setAskedPage,
 }) => {
-  const dispatch = useDispatch();
   useEffect(() => {
     setContent(itemsList);
   }, [itemsList]);
 
   const handlePageClick = (event) => {
     if (pageName === "contentList") {
-      dispatch(fetchContentsList(event.selected + 1));
+      setAskedPage(event.selected + 1);
     }
     if (pageName === "pagesList") {
-      dispatch(fetchPages(event.selected + 1));
+      setAskedPage(event.selected + 1);
     }
   };
 
@@ -75,6 +72,7 @@ Pagination.propTypes = {
   itemsList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   lastPage: PropTypes.number,
   currentPage: PropTypes.number,
+  setAskedPage: PropTypes.func.isRequired,
 };
 
 export default Pagination;

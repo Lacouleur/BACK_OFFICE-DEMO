@@ -10,6 +10,26 @@ export const sendAuth = (data) => {
   });
 };
 
+export function getContentListResearch(
+  searched,
+  lang,
+  langOfResearch,
+  page = 1,
+  isCaseSensitive = false,
+  limit = 15
+) {
+  const langString = lang ? `&lang=${lang}` : "";
+  const searchLanguage = langOfResearch
+    ? `&searchLanguage=${langOfResearch}`
+    : "";
+  const string = `/contents?search=${searched}${langString}${searchLanguage}&searchCaseSensitive=${isCaseSensitive}&page=${page}&limit=${limit}`;
+  return axiosConfig.get(`${string}`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}
+
 export function getContentList(page = 1, contentType, lang, limit = 15, ids) {
   let string = "";
   const langString = lang ? `&lang=${lang}` : "";

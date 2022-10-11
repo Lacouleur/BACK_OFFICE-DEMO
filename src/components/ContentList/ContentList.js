@@ -9,13 +9,13 @@ import {
   ContentSectionBox,
   ListBox,
   ManifestoLangSelector,
-  FilteringBox,
-  LangFilter,
-  OptionFilter,
 } from "../../styles/styledComponents/contentList/ContentList.sc";
 import Pagination from "./Pagination";
 import keyGenerator from "../../helper/keyGenerator";
-import { fetchContentsList } from "../../store/actions/thunk/ArticlesActions.thunk";
+import {
+  fetchContentsList,
+  fetchResearchedContentsList,
+} from "../../store/actions/thunk/ArticlesActions.thunk";
 import {
   cleanContentState,
   cleanPageState,
@@ -24,9 +24,13 @@ import langList from "../../helper/langList";
 import DuplicateModal from "../Modals/DuplicateModal";
 import ArchiveModal from "../Modals/ArchiveModal";
 import ErrorModal from "../Modals/ErrorModal";
-import { setContentsList } from "../../store/actions/contentListActions";
+import {
+  setContentsList,
+  setSearchedList,
+} from "../../store/actions/contentListActions";
 import { harmonizeLang } from "../../helper/fieldsHelper";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
+import ListFilters from "./ListFilters";
 
 // Content list is used to display a list of Content.js by passing props from the fetched content list
 
@@ -46,11 +50,20 @@ const ContentList = () => {
 
   const { locale } = userState;
 
-  const { lastPage, currentPage, contentsList } = contentsListState;
+  const {
+    lastPage,
+    currentPage,
+    contentsList,
+    searchedList,
+    searchedArticle,
+    langOfResearch,
+  } = contentsListState;
 
   const [filterLang, setFilterLang] = useState("");
 
   const [filteredList, setFilteredList] = useState("");
+
+  const [askedPage, setAskedPage] = useState(1);
 
   const {
     isOpenErrorModal,
@@ -71,17 +84,46 @@ const ContentList = () => {
     dispatch(
       fetchContentsList(currentPage || 1, undefined, "lang", filterLang)
     );
-  }, [filterLang, currentPage]);
+  }, []);
+
+  useEffect(() => {
+    if (searchedArticle === "" && currentPage && currentPage !== askedPage) {
+      dispatch(fetchContentsList(askedPage, undefined, "lang", filterLang));
+    }
+    if (searchedArticle !== "") {
+      dispatch(
+        fetchResearchedContentsList(
+          searchedArticle,
+          filterLang,
+          langOfResearch.value,
+          currentPage === askedPage ? currentPage : askedPage
+        )
+      );
+    }
+  }, [filterLang, currentPage, askedPage]);
+
+  useEffect(() => {
+    if (searchedArticle === "") {
+      dispatch(setSearchedList(null));
+    }
+  }, [searchedArticle]);
 
   useEffect(() => {
     const filtering = [];
-    contentsList.map((content) => {
-      if (harmonizeLang(content.language) === filterLang || filterLang === "") {
-        filtering.push(content);
-      }
-      setFilteredList(filtering);
-    });
-  }, [filterLang, contentsList]);
+    if (!searchedList) {
+      contentsList.map((content) => {
+        if (
+          harmonizeLang(content.language) === filterLang ||
+          filterLang === ""
+        ) {
+          filtering.push(content);
+        }
+        setFilteredList(filtering);
+      });
+    } else {
+      setFilteredList(searchedList);
+    }
+  }, [filterLang, searchedList, contentsList]);
 
   return (
     <>
@@ -109,30 +151,7 @@ const ContentList = () => {
           </Link>
         </TitleBox>
 
-        <FilteringBox>
-          <LangFilter>
-            <OptionFilter
-              first
-              selected={filterLang === "fr"}
-              onClick={() => setFilterLang("fr")}
-            >
-              FR
-            </OptionFilter>
-            <OptionFilter
-              selected={filterLang === "de"}
-              onClick={() => setFilterLang("de")}
-            >
-              DE
-            </OptionFilter>
-            <OptionFilter
-              last
-              selected={filterLang === ""}
-              onClick={() => setFilterLang("")}
-            >
-              ALL
-            </OptionFilter>
-          </LangFilter>
-        </FilteringBox>
+        <ListFilters filterLang={filterLang} setFilterLang={setFilterLang} />
 
         <ListBox>
           {filteredList &&
@@ -160,13 +179,18 @@ const ContentList = () => {
             })}
         </ListBox>
 
-        <Pagination
-          itemsList={contentsList}
-          setContent={setContentsList}
-          pageName="contentList"
-          lastPage={lastPage}
-          currentPage={currentPage}
-        />
+        {currentPage && (
+          <Pagination
+            itemsList={searchedList || contentsList}
+            setContent={
+              searchedArticle !== "" ? setSearchedList : setContentsList
+            }
+            pageName="contentList"
+            lastPage={lastPage}
+            currentPage={currentPage}
+            setAskedPage={setAskedPage}
+          />
+        )}
       </ContentSectionBox>
     </>
   );

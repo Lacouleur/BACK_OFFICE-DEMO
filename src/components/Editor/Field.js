@@ -221,8 +221,10 @@ const Field = ({
         <FieldBox>
           <Selector
             isDisabled={
-              (name === "lang" || name === "category") &&
-              !(status === "DRAFT" || !status)
+              /* Uncomment line below to lock category too */
+              /* (name === "lang" || name === "category") &&
+              !(status === "DRAFT" || !status) */
+              name === "lang" && !(status === "DRAFT" || !status)
             }
             value={valueSelector(
               name,

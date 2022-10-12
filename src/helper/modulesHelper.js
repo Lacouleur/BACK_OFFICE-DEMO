@@ -18,7 +18,6 @@ export function setTextHTMLContent(
   dispatch
 ) {
   if (!editorState) {
-    console.warn("TEXT", text);
     if (text) {
       const converted = HTMLconverter(editorState, "from", text);
       const stateWithContent = EditorState.createWithContent(converted);

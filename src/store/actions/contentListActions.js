@@ -4,6 +4,8 @@ import {
   SET_RESEARCH_ARTICLE,
   SET_SEARCHED_LIST,
   SET_LANG_OF_RESEARCH,
+  SET_FILTER_LANG,
+  SET_ASKED_PAGE,
 } from "../constants";
 
 export const setContentsList = (payload) => ({
@@ -28,5 +30,15 @@ export const setSearchedList = (payload) => ({
 
 export const setLangOfResearch = (payload) => ({
   type: SET_LANG_OF_RESEARCH,
+  payload,
+});
+
+export const setFilterLang = (payload) => ({
+  type: SET_FILTER_LANG,
+  payload,
+});
+
+export const setAskedPage = (payload) => ({
+  type: SET_ASKED_PAGE,
   payload,
 });

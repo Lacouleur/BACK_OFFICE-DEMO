@@ -19,9 +19,10 @@ export function getContentListResearch(
   limit = 15
 ) {
   const langString = lang ? `&lang=${lang}` : "";
-  const searchLanguage = langOfResearch
-    ? `&searchLanguage=${langOfResearch}`
-    : "";
+  const searchLanguage =
+    langOfResearch && langOfResearch !== "en"
+      ? `&searchLanguage=${langOfResearch}`
+      : "";
   const string = `/contents?search=${searched}${langString}${searchLanguage}&searchCaseSensitive=${isCaseSensitive}&page=${page}&limit=${limit}`;
   return axiosConfig.get(`${string}`, {
     headers: {

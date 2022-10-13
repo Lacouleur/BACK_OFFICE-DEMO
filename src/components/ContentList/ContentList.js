@@ -26,11 +26,13 @@ import ArchiveModal from "../Modals/ArchiveModal";
 import ErrorModal from "../Modals/ErrorModal";
 import {
   setContentsList,
+  setFilterLang,
   setSearchedList,
 } from "../../store/actions/contentListActions";
 import { harmonizeLang } from "../../helper/fieldsHelper";
 import Button from "../../styles/styledComponents/global/Buttons/Buttons.sc";
 import ListFilters from "./ListFilters";
+import { initList } from "../../helper/contentListHelper";
 
 // Content list is used to display a list of Content.js by passing props from the fetched content list
 
@@ -57,13 +59,11 @@ const ContentList = () => {
     searchedList,
     searchedArticle,
     langOfResearch,
+    filterLang,
+    askedPage,
   } = contentsListState;
 
-  const [filterLang, setFilterLang] = useState("");
-
   const [filteredList, setFilteredList] = useState("");
-
-  const [askedPage, setAskedPage] = useState(1);
 
   const {
     isOpenErrorModal,
@@ -77,20 +77,25 @@ const ContentList = () => {
   }, []);
 
   useEffect(() => {
-    setFilterLang(locale || "");
+    dispatch(setFilterLang(filterLang !== "" ? filterLang : locale || ""));
   }, [locale]);
 
   useEffect(() => {
-    dispatch(
-      fetchContentsList(currentPage || 1, undefined, "lang", filterLang)
+    initList(
+      dispatch,
+      searchedArticle,
+      askedPage,
+      filterLang,
+      langOfResearch,
+      currentPage
     );
   }, []);
 
   useEffect(() => {
-    if (searchedArticle === "" && currentPage && currentPage !== askedPage) {
+    if (searchedArticle === "" && currentPage) {
       dispatch(fetchContentsList(askedPage, undefined, "lang", filterLang));
     }
-    if (searchedArticle !== "") {
+    if (searchedArticle !== "" && currentPage) {
       dispatch(
         fetchResearchedContentsList(
           searchedArticle,
@@ -100,11 +105,12 @@ const ContentList = () => {
         )
       );
     }
-  }, [filterLang, currentPage, askedPage]);
+  }, [filterLang, currentPage, askedPage, langOfResearch]);
 
   useEffect(() => {
     if (searchedArticle === "") {
       dispatch(setSearchedList(null));
+      fetchContentsList(currentPage || 1, undefined, "lang", filterLang);
     }
   }, [searchedArticle]);
 
@@ -151,7 +157,11 @@ const ContentList = () => {
           </Link>
         </TitleBox>
 
-        <ListFilters filterLang={filterLang} setFilterLang={setFilterLang} />
+        <ListFilters
+          filterLang={filterLang}
+          langOfResearch={langOfResearch}
+          searchedArticle={searchedArticle}
+        />
 
         <ListBox>
           {filteredList &&
@@ -179,18 +189,16 @@ const ContentList = () => {
             })}
         </ListBox>
 
-        {currentPage && (
-          <Pagination
-            itemsList={searchedList || contentsList}
-            setContent={
-              searchedArticle !== "" ? setSearchedList : setContentsList
-            }
-            pageName="contentList"
-            lastPage={lastPage}
-            currentPage={currentPage}
-            setAskedPage={setAskedPage}
-          />
-        )}
+        <Pagination
+          itemsList={searchedList || contentsList}
+          setContent={
+            searchedArticle !== "" ? setSearchedList : setContentsList
+          }
+          pageName="contentList"
+          lastPage={lastPage}
+          currentPage={currentPage}
+          askedPage={askedPage}
+        />
       </ContentSectionBox>
     </>
   );

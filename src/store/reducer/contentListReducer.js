@@ -4,6 +4,8 @@ import {
   SET_PAGINATION,
   SET_RESEARCH_ARTICLE,
   SET_SEARCHED_LIST,
+  SET_FILTER_LANG,
+  SET_ASKED_PAGE,
 } from "../constants";
 
 import {} from "../actions/commonsActions";
@@ -11,13 +13,19 @@ import {} from "../actions/commonsActions";
 const initialState = {
   contentsList: [],
   fetchedCustomList: [],
+
+  langOfResearch: { value: "en", label: "En 🇬🇧" },
+
   searchedList: null,
-  currentPage: null,
   nextPage: null,
   previousPage: null,
   lastPage: null,
+
   searchedArticle: "",
-  langOfResearch: [{ value: "", label: "En 🇬🇧" }],
+  filterLang: "",
+
+  askedPage: 1,
+  currentPage: 1,
 };
 
 const contentListReducer = (state = initialState, action = {}) => {
@@ -48,7 +56,21 @@ const contentListReducer = (state = initialState, action = {}) => {
     case SET_LANG_OF_RESEARCH: {
       return {
         ...oldState,
-        LangOfResearch: action.payload,
+        langOfResearch: action.payload,
+      };
+    }
+
+    case SET_FILTER_LANG: {
+      return {
+        ...oldState,
+        filterLang: action.payload,
+      };
+    }
+
+    case SET_ASKED_PAGE: {
+      return {
+        ...oldState,
+        askedPage: action.payload,
       };
     }
 
@@ -57,9 +79,9 @@ const contentListReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         currentPage: data.currentPage,
-        nextPage: data.nextPage || "",
+        nextPage: data.nextPage || data.currentPage,
         previousPage: data.previousPage || "",
-        lastPage: data.lastPage,
+        lastPage: data.lastPage || data.currentPage,
       };
     }
 

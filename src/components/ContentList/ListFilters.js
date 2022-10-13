@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   FilteringBox,
   LangFilter,
@@ -14,47 +14,57 @@ import {
   CloseButton,
 } from "../../styles/styledComponents/contentList/ListFilters.sc";
 import {
+  setAskedPage,
+  setFilterLang,
   setLangOfResearch,
   setResearchArticle,
 } from "../../store/actions/contentListActions";
 import searchIcon from "../../styles/assets/icons/search.svg";
 import crossPurpleIcon from "../../styles/assets/icons/cross-purple.svg";
-import { fetchResearchedContentsList } from "../../store/actions/thunk/ArticlesActions.thunk";
+import {
+  fetchContentsList,
+  fetchResearchedContentsList,
+} from "../../store/actions/thunk/ArticlesActions.thunk";
 
-const ListFilters = ({ filterLang, setFilterLang }) => {
+const ListFilters = ({ filterLang, langOfResearch, searchedArticle }) => {
   const dispatch = useDispatch();
   const searchField = React.useRef(null);
-  const contentsListState = useSelector(
-    ({ contentListReducer }) => contentListReducer
-  );
 
   const LangOfResearchOptions = [
     { value: "fr", label: "Fr 🇫🇷" },
     { value: "de", label: "De 🇩🇪" },
-    { value: "", label: "En 🇬🇧" },
+    { value: "en", label: "En 🇬🇧" },
   ];
 
-  const { searchedArticle, langOfResearch } = contentsListState;
   return (
     <FilteringBox>
       <LangFilter>
         <OptionFilter
           first
           selected={filterLang === "fr"}
-          onClick={() => setFilterLang("fr")}
+          onClick={() => {
+            dispatch(setAskedPage(1));
+            dispatch(setFilterLang("fr"));
+          }}
         >
           FR
         </OptionFilter>
         <OptionFilter
           selected={filterLang === "de"}
-          onClick={() => setFilterLang("de")}
+          onClick={() => {
+            dispatch(setAskedPage(1));
+            dispatch(setFilterLang("de"));
+          }}
         >
           DE
         </OptionFilter>
         <OptionFilter
           last
           selected={filterLang === ""}
-          onClick={() => setFilterLang("")}
+          onClick={() => {
+            dispatch(setAskedPage(1));
+            dispatch(setFilterLang(""));
+          }}
         >
           ALL
         </OptionFilter>
@@ -64,13 +74,15 @@ const ListFilters = ({ filterLang, setFilterLang }) => {
         <ResearchFilterField
           ref={searchField}
           onChange={(e) => dispatch(setResearchArticle(e.target.value))}
+          defaultValue={searchedArticle || ""}
           onKeyPress={(e) => {
             if (e.key === "Enter" && e.target.value !== "") {
               dispatch(
                 fetchResearchedContentsList(
                   e.target.value,
                   filterLang,
-                  langOfResearch.value
+                  langOfResearch.value,
+                  1
                 )
               );
             }
@@ -79,14 +91,16 @@ const ListFilters = ({ filterLang, setFilterLang }) => {
         />
 
         <ResearchButton
-          onClick={() =>
+          onClick={() => {
             dispatch(
               fetchResearchedContentsList(
                 searchedArticle,
                 filterLang,
-                langOfResearch.value
+                langOfResearch.value,
+                1
               )
-            )}
+            );
+          }}
         >
           <ResearchIcon src={searchIcon} />
         </ResearchButton>
@@ -97,6 +111,7 @@ const ListFilters = ({ filterLang, setFilterLang }) => {
               onClick={() => {
                 searchField.current.value = "";
                 dispatch(setResearchArticle(""));
+                dispatch(fetchContentsList(1, undefined, "lang", filterLang));
               }}
               src={crossPurpleIcon}
             />
@@ -104,13 +119,15 @@ const ListFilters = ({ filterLang, setFilterLang }) => {
         </CloseButton>
         <LangOfResearchButton
           classNamePrefix="selectFlag"
-          closeMenuOnSelect={false}
+          closeMenuOnSelect
           isClearable
           isSearchable={false}
-          value={langOfResearch}
+          defaultValue={langOfResearch}
           getOptionValue={(option) => `${option.label}`}
           options={LangOfResearchOptions}
-          onChange={(event) => dispatch(setLangOfResearch(event))}
+          onChange={(event) => {
+            dispatch(setLangOfResearch(event));
+          }}
         />
       </ResearchFilterBox>
     </FilteringBox>
@@ -119,7 +136,11 @@ const ListFilters = ({ filterLang, setFilterLang }) => {
 
 ListFilters.propTypes = {
   filterLang: PropTypes.string.isRequired,
-  setFilterLang: PropTypes.func.isRequired,
+  langOfResearch: PropTypes.shape({
+    value: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+  }).isRequired,
+  searchedArticle: PropTypes.string.isRequired,
 };
 
 export default ListFilters;

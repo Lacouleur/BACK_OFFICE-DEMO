@@ -59,7 +59,6 @@ export const CardStatusBoxMixin = css`
   height: 54px;
   width: 170px;
   background-color: ${colors.darkGrey};
-  border-radius: 5px;
   padding: 10px;
   &:hover {
     & div:nth-of-type(1) {
@@ -112,6 +111,7 @@ export const PageCardContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
+  overflow: hidden;
   width: 224px;
   height: 224px;
 

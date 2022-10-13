@@ -145,7 +145,7 @@ const HomeNavigation = () => {
               edit={homeTitle || undefined}
             />
 
-            {/*             <Field
+            <Field
               placeholder="Short Description"
               maxlength="80"
               infos="Maximum 120 characters"
@@ -153,7 +153,7 @@ const HomeNavigation = () => {
               section="homeNavigation"
               edit={shortDescription || undefined}
             />
- */}
+
             <>
               <Field
                 placeholder="Reading Time"

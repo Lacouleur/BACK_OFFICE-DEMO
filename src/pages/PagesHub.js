@@ -31,7 +31,9 @@ import { harmonizeLang } from "../helper/fieldsHelper";
 const PagesHub = () => {
   const dispatch = useDispatch();
 
-  const [askedPage, setAskedPage] = useState(1);
+  const pagesHubState = useSelector(({ pagesHubReducer }) => pagesHubReducer);
+
+  const { pagesList, lastPage, currentPage, askedPage } = pagesHubState;
 
   useEffect(() => {
     dispatch(fetchPages());
@@ -43,13 +45,9 @@ const PagesHub = () => {
     dispatch(fetchPages(askedPage));
   }, [askedPage]);
 
-  const pagesHubState = useSelector(({ pagesHubReducer }) => pagesHubReducer);
-
   const actionBarState = useSelector(
     ({ actionBarReducer }) => actionBarReducer
   );
-
-  const { pagesList, lastPage, currentPage } = pagesHubState;
 
   const {
     isOpenErrorModal,
@@ -108,7 +106,7 @@ const PagesHub = () => {
             pageName="pagesList"
             lastPage={lastPage}
             currentPage={currentPage}
-            setAskedPage={setAskedPage}
+            askedPage={askedPage}
           />
         )}
         <Footer position="fixed" />

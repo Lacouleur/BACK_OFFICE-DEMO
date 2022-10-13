@@ -2,12 +2,15 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import ReactPaginate from "react-paginate";
+import { useDispatch } from "react-redux";
 import {
   PageListArrow,
   PaginationBox,
   PageListNoArrow,
 } from "../../styles/styledComponents/contentList/Pagination.sc";
 import arrow from "../../styles/assets/icons/arrow-left.svg";
+import { setAskedPage } from "../../store/actions/contentListActions";
+import { setAskedPagePagination } from "../../store/actions/pagesHubActions";
 
 const Pagination = ({
   itemsList,
@@ -15,18 +18,19 @@ const Pagination = ({
   pageName,
   lastPage,
   currentPage,
-  setAskedPage,
+  askedPage,
 }) => {
+  const dispatch = useDispatch();
   useEffect(() => {
     setContent(itemsList);
   }, [itemsList]);
 
   const handlePageClick = (event) => {
     if (pageName === "contentList") {
-      setAskedPage(event.selected + 1);
+      dispatch(setAskedPage(event.selected + 1));
     }
     if (pageName === "pagesList") {
-      setAskedPage(event.selected + 1);
+      dispatch(setAskedPagePagination(event.selected + 1));
     }
   };
 
@@ -56,6 +60,7 @@ const Pagination = ({
         pageLinkClassName="paginate-page__link"
         breakClassName="paginate-break"
         renderOnZeroPageCount={null}
+        forcePage={askedPage - 1 || undefined}
       />
     </PaginationBox>
   );
@@ -72,7 +77,7 @@ Pagination.propTypes = {
   itemsList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   lastPage: PropTypes.number,
   currentPage: PropTypes.number,
-  setAskedPage: PropTypes.func.isRequired,
+  askedPage: PropTypes.number.isRequired,
 };
 
 export default Pagination;

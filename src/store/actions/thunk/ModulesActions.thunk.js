@@ -21,7 +21,12 @@ import {
   consoleInfo,
   consoleTitle,
 } from "../../../helper/consoleStyles";
-import { setHomeImageUuid, setNavImageUuid } from "../homeNavigationActions";
+import {
+  setFeaturedImageUuid,
+  setHomeImageUuid,
+  setNavImageUuid,
+  setSocialNetworkImgUuid,
+} from "../homeNavigationActions";
 import { uploadError } from "../../../helper/errorMessages";
 import ErrorCaseClient from "../../../helper/ErrorCaseClient";
 import {
@@ -550,11 +555,18 @@ export function saveImage(setFileTitle, name, image, moduleId) {
           if (name === "navImage") {
             dispatch(setNavImageUuid(response.data));
           }
-          if (name === "navImage") {
-            dispatch(setNavImageUuid(response.data));
-          }
           if (name === "ctaImage") {
             dispatch(setCtaImageUuid({ id: moduleId, value: response.data }));
+          }
+          if (name === "transparentImage") {
+            dispatch(
+              setFeaturedImageUuid({ id: moduleId, value: response.data })
+            );
+          }
+          if (name === "SocialNetworkImg") {
+            dispatch(
+              setSocialNetworkImgUuid({ id: moduleId, value: response.data })
+            );
           }
         }
       } catch (error) {

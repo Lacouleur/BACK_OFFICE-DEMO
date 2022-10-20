@@ -4,6 +4,7 @@ import {
   setHomeShortDescription,
   setNavImageAlt,
   setReadingTime,
+  setFeatColor,
 } from "../store/actions/homeNavigationActions";
 import {
   addCategory,
@@ -88,6 +89,21 @@ export const collectionFormatList = [
   }, */
 ];
 
+export const backgroundColorsList = [
+  {
+    label: "Blue",
+    value: "blue",
+  },
+  {
+    label: "Pink",
+    value: "pink",
+  },
+  {
+    label: "Green",
+    value: "green",
+  },
+];
+
 // match selection with current list for simple selector fields.
 export function onEdit(
   edit,
@@ -103,7 +119,9 @@ export function onEdit(
   setSelectedCollectionFormat,
   selectedCollectionFormat,
   setSelectedCtaType,
-  selectedCtaType
+  selectedCtaType,
+  selectedFeatColorStyle,
+  setSelectedFeatColorStyle
 ) {
   if (edit) {
     setFileTitle(edit);
@@ -161,6 +179,16 @@ export function onEdit(
     colorStyleList.map((option) => {
       if (edit === option.value) {
         setSelectedColorStyle(option);
+        return null;
+      }
+      return null;
+    });
+  }
+
+  if (!selectedFeatColorStyle) {
+    backgroundColorsList.map((option) => {
+      if (edit === option.value) {
+        setSelectedFeatColorStyle(option);
         return null;
       }
       return null;
@@ -249,7 +277,8 @@ export function valueSelector(
   selectedColorStyle,
   selectedCollectionType,
   selectedCollectionFormat,
-  selectedCtaType
+  selectedCtaType,
+  selectedFeatColorStyle
 ) {
   switch (name) {
     case "category":
@@ -272,6 +301,9 @@ export function valueSelector(
 
     case "ctaType":
       return selectedCtaType;
+
+    case "backgroundColor":
+      return selectedFeatColorStyle;
 
     default:
       return null;
@@ -326,6 +358,8 @@ export function optionSelector(name, list) {
     case "ctaType":
       return primarySecondaryTypeList;
 
+    case "backgroundColor":
+      return backgroundColorsList;
     default:
       return null;
   }
@@ -343,6 +377,7 @@ export function dispatchSelected(
   setSelectedCollectionType,
   setSelectedCollectionFormat,
   setSelectedCtaType,
+  setSelectedFeatColorStyle,
   moduleId
 ) {
   const { value } = event;
@@ -381,6 +416,11 @@ export function dispatchSelected(
       case "ctaType":
         setSelectedCtaType(event);
         dispatch(setCtaType({ id: moduleId, value }));
+        break;
+
+      case "backgroundColor":
+        setSelectedFeatColorStyle(event);
+        dispatch(setFeatColor(value));
         break;
 
       default:

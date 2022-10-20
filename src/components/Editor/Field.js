@@ -112,6 +112,7 @@ const Field = ({
   const [selectedTagsCollection, setSelectedTagsCollection] = useState([]);
   const [selectedCollectionType, setSelectedCollectionType] = useState();
   const [selectedCollectionFormat, setSelectedCollectionFormat] = useState();
+  const [selectedFeatColorStyle, setSelectedFeatColorStyle] = useState();
   const [isOpenTagWarn, setIsOpenTagWarn] = useState();
   const animatedComponents = makeAnimated();
   const [fuse, setFuse] = useState(null);
@@ -180,7 +181,9 @@ const Field = ({
       setSelectedCollectionFormat,
       selectedCollectionFormat,
       setSelectedCtaType,
-      selectedCtaType
+      selectedCtaType,
+      selectedFeatColorStyle,
+      setSelectedFeatColorStyle
     );
 
     initMultiSelectors(
@@ -234,7 +237,8 @@ const Field = ({
               selectedColorStyle,
               selectedCollectionType,
               selectedCollectionFormat,
-              selectedCtaType
+              selectedCtaType,
+              selectedFeatColorStyle
             )}
             options={optionSelector(name, categoriesList)}
             classNamePrefix="select"
@@ -252,6 +256,7 @@ const Field = ({
                 setSelectedCollectionType,
                 setSelectedCollectionFormat,
                 setSelectedCtaType,
+                setSelectedFeatColorStyle,
                 moduleId
               );
             }}

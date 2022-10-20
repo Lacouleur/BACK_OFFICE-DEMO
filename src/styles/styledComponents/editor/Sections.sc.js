@@ -49,12 +49,6 @@ const SectionBoxNoWrap = css`
 `;
 
 export const SectionBox = styled.div`
-  ${(props) => {
-    if (props.isOpen) return SectionBoxOpenMixin;
-    if (props.isOpen === false) return SectionBoxClosedMixin;
-    if (props.noWrap) return SectionBoxNoWrap;
-    return null;
-  }};
   position: relative;
   width: 100%;
   padding: 30px;
@@ -63,6 +57,13 @@ export const SectionBox = styled.div`
   margin-bottom: 20px;
   flex-direction: column;
   display: flex;
+
+  ${(props) => {
+    if (props.isOpen) return SectionBoxOpenMixin;
+    if (props.isOpen === false) return SectionBoxClosedMixin;
+    if (props.noWrap) return SectionBoxNoWrap;
+    return null;
+  }};
 `;
 
 export const Form = styled.form`
@@ -110,57 +111,17 @@ export const NewBlockButtonBox = styled.div`
   position: relative;
 `;
 
-const HomeImageMixin = css`
-  top: 315px !important;
-  transition: all 0.3s ease;
-
-  &:hover {
-    height: 150px !important;
-  }
-`;
-
 const ctaPageImageMixin = css`
-  top: calc(100% - 150px) !important;
-  right: 40% !important;
+  top: calc(100% - 150px);
+  right: 40%;
   transition: all 0.3s;
 
   &:hover {
-    height: 150px !important;
+    height: 150px;
   }
 `;
 
 const navPreviewMixin = css`
-  top: 40px !important;
-`;
-
-const avatarMixin = css`
-  bottom: 260px !important;
-  height: 80px !important;
-  transform: translate(50%, 50%);
-`;
-
-export const Thumbnail = styled.img`
-  ${(props) => (props.homeImage ? HomeImageMixin : "")};
-  ${(props) => (props.ctaPageImage ? ctaPageImageMixin : "")};
-  position: absolute;
-  max-width: 150px;
-  transform: translate(50%, -50%);
-  max-height: 244px;
-  right: 30%;
-  top: 90px;
-  height: 100px;
-  cursor: not-allowed;
-  box-shadow: 0px 0px 31px 2px ${colors.shadow};
-  transition: height 0.3s ease;
-
-  &:hover {
-    height: 150px !important;
-  }
-`;
-
-export const RoundThumbnail = styled.img`
-  ${(props) => (props.preview ? navPreviewMixin : "")};
-  ${(props) => (props.avatar ? avatarMixin : "")};
   position: absolute;
   transform: translate(50%, 50%);
   max-width: 150px;
@@ -168,13 +129,48 @@ export const RoundThumbnail = styled.img`
   border-radius: 50%;
   right: 30%;
   cursor: not-allowed;
-  bottom: 210px;
+  top: 40px;
   height: 100px;
   box-shadow: 0px 0px 31px 2px ${colors.shadow};
+`;
+
+const avatarMixin = css`
+  position: absolute;
+  max-width: 150px;
+  max-height: 244px;
+  border-radius: 50%;
+  right: 30%;
+  cursor: not-allowed;
+  box-shadow: 0px 0px 31px 2px ${colors.shadow};
+  bottom: 260px;
+  height: 80px;
+  transform: translate(50%, 50%);
+`;
+
+export const Thumbnail = styled.img`
+  height: 100px;
+  width: 100px;
+  cursor: not-allowed;
   transition: height 0.3s ease;
-  &:hover {
-    height: 150px !important;
-  }
+  z-index: 2;
+  margin-left: 25px;
+  transform: translateY(-6%);
+
+  ${(props) => (props.ctaPageImage ? ctaPageImageMixin : "")};
+`;
+
+export const RoundThumbnail = styled.img`
+  height: 100px;
+  width: 100px;
+  cursor: not-allowed;
+  transition: height 0.3s ease;
+  z-index: 2;
+  margin-left: 25px;
+  transform: translateY(-6%);
+  border-radius: 50%;
+
+  ${(props) => (props.preview ? navPreviewMixin : "")};
+  ${(props) => (props.avatar ? avatarMixin : "")};
 `;
 
 export const HideContent = styled.div`

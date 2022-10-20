@@ -5,7 +5,13 @@ export function getTitleAndSplit(
   setIsHomeImage,
   navImgUuid,
   setNavImgTitle,
-  setIsNavImage
+  setIsNavImage,
+  transperentImgUuid,
+  setFeatImgTitle,
+  setIsTransparentImage,
+  socialImgUuid,
+  setSocialImgTitle,
+  setIsSocialImage
 ) {
   if (homeImgUuid) {
     setHomeImgTitle(homeImgUuid.split("/")[1]);
@@ -15,5 +21,15 @@ export function getTitleAndSplit(
   if (navImgUuid) {
     setNavImgTitle(navImgUuid.split("/")[1]);
     setIsNavImage(true);
+  }
+
+  if (transperentImgUuid) {
+    setFeatImgTitle(navImgUuid.split("/")[1]);
+    setIsTransparentImage(true);
+  }
+
+  if (socialImgUuid) {
+    setSocialImgTitle(navImgUuid.split("/")[1]);
+    setIsSocialImage(true);
   }
 }

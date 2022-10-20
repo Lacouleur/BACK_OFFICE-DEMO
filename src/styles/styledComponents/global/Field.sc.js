@@ -540,6 +540,25 @@ export const PreviewColorStyle = styled.div`
   box-shadow: 1px 1px 10px 3px ${colors.darkGrey};
 `;
 
+function returnHex(colorName) {
+  switch (colorName) {
+    case "blue":
+      return "#add8e6";
+
+    case "green":
+      return "#90EE90";
+
+    case "pink":
+      return "#FF96B4";
+
+    default:
+      return null;
+  }
+}
+
+const backgroundColorMixin = css`
+  background-color: ${(props) => returnHex(props.variant)};
+`;
 export const VisualiseColorStyle = styled.div`
   width: 30px;
   height: 30px;
@@ -548,11 +567,20 @@ export const VisualiseColorStyle = styled.div`
   background-color: ${(props) => (props.color === "1" ? "#000065" : "#FFC700")};
   margin-left: 18px;
   box-shadow: 1px 1px 10px 3px ${colors.darkGrey};
+
+  ${(props) => props.variant && backgroundColorMixin}
 `;
 
 export const ColorFieldBox = styled.div`
   display: flex;
   align-items: center;
+`;
+
+export const ImageFieldBox = styled.div`
+  display: flex;
+  align-items: center;
+  max-height: 110px;
+  overflow: visible;
 `;
 
 export const FieldErrorBox = styled.div`

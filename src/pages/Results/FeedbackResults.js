@@ -56,7 +56,7 @@ const FeedBackResults = ({ feedbacks, question, isVisible }) => {
                 <FeedbackLineNumber>{`#${index}`}</FeedbackLineNumber>
                 <FeedBackUserText>{feedback.text}</FeedBackUserText>
                 <FeedbackCopyBox
-                  MouseEvent={() => {
+                  onClick={() => {
                     navigator.clipboard.writeText(feedback.text);
                   }}
                 >

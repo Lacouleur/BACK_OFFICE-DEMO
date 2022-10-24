@@ -4,11 +4,13 @@ import {
   SET_HOME_IMAGE_UUID,
   SET_HOME_IMAGE_ALT,
   SET_NAV_IMAGE_UUID,
-  SET_FEATURED_IMAGE_UUID,
-  SET_SOCIAL_NETWORK_IMAGE_UUID,
+  SET_TRANSPARENT_IMAGE_UUID,
+  SET_SOCIAL_IMAGE_UUID,
   SET_NAV_IMAGE_ALT,
   SET_HOME_SHORT_DESCRIPTION,
-  SET_FEAT_COLOR,
+  SET_BACKGROUND_COLOR,
+  SET_TRANSPARENT_IMAGE_ALT,
+  SET_SOCIAL_IMAGE_ALT,
 } from "../constants";
 
 export const setReadingTime = (payload) => ({
@@ -36,13 +38,13 @@ export const setNavImageUuid = (payload) => ({
   payload,
 });
 
-export const setFeaturedImageUuid = (payload) => ({
-  type: SET_FEATURED_IMAGE_UUID,
+export const setTransparentImageUuid = (payload) => ({
+  type: SET_TRANSPARENT_IMAGE_UUID,
   payload,
 });
 
-export const setSocialNetworkImgUuid = (payload) => ({
-  type: SET_SOCIAL_NETWORK_IMAGE_UUID,
+export const setSocialImgUuid = (payload) => ({
+  type: SET_SOCIAL_IMAGE_UUID,
   payload,
 });
 
@@ -56,7 +58,17 @@ export const setHomeShortDescription = (payload) => ({
   payload,
 });
 
-export const setFeatColor = (payload) => ({
-  type: SET_FEAT_COLOR,
+export const setBackgroundColor = (payload) => ({
+  type: SET_BACKGROUND_COLOR,
+  payload,
+});
+
+export const setTransparentImageAlt = (payload) => ({
+  type: SET_TRANSPARENT_IMAGE_ALT,
+  payload,
+});
+
+export const setSocialImageAlt = (payload) => ({
+  type: SET_SOCIAL_IMAGE_ALT,
   payload,
 });

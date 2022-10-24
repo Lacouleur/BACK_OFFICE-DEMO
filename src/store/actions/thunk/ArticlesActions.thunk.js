@@ -90,6 +90,11 @@ export function checkAndSend(type = "save", articleId = null) {
         navImgUuid,
         navImgAlt,
         shortDescription,
+        transparentImgUuid,
+        transparentImgAlt,
+        socialImgUuid,
+        socialImgAlt,
+        backgroundColor,
       } = homeNavigationReducer;
 
       const slugError = !slug;
@@ -110,7 +115,7 @@ export function checkAndSend(type = "save", articleId = null) {
       if (typeof colorStyle === "string") {
         theme = parseInt(colorStyle, 10);
       }
-
+      // UPDATE ARTICLE
       if (type === "update") {
         values = {
           title: mainTitle,
@@ -130,6 +135,17 @@ export function checkAndSend(type = "save", articleId = null) {
                       source: "FTV-internal",
                     }
                   : undefined,
+                transparentImage: {
+                  uuid: transparentImgUuid || undefined,
+                  alt: transparentImgAlt || undefined,
+                  source: "FTV-internal",
+                },
+                backgroundColor,
+                snImage: {
+                  uuid: socialImgUuid || undefined,
+                  alt: socialImgAlt || undefined,
+                  source: "FTV-internal",
+                },
               }
             : undefined,
           thumbnail: navImgUuid
@@ -143,6 +159,8 @@ export function checkAndSend(type = "save", articleId = null) {
           authors: authors || [],
           tags: tags || [],
         };
+
+        // SAVE ARTICLE
       } else {
         values = {
           title: mainTitle,

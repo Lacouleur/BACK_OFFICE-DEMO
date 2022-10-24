@@ -542,14 +542,20 @@ export const PreviewColorStyle = styled.div`
 
 function returnHex(colorName) {
   switch (colorName) {
-    case "blue":
-      return "#add8e6";
+    case "pink":
+      return `${colors.pink}`;
 
     case "green":
-      return "#90EE90";
+      return `${colors.primaryGreen}`;
 
-    case "pink":
-      return "#FF96B4";
+    case "yellow":
+      return `${colors.yellow}`;
+
+    case "orange":
+      return `${colors.orange}`;
+
+    case "blue":
+      return `${colors.blue}`;
 
     default:
       return null;

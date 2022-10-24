@@ -5,13 +5,15 @@ import {
   SET_HOME_IMAGE_UUID,
   SET_HOME_IMAGE_ALT,
   SET_NAV_IMAGE_UUID,
-  SET_FEATURED_IMAGE_UUID,
-  SET_SOCIAL_NETWORK_IMAGE_UUID,
+  SET_TRANSPARENT_IMAGE_UUID,
+  SET_SOCIAL_IMAGE_UUID,
   SET_NAV_IMAGE_ALT,
   SET_POSTED,
   CONTENT_LOADED,
   SET_HOME_SHORT_DESCRIPTION,
-  SET_FEAT_COLOR,
+  SET_BACKGROUND_COLOR,
+  SET_TRANSPARENT_IMAGE_ALT,
+  SET_SOCIAL_IMAGE_ALT,
 } from "../constants";
 
 const initialState = {
@@ -20,7 +22,11 @@ const initialState = {
   shortDescription: "",
   navImgUuid: "",
   navImgAlt: "",
+  transparentImgAlt: "",
+  socialImgAlt: "",
   backgroundColor: "",
+  transparentImgUuid: "",
+  socialImgUuid: "",
 
   // bool
   homeNavIsChanged: false,
@@ -31,6 +37,8 @@ const initialState = {
   homeImgAlt: undefined,
   homeImgUrls: undefined,
   navImgUrls: undefined,
+  transparentImgUrls: undefined,
+  socialImgUrls: undefined,
 };
 
 const homeNavigationReducer = (state = initialState, action = {}) => {
@@ -50,7 +58,14 @@ const homeNavigationReducer = (state = initialState, action = {}) => {
         navImgAlt: payload?.thumbnail?.alt || "",
         homeImgUrls: payload?.header?.image?.urls || undefined,
         navImgUrls: payload?.thumbnail?.urls || undefined,
-        backgroundColor: payload?.backgroundColor || undefined,
+        backgroundColor: payload?.header?.backgroundColor || undefined,
+        transparentImgUrls:
+          payload?.header?.transparentImage?.urls || undefined,
+        transparentImgUuid: payload?.header?.transparentImage?.uuid || "",
+        transparentImgAlt: payload?.header?.transparentImage?.alt || "",
+        socialImgUuid: payload?.header?.snImage?.uuid || "",
+        socialImgUrls: payload?.header?.snImage?.urls || undefined,
+        socialImgAlt: payload?.header?.snImage?.alt || "",
       };
     }
 
@@ -102,16 +117,32 @@ const homeNavigationReducer = (state = initialState, action = {}) => {
       };
     }
 
-    case SET_FEATURED_IMAGE_UUID: {
+    case SET_TRANSPARENT_IMAGE_UUID: {
       return {
         ...oldState,
-        transperentImgUuid: action.payload.uuid,
-        transperentImgUrls: action.payload.urls,
+        transparentImgUuid: action.payload.uuid,
+        transparentImgUrls: action.payload.urls,
         homeNavIsChanged: true,
       };
     }
 
-    case SET_SOCIAL_NETWORK_IMAGE_UUID: {
+    case SET_TRANSPARENT_IMAGE_ALT: {
+      return {
+        ...oldState,
+        transparentImgAlt: action.payload,
+        homeNavIsChanged: true,
+      };
+    }
+
+    case SET_SOCIAL_IMAGE_ALT: {
+      return {
+        ...oldState,
+        socialImgAlt: action.payload,
+        homeNavIsChanged: true,
+      };
+    }
+
+    case SET_SOCIAL_IMAGE_UUID: {
       return {
         ...oldState,
         socialImgUuid: action.payload.uuid,
@@ -137,7 +168,7 @@ const homeNavigationReducer = (state = initialState, action = {}) => {
       };
     }
 
-    case SET_FEAT_COLOR: {
+    case SET_BACKGROUND_COLOR: {
       return {
         ...oldState,
         backgroundColor: action.payload,

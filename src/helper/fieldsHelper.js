@@ -4,7 +4,9 @@ import {
   setHomeShortDescription,
   setNavImageAlt,
   setReadingTime,
-  setFeatColor,
+  setBackgroundColor,
+  setSocialImageAlt,
+  setTransparentImageAlt,
 } from "../store/actions/homeNavigationActions";
 import {
   addCategory,
@@ -91,16 +93,24 @@ export const collectionFormatList = [
 
 export const backgroundColorsList = [
   {
-    label: "Blue",
-    value: "blue",
-  },
-  {
     label: "Pink",
     value: "pink",
   },
   {
     label: "Green",
     value: "green",
+  },
+  {
+    label: "Yellow",
+    value: "yellow",
+  },
+  {
+    label: "Orange",
+    value: "orange",
+  },
+  {
+    label: "Blue",
+    value: "blue",
   },
 ];
 
@@ -120,8 +130,8 @@ export function onEdit(
   selectedCollectionFormat,
   setSelectedCtaType,
   selectedCtaType,
-  selectedFeatColorStyle,
-  setSelectedFeatColorStyle
+  selectedBackgroundColor,
+  setSelectedBackgroundColor
 ) {
   if (edit) {
     setFileTitle(edit);
@@ -185,10 +195,10 @@ export function onEdit(
     });
   }
 
-  if (!selectedFeatColorStyle) {
+  if (!selectedBackgroundColor) {
     backgroundColorsList.map((option) => {
       if (edit === option.value) {
-        setSelectedFeatColorStyle(option);
+        setSelectedBackgroundColor(option);
         return null;
       }
       return null;
@@ -278,7 +288,7 @@ export function valueSelector(
   selectedCollectionType,
   selectedCollectionFormat,
   selectedCtaType,
-  selectedFeatColorStyle
+  selectedBackgroundColor
 ) {
   switch (name) {
     case "category":
@@ -303,7 +313,7 @@ export function valueSelector(
       return selectedCtaType;
 
     case "backgroundColor":
-      return selectedFeatColorStyle;
+      return selectedBackgroundColor;
 
     default:
       return null;
@@ -377,7 +387,7 @@ export function dispatchSelected(
   setSelectedCollectionType,
   setSelectedCollectionFormat,
   setSelectedCtaType,
-  setSelectedFeatColorStyle,
+  setSelectedBackgroundColor,
   moduleId
 ) {
   const { value } = event;
@@ -419,8 +429,8 @@ export function dispatchSelected(
         break;
 
       case "backgroundColor":
-        setSelectedFeatColorStyle(event);
-        dispatch(setFeatColor(value));
+        setSelectedBackgroundColor(event);
+        dispatch(setBackgroundColor(value));
         break;
 
       default:
@@ -478,16 +488,20 @@ export function dispatchFields(
       dispatch(setReadingTime(value));
       break;
 
-    case name === "altImage" && section === "imageModule":
-      dispatch(setAltImage({ id: moduleId, value }));
-      break;
-
     case name === "altHomeImage" && section === "homeNavigation":
       dispatch(setHomeImageAlt(value));
       break;
 
     case name === "altNavImage" && section === "homeNavigation":
       dispatch(setNavImageAlt(value));
+      break;
+
+    case name === "altSocialImg" && section === "homeNavigation":
+      dispatch(setSocialImageAlt(value));
+      break;
+
+    case name === "altTransparentImg" && section === "homeNavigation":
+      dispatch(setTransparentImageAlt(value));
       break;
 
     case name === "question" && section === "opinion":
@@ -556,6 +570,10 @@ export function dispatchFields(
 
     case name === "explanation" && section === "opinion":
       dispatch(setOpinionExplain({ id: moduleId, value }));
+      break;
+
+    case name === "altImage" && section === "imageModule":
+      dispatch(setAltImage({ id: moduleId, value }));
       break;
 
     // PAGE EDITOR

@@ -22,10 +22,10 @@ import {
   consoleTitle,
 } from "../../../helper/consoleStyles";
 import {
-  setFeaturedImageUuid,
+  setTransparentImageUuid,
   setHomeImageUuid,
   setNavImageUuid,
-  setSocialNetworkImgUuid,
+  setSocialImgUuid,
 } from "../homeNavigationActions";
 import { uploadError } from "../../../helper/errorMessages";
 import ErrorCaseClient from "../../../helper/ErrorCaseClient";
@@ -535,7 +535,7 @@ export function saveModule(uuid, request = "save") {
 }
 
 export function saveImage(setFileTitle, name, image, moduleId) {
-  console.log("%cSAVING IMAGE", `${consoleTitle}`, moduleId);
+  console.log("%cSAVING IMAGE", `${consoleTitle}`, image.name);
   return async (dispatch) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
@@ -559,14 +559,10 @@ export function saveImage(setFileTitle, name, image, moduleId) {
             dispatch(setCtaImageUuid({ id: moduleId, value: response.data }));
           }
           if (name === "transparentImage") {
-            dispatch(
-              setFeaturedImageUuid({ id: moduleId, value: response.data })
-            );
+            dispatch(setTransparentImageUuid(response.data));
           }
-          if (name === "SocialNetworkImg") {
-            dispatch(
-              setSocialNetworkImgUuid({ id: moduleId, value: response.data })
-            );
+          if (name === "SocialImg") {
+            dispatch(setSocialImgUuid(response.data));
           }
         }
       } catch (error) {

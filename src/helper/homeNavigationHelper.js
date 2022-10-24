@@ -6,8 +6,8 @@ export function getTitleAndSplit(
   navImgUuid,
   setNavImgTitle,
   setIsNavImage,
-  transperentImgUuid,
-  setFeatImgTitle,
+  transparentImgUuid,
+  setTransparentImgTitle,
   setIsTransparentImage,
   socialImgUuid,
   setSocialImgTitle,
@@ -23,13 +23,13 @@ export function getTitleAndSplit(
     setIsNavImage(true);
   }
 
-  if (transperentImgUuid) {
-    setFeatImgTitle(navImgUuid.split("/")[1]);
+  if (transparentImgUuid) {
+    setTransparentImgTitle(transparentImgUuid.split("/")[1]);
     setIsTransparentImage(true);
   }
 
   if (socialImgUuid) {
-    setSocialImgTitle(navImgUuid.split("/")[1]);
+    setSocialImgTitle(socialImgUuid.split("/")[1]);
     setIsSocialImage(true);
   }
 }

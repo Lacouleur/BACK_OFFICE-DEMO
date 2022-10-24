@@ -41,7 +41,7 @@ const HomeNavigation = () => {
   const [isHomeImage, setIsHomeImage] = useState(false);
   const [isNavImage, setIsNavImage] = useState(false);
   const [homeImgTitle, setHomeImgTitle] = useState(undefined);
-  const [transperentImgTitle, setFeatImgTitle] = useState(undefined);
+  const [transparentImgTitle, setTransparentImgTitle] = useState(undefined);
   const [isTransparentImage, setIsTransparentImage] = useState(false);
   const [socialImgTitle, setSocialImgTitle] = useState(undefined);
   const [isSocialImage, setIsSocialImage] = useState(false);
@@ -59,10 +59,12 @@ const HomeNavigation = () => {
     navImgUrls,
     shortDescription,
     backgroundColor,
-    transperentImgUuid,
+    transparentImgUuid,
     socialImgUuid,
     socialImgUrls,
-    transperentImgUrls,
+    transparentImgUrls,
+    transparentImgAlt,
+    socialImgAlt,
   } = homeNavigationState;
 
   const { manifestoId, isManifesto } = manifestoState;
@@ -107,14 +109,20 @@ const HomeNavigation = () => {
       navImgUuid,
       setNavImgTitle,
       setIsNavImage,
-      transperentImgUuid,
-      setFeatImgTitle,
+      transparentImgUuid,
+      setTransparentImgTitle,
       setIsTransparentImage,
       socialImgUuid,
       setSocialImgTitle,
       setIsSocialImage
     );
-  }, [homeNavIsChanged, homeImgUuid, navImgUuid]);
+  }, [
+    homeNavIsChanged,
+    homeImgUuid,
+    navImgUuid,
+    socialImgUuid,
+    transparentImgUuid,
+  ]);
 
   return (
     <>
@@ -209,12 +217,12 @@ const HomeNavigation = () => {
                   name="transparentImage"
                   section="HomeNavigation"
                   fieldType="uploader"
-                  edit={transperentImgTitle || undefined}
+                  edit={transparentImgTitle || undefined}
                   infos="Image size: 320x568px - 500ko maximum"
                 />
 
-                {transperentImgUrls && isTransparentImage && (
-                  <Thumbnail src={transperentImgUrls.thumbnail.url} />
+                {transparentImgUrls && isTransparentImage && (
+                  <Thumbnail src={transparentImgUrls.thumbnail.url} />
                 )}
               </ImageFieldBox>
 
@@ -224,7 +232,7 @@ const HomeNavigation = () => {
                 infos="Maximum 120 characters"
                 maxlength="120"
                 section="homeNavigation"
-                /* edit={altTransparentImg || undefined} */
+                edit={transparentImgAlt || undefined}
               />
 
               {/* BACKGROUND COLOR FIELD */}
@@ -247,7 +255,7 @@ const HomeNavigation = () => {
               <ImageFieldBox>
                 <Field
                   placeholder="Social Network Image"
-                  name="SocialNetworkImg"
+                  name="SocialImg"
                   section="HomeNavigation"
                   fieldType="uploader"
                   edit={socialImgTitle || undefined}
@@ -261,11 +269,11 @@ const HomeNavigation = () => {
 
               <Field
                 placeholder="Alternative text for Social Network Image"
-                name="altSocialNetworkImg"
+                name="altSocialImg"
                 infos="Maximum 120 characters"
                 maxlength="120"
                 section="homeNavigation"
-                /* edit={AltSocialImg || undefined} */
+                edit={socialImgAlt || undefined}
               />
 
               {/* NAVIGATION IMAGE FIELD & ALT */}

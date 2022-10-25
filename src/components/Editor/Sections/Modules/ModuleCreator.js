@@ -59,7 +59,7 @@ const ModuleCreator = ({ setIsOpen }) => {
         type: "featured",
         icon: highlightIcon,
         name: "HIGHLIGHT",
-        editor: "article",
+        editor: "page",
       }
     );
   } else {

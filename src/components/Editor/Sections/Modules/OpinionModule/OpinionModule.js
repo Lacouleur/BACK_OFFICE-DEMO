@@ -151,7 +151,7 @@ const OpinionModule = ({
   function onClickOutside() {
     if (!isOpenCloseModal) {
       setIsOpen(false);
-      if (isChanged || isNewModule) {
+      if (isChanged && isNewModule) {
         dispatch(saveModule(uuid, "save"));
       }
       if (isChanged && !isNewModule) {

@@ -52,6 +52,10 @@ import {
   SET_COLLECTION_SEARCH_INPUT,
   SET_FEEDBACK_QUESTION,
   SET_COLLAPSE_TEXTMODULE,
+  SET_FEATURED_ALT_HOMEIMAGE,
+  SET_FEATURED_EXCERPT,
+  SET_FEATURED_LINK_CTA,
+  SET_FEATURED_TITLE,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -65,7 +69,10 @@ const modulesReducer = (state = initialState, action = {}) => {
   const pageModulesHeaderField = {
     title: "",
     subtitle: "",
-    url: undefined,
+    url: {
+      value: "",
+      openNewTab: true,
+    },
   };
 
   switch (action.type) {
@@ -256,6 +263,10 @@ const modulesReducer = (state = initialState, action = {}) => {
                 isChanged: true,
                 isNewModule: true,
                 isOpenCloseModal: false,
+                featuredTitle: "",
+                featuredExcerpt: "",
+                altHomeImage: "",
+                link: { value: "", openNewTab: true },
               },
             ],
           };
@@ -435,7 +446,6 @@ const modulesReducer = (state = initialState, action = {}) => {
             isChanged: false,
             isOpenCloseModal: false,
             isPage: true,
-            sapin: "arbre",
           },
         ];
       });
@@ -1211,6 +1221,81 @@ const modulesReducer = (state = initialState, action = {}) => {
         return null;
       });
 
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_FEATURED_TITLE: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            featuredTitle: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_FEATURED_EXCERPT: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            featuredExcerpt: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_FEATURED_ALT_HOMEIMAGE: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            altHomeImage: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_FEATURED_LINK_CTA: {
+      const { id, value, openNewTab } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            link: {
+              openNewTab:
+                openNewTab !== undefined ? openNewTab : module.link.openNewTab,
+              value: value !== undefined ? value : module.link.value || "",
+            },
+            isChanged: true,
+          };
+        }
+        return null;
+      });
       return {
         ...oldState,
       };

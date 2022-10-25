@@ -336,6 +336,16 @@ const ModulesDispatcher = ({
                         isOpenCloseModal={module.isOpenCloseModal}
                         isNewModule={module.isNewModule}
                         isChanged={module.isChanged}
+                        title={module.title}
+                        subtitle={module.subtitle}
+                        // Url is header url for section and module url for content.
+                        url={module.url.value || ""}
+                        openNewTabHeader={module.url.openNewTab}
+                        featuredTitle={module.featuredTitle || ""}
+                        featuredExcerpt={module.featuredExcerpt || ""}
+                        altHomeImage={module.altHomeImage || ""}
+                        featuredLinkCtaValue={module?.link?.value || ""}
+                        featuredLinkCtaOpenNewTab={module?.link?.openNewTab}
                       />
                     </div>
                   );

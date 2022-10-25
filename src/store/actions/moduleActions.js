@@ -46,6 +46,10 @@ import {
   SET_FEEDBACK_QUESTION,
   SET_OPINION_IS_REACTION,
   SET_COLLAPSE_TEXTMODULE,
+  SET_FEATURED_ALT_HOMEIMAGE,
+  SET_FEATURED_EXCERPT,
+  SET_FEATURED_LINK_CTA,
+  SET_FEATURED_TITLE,
 } from "../constants";
 
 export const setPageModuleHeaderNewTab = (payload) => ({
@@ -277,5 +281,23 @@ export const setCollectionSearchInput = (payload) => ({
 
 export const setFeedbackQuestion = (payload) => ({
   type: SET_FEEDBACK_QUESTION,
+  payload,
+});
+
+export const setFeaturedTitle = (payload) => ({
+  type: SET_FEATURED_TITLE,
+  payload,
+});
+
+export const setFeaturedExcerpt = (payload) => ({
+  type: SET_FEATURED_EXCERPT,
+  payload,
+});
+export const setFeaturedAltHomeImage = (payload) => ({
+  type: SET_FEATURED_ALT_HOMEIMAGE,
+  payload,
+});
+export const setFeaturedLinkCta = (payload) => ({
+  type: SET_FEATURED_LINK_CTA,
   payload,
 });

@@ -34,6 +34,10 @@ import {
   setCollectionLimit,
   setCtaType,
   setFeedbackQuestion,
+  setFeaturedTitle,
+  setFeaturedAltHomeImage,
+  setFeaturedExcerpt,
+  setFeaturedLinkCta,
 } from "../store/actions/moduleActions";
 import {
   setDisplayedName,
@@ -504,6 +508,8 @@ export function dispatchFields(
       dispatch(setTransparentImageAlt(value));
       break;
 
+    // MODULES
+
     case name === "question" && section === "opinion":
       dispatch(setOpinionQuestion({ id: moduleId, value }));
       break;
@@ -574,6 +580,22 @@ export function dispatchFields(
 
     case name === "altImage" && section === "imageModule":
       dispatch(setAltImage({ id: moduleId, value }));
+      break;
+
+    case name === "title" && section === "featured":
+      dispatch(setFeaturedTitle({ id: moduleId, value }));
+      break;
+
+    case name === "excerpt" && section === "featured":
+      dispatch(setFeaturedExcerpt({ id: moduleId, value }));
+      break;
+
+    case name === "altHomeImage" && section === "featured":
+      dispatch(setFeaturedAltHomeImage({ id: moduleId, value }));
+      break;
+
+    case name === "featuredLinkCta" && section === "featured":
+      dispatch(setFeaturedLinkCta({ id: moduleId, value }));
       break;
 
     // PAGE EDITOR

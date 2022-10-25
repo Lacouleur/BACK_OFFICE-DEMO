@@ -271,12 +271,21 @@ export function saveModule(uuid, request = "save") {
               }
 
               case "featured": {
-                const { order } = module;
+                const { order, featuredTitle, featuredExcerpt, link } = module;
 
                 values = {
+                  ...(isPage && pageSectoionHeaderValues),
                   uuid,
                   type: "featured",
                   resource: "contents",
+                  featuredTitle: featuredTitle || undefined,
+                  featuredExcerpt: featuredExcerpt || undefined,
+                  link: link?.value
+                    ? {
+                        value: link.value,
+                        openNewTab: link.openNewTab,
+                      }
+                    : undefined,
                   order,
                 };
                 isNewModule = true;
@@ -433,7 +442,7 @@ export function saveModule(uuid, request = "save") {
                   openNewTab: !isPage ? openNewTab : undefined,
                   link: isPage ? link : undefined,
                   image:
-                    isPage && image.uuid
+                    isPage && image?.uuid
                       ? {
                           alt: image?.alt || undefined,
                           source: "FTV-internal",
@@ -505,15 +514,29 @@ export function saveModule(uuid, request = "save") {
               }
 
               case "featured": {
-                const { order } = module;
+                const {
+                  order,
+                  featuredTitle,
+                  featuredExcerpt,
+                  /* altHomeImage, */
+                  link,
+                } = module;
 
                 values = {
-                  uuid,
+                  ...(isPage && pageSectoionHeaderValues),
                   type: "featured",
                   resource: "contents",
+                  featuredTitle: featuredTitle || undefined,
+                  featuredExcerpt: featuredExcerpt || undefined,
+                  link: link?.value
+                    ? {
+                        value: link.value,
+                        openNewTab: link.openNewTab,
+                      }
+                    : undefined,
                   order,
                 };
-                isNewModule = true;
+                isChanged = true;
 
                 break;
               }

@@ -8,6 +8,7 @@ import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
 import {
   ActionIcons,
   Delete,
+  FieldAndSwitchContainer,
   ModuleContainer,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import CloseModal from "../../../../Modals/CloseModal";
@@ -19,11 +20,14 @@ import {
 } from "../../../../../styles/styledComponents/editor/Sections.sc";
 import {
   closeModule,
+  setFeaturedLinkCta,
   showCloseModal,
 } from "../../../../../store/actions/moduleActions";
 import trashIcon from "../../../../../styles/assets/icons/trash.svg";
 import { FormTitle } from "../../../../../styles/styledComponents/global/Titles.sc";
 import Field from "../../../Field";
+import HeaderSectionPage from "../HeaderSectionPage";
+import SwitchButton from "../../../../Tools/Switch";
 
 const FeaturedModule = ({
   uuid,
@@ -31,6 +35,15 @@ const FeaturedModule = ({
   isOpenCloseModal,
   isNewModule,
   isChanged,
+  title,
+  subtitle,
+  url,
+  featuredTitle,
+  featuredExcerpt,
+  altHomeImage,
+  featuredLinkCtaValue,
+  featuredLinkCtaOpenNewTab,
+  openNewTabHeader,
 }) => {
   const dispatch = useDispatch();
   const featuredModuleRef = useRef(null);
@@ -65,7 +78,7 @@ const FeaturedModule = ({
   function onClickOutside() {
     if (!isOpenCloseModal) {
       setIsOpen(false);
-      if (isChanged || isNewModule) {
+      if (isChanged && isNewModule) {
         dispatch(saveModule(uuid, "save"));
       }
       if (isChanged && !isNewModule) {
@@ -112,15 +125,59 @@ const FeaturedModule = ({
         </SectionTitle>
         {!isOpen && <Gradient />}
 
+        <HeaderSectionPage
+          uuid={uuid}
+          title={title}
+          subtitle={subtitle}
+          url={url}
+          openNewTabHeader={openNewTabHeader}
+        />
+
         <Field
-          placeholder="What question do you want to ask ?"
-          name="question"
-          section="feedback"
-          edit={"question " || ""}
-          maxlength="80"
-          infos="Maximum 80 characters"
+          placeholder="Custom Title"
+          name="title"
+          section="featured"
+          edit={featuredTitle || ""}
           moduleId={uuid}
         />
+
+        <Field
+          placeholder="Custom Title"
+          name="excerpt"
+          section="featured"
+          edit={featuredExcerpt || ""}
+          moduleId={uuid}
+        />
+
+        <Field
+          placeholder="Custom Title"
+          name="altHomeImage"
+          section="featured"
+          edit={altHomeImage || ""}
+          moduleId={uuid}
+        />
+        <FieldAndSwitchContainer>
+          <Field
+            placeholder="Custom Title"
+            name="featuredLinkCta"
+            section="featured"
+            edit={featuredLinkCtaValue || ""}
+            moduleId={uuid}
+          />
+          <SwitchButton
+            action={() => {
+              dispatch(
+                setFeaturedLinkCta({
+                  id: uuid,
+                  openNewTab: !featuredLinkCtaOpenNewTab,
+                })
+              );
+            }}
+            isChecked={featuredLinkCtaOpenNewTab}
+            componentId={`featured-cta-link-${uuid}`}
+            displayedText="Open new tab ?"
+          />
+        </FieldAndSwitchContainer>
       </SectionBox>
     </ModuleContainer>
   );
@@ -136,6 +193,15 @@ FeaturedModule.propTypes = {
   isOpenCloseModal: PropTypes.bool.isRequired,
   isNewModule: PropTypes.bool.isRequired,
   isChanged: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired,
+  subtitle: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
+  featuredTitle: PropTypes.string.isRequired,
+  featuredExcerpt: PropTypes.string.isRequired,
+  altHomeImage: PropTypes.string.isRequired,
+  featuredLinkCtaValue: PropTypes.string.isRequired,
+  featuredLinkCtaOpenNewTab: PropTypes.bool.isRequired,
+  openNewTabHeader: PropTypes.bool.isRequired,
 };
 
 export default FeaturedModule;

@@ -270,6 +270,20 @@ export function saveModule(uuid, request = "save") {
                 break;
               }
 
+              case "featured": {
+                const { order } = module;
+
+                values = {
+                  uuid,
+                  type: "featured",
+                  resource: "contents",
+                  order,
+                };
+                isNewModule = true;
+
+                break;
+              }
+
               default:
                 return null;
             }
@@ -486,6 +500,20 @@ export function saveModule(uuid, request = "save") {
                   label: "question",
                 };
                 isChanged = true;
+
+                break;
+              }
+
+              case "featured": {
+                const { order } = module;
+
+                values = {
+                  uuid,
+                  type: "featured",
+                  resource: "contents",
+                  order,
+                };
+                isNewModule = true;
 
                 break;
               }

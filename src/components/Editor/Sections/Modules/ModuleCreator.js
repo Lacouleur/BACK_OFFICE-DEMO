@@ -15,6 +15,7 @@ import quizzIcon from "../../../../styles/assets/icons/quizz-dark.svg";
 import imageIcon from "../../../../styles/assets/icons/image-black.svg";
 import crossIcon from "../../../../styles/assets/icons/cross-white.svg";
 import ctaIcon from "../../../../styles/assets/icons/cta.svg";
+import highlightIcon from "../../../../styles/assets/icons/highlight.svg";
 import collectionIcon from "../../../../styles/assets/icons/collection-black.svg";
 import feedBackIcon from "../../../../styles/assets/icons/talkbubbles-black.svg";
 import {
@@ -53,7 +54,13 @@ const ModuleCreator = ({ setIsOpen }) => {
         editor: "page",
       },
       { type: "opinion", icon: quizzIcon, name: "OPINION", editor: "page" },
-      { type: "image", icon: imageIcon, name: "IMAGE", editor: "page" }
+      { type: "image", icon: imageIcon, name: "IMAGE", editor: "page" },
+      {
+        type: "featured",
+        icon: highlightIcon,
+        name: "HIGHLIGHT",
+        editor: "article",
+      }
     );
   } else {
     DefaultModules.push(

@@ -94,6 +94,7 @@ const modulesReducer = (state = initialState, action = {}) => {
             ],
           };
         }
+
         case "image": {
           return {
             ...oldState,
@@ -118,6 +119,7 @@ const modulesReducer = (state = initialState, action = {}) => {
             ],
           };
         }
+
         case "opinion": {
           return {
             ...oldState,
@@ -159,6 +161,7 @@ const modulesReducer = (state = initialState, action = {}) => {
             ],
           };
         }
+
         case "cta-button": {
           return {
             ...oldState,
@@ -234,6 +237,25 @@ const modulesReducer = (state = initialState, action = {}) => {
                 isNewModule: true,
                 isOpenCloseModal: false,
                 isVisible: true,
+              },
+            ],
+          };
+        }
+
+        case "featured": {
+          return {
+            ...oldState,
+            modulesList: [
+              ...state.modulesList,
+              {
+                ...(payload.editor === "page" && pageModulesHeaderField),
+                type: "featured",
+                order: state.modulesList.length + 1,
+                uuid: `${uuidv4()}`,
+                isPostedModule: false,
+                isChanged: true,
+                isNewModule: true,
+                isOpenCloseModal: false,
               },
             ],
           };

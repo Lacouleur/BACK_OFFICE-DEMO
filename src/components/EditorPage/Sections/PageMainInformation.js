@@ -45,6 +45,7 @@ const PageMainInformation = () => {
     postingError,
     displayTitle,
     subtitle,
+    status,
   } = PageMainInformationState;
 
   useEffect(() => {
@@ -139,6 +140,8 @@ const PageMainInformation = () => {
               fieldType="select"
               section="pageMainInformation"
               edit={lang || "fr"}
+              isClearable={false}
+              isDisabled={!(status === "DRAFT" || !status)}
             />
           </>
         )}

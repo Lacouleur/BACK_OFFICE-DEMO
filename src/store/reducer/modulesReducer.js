@@ -58,6 +58,8 @@ import {
   SET_FEATURED_TITLE,
   SET_FEATURED_IMAGE_UUID,
   SET_FEATURED_BACKGROUND_COLOR,
+  SET_FEATURED_STICKER,
+  SET_FEATURED_CATEGORY,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -1334,6 +1336,42 @@ const modulesReducer = (state = initialState, action = {}) => {
           oldState.modulesList[index] = {
             ...module,
             backgroundColor: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_FEATURED_STICKER: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            sticker: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_FEATURED_CATEGORY: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            featuredCategory: value,
             isChanged: true,
           };
         }

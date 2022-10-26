@@ -350,7 +350,9 @@ const ModulesDispatcher = ({
                           module?.image?.urls?.thumbnail.url || undefined
                         }
                         featuredImageUuid={module.image?.uuid}
-                        backgroundColor={module.backgroundColor}
+                        backgroundColor={module?.backgroundColor}
+                        sticker={module?.sticker}
+                        featuredCategory={module?.featuredCategory}
                       />
                     </div>
                   );

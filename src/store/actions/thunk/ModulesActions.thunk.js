@@ -280,6 +280,8 @@ export function saveModule(uuid, request = "save") {
                   featuredImageUuid,
                   featuredImageAlt,
                   backgroundColor,
+                  sticker,
+                  featuredCategory,
                 } = module;
 
                 values = {
@@ -302,7 +304,9 @@ export function saveModule(uuid, request = "save") {
                         source: "FTV-internal",
                       }
                     : undefined,
+                  sticker,
                   backgroundColor,
+                  featuredCategory,
                   order,
                 };
                 isNewModule = true;
@@ -514,7 +518,6 @@ export function saveModule(uuid, request = "save") {
 
                 break;
               }
-
               case "feedback": {
                 const { order, isVisible, question } = module;
 
@@ -529,7 +532,6 @@ export function saveModule(uuid, request = "save") {
 
                 break;
               }
-
               case "featured": {
                 const {
                   order,
@@ -538,6 +540,8 @@ export function saveModule(uuid, request = "save") {
                   image,
                   link,
                   backgroundColor,
+                  sticker,
+                  featuredCategory,
                 } = module;
 
                 values = {
@@ -560,6 +564,8 @@ export function saveModule(uuid, request = "save") {
                       }
                     : undefined,
                   backgroundColor,
+                  featuredCategory,
+                  sticker,
                   order,
                 };
                 isChanged = true;

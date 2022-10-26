@@ -52,6 +52,8 @@ import {
   SET_FEATURED_TITLE,
   SET_FEATURED_IMAGE_UUID,
   SET_FEATURED_BACKGROUND_COLOR,
+  SET_FEATURED_STICKER,
+  SET_FEATURED_CATEGORY,
 } from "../constants";
 
 export const setPageModuleHeaderNewTab = (payload) => ({
@@ -311,5 +313,15 @@ export const setFeaturedImageUuid = (payload) => ({
 
 export const setFeaturedBackgroundColor = (payload) => ({
   type: SET_FEATURED_BACKGROUND_COLOR,
+  payload,
+});
+
+export const setFeaturedSticker = (payload) => ({
+  type: SET_FEATURED_STICKER,
+  payload,
+});
+
+export const setFeaturedCategory = (payload) => ({
+  type: SET_FEATURED_CATEGORY,
   payload,
 });

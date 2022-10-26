@@ -39,6 +39,8 @@ import {
   setFeaturedExcerpt,
   setFeaturedLinkCta,
   setFeaturedBackgroundColor,
+  setFeaturedSticker,
+  setFeaturedCategory,
 } from "../store/actions/moduleActions";
 import {
   setDisplayedName,
@@ -119,6 +121,12 @@ export const backgroundColorsList = [
   },
 ];
 
+export const stickerList = [
+  {
+    label: "Nouvel Article",
+    value: "newArticle",
+  },
+];
 // match selection with current list for simple selector fields.
 export function onEdit(
   edit,
@@ -138,10 +146,22 @@ export function onEdit(
   selectedBackgroundColor,
   setSelectedBackgroundColor,
   selectedFeaturedBackgroundColor,
-  setSelectedFeaturedBackgroundColor
+  setSelectedFeaturedBackgroundColor,
+  selectedSticker,
+  setSelectedSticker
 ) {
   if (edit) {
     setFileTitle(edit);
+  }
+
+  if (!selectedSticker) {
+    stickerList.map((option) => {
+      if (edit === option.value) {
+        setSelectedSticker(option);
+        return null;
+      }
+      return null;
+    });
   }
 
   if (!selectedCollectionType) {
@@ -306,9 +326,13 @@ export function valueSelector(
   selectedCollectionFormat,
   selectedCtaType,
   selectedBackgroundColor,
-  selectedFeaturedBackgroundColor
+  selectedFeaturedBackgroundColor,
+  selectedSticker
 ) {
   switch (name) {
+    case "sticker":
+      return selectedSticker;
+
     case "category":
       return editCategory;
 
@@ -395,6 +419,9 @@ export function optionSelector(name, list) {
     case "featuredBackgroundColor":
       return backgroundColorsList;
 
+    case "sticker":
+      return stickerList;
+
     default:
       return null;
   }
@@ -414,11 +441,17 @@ export function dispatchSelected(
   setSelectedCtaType,
   setSelectedBackgroundColor,
   setSelectedFeaturedBackgroundColor,
+  setSelectedSticker,
   moduleId
 ) {
   const { value } = event;
   if (value) {
     switch (name) {
+      case "sticker":
+        setSelectedSticker(event);
+        dispatch(setFeaturedSticker({ id: moduleId, value }));
+        break;
+
       case "category":
         setEditCategory(event);
         dispatch(addCategory(value));
@@ -623,6 +656,10 @@ export function dispatchFields(
 
     case name === "featuredLinkCta" && section === "featured":
       dispatch(setFeaturedLinkCta({ id: moduleId, value }));
+      break;
+
+    case name === "featuredCategory" && section === "featured":
+      dispatch(setFeaturedCategory({ id: moduleId, value }));
       break;
 
     // PAGE EDITOR

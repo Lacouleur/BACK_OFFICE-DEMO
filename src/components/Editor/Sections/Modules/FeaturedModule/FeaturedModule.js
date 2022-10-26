@@ -7,9 +7,13 @@ import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.th
 import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
 import {
   ActionIcons,
+  InnerSectionDescritpion,
+  InnerSectionTitle,
+  InnerSectionTitleBox,
   Delete,
   FieldAndSwitchContainer,
   ModuleContainer,
+  SeparatorWhite,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import CloseModal from "../../../../Modals/CloseModal";
 import HideModal from "../../../../Modals/HideModal";
@@ -53,6 +57,8 @@ const FeaturedModule = ({
   featuredImageThumbnailUrl,
   featuredImageUuid,
   backgroundColor,
+  sticker,
+  featuredCategory,
 }) => {
   const dispatch = useDispatch();
   const featuredModuleRef = useRef(null);
@@ -212,6 +218,18 @@ const FeaturedModule = ({
           )}
         </ColorFieldBox>
 
+        {/* STICKERS FIELD */}
+        <Field
+          placeholder="Stricker"
+          name="sticker"
+          section="featured"
+          fieldType="select"
+          edit={sticker || "newArticle"}
+          moduleId={uuid}
+          isClearable={false}
+          isDisabled
+        />
+
         {/* FEATURED LINK FIELD AND SWITCH */}
         <FieldAndSwitchContainer>
           <Field
@@ -220,6 +238,8 @@ const FeaturedModule = ({
             section="featured"
             edit={featuredLinkCtaValue || ""}
             moduleId={uuid}
+            disabled
+            clearable={false}
           />
           <SwitchButton
             action={() => {
@@ -235,6 +255,24 @@ const FeaturedModule = ({
             displayedText="Open new tab ?"
           />
         </FieldAndSwitchContainer>
+
+        {/* FEATURED CATEGORY FIELD */}
+        <Field
+          placeholder="Featured Category"
+          name="featuredCategory"
+          section="featured"
+          edit={featuredCategory}
+          moduleId={uuid}
+        />
+
+        {/* AUTOMATIC SECTION */}
+        <SeparatorWhite />
+        <InnerSectionTitleBox>
+          <InnerSectionTitle> automatic -</InnerSectionTitle>
+          <InnerSectionDescritpion>
+            Content will be self generated folowing your selected filters
+          </InnerSectionDescritpion>
+        </InnerSectionTitleBox>
       </SectionBox>
     </ModuleContainer>
   );
@@ -244,6 +282,8 @@ FeaturedModule.defaultProps = {
   featuredImageThumbnailUrl: undefined,
   featuredImageUuid: undefined,
   backgroundColor: "",
+  sticker: undefined,
+  featuredCategory: undefined,
 };
 
 FeaturedModule.propTypes = {
@@ -264,6 +304,8 @@ FeaturedModule.propTypes = {
   featuredImageThumbnailUrl: PropTypes.string,
   featuredImageUuid: PropTypes.string,
   backgroundColor: PropTypes.string,
+  sticker: PropTypes.string,
+  featuredCategory: PropTypes.string,
 };
 
 export default FeaturedModule;

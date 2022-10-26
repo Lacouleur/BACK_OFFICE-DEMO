@@ -18,9 +18,9 @@ import {
   ActionIcons,
   FieldAndSwitchContainer,
   SeparatorWhite,
-  CollectionSectionTitleBox,
-  CollectionSectionTitle,
-  CollectionSectionDescritpion,
+  InnerSectionTitleBox,
+  InnerSectionTitle,
+  InnerSectionDescritpion,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import {
   closeModule,
@@ -145,15 +145,13 @@ const CollectionModule = ({
           </>
         )}
 
-        <CollectionSectionTitleBox>
-          <CollectionSectionTitle>
-            COLLECTION MAIN SETTING -
-          </CollectionSectionTitle>
-          <CollectionSectionDescritpion>
+        <InnerSectionTitleBox>
+          <InnerSectionTitle>COLLECTION MAIN SETTING -</InnerSectionTitle>
+          <InnerSectionDescritpion>
             choose your collection type
             {/* choose if your collection is a slider or a gird */}
-          </CollectionSectionDescritpion>
-        </CollectionSectionTitleBox>
+          </InnerSectionDescritpion>
+        </InnerSectionTitleBox>
 
         <FieldAndSwitchContainer>
           <Field
@@ -192,15 +190,13 @@ const CollectionModule = ({
         />
 
         <SeparatorWhite />
-        <CollectionSectionTitleBox>
-          <CollectionSectionTitle>
-            AUTOMATIC COLLECTION -
-          </CollectionSectionTitle>
-          <CollectionSectionDescritpion>
+        <InnerSectionTitleBox>
+          <InnerSectionTitle>AUTOMATIC COLLECTION -</InnerSectionTitle>
+          <InnerSectionDescritpion>
             A collection will be self generated folowing your selected filters :
             category, tags, limit.
-          </CollectionSectionDescritpion>
-        </CollectionSectionTitleBox>
+          </InnerSectionDescritpion>
+        </InnerSectionTitleBox>
 
         <Field
           placeholder="Category to call"
@@ -229,13 +225,13 @@ const CollectionModule = ({
         />
 
         <SeparatorWhite />
-        <CollectionSectionTitleBox>
-          <CollectionSectionTitle>CUSTOM COLLECTION -</CollectionSectionTitle>
-          <CollectionSectionDescritpion>
+        <InnerSectionTitleBox>
+          <InnerSectionTitle>CUSTOM COLLECTION -</InnerSectionTitle>
+          <InnerSectionDescritpion>
             Please note that &quot;automatic&quot; section filters will be
             ignored if you have items in your custom list
-          </CollectionSectionDescritpion>
-        </CollectionSectionTitleBox>
+          </InnerSectionDescritpion>
+        </InnerSectionTitleBox>
 
         <FilterFieldContainer>
           <FilterInput

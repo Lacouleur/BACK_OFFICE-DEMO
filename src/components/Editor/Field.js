@@ -98,6 +98,8 @@ const Field = ({
   edit,
   moduleId,
   answerId,
+  isDisabled,
+  isClearable,
 }) => {
   const dispatch = useDispatch();
   const [editCategory, setEditCategory] = useState();
@@ -117,6 +119,7 @@ const Field = ({
     selectedFeaturedBackgroundColor,
     setSelectedFeaturedBackgroundColor,
   ] = useState();
+  const [selectedSticker, setSelectedSticker] = useState();
 
   const [isOpenTagWarn, setIsOpenTagWarn] = useState();
   const animatedComponents = makeAnimated();
@@ -190,7 +193,9 @@ const Field = ({
       selectedBackgroundColor,
       setSelectedBackgroundColor,
       selectedFeaturedBackgroundColor,
-      setSelectedFeaturedBackgroundColor
+      setSelectedFeaturedBackgroundColor,
+      selectedSticker,
+      setSelectedSticker
     );
 
     initMultiSelectors(
@@ -230,12 +235,7 @@ const Field = ({
       {fieldType && fieldType === "select" && (
         <FieldBox>
           <Selector
-            isDisabled={
-              /* Uncomment line below to lock category too */
-              /* (name === "lang" || name === "category") &&
-              !(status === "DRAFT" || !status) */
-              name === "lang" && !(status === "DRAFT" || !status)
-            }
+            isDisabled={isDisabled}
             value={valueSelector(
               name,
               editCategory,
@@ -246,12 +246,13 @@ const Field = ({
               selectedCollectionFormat,
               selectedCtaType,
               selectedBackgroundColor,
-              selectedFeaturedBackgroundColor
+              selectedFeaturedBackgroundColor,
+              selectedSticker
             )}
             options={optionSelector(name, categoriesList)}
             classNamePrefix="select"
             placeholder={name}
-            isClearable={!(name === "lang" || name === "colorStyle")}
+            isClearable={isClearable}
             onChange={(event) => {
               dispatchSelected(
                 event,
@@ -266,6 +267,7 @@ const Field = ({
                 setSelectedCtaType,
                 setSelectedBackgroundColor,
                 setSelectedFeaturedBackgroundColor,
+                setSelectedSticker,
                 moduleId
               );
             }}
@@ -273,7 +275,15 @@ const Field = ({
           {name === "lang" && !(status === "DRAFT" || !status) && (
             <Tooltip>
               <TooltipText>
-                The language of a published content cannot be changed.
+                The lang can be modified on draft content only.
+              </TooltipText>
+            </Tooltip>
+          )}
+          {name === "sticker" && (
+            <Tooltip>
+              <TooltipText>
+                Only one option of sticker for the time beeing, we are working
+                to add more of them.
               </TooltipText>
             </Tooltip>
           )}
@@ -556,7 +566,7 @@ const Field = ({
           {name === "slug" && !(status === "DRAFT" || !status) && (
             <Tooltip>
               <TooltipText>
-                The slug of a published content cannot be changed.
+                The slug can be modified on draft content only.
               </TooltipText>
             </Tooltip>
           )}
@@ -585,6 +595,8 @@ Field.defaultProps = {
   edit: undefined,
   moduleId: undefined,
   answerId: undefined,
+  isDisabled: false,
+  isClearable: true,
 };
 
 Field.propTypes = {
@@ -604,6 +616,8 @@ Field.propTypes = {
   ]),
   moduleId: PropTypes.string,
   answerId: PropTypes.string,
+  isDisabled: PropTypes.bool,
+  isClearable: PropTypes.bool,
 };
 
 export default Field;

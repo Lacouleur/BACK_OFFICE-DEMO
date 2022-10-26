@@ -35,7 +35,7 @@ import {
   setCtaType,
   setFeedbackQuestion,
   setFeaturedTitle,
-  setFeaturedAltHomeImage,
+  setFeaturedAltImage,
   setFeaturedExcerpt,
   setFeaturedLinkCta,
 } from "../store/actions/moduleActions";
@@ -590,8 +590,8 @@ export function dispatchFields(
       dispatch(setFeaturedExcerpt({ id: moduleId, value }));
       break;
 
-    case name === "altHomeImage" && section === "featured":
-      dispatch(setFeaturedAltHomeImage({ id: moduleId, value }));
+    case name === "featuredImageAlt" && section === "featured":
+      dispatch(setFeaturedAltImage({ id: moduleId, value }));
       break;
 
     case name === "featuredLinkCta" && section === "featured":

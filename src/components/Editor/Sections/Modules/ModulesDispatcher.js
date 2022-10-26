@@ -343,9 +343,19 @@ const ModulesDispatcher = ({
                         openNewTabHeader={module.url.openNewTab}
                         featuredTitle={module.featuredTitle || ""}
                         featuredExcerpt={module.featuredExcerpt || ""}
-                        altHomeImage={module.altHomeImage || ""}
+                        featuredImageAlt={
+                          module.featuredImageAlt || module.image.alt || ""
+                        }
                         featuredLinkCtaValue={module?.link?.value || ""}
                         featuredLinkCtaOpenNewTab={module?.link?.openNewTab}
+                        featuredImageThumbnailUrl={
+                          module?.featuredImageUrls?.thumbnail?.url ||
+                          module?.image?.urls?.thumbnail.url ||
+                          undefined
+                        }
+                        featuredImageUuid={
+                          module?.featuredImageUuid || module.image.uuid
+                        }
                       />
                     </div>
                   );

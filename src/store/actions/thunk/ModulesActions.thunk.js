@@ -14,6 +14,7 @@ import {
   setCtaImageUuid,
   setImageUuid,
   setModulePosted,
+  setFeaturedImageUuid,
 } from "../moduleActions";
 
 import {
@@ -271,7 +272,14 @@ export function saveModule(uuid, request = "save") {
               }
 
               case "featured": {
-                const { order, featuredTitle, featuredExcerpt, link } = module;
+                const {
+                  order,
+                  featuredTitle,
+                  featuredExcerpt,
+                  link,
+                  featuredImageUuid,
+                  featuredImageAlt,
+                } = module;
 
                 values = {
                   ...(isPage && pageSectoionHeaderValues),
@@ -284,6 +292,13 @@ export function saveModule(uuid, request = "save") {
                     ? {
                         value: link.value,
                         openNewTab: link.openNewTab,
+                      }
+                    : undefined,
+                  image: featuredImageUuid
+                    ? {
+                        uuid: featuredImageUuid || undefined,
+                        alt: featuredImageAlt || undefined,
+                        source: "FTV-internal",
                       }
                     : undefined,
                   order,
@@ -518,7 +533,8 @@ export function saveModule(uuid, request = "save") {
                   order,
                   featuredTitle,
                   featuredExcerpt,
-                  /* altHomeImage, */
+                  featuredImageUuid,
+                  featuredImageAlt,
                   link,
                 } = module;
 
@@ -532,6 +548,13 @@ export function saveModule(uuid, request = "save") {
                     ? {
                         value: link.value,
                         openNewTab: link.openNewTab,
+                      }
+                    : undefined,
+                  image: featuredImageUuid
+                    ? {
+                        uuid: featuredImageUuid || undefined,
+                        alt: featuredImageAlt || undefined,
+                        source: "FTV-internal",
                       }
                     : undefined,
                   order,
@@ -614,6 +637,11 @@ export function saveImage(setFileTitle, name, image, moduleId) {
           }
           if (name === "SocialImg") {
             dispatch(setSocialImgUuid(response.data));
+          }
+          if (name === "featuredImage") {
+            dispatch(
+              setFeaturedImageUuid({ id: moduleId, value: response.data })
+            );
           }
         }
       } catch (error) {

@@ -17,6 +17,7 @@ import {
   Gradient,
   SectionBox,
   SectionTitle,
+  Thumbnail,
 } from "../../../../../styles/styledComponents/editor/Sections.sc";
 import {
   closeModule,
@@ -28,6 +29,7 @@ import { FormTitle } from "../../../../../styles/styledComponents/global/Titles.
 import Field from "../../../Field";
 import HeaderSectionPage from "../HeaderSectionPage";
 import SwitchButton from "../../../../Tools/Switch";
+import { ImageFieldBox } from "../../../../../styles/styledComponents/global/Field.sc";
 
 const FeaturedModule = ({
   uuid,
@@ -40,10 +42,12 @@ const FeaturedModule = ({
   url,
   featuredTitle,
   featuredExcerpt,
-  altHomeImage,
+  featuredImageAlt,
   featuredLinkCtaValue,
   featuredLinkCtaOpenNewTab,
   openNewTabHeader,
+  featuredImageThumbnailUrl,
+  featuredImageUuid,
 }) => {
   const dispatch = useDispatch();
   const featuredModuleRef = useRef(null);
@@ -60,6 +64,15 @@ const FeaturedModule = ({
   const { articleId, status } = pageMainInformationState;
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isFeaturedImage, setIsFeaturedImage] = useState(false);
+  const [featuredImageTitle, setFeaturedImageTitle] = useState(false);
+
+  useEffect(() => {
+    if (featuredImageUuid) {
+      setFeaturedImageTitle(featuredImageUuid.split("/")[1]);
+      setIsFeaturedImage(true);
+    }
+  }, [featuredImageUuid]);
 
   useEffect(() => {
     watchNewModules(isNewModule, featuredModuleRef, setIsOpen);
@@ -148,12 +161,28 @@ const FeaturedModule = ({
           edit={featuredExcerpt || ""}
           moduleId={uuid}
         />
+        {/* FEATURED IMAGE FIELD & ALT */}
+        <ImageFieldBox>
+          <Field
+            placeholder="Home Image"
+            name="featuredImage"
+            section="featured"
+            fieldType="uploader"
+            edit={featuredImageTitle || undefined}
+            infos="Image size: 320x568px - 500ko maximum"
+            moduleId={uuid}
+          />
+
+          {featuredImageThumbnailUrl && isFeaturedImage && (
+            <Thumbnail src={featuredImageThumbnailUrl} />
+          )}
+        </ImageFieldBox>
 
         <Field
-          placeholder="Custom Title"
-          name="altHomeImage"
+          placeholder="Alternative text for Home-Image"
+          name="featuredImageAlt"
           section="featured"
-          edit={altHomeImage || ""}
+          edit={featuredImageAlt || ""}
           moduleId={uuid}
         />
         <FieldAndSwitchContainer>
@@ -183,9 +212,10 @@ const FeaturedModule = ({
   );
 };
 
-/* FeaturedModule.defaultProps = {
-  position: undefined,
-}; */
+FeaturedModule.defaultProps = {
+  featuredImageThumbnailUrl: undefined,
+  featuredImageUuid: undefined,
+};
 
 FeaturedModule.propTypes = {
   uuid: PropTypes.string.isRequired,
@@ -198,10 +228,12 @@ FeaturedModule.propTypes = {
   url: PropTypes.string.isRequired,
   featuredTitle: PropTypes.string.isRequired,
   featuredExcerpt: PropTypes.string.isRequired,
-  altHomeImage: PropTypes.string.isRequired,
+  featuredImageAlt: PropTypes.string.isRequired,
   featuredLinkCtaValue: PropTypes.string.isRequired,
   featuredLinkCtaOpenNewTab: PropTypes.bool.isRequired,
   openNewTabHeader: PropTypes.bool.isRequired,
+  featuredImageThumbnailUrl: PropTypes.string,
+  featuredImageUuid: PropTypes.string,
 };
 
 export default FeaturedModule;

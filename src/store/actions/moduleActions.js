@@ -46,10 +46,11 @@ import {
   SET_FEEDBACK_QUESTION,
   SET_OPINION_IS_REACTION,
   SET_COLLAPSE_TEXTMODULE,
-  SET_FEATURED_ALT_HOMEIMAGE,
+  SET_FEATURED_ALT_IMAGE,
   SET_FEATURED_EXCERPT,
   SET_FEATURED_LINK_CTA,
   SET_FEATURED_TITLE,
+  SET_FEATURED_IMAGE_UUID,
 } from "../constants";
 
 export const setPageModuleHeaderNewTab = (payload) => ({
@@ -293,11 +294,16 @@ export const setFeaturedExcerpt = (payload) => ({
   type: SET_FEATURED_EXCERPT,
   payload,
 });
-export const setFeaturedAltHomeImage = (payload) => ({
-  type: SET_FEATURED_ALT_HOMEIMAGE,
+export const setFeaturedAltImage = (payload) => ({
+  type: SET_FEATURED_ALT_IMAGE,
   payload,
 });
 export const setFeaturedLinkCta = (payload) => ({
   type: SET_FEATURED_LINK_CTA,
+  payload,
+});
+
+export const setFeaturedImageUuid = (payload) => ({
+  type: SET_FEATURED_IMAGE_UUID,
   payload,
 });

@@ -52,10 +52,11 @@ import {
   SET_COLLECTION_SEARCH_INPUT,
   SET_FEEDBACK_QUESTION,
   SET_COLLAPSE_TEXTMODULE,
-  SET_FEATURED_ALT_HOMEIMAGE,
+  SET_FEATURED_ALT_IMAGE,
   SET_FEATURED_EXCERPT,
   SET_FEATURED_LINK_CTA,
   SET_FEATURED_TITLE,
+  SET_FEATURED_IMAGE_UUID,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -265,7 +266,7 @@ const modulesReducer = (state = initialState, action = {}) => {
                 isOpenCloseModal: false,
                 featuredTitle: "",
                 featuredExcerpt: "",
-                altHomeImage: "",
+                featuredImageAlt: "",
                 link: { value: "", openNewTab: true },
               },
             ],
@@ -1262,13 +1263,13 @@ const modulesReducer = (state = initialState, action = {}) => {
       };
     }
 
-    case SET_FEATURED_ALT_HOMEIMAGE: {
+    case SET_FEATURED_ALT_IMAGE: {
       const { id, value } = action.payload;
       state.modulesList.find((module, index) => {
         if (module?.uuid === id) {
           oldState.modulesList[index] = {
             ...module,
-            altHomeImage: value,
+            featuredImageAlt: value,
             isChanged: true,
           };
         }
@@ -1291,6 +1292,24 @@ const modulesReducer = (state = initialState, action = {}) => {
                 openNewTab !== undefined ? openNewTab : module.link.openNewTab,
               value: value !== undefined ? value : module.link.value || "",
             },
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_FEATURED_IMAGE_UUID: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            featuredImageUuid: value.uuid,
+            featuredImageUrls: value.urls,
             isChanged: true,
           };
         }

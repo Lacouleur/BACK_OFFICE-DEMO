@@ -9,6 +9,7 @@ import {
   PAGE_SET_DISPLAY_TITLE,
   PAGE_SET_SUBTITLE,
   SET_FEEDBACK_RESULTS,
+  SET_AUTHORS_LIST,
 } from "../../constants";
 
 export const pageSetTitle = (payload) => ({
@@ -58,5 +59,10 @@ export const setIsPage = (payload) => ({
 
 export const setFeedbackResults = (payload) => ({
   type: SET_FEEDBACK_RESULTS,
+  payload,
+});
+
+export const setAuthorsList = (payload) => ({
+  type: SET_AUTHORS_LIST,
   payload,
 });

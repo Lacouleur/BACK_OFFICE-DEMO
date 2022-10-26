@@ -282,6 +282,7 @@ export function saveModule(uuid, request = "save") {
                   backgroundColor,
                   sticker,
                   featuredCategory,
+                  criteria,
                 } = module;
 
                 values = {
@@ -304,6 +305,23 @@ export function saveModule(uuid, request = "save") {
                         source: "FTV-internal",
                       }
                     : undefined,
+                  tags:
+                    checkForStringtoArray(criteria?.tags, "string") ||
+                    undefined,
+                  criteria: {
+                    ...criteria,
+                    limit: 1,
+                    page: 1,
+                    categories:
+                      checkForStringtoArray(criteria?.categories, "string") ||
+                      undefined,
+                    tags:
+                      checkForStringtoArray(criteria?.tags, "string") ||
+                      undefined,
+                    authors:
+                      checkForStringtoArray(criteria?.authors, "string") ||
+                      undefined,
+                  },
                   sticker,
                   backgroundColor,
                   featuredCategory,
@@ -542,6 +560,7 @@ export function saveModule(uuid, request = "save") {
                   backgroundColor,
                   sticker,
                   featuredCategory,
+                  criteria,
                 } = module;
 
                 values = {
@@ -563,6 +582,20 @@ export function saveModule(uuid, request = "save") {
                         source: "FTV-internal",
                       }
                     : undefined,
+                  criteria: {
+                    ...criteria,
+                    limit: 1,
+                    page: 1,
+                    categories:
+                      checkForStringtoArray(criteria?.categories, "string") ||
+                      undefined,
+                    tags:
+                      checkForStringtoArray(criteria?.tags, "string") ||
+                      undefined,
+                    authors:
+                      checkForStringtoArray(criteria?.authors, "string") ||
+                      undefined,
+                  },
                   backgroundColor,
                   featuredCategory,
                   sticker,

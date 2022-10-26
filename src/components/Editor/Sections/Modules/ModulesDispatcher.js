@@ -353,6 +353,30 @@ const ModulesDispatcher = ({
                         backgroundColor={module?.backgroundColor}
                         sticker={module?.sticker}
                         featuredCategory={module?.featuredCategory}
+                        tags={
+                          module?.criteria?.tags
+                            ? checkForStringtoArray(
+                                module?.criteria?.tags,
+                                "array"
+                              )
+                            : undefined
+                        }
+                        categories={
+                          module?.criteria?.categories
+                            ? checkForStringtoArray(
+                                module?.criteria?.categories,
+                                "array"
+                              )
+                            : undefined
+                        }
+                        authors={
+                          module?.criteria?.authors
+                            ? checkForStringtoArray(
+                                module?.criteria?.authors,
+                                "array"
+                              )
+                            : undefined
+                        }
                       />
                     </div>
                   );

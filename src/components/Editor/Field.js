@@ -35,6 +35,7 @@ import exclamationIcon from "../../styles/assets/icons/exclamationGrey.svg";
 import exclamationVioletIcon from "../../styles/assets/icons/exclamation.svg";
 import {
   createTag,
+  fetchAuthorsList,
   fetchCategoriesList,
   fetchTags,
 } from "../../store/actions/thunk/ArticlesActions.thunk";
@@ -57,14 +58,11 @@ import {
   initMultiSelectors,
   checkAndDisable,
 } from "../../helper/fieldsHelper";
+import { setTags, setNewTag } from "../../store/actions/mainInformationActions";
 import {
-  setAuthors,
-  setTags,
-  setNewTag,
-} from "../../store/actions/mainInformationActions";
-import {
-  setCollectionCategories,
-  setCollectionTags,
+  setModuleCategories,
+  setModuleTags,
+  setModuleAuthors,
 } from "../../store/actions/moduleActions";
 
 // Field.js is a unique file for all types of fields in the app.
@@ -169,6 +167,10 @@ const Field = ({
       }
       if (name === "categories" && categoriesList?.length === 0) {
         dispatch(fetchCategoriesList(lang));
+      }
+
+      if (name === "authors" && authorsList?.length === 0) {
+        dispatch(fetchAuthorsList(lang));
       }
     }
   }, [fieldType, lang]);
@@ -400,7 +402,9 @@ const Field = ({
                   } else {
                     setSelectedAuthors(event);
                   }
-                  dispatch(setAuthors(dispatchElementsValue(event || [])));
+                  dispatch(
+                    setModuleAuthors(dispatchElementsValue(event || []))
+                  );
                 }}
               />
             </>
@@ -433,7 +437,7 @@ const Field = ({
                     setSelectedCategories(event);
                   }
                   dispatch(
-                    setCollectionCategories({
+                    setModuleCategories({
                       id: moduleId,
                       value: dispatchElementsValue(event || []),
                     })
@@ -444,40 +448,41 @@ const Field = ({
           )}
 
           {/* Tag selector without creation */}
-          {name === "tags" && section === "collection" && (
-            <>
-              <MultiSelector
-                classNamePrefix="select"
-                isMulti
-                isSearchable
-                components={animatedComponents}
-                closeMenuOnSelect={false}
-                placeholder={placeholder}
-                defaultValue={selectedTagsCollection}
-                value={selectedTagsCollection}
-                getOptionValue={(option) => `${option.label}`}
-                fuzzyOptions={fuzzyOptions}
-                autoCorrect="off"
-                spellCheck="off"
-                defaultOptions={tagsList}
-                options={tagsList}
-                loadOptions={(value) => loadOptions(value, fuse)}
-                onChange={(event) => {
-                  if (!event) {
-                    setSelectedTagsCollection([]);
-                  } else {
-                    setSelectedTagsCollection(event);
-                  }
-                  dispatch(
-                    setCollectionTags({
-                      id: moduleId,
-                      value: dispatchElementsId(event || []),
-                    })
-                  );
-                }}
-              />
-            </>
-          )}
+          {name === "tags" &&
+            (section === "collection" || section === "featured") && (
+              <>
+                <MultiSelector
+                  classNamePrefix="select"
+                  isMulti
+                  isSearchable
+                  components={animatedComponents}
+                  closeMenuOnSelect={false}
+                  placeholder={placeholder}
+                  defaultValue={selectedTagsCollection}
+                  value={selectedTagsCollection}
+                  getOptionValue={(option) => `${option.label}`}
+                  fuzzyOptions={fuzzyOptions}
+                  autoCorrect="off"
+                  spellCheck="off"
+                  defaultOptions={tagsList}
+                  options={tagsList}
+                  loadOptions={(value) => loadOptions(value, fuse)}
+                  onChange={(event) => {
+                    if (!event) {
+                      setSelectedTagsCollection([]);
+                    } else {
+                      setSelectedTagsCollection(event);
+                    }
+                    dispatch(
+                      setModuleTags({
+                        id: moduleId,
+                        value: dispatchElementsId(event || []),
+                      })
+                    );
+                  }}
+                />
+              </>
+            )}
         </FieldBox>
       )}
       {/* text area fields */}

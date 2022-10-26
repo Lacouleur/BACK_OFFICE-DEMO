@@ -29,8 +29,8 @@ import {
   SET_PAGE_MODULE_HEADER_TITLE,
   SET_CTA_IMAGE_UUID,
   SET_CTA_ALT_IMAGE,
-  SET_COLLECTION_CATEGORIES,
-  SET_COLLECTION_TAGS,
+  SET_MODULE_CATEGORIES,
+  SET_MODULE_TAGS,
   SET_COLLECTION_LIMIT,
   SET_COLLECTION_TYPE,
   SET_COLLECTION_FORMAT,
@@ -54,6 +54,7 @@ import {
   SET_FEATURED_BACKGROUND_COLOR,
   SET_FEATURED_STICKER,
   SET_FEATURED_CATEGORY,
+  SET_MODULE_AUTHORS,
 } from "../constants";
 
 export const setPageModuleHeaderNewTab = (payload) => ({
@@ -224,13 +225,18 @@ export const setCtaType = (payload) => ({
   payload,
 });
 
-export const setCollectionCategories = (payload) => ({
-  type: SET_COLLECTION_CATEGORIES,
+export const setModuleCategories = (payload) => ({
+  type: SET_MODULE_CATEGORIES,
   payload,
 });
 
-export const setCollectionTags = (payload) => ({
-  type: SET_COLLECTION_TAGS,
+export const setModuleTags = (payload) => ({
+  type: SET_MODULE_TAGS,
+  payload,
+});
+
+export const setModuleAuthors = (payload) => ({
+  type: SET_MODULE_AUTHORS,
   payload,
 });
 

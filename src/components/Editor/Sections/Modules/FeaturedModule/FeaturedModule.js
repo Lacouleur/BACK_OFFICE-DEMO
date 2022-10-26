@@ -59,6 +59,9 @@ const FeaturedModule = ({
   backgroundColor,
   sticker,
   featuredCategory,
+  tags,
+  categories,
+  authors,
 }) => {
   const dispatch = useDispatch();
   const featuredModuleRef = useRef(null);
@@ -265,7 +268,7 @@ const FeaturedModule = ({
           moduleId={uuid}
         />
 
-        {/* AUTOMATIC SECTION */}
+        {/* AUTOMATIC SECTION HEADER */}
         <SeparatorWhite />
         <InnerSectionTitleBox>
           <InnerSectionTitle> automatic -</InnerSectionTitle>
@@ -273,6 +276,36 @@ const FeaturedModule = ({
             Content will be self generated folowing your selected filters
           </InnerSectionDescritpion>
         </InnerSectionTitleBox>
+
+        {/* CATEGORY MULTI SELECTOR */}
+        <Field
+          placeholder="Category to call"
+          name="categories"
+          section="featured"
+          fieldType="multi-value"
+          moduleId={uuid}
+          edit={categories || null}
+        />
+
+        {/* TAGS MULTI SELECTOR */}
+        <Field
+          placeholder="Tags to call"
+          name="tags"
+          section="featured"
+          fieldType="multi-value"
+          moduleId={uuid}
+          edit={tags || ""}
+        />
+
+        {/* AUTHORS MULTI SELECTOR */}
+        <Field
+          placeholder="Authors to call"
+          name="authors"
+          section="featured"
+          fieldType="multi-value"
+          moduleId={uuid}
+          edit={authors || ""}
+        />
       </SectionBox>
     </ModuleContainer>
   );
@@ -284,6 +317,9 @@ FeaturedModule.defaultProps = {
   backgroundColor: "",
   sticker: undefined,
   featuredCategory: undefined,
+  tags: undefined,
+  categories: undefined,
+  authors: undefined,
 };
 
 FeaturedModule.propTypes = {
@@ -306,6 +342,9 @@ FeaturedModule.propTypes = {
   backgroundColor: PropTypes.string,
   sticker: PropTypes.string,
   featuredCategory: PropTypes.string,
+  tags: PropTypes.arrayOf(PropTypes.string),
+  categories: PropTypes.arrayOf(PropTypes.string),
+  authors: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default FeaturedModule;

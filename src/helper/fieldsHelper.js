@@ -745,7 +745,7 @@ export async function initMultiSelectors(
   if (fieldType === "multi-value") {
     switch (name) {
       case "tags": {
-        if (section === "collection") {
+        if (section === "collection" || section === "featured") {
           initTagsSelector(
             edit,
             setSelectedTagsCollection,

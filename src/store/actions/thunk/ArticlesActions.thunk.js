@@ -1,5 +1,6 @@
 import {
   deleteContent,
+  getAuthors,
   getCategories,
   getContent,
   getContentList,
@@ -36,6 +37,7 @@ import {
   setUsers,
   setNewTag,
   setTags,
+  setAuthorsList,
 } from "../mainInformationActions";
 
 import { deleteToken } from "../../../services/client/tokenStuff";
@@ -452,6 +454,29 @@ export function fetchCategoriesList(lang) {
         const response = await getCategories(lang);
         if (response.status < 300 && response.status > 199) {
           dispatch(setCategoriesList(response.data));
+        }
+        return null;
+      } catch (error) {
+        if (error?.response?.status === 401) {
+          console.error("%cError =>", `${consoleError}`, error?.response?.data);
+          deleteToken(dispatch);
+        }
+        return null;
+      }
+    }
+    return null;
+  };
+}
+
+export function fetchAuthorsList(lang) {
+  return async (dispatch) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
+      try {
+        const response = await getAuthors(lang);
+        if (response.status < 300 && response.status > 199) {
+          console.warn(response.data);
+          dispatch(setAuthorsList(response.data));
         }
         return null;
       } catch (error) {

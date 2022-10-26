@@ -101,6 +101,14 @@ export function getTags(lang) {
   });
 }
 
+export function getAuthors(lang) {
+  return axiosConfig.get(`/users?lang=${lang}?`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+}
+
 export function postManifesto(values, lang) {
   let string = "";
   if (lang) {

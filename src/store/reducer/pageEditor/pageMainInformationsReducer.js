@@ -18,6 +18,7 @@ import {
   PAGE_SET_DISPLAY_TITLE,
   PAGE_SET_SUBTITLE,
   SET_FEEDBACK_RESULTS,
+  SET_AUTHORS_LIST,
 } from "../../constants";
 import { verifySlug } from "../../../helper/auth/verifyFields";
 import { harmonizeLang } from "../../../helper/fieldsHelper";
@@ -34,6 +35,7 @@ const initialState = {
   // Array
   categoriesList: [],
   tagsList: [],
+  authorsList: [],
   feedBackResults: [],
 
   // bool
@@ -194,6 +196,19 @@ const pageMainInformationReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         modified: action.payload,
+      };
+    }
+
+    case SET_AUTHORS_LIST: {
+      const userList = action.payload;
+      const authorsList = [];
+      userList.map((user) => {
+        authorsList.push({ value: user._id, label: user.name });
+      });
+      return {
+        ...oldState,
+        authorsList,
+        isChanged: true,
       };
     }
 

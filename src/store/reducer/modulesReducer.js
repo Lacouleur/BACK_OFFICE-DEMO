@@ -37,8 +37,8 @@ import {
   SET_PAGE_MODULE_HEADER_TITLE,
   SET_CTA_IMAGE_UUID,
   SET_CTA_ALT_IMAGE,
-  SET_COLLECTION_CATEGORIES,
-  SET_COLLECTION_TAGS,
+  SET_MODULE_CATEGORIES,
+  SET_MODULE_TAGS,
   SET_COLLECTION_LIMIT,
   EDIT_MODULES_LIST,
   SET_COLLECTION_TYPE,
@@ -60,6 +60,7 @@ import {
   SET_FEATURED_BACKGROUND_COLOR,
   SET_FEATURED_STICKER,
   SET_FEATURED_CATEGORY,
+  SET_MODULE_AUTHORS,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -976,7 +977,7 @@ const modulesReducer = (state = initialState, action = {}) => {
       };
     }
 
-    case SET_COLLECTION_CATEGORIES: {
+    case SET_MODULE_CATEGORIES: {
       const { id, value } = action.payload;
       state.modulesList.find((module, index) => {
         if (module?.uuid === id) {
@@ -997,7 +998,7 @@ const modulesReducer = (state = initialState, action = {}) => {
       };
     }
 
-    case SET_COLLECTION_TAGS: {
+    case SET_MODULE_TAGS: {
       const { id, value } = action.payload;
       state.modulesList.find((module, index) => {
         if (module?.uuid === id) {
@@ -1006,6 +1007,27 @@ const modulesReducer = (state = initialState, action = {}) => {
             criteria: {
               ...module.criteria,
               tags: value,
+            },
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_MODULE_AUTHORS: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            criteria: {
+              ...module.criteria,
+              authors: value,
             },
             isChanged: true,
           };

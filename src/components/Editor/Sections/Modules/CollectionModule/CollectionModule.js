@@ -133,13 +133,16 @@ const CollectionModule = ({
         </SectionTitle>
         {!isOpen && <Gradient />}
         {isPage && (
-          <HeaderSectionPage
-            uuid={uuid}
-            title={title}
-            subtitle={subtitle}
-            url={url}
-            openNewTabHeader={openNewTabHeader}
-          />
+          <>
+            {/* HEADER FIELDS - TITLE-SUBTITLE-URL */}
+            <HeaderSectionPage
+              uuid={uuid}
+              title={title}
+              subtitle={subtitle}
+              url={url}
+              openNewTabHeader={openNewTabHeader}
+            />
+          </>
         )}
 
         <CollectionSectionTitleBox>

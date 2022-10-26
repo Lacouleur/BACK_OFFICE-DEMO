@@ -279,6 +279,7 @@ export function saveModule(uuid, request = "save") {
                   link,
                   featuredImageUuid,
                   featuredImageAlt,
+                  backgroundColor,
                 } = module;
 
                 values = {
@@ -301,6 +302,7 @@ export function saveModule(uuid, request = "save") {
                         source: "FTV-internal",
                       }
                     : undefined,
+                  backgroundColor,
                   order,
                 };
                 isNewModule = true;
@@ -533,9 +535,9 @@ export function saveModule(uuid, request = "save") {
                   order,
                   featuredTitle,
                   featuredExcerpt,
-                  featuredImageUuid,
-                  featuredImageAlt,
+                  image,
                   link,
+                  backgroundColor,
                 } = module;
 
                 values = {
@@ -550,13 +552,14 @@ export function saveModule(uuid, request = "save") {
                         openNewTab: link.openNewTab,
                       }
                     : undefined,
-                  image: featuredImageUuid
+                  image: image.uuid
                     ? {
-                        uuid: featuredImageUuid || undefined,
-                        alt: featuredImageAlt || undefined,
+                        uuid: image.uuid,
+                        alt: image.alt || undefined,
                         source: "FTV-internal",
                       }
                     : undefined,
+                  backgroundColor,
                   order,
                 };
                 isChanged = true;

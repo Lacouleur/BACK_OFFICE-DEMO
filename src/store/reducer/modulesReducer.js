@@ -57,6 +57,7 @@ import {
   SET_FEATURED_LINK_CTA,
   SET_FEATURED_TITLE,
   SET_FEATURED_IMAGE_UUID,
+  SET_FEATURED_BACKGROUND_COLOR,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -1269,7 +1270,10 @@ const modulesReducer = (state = initialState, action = {}) => {
         if (module?.uuid === id) {
           oldState.modulesList[index] = {
             ...module,
-            featuredImageAlt: value,
+            image: {
+              ...module.image,
+              alt: value,
+            },
             isChanged: true,
           };
         }
@@ -1308,13 +1312,34 @@ const modulesReducer = (state = initialState, action = {}) => {
         if (module?.uuid === id) {
           oldState.modulesList[index] = {
             ...module,
-            featuredImageUuid: value.uuid,
-            featuredImageUrls: value.urls,
+            image: {
+              ...module.image,
+              urls: value.urls,
+              uuid: value.uuid,
+            },
             isChanged: true,
           };
         }
         return null;
       });
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_FEATURED_BACKGROUND_COLOR: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            backgroundColor: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
       return {
         ...oldState,
       };

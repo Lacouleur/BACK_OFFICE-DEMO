@@ -38,6 +38,7 @@ import {
   setFeaturedAltImage,
   setFeaturedExcerpt,
   setFeaturedLinkCta,
+  setFeaturedBackgroundColor,
 } from "../store/actions/moduleActions";
 import {
   setDisplayedName,
@@ -135,7 +136,9 @@ export function onEdit(
   setSelectedCtaType,
   selectedCtaType,
   selectedBackgroundColor,
-  setSelectedBackgroundColor
+  setSelectedBackgroundColor,
+  selectedFeaturedBackgroundColor,
+  setSelectedFeaturedBackgroundColor
 ) {
   if (edit) {
     setFileTitle(edit);
@@ -203,6 +206,16 @@ export function onEdit(
     backgroundColorsList.map((option) => {
       if (edit === option.value) {
         setSelectedBackgroundColor(option);
+        return null;
+      }
+      return null;
+    });
+  }
+
+  if (!selectedFeaturedBackgroundColor) {
+    backgroundColorsList.map((option) => {
+      if (edit === option.value) {
+        setSelectedFeaturedBackgroundColor(option);
         return null;
       }
       return null;
@@ -292,7 +305,8 @@ export function valueSelector(
   selectedCollectionType,
   selectedCollectionFormat,
   selectedCtaType,
-  selectedBackgroundColor
+  selectedBackgroundColor,
+  selectedFeaturedBackgroundColor
 ) {
   switch (name) {
     case "category":
@@ -318,6 +332,9 @@ export function valueSelector(
 
     case "backgroundColor":
       return selectedBackgroundColor;
+
+    case "featuredBackgroundColor":
+      return selectedFeaturedBackgroundColor;
 
     default:
       return null;
@@ -374,6 +391,10 @@ export function optionSelector(name, list) {
 
     case "backgroundColor":
       return backgroundColorsList;
+
+    case "featuredBackgroundColor":
+      return backgroundColorsList;
+
     default:
       return null;
   }
@@ -392,6 +413,7 @@ export function dispatchSelected(
   setSelectedCollectionFormat,
   setSelectedCtaType,
   setSelectedBackgroundColor,
+  setSelectedFeaturedBackgroundColor,
   moduleId
 ) {
   const { value } = event;
@@ -435,6 +457,11 @@ export function dispatchSelected(
       case "backgroundColor":
         setSelectedBackgroundColor(event);
         dispatch(setBackgroundColor(value));
+        break;
+
+      case "featuredBackgroundColor":
+        setSelectedFeaturedBackgroundColor(event);
+        dispatch(setFeaturedBackgroundColor({ id: moduleId, value }));
         break;
 
       default:

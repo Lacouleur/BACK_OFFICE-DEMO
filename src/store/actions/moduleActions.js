@@ -51,6 +51,7 @@ import {
   SET_FEATURED_LINK_CTA,
   SET_FEATURED_TITLE,
   SET_FEATURED_IMAGE_UUID,
+  SET_FEATURED_BACKGROUND_COLOR,
 } from "../constants";
 
 export const setPageModuleHeaderNewTab = (payload) => ({
@@ -305,5 +306,10 @@ export const setFeaturedLinkCta = (payload) => ({
 
 export const setFeaturedImageUuid = (payload) => ({
   type: SET_FEATURED_IMAGE_UUID,
+  payload,
+});
+
+export const setFeaturedBackgroundColor = (payload) => ({
+  type: SET_FEATURED_BACKGROUND_COLOR,
   payload,
 });

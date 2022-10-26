@@ -162,13 +162,16 @@ const CtaModule = ({
         </SectionTitle>
         {!isOpen && <Gradient />}
         {isPage && (
-          <HeaderSectionPage
-            uuid={uuid}
-            title={title}
-            subtitle={subtitle}
-            url={url}
-            openNewTabHeader={openNewTabHeader}
-          />
+          <>
+            {/* HEADER FIELDS - TITLE-SUBTITLE-URL */}
+            <HeaderSectionPage
+              uuid={uuid}
+              title={title}
+              subtitle={subtitle}
+              url={url}
+              openNewTabHeader={openNewTabHeader}
+            />
+          </>
         )}
 
         <Field
@@ -219,7 +222,8 @@ const CtaModule = ({
                       value: !openNewTab,
                       type: "content",
                     })
-                  )}
+                  )
+                }
                 isChecked={openNewTab}
                 componentId={`cta-switch-${uuid}`}
                 displayedText="Open in new window"
@@ -246,8 +250,7 @@ const CtaModule = ({
                     value: !openNewTab,
                     type: "page",
                   })
-                )
-              }
+                )}
               isChecked={openNewTab}
               componentId={`cta-switch-${uuid}`}
               displayedText="Open in new window"

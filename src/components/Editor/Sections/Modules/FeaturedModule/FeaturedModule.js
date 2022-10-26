@@ -29,7 +29,11 @@ import { FormTitle } from "../../../../../styles/styledComponents/global/Titles.
 import Field from "../../../Field";
 import HeaderSectionPage from "../HeaderSectionPage";
 import SwitchButton from "../../../../Tools/Switch";
-import { ImageFieldBox } from "../../../../../styles/styledComponents/global/Field.sc";
+import {
+  ColorFieldBox,
+  ImageFieldBox,
+  VisualiseColorStyle,
+} from "../../../../../styles/styledComponents/global/Field.sc";
 
 const FeaturedModule = ({
   uuid,
@@ -48,6 +52,7 @@ const FeaturedModule = ({
   openNewTabHeader,
   featuredImageThumbnailUrl,
   featuredImageUuid,
+  backgroundColor,
 }) => {
   const dispatch = useDispatch();
   const featuredModuleRef = useRef(null);
@@ -138,6 +143,7 @@ const FeaturedModule = ({
         </SectionTitle>
         {!isOpen && <Gradient />}
 
+        {/* HEADER FIELDS - TITLE-SUBTITLE-URL */}
         <HeaderSectionPage
           uuid={uuid}
           title={title}
@@ -146,6 +152,7 @@ const FeaturedModule = ({
           openNewTabHeader={openNewTabHeader}
         />
 
+        {/* TITLE FIELD */}
         <Field
           placeholder="Custom Title"
           name="title"
@@ -154,6 +161,7 @@ const FeaturedModule = ({
           moduleId={uuid}
         />
 
+        {/* EXCERPT FIELD */}
         <Field
           placeholder="Custom Title"
           name="excerpt"
@@ -161,6 +169,7 @@ const FeaturedModule = ({
           edit={featuredExcerpt || ""}
           moduleId={uuid}
         />
+
         {/* FEATURED IMAGE FIELD & ALT */}
         <ImageFieldBox>
           <Field
@@ -185,6 +194,25 @@ const FeaturedModule = ({
           edit={featuredImageAlt || ""}
           moduleId={uuid}
         />
+
+        {/* BACKGROUND COLOR FIELD */}
+        <ColorFieldBox>
+          <Field
+            placeholder="Background Color"
+            name="featuredBackgroundColor"
+            section="featured"
+            fieldType="select"
+            edit={backgroundColor || undefined}
+            moduleId={uuid}
+          />
+          {backgroundColor && (
+            <>
+              <VisualiseColorStyle variant={backgroundColor} />
+            </>
+          )}
+        </ColorFieldBox>
+
+        {/* FEATURED LINK FIELD AND SWITCH */}
         <FieldAndSwitchContainer>
           <Field
             placeholder="Custom Title"
@@ -215,6 +243,7 @@ const FeaturedModule = ({
 FeaturedModule.defaultProps = {
   featuredImageThumbnailUrl: undefined,
   featuredImageUuid: undefined,
+  backgroundColor: "",
 };
 
 FeaturedModule.propTypes = {
@@ -234,6 +263,7 @@ FeaturedModule.propTypes = {
   openNewTabHeader: PropTypes.bool.isRequired,
   featuredImageThumbnailUrl: PropTypes.string,
   featuredImageUuid: PropTypes.string,
+  backgroundColor: PropTypes.string,
 };
 
 export default FeaturedModule;

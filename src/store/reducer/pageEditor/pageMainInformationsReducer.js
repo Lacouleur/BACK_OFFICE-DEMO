@@ -208,7 +208,6 @@ const pageMainInformationReducer = (state = initialState, action = {}) => {
       return {
         ...oldState,
         authorsList,
-        isChanged: true,
       };
     }
 

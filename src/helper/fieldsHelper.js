@@ -41,6 +41,7 @@ import {
   setFeaturedBackgroundColor,
   setFeaturedSticker,
   setFeaturedCategory,
+  setFeaturedSlug,
 } from "../store/actions/moduleActions";
 import {
   setDisplayedName,
@@ -124,7 +125,7 @@ export const backgroundColorsList = [
 export const stickerList = [
   {
     label: "Nouvel Article",
-    value: "newArticle",
+    value: "new-article",
   },
 ];
 // match selection with current list for simple selector fields.
@@ -660,6 +661,10 @@ export function dispatchFields(
 
     case name === "featuredCategory" && section === "featured":
       dispatch(setFeaturedCategory({ id: moduleId, value }));
+      break;
+
+    case name === "slug" && section === "featured":
+      dispatch(setFeaturedSlug({ id: moduleId, value }));
       break;
 
     // PAGE EDITOR

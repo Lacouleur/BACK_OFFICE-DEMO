@@ -403,7 +403,10 @@ const Field = ({
                     setSelectedAuthors(event);
                   }
                   dispatch(
-                    setModuleAuthors(dispatchElementsValue(event || []))
+                    setModuleAuthors({
+                      value: dispatchElementsValue(event || []),
+                      moduleId,
+                    })
                   );
                 }}
               />

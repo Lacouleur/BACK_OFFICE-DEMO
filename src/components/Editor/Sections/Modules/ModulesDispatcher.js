@@ -377,6 +377,7 @@ const ModulesDispatcher = ({
                               )
                             : undefined
                         }
+                        slug={module?.criteria?.slug}
                       />
                     </div>
                   );

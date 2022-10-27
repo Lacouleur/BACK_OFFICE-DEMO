@@ -61,6 +61,7 @@ import {
   SET_FEATURED_STICKER,
   SET_FEATURED_CATEGORY,
   SET_MODULE_AUTHORS,
+  SET_FEATURED_SLUG,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -1020,9 +1021,9 @@ const modulesReducer = (state = initialState, action = {}) => {
     }
 
     case SET_MODULE_AUTHORS: {
-      const { id, value } = action.payload;
+      const { moduleId, value } = action.payload;
       state.modulesList.find((module, index) => {
-        if (module?.uuid === id) {
+        if (module?.uuid === moduleId) {
           oldState.modulesList[index] = {
             ...module,
             criteria: {
@@ -1376,6 +1377,27 @@ const modulesReducer = (state = initialState, action = {}) => {
           oldState.modulesList[index] = {
             ...module,
             sticker: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_FEATURED_SLUG: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            criteria: {
+              ...module.criteria,
+              slug: value,
+            },
             isChanged: true,
           };
         }

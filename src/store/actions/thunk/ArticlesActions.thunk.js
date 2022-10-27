@@ -468,14 +468,13 @@ export function fetchCategoriesList(lang) {
   };
 }
 
-export function fetchAuthorsList(lang) {
+export function fetchAuthorsList(lang = "fr") {
   return async (dispatch) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
       try {
         const response = await getAuthors(lang);
         if (response.status < 300 && response.status > 199) {
-          console.warn(response.data);
           dispatch(setAuthorsList(response.data));
         }
         return null;

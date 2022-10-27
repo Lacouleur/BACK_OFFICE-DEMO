@@ -38,6 +38,7 @@ import {
   ImageFieldBox,
   VisualiseColorStyle,
 } from "../../../../../styles/styledComponents/global/Field.sc";
+import { fetchAuthorsList } from "../../../../../store/actions/thunk/ArticlesActions.thunk";
 
 const FeaturedModule = ({
   uuid,
@@ -62,6 +63,7 @@ const FeaturedModule = ({
   tags,
   categories,
   authors,
+  slug,
 }) => {
   const dispatch = useDispatch();
   const featuredModuleRef = useRef(null);
@@ -90,7 +92,11 @@ const FeaturedModule = ({
 
   useEffect(() => {
     watchNewModules(isNewModule, featuredModuleRef, setIsOpen);
-  }, [isNewModule]);
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchAuthorsList());
+  }, []);
 
   useEffect(() => {
     dispatch(setAModuleIsOpen(isOpen));
@@ -227,7 +233,7 @@ const FeaturedModule = ({
           name="sticker"
           section="featured"
           fieldType="select"
-          edit={sticker || "newArticle"}
+          edit={sticker || "new-article"}
           moduleId={uuid}
           isClearable={false}
           isDisabled
@@ -306,6 +312,24 @@ const FeaturedModule = ({
           moduleId={uuid}
           edit={authors || ""}
         />
+
+        {/* CUSTOM SECTION HEADER */}
+        <SeparatorWhite />
+        <InnerSectionTitleBox>
+          <InnerSectionTitle> CUSTOM -</InnerSectionTitle>
+          <InnerSectionDescritpion>
+            Copy and past the slug of the article to highlight
+          </InnerSectionDescritpion>
+        </InnerSectionTitleBox>
+
+        {/* CUSTOM SLUG FIELD */}
+        <Field
+          placeholder="article-slug"
+          name="slug"
+          section="featured"
+          edit={slug}
+          moduleId={uuid}
+        />
       </SectionBox>
     </ModuleContainer>
   );
@@ -320,6 +344,7 @@ FeaturedModule.defaultProps = {
   tags: undefined,
   categories: undefined,
   authors: undefined,
+  slug: undefined,
 };
 
 FeaturedModule.propTypes = {
@@ -345,6 +370,7 @@ FeaturedModule.propTypes = {
   tags: PropTypes.arrayOf(PropTypes.string),
   categories: PropTypes.arrayOf(PropTypes.string),
   authors: PropTypes.arrayOf(PropTypes.string),
+  slug: PropTypes.string,
 };
 
 export default FeaturedModule;

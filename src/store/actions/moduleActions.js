@@ -55,6 +55,7 @@ import {
   SET_FEATURED_STICKER,
   SET_FEATURED_CATEGORY,
   SET_MODULE_AUTHORS,
+  SET_FEATURED_SLUG,
 } from "../constants";
 
 export const setPageModuleHeaderNewTab = (payload) => ({
@@ -329,5 +330,10 @@ export const setFeaturedSticker = (payload) => ({
 
 export const setFeaturedCategory = (payload) => ({
   type: SET_FEATURED_CATEGORY,
+  payload,
+});
+
+export const setFeaturedSlug = (payload) => ({
+  type: SET_FEATURED_SLUG,
   payload,
 });

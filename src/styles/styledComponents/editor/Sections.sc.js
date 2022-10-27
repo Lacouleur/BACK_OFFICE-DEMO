@@ -143,7 +143,6 @@ const avatarMixin = css`
   cursor: not-allowed;
   box-shadow: 0px 0px 31px 2px ${colors.shadow};
   bottom: 260px;
-  height: 80px;
   transform: translate(50%, 50%);
 `;
 

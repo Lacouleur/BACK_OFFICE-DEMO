@@ -14,8 +14,12 @@ const colors = {
   shadow: "#121212",
   deepBlue: "#2958E5",
   green: "#03DAC5",
+  primaryGreen: "#92FFA3",
   matBlack: "#1b1b1b",
-  orange: "#F79D00",
+  orange: "#FF7E5C",
+  pink: "#FFBBE7",
+  yellow: "#FFE600",
+  blue: "#A0E8F4",
 };
 
 export default colors;

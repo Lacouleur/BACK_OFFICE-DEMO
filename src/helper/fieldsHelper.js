@@ -4,6 +4,9 @@ import {
   setHomeShortDescription,
   setNavImageAlt,
   setReadingTime,
+  setBackgroundColor,
+  setSocialImageAlt,
+  setTransparentImageAlt,
 } from "../store/actions/homeNavigationActions";
 import {
   addCategory,
@@ -31,6 +34,14 @@ import {
   setCollectionLimit,
   setCtaType,
   setFeedbackQuestion,
+  setFeaturedTitle,
+  setFeaturedAltImage,
+  setFeaturedExcerpt,
+  setFeaturedLinkCta,
+  setFeaturedBackgroundColor,
+  setFeaturedSticker,
+  setFeaturedCategory,
+  setFeaturedSlug,
 } from "../store/actions/moduleActions";
 import {
   setDisplayedName,
@@ -88,6 +99,35 @@ export const collectionFormatList = [
   }, */
 ];
 
+export const backgroundColorsList = [
+  {
+    label: "Pink",
+    value: "pink",
+  },
+  {
+    label: "Green",
+    value: "green",
+  },
+  {
+    label: "Yellow",
+    value: "yellow",
+  },
+  {
+    label: "Orange",
+    value: "orange",
+  },
+  {
+    label: "Blue",
+    value: "blue",
+  },
+];
+
+export const stickerList = [
+  {
+    label: "Nouvel Article",
+    value: "new-article",
+  },
+];
 // match selection with current list for simple selector fields.
 export function onEdit(
   edit,
@@ -103,10 +143,26 @@ export function onEdit(
   setSelectedCollectionFormat,
   selectedCollectionFormat,
   setSelectedCtaType,
-  selectedCtaType
+  selectedCtaType,
+  selectedBackgroundColor,
+  setSelectedBackgroundColor,
+  selectedFeaturedBackgroundColor,
+  setSelectedFeaturedBackgroundColor,
+  selectedSticker,
+  setSelectedSticker
 ) {
   if (edit) {
     setFileTitle(edit);
+  }
+
+  if (!selectedSticker) {
+    stickerList.map((option) => {
+      if (edit === option.value) {
+        setSelectedSticker(option);
+        return null;
+      }
+      return null;
+    });
   }
 
   if (!selectedCollectionType) {
@@ -161,6 +217,26 @@ export function onEdit(
     colorStyleList.map((option) => {
       if (edit === option.value) {
         setSelectedColorStyle(option);
+        return null;
+      }
+      return null;
+    });
+  }
+
+  if (!selectedBackgroundColor) {
+    backgroundColorsList.map((option) => {
+      if (edit === option.value) {
+        setSelectedBackgroundColor(option);
+        return null;
+      }
+      return null;
+    });
+  }
+
+  if (!selectedFeaturedBackgroundColor) {
+    backgroundColorsList.map((option) => {
+      if (edit === option.value) {
+        setSelectedFeaturedBackgroundColor(option);
         return null;
       }
       return null;
@@ -249,9 +325,15 @@ export function valueSelector(
   selectedColorStyle,
   selectedCollectionType,
   selectedCollectionFormat,
-  selectedCtaType
+  selectedCtaType,
+  selectedBackgroundColor,
+  selectedFeaturedBackgroundColor,
+  selectedSticker
 ) {
   switch (name) {
+    case "sticker":
+      return selectedSticker;
+
     case "category":
       return editCategory;
 
@@ -272,6 +354,12 @@ export function valueSelector(
 
     case "ctaType":
       return selectedCtaType;
+
+    case "backgroundColor":
+      return selectedBackgroundColor;
+
+    case "featuredBackgroundColor":
+      return selectedFeaturedBackgroundColor;
 
     default:
       return null;
@@ -326,6 +414,15 @@ export function optionSelector(name, list) {
     case "ctaType":
       return primarySecondaryTypeList;
 
+    case "backgroundColor":
+      return backgroundColorsList;
+
+    case "featuredBackgroundColor":
+      return backgroundColorsList;
+
+    case "sticker":
+      return stickerList;
+
     default:
       return null;
   }
@@ -343,11 +440,19 @@ export function dispatchSelected(
   setSelectedCollectionType,
   setSelectedCollectionFormat,
   setSelectedCtaType,
+  setSelectedBackgroundColor,
+  setSelectedFeaturedBackgroundColor,
+  setSelectedSticker,
   moduleId
 ) {
   const { value } = event;
   if (value) {
     switch (name) {
+      case "sticker":
+        setSelectedSticker(event);
+        dispatch(setFeaturedSticker({ id: moduleId, value }));
+        break;
+
       case "category":
         setEditCategory(event);
         dispatch(addCategory(value));
@@ -381,6 +486,16 @@ export function dispatchSelected(
       case "ctaType":
         setSelectedCtaType(event);
         dispatch(setCtaType({ id: moduleId, value }));
+        break;
+
+      case "backgroundColor":
+        setSelectedBackgroundColor(event);
+        dispatch(setBackgroundColor(value));
+        break;
+
+      case "featuredBackgroundColor":
+        setSelectedFeaturedBackgroundColor(event);
+        dispatch(setFeaturedBackgroundColor({ id: moduleId, value }));
         break;
 
       default:
@@ -438,10 +553,6 @@ export function dispatchFields(
       dispatch(setReadingTime(value));
       break;
 
-    case name === "altImage" && section === "imageModule":
-      dispatch(setAltImage({ id: moduleId, value }));
-      break;
-
     case name === "altHomeImage" && section === "homeNavigation":
       dispatch(setHomeImageAlt(value));
       break;
@@ -449,6 +560,16 @@ export function dispatchFields(
     case name === "altNavImage" && section === "homeNavigation":
       dispatch(setNavImageAlt(value));
       break;
+
+    case name === "altSocialImg" && section === "homeNavigation":
+      dispatch(setSocialImageAlt(value));
+      break;
+
+    case name === "altTransparentImg" && section === "homeNavigation":
+      dispatch(setTransparentImageAlt(value));
+      break;
+
+    // MODULES
 
     case name === "question" && section === "opinion":
       dispatch(setOpinionQuestion({ id: moduleId, value }));
@@ -516,6 +637,34 @@ export function dispatchFields(
 
     case name === "explanation" && section === "opinion":
       dispatch(setOpinionExplain({ id: moduleId, value }));
+      break;
+
+    case name === "altImage" && section === "imageModule":
+      dispatch(setAltImage({ id: moduleId, value }));
+      break;
+
+    case name === "title" && section === "featured":
+      dispatch(setFeaturedTitle({ id: moduleId, value }));
+      break;
+
+    case name === "excerpt" && section === "featured":
+      dispatch(setFeaturedExcerpt({ id: moduleId, value }));
+      break;
+
+    case name === "featuredImageAlt" && section === "featured":
+      dispatch(setFeaturedAltImage({ id: moduleId, value }));
+      break;
+
+    case name === "featuredLinkCta" && section === "featured":
+      dispatch(setFeaturedLinkCta({ id: moduleId, value }));
+      break;
+
+    case name === "featuredCategory" && section === "featured":
+      dispatch(setFeaturedCategory({ id: moduleId, value }));
+      break;
+
+    case name === "slug" && section === "featured":
+      dispatch(setFeaturedSlug({ id: moduleId, value }));
       break;
 
     // PAGE EDITOR
@@ -601,7 +750,7 @@ export async function initMultiSelectors(
   if (fieldType === "multi-value") {
     switch (name) {
       case "tags": {
-        if (section === "collection") {
+        if (section === "collection" || section === "featured") {
           initTagsSelector(
             edit,
             setSelectedTagsCollection,
@@ -660,15 +809,4 @@ export function openPreview(language, slug, type = "contents") {
     string = `${PREVIEW_URL}/${lang}/${slug}`;
   }
   window.open(`${string}`, "_blank");
-}
-
-export function checkAndDisable(name, status) {
-  if (name === "emojiTheme") {
-    return true;
-  }
-  if (name === "slug" && !(status === "DRAFT" || !status)) {
-    return true;
-  }
-
-  return false;
 }

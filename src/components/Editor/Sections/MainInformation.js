@@ -57,6 +57,7 @@ const MainInformation = () => {
     authors,
     tags,
     users,
+    status,
   } = mainInformationState;
 
   const { isManifesto, manifestoId } = manifestoState;
@@ -133,6 +134,7 @@ const MainInformation = () => {
                   section="mainInformation"
                   edit={slug}
                   error={regexSlugError || postingError || slugError}
+                  isDisabled={!(status === "DRAFT" || !status)}
                 />
 
                 <Field
@@ -149,6 +151,8 @@ const MainInformation = () => {
                   fieldType="select"
                   section="mainInformation"
                   edit={lang || "fr"}
+                  isClearable={false}
+                  isDisabled={!(status === "DRAFT" || !status)}
                 />
               </>
             )}
@@ -160,6 +164,7 @@ const MainInformation = () => {
                 fieldType="select"
                 section="mainInformation"
                 edit={colorStyle?.toString() || "1"}
+                isClearable={false}
               />
 
               <VisualiseColorStyle color={colorStyle?.toString() || "1"} />

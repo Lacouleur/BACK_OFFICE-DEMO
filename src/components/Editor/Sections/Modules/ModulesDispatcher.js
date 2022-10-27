@@ -13,6 +13,8 @@ import CtaModule from "./CtaModule/CtaModule";
 import CollectionModule from "./CollectionModule/CollectionModule";
 import { checkForStringtoArray } from "../../../../helper/converters";
 import FeedBackModule from "./FeedBackModule/FeedBackModule";
+import { dndEditorCustomStyles } from "../../../../helper/modulesHelper";
+import FeaturedModule from "./FeaturedModule/FeaturedModule";
 
 const ModulesDispatcher = ({
   modulesList,
@@ -47,13 +49,7 @@ const ModulesDispatcher = ({
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      style={{
-                        userSelect: "none",
-                        backgroundColor: snapshot.isDragging
-                          ? "#263B4A"
-                          : "#456C86",
-                        ...provided.draggableProps.style,
-                      }}
+                      style={dndEditorCustomStyles(snapshot, provided)}
                     >
                       <TextModule
                         isPage={isPage}
@@ -91,13 +87,7 @@ const ModulesDispatcher = ({
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      style={{
-                        userSelect: "none",
-                        backgroundColor: snapshot.isDragging
-                          ? "#263B4A"
-                          : "#456C86",
-                        ...provided.draggableProps.style,
-                      }}
+                      style={dndEditorCustomStyles(snapshot, provided)}
                     >
                       <ImageModule
                         key={module.uuid}
@@ -132,13 +122,7 @@ const ModulesDispatcher = ({
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      style={{
-                        userSelect: "none",
-                        backgroundColor: snapshot.isDragging
-                          ? "#263B4A"
-                          : "#456C86",
-                        ...provided.draggableProps.style,
-                      }}
+                      style={dndEditorCustomStyles(snapshot, provided)}
                     >
                       <OpinionModule
                         key={module.uuid}
@@ -180,13 +164,7 @@ const ModulesDispatcher = ({
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      style={{
-                        userSelect: "none",
-                        backgroundColor: snapshot.isDragging
-                          ? "#263B4A"
-                          : "#456C86",
-                        ...provided.draggableProps.style,
-                      }}
+                      style={dndEditorCustomStyles(snapshot, provided)}
                     >
                       <CtaModule
                         isPage={isPage}
@@ -241,13 +219,7 @@ const ModulesDispatcher = ({
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      style={{
-                        userSelect: "none",
-                        backgroundColor: snapshot.isDragging
-                          ? "#263B4A"
-                          : "#456C86",
-                        ...provided.draggableProps.style,
-                      }}
+                      style={dndEditorCustomStyles(snapshot, provided)}
                     >
                       <CollectionModule
                         isPage={isPage}
@@ -281,6 +253,9 @@ const ModulesDispatcher = ({
                         lastPage={module.lastPage}
                         customListLoaded={module.customListLoaded}
                         searchedInput={module?.searchedInput}
+                        excludeLastContent={
+                          module?.criteria?.excludeLastContent
+                        }
                         categories={
                           module?.criteria?.categories
                             ? checkForStringtoArray(
@@ -323,13 +298,7 @@ const ModulesDispatcher = ({
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      style={{
-                        userSelect: "none",
-                        backgroundColor: snapshot.isDragging
-                          ? "#263B4A"
-                          : "#456C86",
-                        ...provided.draggableProps.style,
-                      }}
+                      style={dndEditorCustomStyles(snapshot, provided)}
                     >
                       <FeedBackModule
                         key={module.uuid}
@@ -340,6 +309,78 @@ const ModulesDispatcher = ({
                         isChanged={module.isChanged}
                         isVisible={module.isVisible}
                         question={module?.question}
+                      />
+                    </div>
+                  );
+                }}
+              </Draggable>
+            );
+          }
+          case "featured": {
+            return (
+              <Draggable
+                isDragDisabled={aModuleIsOpen}
+                key={module.uuid}
+                draggableId={module.uuid}
+                index={index}
+              >
+                {(provided, snapshot) => {
+                  return (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      style={dndEditorCustomStyles(snapshot, provided)}
+                    >
+                      <FeaturedModule
+                        key={module.uuid}
+                        uuid={module.uuid}
+                        order={module.order}
+                        isOpenCloseModal={module.isOpenCloseModal}
+                        isNewModule={module.isNewModule}
+                        isChanged={module.isChanged}
+                        title={module.title}
+                        subtitle={module.subtitle}
+                        // Url is header url for section and module url for content.
+                        url={module.url.value || ""}
+                        openNewTabHeader={module.url.openNewTab}
+                        featuredTitle={module.featuredTitle || ""}
+                        featuredExcerpt={module.featuredExcerpt || ""}
+                        featuredImageAlt={module?.image?.alt || ""}
+                        featuredLinkCtaValue={module?.link?.value || ""}
+                        featuredLinkCtaOpenNewTab={module?.link?.openNewTab}
+                        featuredImageThumbnailUrl={
+                          module?.image?.urls?.thumbnail.url || undefined
+                        }
+                        featuredImageUuid={module.image?.uuid}
+                        backgroundColor={module?.backgroundColor}
+                        sticker={module?.sticker}
+                        featuredCategory={module?.featuredCategory}
+                        tags={
+                          module?.criteria?.tags
+                            ? checkForStringtoArray(
+                                module?.criteria?.tags,
+                                "array"
+                              )
+                            : undefined
+                        }
+                        categories={
+                          module?.criteria?.categories
+                            ? checkForStringtoArray(
+                                module?.criteria?.categories,
+                                "array"
+                              )
+                            : undefined
+                        }
+                        authors={
+                          module?.criteria?.authors
+                            ? checkForStringtoArray(
+                                module?.criteria?.authors,
+                                "array"
+                              )
+                            : undefined
+                        }
+                        slug={module?.criteria?.slug}
                       />
                     </div>
                   );

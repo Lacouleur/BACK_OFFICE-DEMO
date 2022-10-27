@@ -37,8 +37,8 @@ import {
   SET_PAGE_MODULE_HEADER_TITLE,
   SET_CTA_IMAGE_UUID,
   SET_CTA_ALT_IMAGE,
-  SET_COLLECTION_CATEGORIES,
-  SET_COLLECTION_TAGS,
+  SET_MODULE_CATEGORIES,
+  SET_MODULE_TAGS,
   SET_COLLECTION_LIMIT,
   EDIT_MODULES_LIST,
   SET_COLLECTION_TYPE,
@@ -52,6 +52,17 @@ import {
   SET_COLLECTION_SEARCH_INPUT,
   SET_FEEDBACK_QUESTION,
   SET_COLLAPSE_TEXTMODULE,
+  SET_FEATURED_ALT_IMAGE,
+  SET_FEATURED_EXCERPT,
+  SET_FEATURED_LINK_CTA,
+  SET_FEATURED_TITLE,
+  SET_FEATURED_IMAGE_UUID,
+  SET_FEATURED_BACKGROUND_COLOR,
+  SET_FEATURED_STICKER,
+  SET_FEATURED_CATEGORY,
+  SET_MODULE_AUTHORS,
+  SET_FEATURED_SLUG,
+  SET_COLLECTION_EXCLUDE_LAST_ARTICLE,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -65,7 +76,10 @@ const modulesReducer = (state = initialState, action = {}) => {
   const pageModulesHeaderField = {
     title: "",
     subtitle: "",
-    url: undefined,
+    url: {
+      value: "",
+      openNewTab: true,
+    },
   };
 
   switch (action.type) {
@@ -94,6 +108,7 @@ const modulesReducer = (state = initialState, action = {}) => {
             ],
           };
         }
+
         case "image": {
           return {
             ...oldState,
@@ -118,6 +133,7 @@ const modulesReducer = (state = initialState, action = {}) => {
             ],
           };
         }
+
         case "opinion": {
           return {
             ...oldState,
@@ -159,6 +175,7 @@ const modulesReducer = (state = initialState, action = {}) => {
             ],
           };
         }
+
         case "cta-button": {
           return {
             ...oldState,
@@ -234,6 +251,29 @@ const modulesReducer = (state = initialState, action = {}) => {
                 isNewModule: true,
                 isOpenCloseModal: false,
                 isVisible: true,
+              },
+            ],
+          };
+        }
+
+        case "featured": {
+          return {
+            ...oldState,
+            modulesList: [
+              ...state.modulesList,
+              {
+                ...(payload.editor === "page" && pageModulesHeaderField),
+                type: "featured",
+                order: state.modulesList.length + 1,
+                uuid: `${uuidv4()}`,
+                isPostedModule: false,
+                isChanged: true,
+                isNewModule: true,
+                isOpenCloseModal: false,
+                featuredTitle: "",
+                featuredExcerpt: "",
+                featuredImageAlt: "",
+                link: { value: "", openNewTab: true },
               },
             ],
           };
@@ -413,7 +453,6 @@ const modulesReducer = (state = initialState, action = {}) => {
             isChanged: false,
             isOpenCloseModal: false,
             isPage: true,
-            sapin: "arbre",
           },
         ];
       });
@@ -940,7 +979,7 @@ const modulesReducer = (state = initialState, action = {}) => {
       };
     }
 
-    case SET_COLLECTION_CATEGORIES: {
+    case SET_MODULE_CATEGORIES: {
       const { id, value } = action.payload;
       state.modulesList.find((module, index) => {
         if (module?.uuid === id) {
@@ -961,7 +1000,7 @@ const modulesReducer = (state = initialState, action = {}) => {
       };
     }
 
-    case SET_COLLECTION_TAGS: {
+    case SET_MODULE_TAGS: {
       const { id, value } = action.payload;
       state.modulesList.find((module, index) => {
         if (module?.uuid === id) {
@@ -970,6 +1009,27 @@ const modulesReducer = (state = initialState, action = {}) => {
             criteria: {
               ...module.criteria,
               tags: value,
+            },
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_MODULE_AUTHORS: {
+      const { moduleId, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === moduleId) {
+          oldState.modulesList[index] = {
+            ...module,
+            criteria: {
+              ...module.criteria,
+              authors: value,
             },
             isChanged: true,
           };
@@ -1176,6 +1236,27 @@ const modulesReducer = (state = initialState, action = {}) => {
       };
     }
 
+    case SET_COLLECTION_EXCLUDE_LAST_ARTICLE: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            criteria: {
+              ...module.criteria,
+              excludeLastContent: value,
+            },
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
     case SET_FEEDBACK_QUESTION: {
       const { id, value } = action.payload;
       state.modulesList.find((module, index) => {
@@ -1183,6 +1264,180 @@ const modulesReducer = (state = initialState, action = {}) => {
           oldState.modulesList[index] = {
             ...module,
             question: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_FEATURED_TITLE: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            featuredTitle: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_FEATURED_EXCERPT: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            featuredExcerpt: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_FEATURED_ALT_IMAGE: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            image: {
+              ...module.image,
+              alt: value,
+            },
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_FEATURED_LINK_CTA: {
+      const { id, value, openNewTab } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            link: {
+              openNewTab:
+                openNewTab !== undefined ? openNewTab : module.link.openNewTab,
+              value: value !== undefined ? value : module.link.value || "",
+            },
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_FEATURED_IMAGE_UUID: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            image: {
+              ...module.image,
+              urls: value.urls,
+              uuid: value.uuid,
+            },
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_FEATURED_BACKGROUND_COLOR: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            backgroundColor: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_FEATURED_STICKER: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            sticker: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_FEATURED_SLUG: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            criteria: {
+              ...module.criteria,
+              slug: value,
+            },
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_FEATURED_CATEGORY: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            featuredCategory: value,
             isChanged: true,
           };
         }

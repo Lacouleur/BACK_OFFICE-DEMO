@@ -29,8 +29,8 @@ import {
   SET_PAGE_MODULE_HEADER_TITLE,
   SET_CTA_IMAGE_UUID,
   SET_CTA_ALT_IMAGE,
-  SET_COLLECTION_CATEGORIES,
-  SET_COLLECTION_TAGS,
+  SET_MODULE_CATEGORIES,
+  SET_MODULE_TAGS,
   SET_COLLECTION_LIMIT,
   SET_COLLECTION_TYPE,
   SET_COLLECTION_FORMAT,
@@ -46,6 +46,17 @@ import {
   SET_FEEDBACK_QUESTION,
   SET_OPINION_IS_REACTION,
   SET_COLLAPSE_TEXTMODULE,
+  SET_FEATURED_ALT_IMAGE,
+  SET_FEATURED_EXCERPT,
+  SET_FEATURED_LINK_CTA,
+  SET_FEATURED_TITLE,
+  SET_FEATURED_IMAGE_UUID,
+  SET_FEATURED_BACKGROUND_COLOR,
+  SET_FEATURED_STICKER,
+  SET_FEATURED_CATEGORY,
+  SET_MODULE_AUTHORS,
+  SET_FEATURED_SLUG,
+  SET_COLLECTION_EXCLUDE_LAST_ARTICLE,
 } from "../constants";
 
 export const setPageModuleHeaderNewTab = (payload) => ({
@@ -216,13 +227,18 @@ export const setCtaType = (payload) => ({
   payload,
 });
 
-export const setCollectionCategories = (payload) => ({
-  type: SET_COLLECTION_CATEGORIES,
+export const setModuleCategories = (payload) => ({
+  type: SET_MODULE_CATEGORIES,
   payload,
 });
 
-export const setCollectionTags = (payload) => ({
-  type: SET_COLLECTION_TAGS,
+export const setModuleTags = (payload) => ({
+  type: SET_MODULE_TAGS,
+  payload,
+});
+
+export const setModuleAuthors = (payload) => ({
+  type: SET_MODULE_AUTHORS,
   payload,
 });
 
@@ -275,7 +291,55 @@ export const setCollectionSearchInput = (payload) => ({
   payload,
 });
 
+export const setCollectionExcludeLastArticle = (payload) => ({
+  type: SET_COLLECTION_EXCLUDE_LAST_ARTICLE,
+  payload,
+});
+
 export const setFeedbackQuestion = (payload) => ({
   type: SET_FEEDBACK_QUESTION,
+  payload,
+});
+
+export const setFeaturedTitle = (payload) => ({
+  type: SET_FEATURED_TITLE,
+  payload,
+});
+
+export const setFeaturedExcerpt = (payload) => ({
+  type: SET_FEATURED_EXCERPT,
+  payload,
+});
+export const setFeaturedAltImage = (payload) => ({
+  type: SET_FEATURED_ALT_IMAGE,
+  payload,
+});
+export const setFeaturedLinkCta = (payload) => ({
+  type: SET_FEATURED_LINK_CTA,
+  payload,
+});
+
+export const setFeaturedImageUuid = (payload) => ({
+  type: SET_FEATURED_IMAGE_UUID,
+  payload,
+});
+
+export const setFeaturedBackgroundColor = (payload) => ({
+  type: SET_FEATURED_BACKGROUND_COLOR,
+  payload,
+});
+
+export const setFeaturedSticker = (payload) => ({
+  type: SET_FEATURED_STICKER,
+  payload,
+});
+
+export const setFeaturedCategory = (payload) => ({
+  type: SET_FEATURED_CATEGORY,
+  payload,
+});
+
+export const setFeaturedSlug = (payload) => ({
+  type: SET_FEATURED_SLUG,
   payload,
 });

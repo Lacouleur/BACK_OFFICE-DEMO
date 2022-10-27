@@ -11,8 +11,9 @@ export const ModulesContainer = styled.div`
   position: relative;
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
 `;
 
 export const ModuleBox = styled.div`

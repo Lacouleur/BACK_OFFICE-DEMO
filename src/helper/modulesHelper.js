@@ -105,3 +105,11 @@ export function manageReactionAnswers(answers, dispatch, uuid) {
     );
   });
 }
+
+export function dndEditorCustomStyles(snapshot, provided) {
+  return {
+    userSelect: "none",
+    backgroundColor: snapshot.isDragging ? "#263B4A" : "#456C86",
+    ...provided.draggableProps.style,
+  };
+}

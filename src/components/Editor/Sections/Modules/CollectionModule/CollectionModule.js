@@ -18,12 +18,13 @@ import {
   ActionIcons,
   FieldAndSwitchContainer,
   SeparatorWhite,
-  CollectionSectionTitleBox,
-  CollectionSectionTitle,
-  CollectionSectionDescritpion,
+  InnerSectionTitleBox,
+  InnerSectionTitle,
+  InnerSectionDescritpion,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import {
   closeModule,
+  setCollectionExcludeLastArticle,
   setCollectionIsPaginated,
   setCollectionSearchInput,
   showCloseModal,
@@ -69,6 +70,7 @@ const CollectionModule = ({
   currentPage,
   nextPage,
   lastPage,
+  excludeLastContent,
 }) => {
   const dispatch = useDispatch();
   const collectionModuleRef = useRef(null);
@@ -133,24 +135,25 @@ const CollectionModule = ({
         </SectionTitle>
         {!isOpen && <Gradient />}
         {isPage && (
-          <HeaderSectionPage
-            uuid={uuid}
-            title={title}
-            subtitle={subtitle}
-            url={url}
-            openNewTabHeader={openNewTabHeader}
-          />
+          <>
+            {/* HEADER FIELDS - TITLE-SUBTITLE-URL */}
+            <HeaderSectionPage
+              uuid={uuid}
+              title={title}
+              subtitle={subtitle}
+              url={url}
+              openNewTabHeader={openNewTabHeader}
+            />
+          </>
         )}
 
-        <CollectionSectionTitleBox>
-          <CollectionSectionTitle>
-            COLLECTION MAIN SETTING -
-          </CollectionSectionTitle>
-          <CollectionSectionDescritpion>
+        <InnerSectionTitleBox>
+          <InnerSectionTitle>COLLECTION MAIN SETTING -</InnerSectionTitle>
+          <InnerSectionDescritpion>
             choose your collection type
             {/* choose if your collection is a slider or a gird */}
-          </CollectionSectionDescritpion>
-        </CollectionSectionTitleBox>
+          </InnerSectionDescritpion>
+        </InnerSectionTitleBox>
 
         <FieldAndSwitchContainer>
           <Field
@@ -189,15 +192,13 @@ const CollectionModule = ({
         />
 
         <SeparatorWhite />
-        <CollectionSectionTitleBox>
-          <CollectionSectionTitle>
-            AUTOMATIC COLLECTION -
-          </CollectionSectionTitle>
-          <CollectionSectionDescritpion>
+        <InnerSectionTitleBox>
+          <InnerSectionTitle>AUTOMATIC COLLECTION -</InnerSectionTitle>
+          <InnerSectionDescritpion>
             A collection will be self generated folowing your selected filters :
             category, tags, limit.
-          </CollectionSectionDescritpion>
-        </CollectionSectionTitleBox>
+          </InnerSectionDescritpion>
+        </InnerSectionTitleBox>
 
         <Field
           placeholder="Category to call"
@@ -216,23 +217,39 @@ const CollectionModule = ({
           edit={tags || ""}
           lang={lang}
         />
-        <Field
-          placeholder="Limit criteria"
-          name="limit"
-          section="collection"
-          type="number"
-          moduleId={uuid}
-          edit={limit || 6}
-        />
+        <FieldAndSwitchContainer>
+          <Field
+            placeholder="Limit criteria"
+            name="limit"
+            section="collection"
+            type="number"
+            moduleId={uuid}
+            edit={limit || 6}
+          />
+          <SwitchButton
+            action={() => {
+              dispatch(
+                setCollectionExcludeLastArticle({
+                  id: uuid,
+                  value: !excludeLastContent,
+                })
+              );
+            }}
+            isChecked={excludeLastContent}
+            componentId={`collection-switch-exclude-${uuid}`}
+            displayedText="Exclude last article ?"
+            tooltipMessage="If the last article is in the hilight section, switch this on to not display it a second time in the page"
+          />
+        </FieldAndSwitchContainer>
 
         <SeparatorWhite />
-        <CollectionSectionTitleBox>
-          <CollectionSectionTitle>CUSTOM COLLECTION -</CollectionSectionTitle>
-          <CollectionSectionDescritpion>
+        <InnerSectionTitleBox>
+          <InnerSectionTitle>CUSTOM COLLECTION -</InnerSectionTitle>
+          <InnerSectionDescritpion>
             Please note that &quot;automatic&quot; section filters will be
             ignored if you have items in your custom list
-          </CollectionSectionDescritpion>
-        </CollectionSectionTitleBox>
+          </InnerSectionDescritpion>
+        </InnerSectionTitleBox>
 
         <FilterFieldContainer>
           <FilterInput
@@ -284,6 +301,7 @@ CollectionModule.defaultProps = {
   pinnedContents: undefined,
   ids: undefined,
   searchedInput: undefined,
+  excludeLastContent: false,
 };
 
 CollectionModule.propTypes = {
@@ -313,5 +331,6 @@ CollectionModule.propTypes = {
   pinnedContents: PropTypes.string,
   ids: PropTypes.string,
   searchedInput: PropTypes.string,
+  excludeLastContent: PropTypes.bool,
 };
 export default CollectionModule;

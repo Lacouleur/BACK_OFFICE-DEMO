@@ -540,6 +540,31 @@ export const PreviewColorStyle = styled.div`
   box-shadow: 1px 1px 10px 3px ${colors.darkGrey};
 `;
 
+function returnHex(colorName) {
+  switch (colorName) {
+    case "pink":
+      return `${colors.pink}`;
+
+    case "green":
+      return `${colors.primaryGreen}`;
+
+    case "yellow":
+      return `${colors.yellow}`;
+
+    case "orange":
+      return `${colors.orange}`;
+
+    case "blue":
+      return `${colors.blue}`;
+
+    default:
+      return null;
+  }
+}
+
+const backgroundColorMixin = css`
+  background-color: ${(props) => returnHex(props.variant)};
+`;
 export const VisualiseColorStyle = styled.div`
   width: 30px;
   height: 30px;
@@ -548,11 +573,20 @@ export const VisualiseColorStyle = styled.div`
   background-color: ${(props) => (props.color === "1" ? "#000065" : "#FFC700")};
   margin-left: 18px;
   box-shadow: 1px 1px 10px 3px ${colors.darkGrey};
+
+  ${(props) => props.variant && backgroundColorMixin}
 `;
 
 export const ColorFieldBox = styled.div`
   display: flex;
   align-items: center;
+`;
+
+export const ImageFieldBox = styled.div`
+  display: flex;
+  align-items: center;
+  max-height: 110px;
+  overflow: visible;
 `;
 
 export const FieldErrorBox = styled.div`
@@ -668,6 +702,10 @@ const uploaderFieldMixin = css`
   text-overflow: ellipsis;
 `;
 
+const disabledFieldMixin = css`
+  color: ${colors.placeholderGrey};
+`;
+
 export const FieldStyle = styled.input`
   width: 100%;
   height: 56px;
@@ -688,6 +726,7 @@ export const FieldStyle = styled.input`
   ${(props) => !props.authField?.status && authFieldNoStatusMixin};
   ${(props) => props.authField?.focused && authFieldFocusedMixin};
   ${(props) => props.uploaderField && uploaderFieldMixin};
+  ${(props) => props.disabled && disabledFieldMixin};
   /* to hide up/down button on number fields */
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {

@@ -14,6 +14,7 @@ import {
   setCtaImageUuid,
   setImageUuid,
   setModulePosted,
+  setFeaturedImageUuid,
 } from "../moduleActions";
 
 import {
@@ -21,7 +22,12 @@ import {
   consoleInfo,
   consoleTitle,
 } from "../../../helper/consoleStyles";
-import { setHomeImageUuid, setNavImageUuid } from "../homeNavigationActions";
+import {
+  setTransparentImageUuid,
+  setHomeImageUuid,
+  setNavImageUuid,
+  setSocialImgUuid,
+} from "../homeNavigationActions";
 import { uploadError } from "../../../helper/errorMessages";
 import ErrorCaseClient from "../../../helper/ErrorCaseClient";
 import {
@@ -226,6 +232,7 @@ export function saveModule(uuid, request = "save") {
                   display,
                   paginate,
                   format: format || "",
+
                   criteria: {
                     limit: criteria?.limit || 6,
                     page: 1,
@@ -233,6 +240,7 @@ export function saveModule(uuid, request = "save") {
                     order: "desc",
                     fields: "header,slug,category,theme",
                     lang,
+                    excludeLastContent: criteria?.excludeLastContent,
                     categories:
                       checkForStringtoArray(criteria?.categories, "string") ||
                       undefined,
@@ -259,6 +267,67 @@ export function saveModule(uuid, request = "save") {
                   isVisible,
                   question,
                   label: "question",
+                };
+                isNewModule = true;
+
+                break;
+              }
+
+              case "featured": {
+                const {
+                  order,
+                  featuredTitle,
+                  featuredExcerpt,
+                  link,
+                  featuredImageUuid,
+                  featuredImageAlt,
+                  backgroundColor,
+                  sticker,
+                  featuredCategory,
+                  criteria,
+                } = module;
+
+                values = {
+                  ...(isPage && pageSectoionHeaderValues),
+                  uuid,
+                  type: "featured",
+                  resource: "contents",
+                  featuredTitle: featuredTitle || undefined,
+                  featuredExcerpt: featuredExcerpt || undefined,
+                  link: link?.value
+                    ? {
+                        value: link.value,
+                        openNewTab: link.openNewTab,
+                      }
+                    : undefined,
+                  image: featuredImageUuid
+                    ? {
+                        uuid: featuredImageUuid || undefined,
+                        alt: featuredImageAlt || undefined,
+                        source: "FTV-internal",
+                      }
+                    : undefined,
+                  tags:
+                    checkForStringtoArray(criteria?.tags, "string") ||
+                    undefined,
+                  criteria: {
+                    ...criteria,
+                    limit: 1,
+                    page: 1,
+                    categories:
+                      checkForStringtoArray(criteria?.categories, "string") ||
+                      undefined,
+                    tags:
+                      checkForStringtoArray(criteria?.tags, "string") ||
+                      undefined,
+                    authors:
+                      checkForStringtoArray(criteria?.authors, "string") ||
+                      undefined,
+                  },
+                  sticker,
+                  backgroundColor,
+                  featuredCategory,
+                  order,
                 };
                 isNewModule = true;
 
@@ -414,7 +483,7 @@ export function saveModule(uuid, request = "save") {
                   openNewTab: !isPage ? openNewTab : undefined,
                   link: isPage ? link : undefined,
                   image:
-                    isPage && image.uuid
+                    isPage && image?.uuid
                       ? {
                           alt: image?.alt || undefined,
                           source: "FTV-internal",
@@ -446,6 +515,7 @@ export function saveModule(uuid, request = "save") {
                   resource: "contents",
                   display,
                   paginate,
+
                   format: format || "carousel",
                   criteria: {
                     limit: criteria?.limit,
@@ -454,6 +524,7 @@ export function saveModule(uuid, request = "save") {
                     order: "desc",
                     fields: "header,slug,category,theme",
                     lang,
+                    excludeLastContent: criteria?.excludeLastContent,
                     categories:
                       checkForStringtoArray(criteria?.categories, "string") ||
                       undefined,
@@ -469,7 +540,6 @@ export function saveModule(uuid, request = "save") {
 
                 break;
               }
-
               case "feedback": {
                 const { order, isVisible, question } = module;
 
@@ -479,6 +549,61 @@ export function saveModule(uuid, request = "save") {
                   isVisible,
                   question,
                   label: "question",
+                };
+                isChanged = true;
+
+                break;
+              }
+              case "featured": {
+                const {
+                  order,
+                  featuredTitle,
+                  featuredExcerpt,
+                  image,
+                  link,
+                  backgroundColor,
+                  sticker,
+                  featuredCategory,
+                  criteria,
+                } = module;
+
+                values = {
+                  ...(isPage && pageSectoionHeaderValues),
+                  type: "featured",
+                  resource: "contents",
+                  featuredTitle: featuredTitle || undefined,
+                  featuredExcerpt: featuredExcerpt || undefined,
+                  link: link?.value
+                    ? {
+                        value: link.value,
+                        openNewTab: link.openNewTab,
+                      }
+                    : undefined,
+                  image: image.uuid
+                    ? {
+                        uuid: image.uuid,
+                        alt: image.alt || undefined,
+                        source: "FTV-internal",
+                      }
+                    : undefined,
+                  criteria: {
+                    ...criteria,
+                    limit: 1,
+                    page: 1,
+                    categories:
+                      checkForStringtoArray(criteria?.categories, "string") ||
+                      undefined,
+                    tags:
+                      checkForStringtoArray(criteria?.tags, "string") ||
+                      undefined,
+                    authors:
+                      checkForStringtoArray(criteria?.authors, "string") ||
+                      undefined,
+                  },
+                  backgroundColor,
+                  featuredCategory,
+                  sticker,
+                  order,
                 };
                 isChanged = true;
 
@@ -530,7 +655,7 @@ export function saveModule(uuid, request = "save") {
 }
 
 export function saveImage(setFileTitle, name, image, moduleId) {
-  console.log("%cSAVING IMAGE", `${consoleTitle}`, moduleId);
+  console.log("%cSAVING IMAGE", `${consoleTitle}`, image.name);
   return async (dispatch) => {
     const tokenIsValid = await isValidToken(dispatch);
     if (tokenIsValid) {
@@ -550,11 +675,19 @@ export function saveImage(setFileTitle, name, image, moduleId) {
           if (name === "navImage") {
             dispatch(setNavImageUuid(response.data));
           }
-          if (name === "navImage") {
-            dispatch(setNavImageUuid(response.data));
-          }
           if (name === "ctaImage") {
             dispatch(setCtaImageUuid({ id: moduleId, value: response.data }));
+          }
+          if (name === "transparentImage") {
+            dispatch(setTransparentImageUuid(response.data));
+          }
+          if (name === "SocialImg") {
+            dispatch(setSocialImgUuid(response.data));
+          }
+          if (name === "featuredImage") {
+            dispatch(
+              setFeaturedImageUuid({ id: moduleId, value: response.data })
+            );
           }
         }
       } catch (error) {

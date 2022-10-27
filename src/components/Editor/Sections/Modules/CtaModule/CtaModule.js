@@ -119,7 +119,7 @@ const CtaModule = ({
   function onClickOutside() {
     if (!isOpenCloseModal) {
       setIsOpen(false);
-      if (isChanged || isNewModule) {
+      if (isChanged && isNewModule) {
         dispatch(saveModule(uuid, "save"));
       }
       if (isChanged && !isNewModule) {
@@ -162,13 +162,16 @@ const CtaModule = ({
         </SectionTitle>
         {!isOpen && <Gradient />}
         {isPage && (
-          <HeaderSectionPage
-            uuid={uuid}
-            title={title}
-            subtitle={subtitle}
-            url={url}
-            openNewTabHeader={openNewTabHeader}
-          />
+          <>
+            {/* HEADER FIELDS - TITLE-SUBTITLE-URL */}
+            <HeaderSectionPage
+              uuid={uuid}
+              title={title}
+              subtitle={subtitle}
+              url={url}
+              openNewTabHeader={openNewTabHeader}
+            />
+          </>
         )}
 
         <Field

@@ -371,18 +371,19 @@ export const ListBox = styled.div`
   scroll-padding: 20px;
 `;
 
-export const CollectionSectionTitleBox = styled.div`
+export const InnerSectionTitleBox = styled.div`
   display: felx;
   justify-content: flex-start;
   text-align: left;
   margin-bottom: 32px;
 `;
 
-export const CollectionSectionTitle = styled.h4`
+export const InnerSectionTitle = styled.h4`
   color: ${colors.lightGrey};
+  text-transform: uppercase;
   margin-right: 16px;
 `;
 
-export const CollectionSectionDescritpion = styled.p`
+export const InnerSectionDescritpion = styled.p`
   color: ${colors.lightGrey};
 `;

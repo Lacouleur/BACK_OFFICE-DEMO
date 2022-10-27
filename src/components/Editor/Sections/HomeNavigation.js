@@ -19,6 +19,11 @@ import { checkAndSend } from "../../../store/actions/thunk/ArticlesActions.thunk
 import { actualizeManifesto } from "../../../store/actions/thunk/ManifestoActions.thunk";
 import useClickOutside from "../../../helper/cutomHooks/useClickOutside";
 import { getTitleAndSplit } from "../../../helper/homeNavigationHelper";
+import {
+  ColorFieldBox,
+  ImageFieldBox,
+  VisualiseColorStyle,
+} from "../../../styles/styledComponents/global/Field.sc";
 
 const HomeNavigation = () => {
   const homeNavigationState = useSelector(
@@ -36,6 +41,10 @@ const HomeNavigation = () => {
   const [isHomeImage, setIsHomeImage] = useState(false);
   const [isNavImage, setIsNavImage] = useState(false);
   const [homeImgTitle, setHomeImgTitle] = useState(undefined);
+  const [transparentImgTitle, setTransparentImgTitle] = useState(undefined);
+  const [isTransparentImage, setIsTransparentImage] = useState(false);
+  const [socialImgTitle, setSocialImgTitle] = useState(undefined);
+  const [isSocialImage, setIsSocialImage] = useState(false);
   const [navImgTitle, setNavImgTitle] = useState(undefined);
 
   const {
@@ -49,6 +58,13 @@ const HomeNavigation = () => {
     homeImgUrls,
     navImgUrls,
     shortDescription,
+    backgroundColor,
+    transparentImgUuid,
+    socialImgUuid,
+    socialImgUrls,
+    transparentImgUrls,
+    transparentImgAlt,
+    socialImgAlt,
   } = homeNavigationState;
 
   const { manifestoId, isManifesto } = manifestoState;
@@ -92,9 +108,21 @@ const HomeNavigation = () => {
       setIsHomeImage,
       navImgUuid,
       setNavImgTitle,
-      setIsNavImage
+      setIsNavImage,
+      transparentImgUuid,
+      setTransparentImgTitle,
+      setIsTransparentImage,
+      socialImgUuid,
+      setSocialImgTitle,
+      setIsSocialImage
     );
-  }, [homeNavIsChanged, homeImgUuid, navImgUuid]);
+  }, [
+    homeNavIsChanged,
+    homeImgUuid,
+    navImgUuid,
+    socialImgUuid,
+    transparentImgUuid,
+  ]);
 
   return (
     <>
@@ -128,14 +156,6 @@ const HomeNavigation = () => {
 
         {isOpen && (
           <>
-            {homeImgUrls && isHomeImage && (
-              <Thumbnail homeImage src={homeImgUrls.thumbnail.url} />
-            )}
-
-            {navImgUrls && isNavImage && (
-              <RoundThumbnail src={navImgUrls.thumbnail.url} />
-            )}
-
             <Field
               placeholder="Title (home)"
               maxlength="80"
@@ -165,49 +185,121 @@ const HomeNavigation = () => {
                 edit={readingTime?.toString() || undefined}
               />
 
-              <Field
-                placeholder="Home Image"
-                name="homeImage"
-                section="HomeNavigation"
-                fieldType="uploader"
-                edit={homeImgTitle || undefined}
-                infos="Image size: 320x568px - 500ko maximum"
-              />
+              {/* HOME IMAGE FIELD & ALT */}
+              <ImageFieldBox>
+                <Field
+                  placeholder="Home Image"
+                  name="homeImage"
+                  section="HomeNavigation"
+                  fieldType="uploader"
+                  edit={homeImgTitle || undefined}
+                  infos="Image size: 320x568px - 500ko maximum"
+                />
 
-              {isHomeImage && (
-                <>
-                  <Field
-                    placeholder="Alternative text for home image"
-                    name="altHomeImage"
-                    infos="Maximum 120 characters"
-                    maxlength="120"
-                    section="homeNavigation"
-                    edit={homeImgAlt || undefined}
-                  />
-                </>
-              )}
+                {homeImgUrls && isHomeImage && (
+                  <Thumbnail src={homeImgUrls.thumbnail.url} />
+                )}
+              </ImageFieldBox>
 
               <Field
-                placeholder="Navigation Image"
-                name="navImage"
-                section="HomeNavigation"
-                fieldType="uploader"
-                edit={navImgTitle || undefined}
-                infos="Image size: 56x56px - 500ko maximum"
+                placeholder="Alternative text for home image"
+                name="altHomeImage"
+                infos="Maximum 120 characters"
+                maxlength="120"
+                section="homeNavigation"
+                edit={homeImgAlt || undefined}
               />
 
-              {isNavImage && (
-                <>
-                  <Field
-                    placeholder="Alternative text for home image"
-                    name="altNavImage"
-                    infos="Maximum 120 characters"
-                    maxlength="120"
-                    section="homeNavigation"
-                    edit={navImgAlt || undefined}
-                  />
-                </>
-              )}
+              {/* TRANSPARENT IMAGE FIELD & ALT */}
+              <ImageFieldBox>
+                <Field
+                  placeholder="Transparent Image"
+                  name="transparentImage"
+                  section="HomeNavigation"
+                  fieldType="uploader"
+                  edit={transparentImgTitle || undefined}
+                  infos="Image size: 320x568px - 500ko maximum"
+                />
+
+                {transparentImgUrls && isTransparentImage && (
+                  <Thumbnail src={transparentImgUrls.thumbnail.url} />
+                )}
+              </ImageFieldBox>
+
+              <Field
+                placeholder="Alternative text for transparent image"
+                name="altTransparentImg"
+                infos="Maximum 120 characters"
+                maxlength="120"
+                section="homeNavigation"
+                edit={transparentImgAlt || undefined}
+              />
+
+              {/* BACKGROUND COLOR FIELD */}
+              <ColorFieldBox>
+                <Field
+                  placeholder="Background Color"
+                  name="backgroundColor"
+                  section="HomeNavigation"
+                  fieldType="select"
+                  edit={backgroundColor || undefined}
+                />
+                {backgroundColor && (
+                  <>
+                    <VisualiseColorStyle variant={backgroundColor} />
+                  </>
+                )}
+              </ColorFieldBox>
+
+              {/* SOCIAL NETWORK IMAGE FIELD & ALT */}
+              <ImageFieldBox>
+                <Field
+                  placeholder="Social Network Image"
+                  name="SocialImg"
+                  section="HomeNavigation"
+                  fieldType="uploader"
+                  edit={socialImgTitle || undefined}
+                  infos="Image size: 320x568px - 500ko maximum"
+                />
+
+                {socialImgUrls && isSocialImage && (
+                  <Thumbnail src={socialImgUrls.thumbnail.url} />
+                )}
+              </ImageFieldBox>
+
+              <Field
+                placeholder="Alternative text for Social Network Image"
+                name="altSocialImg"
+                infos="Maximum 120 characters"
+                maxlength="120"
+                section="homeNavigation"
+                edit={socialImgAlt || undefined}
+              />
+
+              {/* NAVIGATION IMAGE FIELD & ALT */}
+              <ImageFieldBox>
+                <Field
+                  placeholder="Navigation Image"
+                  name="navImage"
+                  section="HomeNavigation"
+                  fieldType="uploader"
+                  edit={navImgTitle || undefined}
+                  infos="Image size: 56x56px - 500ko maximum"
+                />
+
+                {navImgUrls && isNavImage && (
+                  <RoundThumbnail src={navImgUrls.thumbnail.url} />
+                )}
+              </ImageFieldBox>
+
+              <Field
+                placeholder="Alternative text for navigation image"
+                name="altNavImage"
+                infos="Maximum 120 characters"
+                maxlength="120"
+                section="homeNavigation"
+                edit={navImgAlt || undefined}
+              />
             </>
           </>
         )}

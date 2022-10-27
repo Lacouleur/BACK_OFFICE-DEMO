@@ -8,7 +8,7 @@ import {
   SET_COLOR_STYLE,
   SET_CAPTION,
   SET_USERS,
-  SET_AUTHORS,
+  SET_AUTHORS_LIST,
   SET_TAGS,
   SET_NEW_TAG,
   SET_CONTENT_IS_MOVED_TO_TOP,
@@ -62,8 +62,8 @@ export const setUsers = (payload) => ({
   payload,
 });
 
-export const setAuthors = (payload) => ({
-  type: SET_AUTHORS,
+export const setAuthorsList = (payload) => ({
+  type: SET_AUTHORS_LIST,
   payload,
 });
 

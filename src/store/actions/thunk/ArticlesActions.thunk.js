@@ -1,5 +1,6 @@
 import {
   deleteContent,
+  getAuthors,
   getCategories,
   getContent,
   getContentList,
@@ -36,6 +37,7 @@ import {
   setUsers,
   setNewTag,
   setTags,
+  setAuthorsList,
 } from "../mainInformationActions";
 
 import { deleteToken } from "../../../services/client/tokenStuff";
@@ -90,6 +92,11 @@ export function checkAndSend(type = "save", articleId = null) {
         navImgUuid,
         navImgAlt,
         shortDescription,
+        transparentImgUuid,
+        transparentImgAlt,
+        socialImgUuid,
+        socialImgAlt,
+        backgroundColor,
       } = homeNavigationReducer;
 
       const slugError = !slug;
@@ -110,7 +117,7 @@ export function checkAndSend(type = "save", articleId = null) {
       if (typeof colorStyle === "string") {
         theme = parseInt(colorStyle, 10);
       }
-
+      // UPDATE ARTICLE
       if (type === "update") {
         values = {
           title: mainTitle,
@@ -130,6 +137,17 @@ export function checkAndSend(type = "save", articleId = null) {
                       source: "FTV-internal",
                     }
                   : undefined,
+                transparentImage: {
+                  uuid: transparentImgUuid || undefined,
+                  alt: transparentImgAlt || undefined,
+                  source: "FTV-internal",
+                },
+                backgroundColor,
+                snImage: {
+                  uuid: socialImgUuid || undefined,
+                  alt: socialImgAlt || undefined,
+                  source: "FTV-internal",
+                },
               }
             : undefined,
           thumbnail: navImgUuid
@@ -143,6 +161,8 @@ export function checkAndSend(type = "save", articleId = null) {
           authors: authors || [],
           tags: tags || [],
         };
+
+        // SAVE ARTICLE
       } else {
         values = {
           title: mainTitle,
@@ -434,6 +454,28 @@ export function fetchCategoriesList(lang) {
         const response = await getCategories(lang);
         if (response.status < 300 && response.status > 199) {
           dispatch(setCategoriesList(response.data));
+        }
+        return null;
+      } catch (error) {
+        if (error?.response?.status === 401) {
+          console.error("%cError =>", `${consoleError}`, error?.response?.data);
+          deleteToken(dispatch);
+        }
+        return null;
+      }
+    }
+    return null;
+  };
+}
+
+export function fetchAuthorsList(lang = "fr") {
+  return async (dispatch) => {
+    const tokenIsValid = await isValidToken(dispatch);
+    if (tokenIsValid) {
+      try {
+        const response = await getAuthors(lang);
+        if (response.status < 300 && response.status > 199) {
+          dispatch(setAuthorsList(response.data));
         }
         return null;
       } catch (error) {

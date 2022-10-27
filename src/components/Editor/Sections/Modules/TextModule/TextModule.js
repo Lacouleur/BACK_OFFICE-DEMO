@@ -91,7 +91,7 @@ const TextModule = ({
   function onClickOutside() {
     if (!isOpenCloseModal) {
       setIsOpen(false);
-      if (isChanged || isNewModule) {
+      if (isChanged && isNewModule) {
         dispatch(saveModule(uuid, "save"));
       }
       if (isChanged && !isNewModule) {
@@ -134,13 +134,16 @@ const TextModule = ({
         </SectionTitle>
         {!isOpen && <Gradient />}
         {isPage && (
-          <HeaderSectionPage
-            uuid={uuid}
-            title={title}
-            subtitle={subtitle}
-            url={url}
-            openNewTabHeader={openNewTabHeader}
-          />
+          <>
+            {/* HEADER FIELDS - TITLE-SUBTITLE-URL */}
+            <HeaderSectionPage
+              uuid={uuid}
+              title={title}
+              subtitle={subtitle}
+              url={url}
+              openNewTabHeader={openNewTabHeader}
+            />
+          </>
         )}
         <SwitchButton
           action={() => {

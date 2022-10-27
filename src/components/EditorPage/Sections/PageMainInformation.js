@@ -132,6 +132,7 @@ const PageMainInformation = () => {
               section="pageMainInformation"
               edit={slug}
               error={regexSlugError || postingError || slugError}
+              isDisabled={!(status === "DRAFT" || !status)}
             />
 
             <Field

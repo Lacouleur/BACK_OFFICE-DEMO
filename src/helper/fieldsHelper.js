@@ -810,14 +810,3 @@ export function openPreview(language, slug, type = "contents") {
   }
   window.open(`${string}`, "_blank");
 }
-
-export function checkAndDisable(name, status) {
-  if (name === "emojiTheme") {
-    return true;
-  }
-  if (name === "slug" && !(status === "DRAFT" || !status)) {
-    return true;
-  }
-
-  return false;
-}

@@ -702,6 +702,10 @@ const uploaderFieldMixin = css`
   text-overflow: ellipsis;
 `;
 
+const disabledFieldMixin = css`
+  color: ${colors.placeholderGrey};
+`;
+
 export const FieldStyle = styled.input`
   width: 100%;
   height: 56px;
@@ -722,6 +726,7 @@ export const FieldStyle = styled.input`
   ${(props) => !props.authField?.status && authFieldNoStatusMixin};
   ${(props) => props.authField?.focused && authFieldFocusedMixin};
   ${(props) => props.uploaderField && uploaderFieldMixin};
+  ${(props) => props.disabled && disabledFieldMixin};
   /* to hide up/down button on number fields */
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {

@@ -535,7 +535,7 @@ const Field = ({
             type={type}
             placeholder={placeholder}
             maxLength={maxlength}
-            disabled={checkAndDisable(name, status)}
+            disabled={isDisabled}
             onInput={(e) => {
               if (type === "number" && e.target.value > 15) {
                 e.target.value = 15;
@@ -553,23 +553,6 @@ const Field = ({
             }}
             defaultValue={edit ? `${edit}` : ""}
             error
-            styles={
-              name === "slug" && !(status === "DRAFT" || !status)
-                ? {
-                    color: colors.placeholderGrey,
-                    height: "56px",
-                    border: `${
-                      error ? `2px solid ${colors.paleViolet}` : `none`
-                    }`,
-                  }
-                : {
-                    color: `${error ? colors.paleViolet : colors.white}`,
-                    border: `${
-                      error ? `2px solid ${colors.paleViolet}` : `none`
-                    }`,
-                    height: "56px",
-                  }
-            }
           />
           {name === "slug" && !(status === "DRAFT" || !status) && (
             <Tooltip>

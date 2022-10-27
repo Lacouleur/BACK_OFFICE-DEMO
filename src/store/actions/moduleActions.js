@@ -56,6 +56,7 @@ import {
   SET_FEATURED_CATEGORY,
   SET_MODULE_AUTHORS,
   SET_FEATURED_SLUG,
+  SET_COLLECTION_EXCLUDE_LAST_ARTICLE,
 } from "../constants";
 
 export const setPageModuleHeaderNewTab = (payload) => ({
@@ -287,6 +288,11 @@ export const setCollectionPagination = (payload) => ({
 
 export const setCollectionSearchInput = (payload) => ({
   type: SET_COLLECTION_SEARCH_INPUT,
+  payload,
+});
+
+export const setCollectionExcludeLastArticle = (payload) => ({
+  type: SET_COLLECTION_EXCLUDE_LAST_ARTICLE,
   payload,
 });
 

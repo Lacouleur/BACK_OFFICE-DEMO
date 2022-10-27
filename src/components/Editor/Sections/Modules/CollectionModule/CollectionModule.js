@@ -24,6 +24,7 @@ import {
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import {
   closeModule,
+  setCollectionExcludeLastArticle,
   setCollectionIsPaginated,
   setCollectionSearchInput,
   showCloseModal,
@@ -69,6 +70,7 @@ const CollectionModule = ({
   currentPage,
   nextPage,
   lastPage,
+  excludeLastContent,
 }) => {
   const dispatch = useDispatch();
   const collectionModuleRef = useRef(null);
@@ -215,14 +217,30 @@ const CollectionModule = ({
           edit={tags || ""}
           lang={lang}
         />
-        <Field
-          placeholder="Limit criteria"
-          name="limit"
-          section="collection"
-          type="number"
-          moduleId={uuid}
-          edit={limit || 6}
-        />
+        <FieldAndSwitchContainer>
+          <Field
+            placeholder="Limit criteria"
+            name="limit"
+            section="collection"
+            type="number"
+            moduleId={uuid}
+            edit={limit || 6}
+          />
+          <SwitchButton
+            action={() => {
+              dispatch(
+                setCollectionExcludeLastArticle({
+                  id: uuid,
+                  value: !excludeLastContent,
+                })
+              );
+            }}
+            isChecked={excludeLastContent}
+            componentId={`collection-switch-exclude-${uuid}`}
+            displayedText="Exclude last article ?"
+            tooltipMessage="If the last article is in the hilight section, switch this on to not display it a second time in the page"
+          />
+        </FieldAndSwitchContainer>
 
         <SeparatorWhite />
         <InnerSectionTitleBox>
@@ -283,6 +301,7 @@ CollectionModule.defaultProps = {
   pinnedContents: undefined,
   ids: undefined,
   searchedInput: undefined,
+  excludeLastContent: false,
 };
 
 CollectionModule.propTypes = {
@@ -312,5 +331,6 @@ CollectionModule.propTypes = {
   pinnedContents: PropTypes.string,
   ids: PropTypes.string,
   searchedInput: PropTypes.string,
+  excludeLastContent: PropTypes.bool,
 };
 export default CollectionModule;

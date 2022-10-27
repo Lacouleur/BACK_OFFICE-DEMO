@@ -62,6 +62,7 @@ import {
   SET_FEATURED_CATEGORY,
   SET_MODULE_AUTHORS,
   SET_FEATURED_SLUG,
+  SET_COLLECTION_EXCLUDE_LAST_ARTICLE,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -1225,6 +1226,27 @@ const modulesReducer = (state = initialState, action = {}) => {
             currentPage,
             lastPage,
             nextPage,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_COLLECTION_EXCLUDE_LAST_ARTICLE: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            criteria: {
+              ...module.criteria,
+              excludeLastContent: value,
+            },
+            isChanged: true,
           };
         }
         return null;

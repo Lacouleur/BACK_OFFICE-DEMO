@@ -232,6 +232,7 @@ export function saveModule(uuid, request = "save") {
                   display,
                   paginate,
                   format: format || "",
+
                   criteria: {
                     limit: criteria?.limit || 6,
                     page: 1,
@@ -239,6 +240,7 @@ export function saveModule(uuid, request = "save") {
                     order: "desc",
                     fields: "header,slug,category,theme",
                     lang,
+                    excludeLastContent: criteria?.excludeLastContent,
                     categories:
                       checkForStringtoArray(criteria?.categories, "string") ||
                       undefined,
@@ -513,6 +515,7 @@ export function saveModule(uuid, request = "save") {
                   resource: "contents",
                   display,
                   paginate,
+
                   format: format || "carousel",
                   criteria: {
                     limit: criteria?.limit,
@@ -521,6 +524,7 @@ export function saveModule(uuid, request = "save") {
                     order: "desc",
                     fields: "header,slug,category,theme",
                     lang,
+                    excludeLastContent: criteria?.excludeLastContent,
                     categories:
                       checkForStringtoArray(criteria?.categories, "string") ||
                       undefined,

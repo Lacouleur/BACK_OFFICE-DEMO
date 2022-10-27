@@ -253,6 +253,9 @@ const ModulesDispatcher = ({
                         lastPage={module.lastPage}
                         customListLoaded={module.customListLoaded}
                         searchedInput={module?.searchedInput}
+                        excludeLastContent={
+                          module?.criteria?.excludeLastContent
+                        }
                         categories={
                           module?.criteria?.categories
                             ? checkForStringtoArray(

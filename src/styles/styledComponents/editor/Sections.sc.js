@@ -111,16 +111,6 @@ export const NewBlockButtonBox = styled.div`
   position: relative;
 `;
 
-const ctaPageImageMixin = css`
-  top: calc(100% - 150px);
-  right: 40%;
-  transition: all 0.3s;
-
-  &:hover {
-    height: 150px;
-  }
-`;
-
 const navPreviewMixin = css`
   position: absolute;
   transform: translate(50%, 50%);
@@ -154,8 +144,6 @@ export const Thumbnail = styled.img`
   z-index: 2;
   margin-left: 25px;
   transform: translateY(-6%);
-
-  ${(props) => (props.ctaPageImage ? ctaPageImageMixin : "")};
 `;
 
 export const RoundThumbnail = styled.img`

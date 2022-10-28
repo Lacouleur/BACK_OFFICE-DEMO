@@ -77,8 +77,8 @@ const modulesReducer = (state = initialState, action = {}) => {
     title: "",
     subtitle: "",
     url: {
-      value: "",
-      openNewTab: true,
+      value: null,
+      openNewTab: false,
     },
   };
 
@@ -273,7 +273,7 @@ const modulesReducer = (state = initialState, action = {}) => {
                 featuredTitle: "",
                 featuredExcerpt: "",
                 featuredImageAlt: "",
-                link: { value: "", openNewTab: true },
+                link: { value: null, openNewTab: false },
               },
             ],
           };
@@ -312,14 +312,13 @@ const modulesReducer = (state = initialState, action = {}) => {
             ...module,
             url: {
               ...oldState.modulesList[index].url,
-              value,
+              value: value === "" ? null : value,
             },
             isChanged: true,
           };
         }
         return null;
       });
-
       return {
         ...oldState,
       };
@@ -1340,7 +1339,9 @@ const modulesReducer = (state = initialState, action = {}) => {
             ...module,
             link: {
               openNewTab:
-                openNewTab !== undefined ? openNewTab : module.link.openNewTab,
+                openNewTab !== undefined
+                  ? openNewTab
+                  : module?.link?.openNewTab || undefined,
               value:
                 value !== undefined ? value : module.link.value || undefined,
             },
@@ -1349,6 +1350,7 @@ const modulesReducer = (state = initialState, action = {}) => {
         }
         return null;
       });
+
       return {
         ...oldState,
       };
@@ -1419,7 +1421,7 @@ const modulesReducer = (state = initialState, action = {}) => {
             ...module,
             criteria: {
               ...module.criteria,
-              slug: value,
+              slug: value === "" ? undefined : value,
             },
             isChanged: true,
           };

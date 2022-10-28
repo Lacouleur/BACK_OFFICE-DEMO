@@ -80,7 +80,7 @@ const HeaderSectionPage = ({
 
 HeaderSectionPage.defaultProps = {
   url: undefined,
-  openNewTabHeader: undefined,
+  openNewTabHeader: false,
 };
 
 HeaderSectionPage.propTypes = {

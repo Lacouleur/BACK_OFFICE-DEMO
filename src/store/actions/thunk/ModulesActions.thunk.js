@@ -312,6 +312,7 @@ export function saveModule(uuid, request = "save") {
                     limit: 1,
                     page: 1,
                     lang,
+                    fields: "header,slug,category,theme",
                     categories:
                       checkForStringtoArray(criteria?.categories, "string") ||
                       undefined,
@@ -322,7 +323,7 @@ export function saveModule(uuid, request = "save") {
                       checkForStringtoArray(criteria?.authors, "string") ||
                       undefined,
                   },
-                  sticker: sticker || "newArticle",
+                  sticker: sticker || "new-article",
                   backgroundColor,
                   featuredCategory,
                   order,
@@ -577,7 +578,7 @@ export function saveModule(uuid, request = "save") {
                         openNewTab: link.openNewTab,
                       }
                     : undefined,
-                  image: image.uuid
+                  image: image?.uuid
                     ? {
                         uuid: image.uuid,
                         alt: image.alt || undefined,
@@ -589,6 +590,7 @@ export function saveModule(uuid, request = "save") {
                     limit: 1,
                     lang,
                     page: 1,
+                    fields: "header,slug,category,theme",
                     categories:
                       checkForStringtoArray(criteria?.categories, "string") ||
                       undefined,
@@ -601,7 +603,7 @@ export function saveModule(uuid, request = "save") {
                   },
                   backgroundColor,
                   featuredCategory,
-                  sticker: sticker || "newArticle",
+                  sticker: sticker || "new-article",
                   order,
                 };
                 isChanged = true;

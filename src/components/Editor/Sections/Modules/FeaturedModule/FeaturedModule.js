@@ -176,7 +176,7 @@ const FeaturedModule = ({
 
         {/* EXCERPT FIELD */}
         <Field
-          placeholder="Custom Title"
+          placeholder="Excerpt"
           name="excerpt"
           section="featured"
           edit={featuredExcerpt || ""}
@@ -346,6 +346,8 @@ FeaturedModule.defaultProps = {
   categories: undefined,
   authors: undefined,
   slug: undefined,
+  openNewTabHeader: false,
+  featuredLinkCtaOpenNewTab: false,
 };
 
 FeaturedModule.propTypes = {
@@ -361,8 +363,8 @@ FeaturedModule.propTypes = {
   featuredExcerpt: PropTypes.string.isRequired,
   featuredImageAlt: PropTypes.string.isRequired,
   featuredLinkCtaValue: PropTypes.string.isRequired,
-  featuredLinkCtaOpenNewTab: PropTypes.bool.isRequired,
-  openNewTabHeader: PropTypes.bool.isRequired,
+  featuredLinkCtaOpenNewTab: PropTypes.bool,
+  openNewTabHeader: PropTypes.bool,
   featuredImageThumbnailUrl: PropTypes.string,
   featuredImageUuid: PropTypes.string,
   backgroundColor: PropTypes.string,

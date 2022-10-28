@@ -34,6 +34,7 @@ import { setAModuleIsOpen } from "../../../../../store/actions/actionBarActions"
 import TextEditor from "../TextEditor";
 import HeaderSectionPage from "../HeaderSectionPage";
 import SwitchButton from "../../../../Tools/Switch";
+import { ImageFieldBox } from "../../../../../styles/styledComponents/global/Field.sc";
 
 const CtaModule = ({
   uuid,
@@ -269,18 +270,22 @@ const CtaModule = ({
         )}
         {isPage && (
           <>
-            {thumbnail && isOpen && imageTitle && (
-              <Thumbnail ctaPageImage src={thumbnail} />
-            )}
-            <Field
-              placeholder="Navigation Image"
-              name="ctaImage"
-              section="cta"
-              fieldType="uploader"
-              edit={imageTitle}
-              infos="Image size: 320x456 / 320x320 / 320x180 - 500ko maximum"
-              moduleId={uuid}
-            />
+            <ImageFieldBox>
+              <Field
+                placeholder="Navigation Image"
+                name="ctaImage"
+                section="cta"
+                fieldType="uploader"
+                edit={imageTitle}
+                infos="Image size: 320x456 / 320x320 / 320x180 - 500ko maximum"
+                moduleId={uuid}
+              />
+
+              {thumbnail && isOpen && imageTitle && (
+                <Thumbnail ctaPageImage src={thumbnail} />
+              )}
+            </ImageFieldBox>
+
             {isImage && (
               <>
                 <Field
@@ -308,7 +313,7 @@ CtaModule.defaultProps = {
   title: "",
   subtitle: "",
   link: undefined,
-  openNewTabHeader: true,
+  openNewTabHeader: false,
   isPage: undefined,
   url: undefined,
   openNewTab: false,

@@ -554,7 +554,7 @@ const Field = ({
             defaultValue={edit ? `${edit}` : ""}
             error
           />
-          {name === "slug" && !(status === "DRAFT" || !status) && (
+          {name === "slug" && isDisabled && (
             <Tooltip>
               <TooltipText>
                 The slug can be modified on draft content only.

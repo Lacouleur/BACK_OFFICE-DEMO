@@ -312,14 +312,13 @@ const modulesReducer = (state = initialState, action = {}) => {
             ...module,
             url: {
               ...oldState.modulesList[index].url,
-              value,
+              value: value === "" ? null : value,
             },
             isChanged: true,
           };
         }
         return null;
       });
-
       return {
         ...oldState,
       };

@@ -23,6 +23,7 @@ export const DraftJsWrapper = styled.div`
     height: fit-content;
     flex-direction: column;
     margin-top: 18px;
+    margin-bottom: 18px;
     overflow: hidden;
   }
 

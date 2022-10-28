@@ -286,7 +286,7 @@ CollectionModule.defaultProps = {
   title: "",
   subtitle: "",
   url: "",
-  openNewTabHeader: true,
+  openNewTabHeader: false,
   isPage: undefined,
   categories: undefined,
   tags: undefined,

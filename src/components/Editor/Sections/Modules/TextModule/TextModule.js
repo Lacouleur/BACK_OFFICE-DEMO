@@ -178,7 +178,7 @@ TextModule.defaultProps = {
   title: "",
   subtitle: "",
   url: "",
-  openNewTabHeader: null,
+  openNewTabHeader: false,
   isPage: undefined,
 };
 

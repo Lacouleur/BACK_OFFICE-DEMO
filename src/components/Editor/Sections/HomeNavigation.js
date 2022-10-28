@@ -225,15 +225,18 @@ const HomeNavigation = () => {
                   <Thumbnail src={transparentImgUrls.thumbnail.url} />
                 )}
               </ImageFieldBox>
-
-              <Field
-                placeholder="Alternative text for transparent image"
-                name="altTransparentImg"
-                infos="Maximum 120 characters"
-                maxlength="120"
-                section="homeNavigation"
-                edit={transparentImgAlt || undefined}
-              />
+              {isTransparentImage && (
+                <>
+                  <Field
+                    placeholder="Alternative text for transparent image"
+                    name="altTransparentImg"
+                    infos="Maximum 120 characters"
+                    maxlength="120"
+                    section="homeNavigation"
+                    edit={transparentImgAlt || undefined}
+                  />
+                </>
+              )}
 
               {/* BACKGROUND COLOR FIELD */}
               <ColorFieldBox>
@@ -266,15 +269,18 @@ const HomeNavigation = () => {
                   <Thumbnail src={socialImgUrls.thumbnail.url} />
                 )}
               </ImageFieldBox>
-
-              <Field
-                placeholder="Alternative text for Social Network Image"
-                name="altSocialImg"
-                infos="Maximum 120 characters"
-                maxlength="120"
-                section="homeNavigation"
-                edit={socialImgAlt || undefined}
-              />
+              {isSocialImage && (
+                <>
+                  <Field
+                    placeholder="Alternative text for Social Network Image"
+                    name="altSocialImg"
+                    infos="Maximum 120 characters"
+                    maxlength="120"
+                    section="homeNavigation"
+                    edit={socialImgAlt || undefined}
+                  />
+                </>
+              )}
 
               {/* NAVIGATION IMAGE FIELD & ALT */}
               <ImageFieldBox>
@@ -291,15 +297,18 @@ const HomeNavigation = () => {
                   <RoundThumbnail src={navImgUrls.thumbnail.url} />
                 )}
               </ImageFieldBox>
-
-              <Field
-                placeholder="Alternative text for navigation image"
-                name="altNavImage"
-                infos="Maximum 120 characters"
-                maxlength="120"
-                section="homeNavigation"
-                edit={navImgAlt || undefined}
-              />
+              {isSocialImage && (
+                <>
+                  <Field
+                    placeholder="Alternative text for navigation image"
+                    name="altNavImage"
+                    infos="Maximum 120 characters"
+                    maxlength="120"
+                    section="homeNavigation"
+                    edit={navImgAlt || undefined}
+                  />
+                </>
+              )}
             </>
           </>
         )}

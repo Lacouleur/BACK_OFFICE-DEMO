@@ -1341,7 +1341,8 @@ const modulesReducer = (state = initialState, action = {}) => {
             link: {
               openNewTab:
                 openNewTab !== undefined ? openNewTab : module.link.openNewTab,
-              value: value !== undefined ? value : module.link.value || "",
+              value:
+                value !== undefined ? value : module.link.value || undefined,
             },
             isChanged: true,
           };

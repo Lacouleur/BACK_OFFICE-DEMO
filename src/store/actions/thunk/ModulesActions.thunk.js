@@ -307,13 +307,11 @@ export function saveModule(uuid, request = "save") {
                         source: "FTV-internal",
                       }
                     : undefined,
-                  tags:
-                    checkForStringtoArray(criteria?.tags, "string") ||
-                    undefined,
                   criteria: {
                     ...criteria,
                     limit: 1,
                     page: 1,
+                    lang,
                     categories:
                       checkForStringtoArray(criteria?.categories, "string") ||
                       undefined,
@@ -324,7 +322,7 @@ export function saveModule(uuid, request = "save") {
                       checkForStringtoArray(criteria?.authors, "string") ||
                       undefined,
                   },
-                  sticker,
+                  sticker: sticker || "newArticle",
                   backgroundColor,
                   featuredCategory,
                   order,
@@ -589,6 +587,7 @@ export function saveModule(uuid, request = "save") {
                   criteria: {
                     ...criteria,
                     limit: 1,
+                    lang,
                     page: 1,
                     categories:
                       checkForStringtoArray(criteria?.categories, "string") ||
@@ -602,7 +601,7 @@ export function saveModule(uuid, request = "save") {
                   },
                   backgroundColor,
                   featuredCategory,
-                  sticker,
+                  sticker: sticker || "newArticle",
                   order,
                 };
                 isChanged = true;

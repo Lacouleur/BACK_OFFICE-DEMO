@@ -138,19 +138,17 @@ const FeaturedModule = ({
 
       <SectionBox onClick={() => setIsOpen(true)} isOpen={isOpen}>
         <ActionIcons>
-          {status === "DRAFT" && (
-            <Delete
-              src={trashIcon}
-              onClick={() => {
-                if (isNewModule) {
-                  dispatch(closeModule(uuid));
-                }
-                if (!isNewModule) {
-                  dispatch(showCloseModal({ value: true, id: uuid }));
-                }
-              }}
-            />
-          )}
+          <Delete
+            src={trashIcon}
+            onClick={() => {
+              if (isNewModule) {
+                dispatch(closeModule(uuid));
+              }
+              if (!isNewModule) {
+                dispatch(showCloseModal({ value: true, id: uuid }));
+              }
+            }}
+          />
         </ActionIcons>
 
         <SectionTitle>
@@ -201,14 +199,17 @@ const FeaturedModule = ({
             <Thumbnail src={featuredImageThumbnailUrl} />
           )}
         </ImageFieldBox>
-
-        <Field
-          placeholder="Alternative text for Home-Image"
-          name="featuredImageAlt"
-          section="featured"
-          edit={featuredImageAlt || ""}
-          moduleId={uuid}
-        />
+        {isFeaturedImage && (
+          <>
+            <Field
+              placeholder="Alternative text for Home-Image"
+              name="featuredImageAlt"
+              section="featured"
+              edit={featuredImageAlt || ""}
+              moduleId={uuid}
+            />
+          </>
+        )}
 
         {/* BACKGROUND COLOR FIELD */}
         <ColorFieldBox>

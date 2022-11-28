@@ -109,7 +109,7 @@ const PagesHub = () => {
             askedPage={askedPage}
           />
         )}
-        <Footer position="fixed" />
+        {/* <Footer position="fixed" /> */}
       </PageContainer>
     </>
   );

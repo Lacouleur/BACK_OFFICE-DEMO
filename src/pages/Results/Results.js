@@ -251,7 +251,7 @@ const Results = () => {
         )}
       </ModulesContainer>
 
-      <Footer />
+      {/*       <Footer /> */}
     </PageContainer>
   );
 };

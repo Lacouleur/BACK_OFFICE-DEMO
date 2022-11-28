@@ -388,3 +388,88 @@ export const InnerSectionTitle = styled.h4`
 export const InnerSectionDescritpion = styled.p`
   color: ${colors.lightGrey};
 `;
+
+export const TextComponenVariant = styled.p`
+  font-size: 14px;
+  font-weight: bold;
+  color: ${colors.white};
+  margin: 16px 8px;
+`;
+
+export const CollectionCardsDnDContainer = styled.div`
+  background-color: ${colors.darkGrey};
+  min-height: 150px;
+  width: 100%;
+  padding: 8px;
+`;
+
+const isOpenCardMixin = css`
+  height: 88px;
+  border: 1px solid ${colors.lightGrey};
+  border-left: 6px solid ${colors.paleViolet};
+
+  &:hover {
+    border: 1px solid ${colors.paleViolet};
+    border-left: 6px solid ${colors.paleViolet};
+    height: 90px;
+    width: calc(100% + 2px);
+  }
+`;
+
+const isFirstMixin = css`
+  margin-top: 0;
+`;
+
+export const CollectionCardContainer = styled.div`
+  background-color: ${colors.mediumGrey};
+  border-radius: 5px;
+  margin-top: 8px;
+  border: 1px solid ${colors.lightGrey};
+  border-left: 6px solid ${colors.paleViolet};
+  padding: 25px;
+  cursor: ${(props) => (!props.isHand ? "grab" : "pointer")};
+
+  &:hover {
+    border: 1px solid ${colors.paleViolet};
+    border-left: 6px solid ${colors.paleViolet};
+  }
+
+  ${(props) => !props.isOpen && isOpenCardMixin};
+  ${(props) => props.isFirst && isFirstMixin};
+`;
+
+export const CardHeaderContainer = styled.div`
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const CardTitleBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 150px;
+}
+`;
+
+export const CardHandleIcon = styled.img`
+  height: 24px;
+`;
+
+export const CardTitle = styled.h3`
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 40px;
+  text-align: left;
+  color: ${colors.white};
+  text-transform: uppercase;
+`;
+
+export const RoundThumbnailPlaceholder = styled.div`
+  background-color: ${colors.fadedGrey};
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+`;

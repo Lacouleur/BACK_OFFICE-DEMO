@@ -57,9 +57,9 @@ const Auth = () => {
           <MainTitleBox authTitle>
             <H1>NOWU&apos;S BACK OFFICE</H1>
             <H2>
-              Welcome to NOWU the
+              Where journalists write for
               <GreenText> green </GreenText>
-              media
+              futur
             </H2>
           </MainTitleBox>
 
@@ -99,7 +99,7 @@ const Auth = () => {
             </ErrorNotification>
           )}
         </AuthBox>
-        <Footer />
+        {/* <Footer /> */}
       </PageContainer>
     </>
   );

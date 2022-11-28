@@ -5,13 +5,10 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import makeAnimated from "react-select/animated";
 import Fuse from "fuse.js";
 import {
   FieldStyle,
   Selector,
-  SelectorAuthor,
-  MultiSelectorAndCreate,
   FieldError,
   ErrorIcon,
   FieldContainer,
@@ -19,22 +16,14 @@ import {
   TextArea,
   FieldBox,
   FieldButton,
-  ButtonWarn,
-  TextWarn,
-  BoxWarnButton,
-  TagBox,
   FieldTitle,
   Line,
   FieldTitleBox,
-  WarningCreateContainer,
-  WarnCreateBox,
-  MultiSelector,
 } from "../../styles/styledComponents/global/Field.sc";
 import colors from "../../styles/core/colors";
 import exclamationIcon from "../../styles/assets/icons/exclamationGrey.svg";
 import exclamationVioletIcon from "../../styles/assets/icons/exclamation.svg";
 import {
-  createTag,
   fetchAuthorsList,
   fetchCategoriesList,
   fetchTags,
@@ -45,8 +34,6 @@ import {
 } from "../../styles/styledComponents/contentList/Content.sc";
 
 import {
-  dispatchElementsValue,
-  dispatchElementsId,
   dispatchFields,
   dispatchSelected,
   checkImage,
@@ -54,16 +41,10 @@ import {
   optionSelector,
   valueSelector,
   fuzzyOptions,
-  loadOptions,
   initMultiSelectors,
-  checkAndDisable,
 } from "../../helper/fieldsHelper";
-import { setTags, setNewTag } from "../../store/actions/mainInformationActions";
-import {
-  setModuleCategories,
-  setModuleTags,
-  setModuleAuthors,
-} from "../../store/actions/moduleActions";
+
+import MultiSelectorFields from "./MultiSelectorsFields";
 
 // Field.js is a unique file for all types of fields in the app.
 
@@ -80,8 +61,10 @@ fieldType : custom type of field used to display it (If undefined, a classic "ty
 section: The group to which the field belongs
 edit : fetched value to populate the field
 moduleId : ID of the group to which the field belongs,
-answerId : used for quizz,
+subId : used for questions in a quizz or cards in a collection (elements in a module),
 lang,
+isDisabled : bool to disable field modification,
+isClearable : bool to create a cross in the field,
 */
 
 const Field = ({
@@ -90,12 +73,13 @@ const Field = ({
   maxlength,
   infos,
   name,
+  displayName,
   error,
   fieldType,
   section,
   edit,
   moduleId,
-  answerId,
+  subId,
   isDisabled,
   isClearable,
 }) => {
@@ -113,14 +97,13 @@ const Field = ({
   const [selectedCollectionType, setSelectedCollectionType] = useState();
   const [selectedCollectionFormat, setSelectedCollectionFormat] = useState();
   const [selectedBackgroundColor, setSelectedBackgroundColor] = useState();
+  const [selectedResourceType, setSelectedResourceType] = useState();
   const [
     selectedFeaturedBackgroundColor,
     setSelectedFeaturedBackgroundColor,
   ] = useState();
   const [selectedSticker, setSelectedSticker] = useState();
 
-  const [isOpenTagWarn, setIsOpenTagWarn] = useState();
-  const animatedComponents = makeAnimated();
   const [fuse, setFuse] = useState(null);
 
   const MainInformationState = useSelector(
@@ -197,7 +180,9 @@ const Field = ({
       selectedFeaturedBackgroundColor,
       setSelectedFeaturedBackgroundColor,
       selectedSticker,
-      setSelectedSticker
+      setSelectedSticker,
+      selectedResourceType,
+      setSelectedResourceType
     );
 
     initMultiSelectors(
@@ -229,11 +214,11 @@ const Field = ({
     <FieldContainer>
       {!error && (
         <FieldTitleBox>
-          <FieldTitle>{name}</FieldTitle>
+          <FieldTitle>{displayName || name}</FieldTitle>
           <Line />
         </FieldTitleBox>
       )}
-      {/* regular selector fields */}
+      {/* selector fields */}
       {fieldType && fieldType === "select" && (
         <FieldBox>
           <Selector
@@ -249,7 +234,8 @@ const Field = ({
               selectedCtaType,
               selectedBackgroundColor,
               selectedFeaturedBackgroundColor,
-              selectedSticker
+              selectedSticker,
+              selectedResourceType
             )}
             options={optionSelector(name, categoriesList)}
             classNamePrefix="select"
@@ -270,6 +256,7 @@ const Field = ({
                 setSelectedBackgroundColor,
                 setSelectedFeaturedBackgroundColor,
                 setSelectedSticker,
+                setSelectedResourceType,
                 moduleId
               );
             }}
@@ -293,200 +280,27 @@ const Field = ({
       )}
       {/* multi value Selector */}
       {fieldType && fieldType === "multi-value" && (
-        <FieldBox>
-          {/* tag selector */}
-
-          {name === "tags" && section === "mainInformation" && (
-            <>
-              {/* Warn message on new tag creation */}
-              {isOpenTagWarn && newTag?.label && (
-                <>
-                  <WarningCreateContainer>
-                    <TextWarn violet margin>
-                      Please note that the creation of a tag is final.
-                    </TextWarn>
-                    <WarnCreateBox>
-                      <TextWarn width30>
-                        Do you want to create the tag :
-                      </TextWarn>
-                      <TagBox>{`${newTag.label}`}</TagBox>
-                      <BoxWarnButton>
-                        <ButtonWarn
-                          autoFocus
-                          type="button"
-                          onClick={() => {
-                            setIsOpenTagWarn(false);
-                            dispatch(
-                              createTag(
-                                newTag.label,
-                                lang,
-                                setSelectedTags,
-                                selectedTags
-                              )
-                            );
-                          }}
-                        >
-                          Yes
-                        </ButtonWarn>
-                        <ButtonWarn
-                          type="button"
-                          onClick={() => {
-                            setIsOpenTagWarn(false);
-                            dispatch(setNewTag(undefined));
-                          }}
-                        >
-                          No
-                        </ButtonWarn>
-                      </BoxWarnButton>
-                    </WarnCreateBox>
-                  </WarningCreateContainer>
-                </>
-              )}
-
-              {/* tag Selector with fuse dynamic search */}
-
-              <MultiSelectorAndCreate
-                isDisabled={!!isOpenTagWarn}
-                classNamePrefix="select"
-                isMulti
-                isSearchable
-                components={animatedComponents}
-                closeMenuOnSelect={false}
-                menuIsOpen={isOpenTagWarn ? false : undefined}
-                placeholder={placeholder}
-                defaultValue={selectedTags}
-                value={selectedTags}
-                getOptionValue={(option) => `${option.label}`}
-                onCreateOption={(event) => {
-                  dispatch(setNewTag({ label: event }));
-                  setIsOpenTagWarn(true);
-                }}
-                fuzzyOptions={fuzzyOptions}
-                autoCorrect="off"
-                spellCheck="off"
-                styles={{
-                  /* Hack to stylize the create Button */
-                  option: (provided, state) => ({
-                    ...provided,
-                    background:
-                      state.data.__isNew__ && `${colors.matBlack} !important`,
-                    color: state.data.__isNew__ && `${colors.green} !important`,
-                  }),
-                }}
-                defaultOptions={tagsList}
-                loadOptions={(value) => loadOptions(value, fuse)}
-                onChange={(event) => {
-                  setSelectedTags(event);
-                  dispatch(setTags(dispatchElementsId(event || [])));
-                }}
-              />
-            </>
-          )}
-
-          {/* authors selector */}
-
-          {name === "authors" && (
-            <>
-              <SelectorAuthor
-                classNamePrefix="select"
-                isMulti
-                components={animatedComponents}
-                closeMenuOnSelect={false}
-                placeholder={placeholder}
-                defaultValue={selectedAuthors}
-                value={selectedAuthors}
-                options={optionSelector("authors", authorsList)}
-                onChange={(event) => {
-                  if (!event) {
-                    setSelectedAuthors([]);
-                  } else {
-                    setSelectedAuthors(event);
-                  }
-                  dispatch(
-                    setModuleAuthors({
-                      value: dispatchElementsValue(event || []),
-                      moduleId,
-                    })
-                  );
-                }}
-              />
-            </>
-          )}
-
-          {/* category selector */}
-
-          {name === "categories" && (
-            <>
-              <MultiSelector
-                classNamePrefix="select"
-                isMulti
-                isSearchable
-                components={animatedComponents}
-                closeMenuOnSelect={false}
-                placeholder={placeholder}
-                defaultValue={selectedCategories}
-                value={selectedCategories}
-                getOptionValue={(option) => `${option.label}`}
-                fuzzyOptions={fuzzyOptions}
-                autoCorrect="off"
-                spellCheck="off"
-                defaultOptions={categoriesList}
-                options={categoriesList}
-                loadOptions={(value) => loadOptions(value, fuse)}
-                onChange={(event) => {
-                  if (!event) {
-                    setSelectedCategories([]);
-                  } else {
-                    setSelectedCategories(event);
-                  }
-                  dispatch(
-                    setModuleCategories({
-                      id: moduleId,
-                      value: dispatchElementsValue(event || []),
-                    })
-                  );
-                }}
-              />
-            </>
-          )}
-
-          {/* Tag selector without creation */}
-          {name === "tags" &&
-            (section === "collection" || section === "featured") && (
-              <>
-                <MultiSelector
-                  classNamePrefix="select"
-                  isMulti
-                  isSearchable
-                  components={animatedComponents}
-                  closeMenuOnSelect={false}
-                  placeholder={placeholder}
-                  defaultValue={selectedTagsCollection}
-                  value={selectedTagsCollection}
-                  getOptionValue={(option) => `${option.label}`}
-                  fuzzyOptions={fuzzyOptions}
-                  autoCorrect="off"
-                  spellCheck="off"
-                  defaultOptions={tagsList}
-                  options={tagsList}
-                  loadOptions={(value) => loadOptions(value, fuse)}
-                  onChange={(event) => {
-                    if (!event) {
-                      setSelectedTagsCollection([]);
-                    } else {
-                      setSelectedTagsCollection(event);
-                    }
-                    dispatch(
-                      setModuleTags({
-                        id: moduleId,
-                        value: dispatchElementsId(event || []),
-                      })
-                    );
-                  }}
-                />
-              </>
-            )}
-        </FieldBox>
+        <MultiSelectorFields
+          name={name}
+          section={section}
+          newTagLabel={newTag?.label}
+          lang={lang}
+          setSelectedTags={setSelectedTags}
+          selectedTags={selectedTags}
+          placeholder={placeholder}
+          fuzzyOptions={fuzzyOptions}
+          tagsList={tagsList}
+          fuse={fuse}
+          selectedAuthors={selectedAuthors}
+          setSelectedAuthors={setSelectedAuthors}
+          authorsList={authorsList}
+          moduleId={moduleId}
+          selectedCategories={selectedCategories}
+          categoriesList={categoriesList}
+          setSelectedCategories={setSelectedCategories}
+          selectedTagsCollection={selectedTagsCollection}
+          setSelectedTagsCollection={setSelectedTagsCollection}
+        />
       )}
       {/* text area fields */}
       {fieldType && fieldType === "textarea" && (
@@ -520,7 +334,7 @@ const Field = ({
             type="file"
             ref={hiddenFileInput}
             onChange={(event) =>
-              checkImage(event, dispatch, setFileTitle, name, moduleId)
+              checkImage(event, dispatch, setFileTitle, name, moduleId, subId)
             }
             style={{ display: "none" }}
           />
@@ -547,7 +361,7 @@ const Field = ({
                 dispatch,
                 e.target.value,
                 moduleId,
-                answerId,
+                subId,
                 lang
               );
             }}
@@ -585,9 +399,10 @@ Field.defaultProps = {
   section: undefined,
   edit: undefined,
   moduleId: undefined,
-  answerId: undefined,
+  subId: undefined,
   isDisabled: false,
   isClearable: true,
+  displayName: undefined,
 };
 
 Field.propTypes = {
@@ -606,9 +421,10 @@ Field.propTypes = {
     PropTypes.number,
   ]),
   moduleId: PropTypes.string,
-  answerId: PropTypes.string,
+  subId: PropTypes.string,
   isDisabled: PropTypes.bool,
   isClearable: PropTypes.bool,
+  displayName: PropTypes.string,
 };
 
 export default Field;

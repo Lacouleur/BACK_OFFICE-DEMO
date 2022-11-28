@@ -109,7 +109,38 @@ export function manageReactionAnswers(answers, dispatch, uuid) {
 export function dndEditorCustomStyles(snapshot, provided) {
   return {
     userSelect: "none",
-    backgroundColor: snapshot.isDragging ? "#263B4A" : "#456C86",
+    backgroundColor: snapshot.isDragging ? "#263B4A" : "",
     ...provided.draggableProps.style,
   };
+}
+
+export function removeUrlsFromCards(cards) {
+  const newCards = [];
+  cards.map((card) => {
+    newCards.push({ ...card, image: { ...card.image, urls: undefined } });
+    return null;
+  });
+  return newCards;
+}
+
+export function manageCardsValues(cards) {
+  const newCards = [];
+  cards.map((card) => {
+    newCards.push({
+      ...card,
+      url: {
+        ...card.url,
+        value: card.url.value || undefined,
+        ctaLabel: card.url.ctaLabel || null,
+      },
+      image: {
+        ...card.image,
+        uuid: card.image.uuid || null,
+        /* API do not accept urls as it need only UUID */
+        urls: null,
+      },
+    });
+    return null;
+  });
+  return newCards;
 }

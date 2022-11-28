@@ -42,6 +42,11 @@ import {
   setFeaturedSticker,
   setFeaturedCategory,
   setFeaturedSlug,
+  setCollectionResourceType,
+  setCollectionCardAltImage,
+  setCollectionCardLinkTo,
+  setCollectionCardCtaLabel,
+  setCollectionCardDescription,
 } from "../store/actions/moduleActions";
 import {
   setDisplayedName,
@@ -128,6 +133,17 @@ export const stickerList = [
     value: "new-article",
   },
 ];
+
+export const resourceTypeList = [
+  {
+    label: "Contents",
+    value: "contents",
+  },
+  {
+    label: "Mixed",
+    value: "mixed",
+  },
+];
 // match selection with current list for simple selector fields.
 export function onEdit(
   edit,
@@ -149,10 +165,22 @@ export function onEdit(
   selectedFeaturedBackgroundColor,
   setSelectedFeaturedBackgroundColor,
   selectedSticker,
-  setSelectedSticker
+  setSelectedSticker,
+  selectedResourceType,
+  setSelectedResourceType
 ) {
   if (edit) {
     setFileTitle(edit);
+  }
+
+  if (!selectedResourceType) {
+    resourceTypeList.map((option) => {
+      if (edit === option.value) {
+        setSelectedResourceType(option);
+        return null;
+      }
+      return null;
+    });
   }
 
   if (!selectedSticker) {
@@ -200,6 +228,7 @@ export function onEdit(
       if (edit === option.value) {
         setEditCategory(option);
       }
+      return null;
     });
   }
 
@@ -307,12 +336,19 @@ export function dispatchElementsId(event) {
 }
 
 // Check image of the upload fields, throw modal error if not valid
-export function checkImage(event, dispatch, setFileTitle, name, moduleId) {
+export function checkImage(
+  event,
+  dispatch,
+  setFileTitle,
+  name,
+  moduleId,
+  subId
+) {
   const file = event.target.files[0];
   if (name === "avatar") {
     dispatch(saveAvatar(setFileTitle, file));
   } else {
-    dispatch(saveImage(setFileTitle, name, file, moduleId));
+    dispatch(saveImage(setFileTitle, name, file, moduleId, subId));
   }
 }
 
@@ -328,9 +364,13 @@ export function valueSelector(
   selectedCtaType,
   selectedBackgroundColor,
   selectedFeaturedBackgroundColor,
-  selectedSticker
+  selectedSticker,
+  selectedResourceType
 ) {
   switch (name) {
+    case "resourceType":
+      return selectedResourceType;
+
     case "sticker":
       return selectedSticker;
 
@@ -423,6 +463,9 @@ export function optionSelector(name, list) {
     case "sticker":
       return stickerList;
 
+    case "resourceType":
+      return resourceTypeList;
+
     default:
       return null;
   }
@@ -443,11 +486,16 @@ export function dispatchSelected(
   setSelectedBackgroundColor,
   setSelectedFeaturedBackgroundColor,
   setSelectedSticker,
+  setSelectedResourceType,
   moduleId
 ) {
   const { value } = event;
   if (value) {
     switch (name) {
+      case "resourceType":
+        setSelectedResourceType(event);
+        dispatch(setCollectionResourceType({ id: moduleId, value }));
+        break;
       case "sticker":
         setSelectedSticker(event);
         dispatch(setFeaturedSticker({ id: moduleId, value }));
@@ -515,7 +563,7 @@ export function dispatchFields(
   dispatch,
   value,
   moduleId,
-  answerId = null,
+  subId = null,
   lang = "fr"
 ) {
   switch (true) {
@@ -579,7 +627,7 @@ export function dispatchFields(
       dispatch(
         setOpinionTextAnswer({
           moduleId,
-          answerId,
+          answerId: subId,
           value,
         })
       );
@@ -667,6 +715,28 @@ export function dispatchFields(
       dispatch(setFeaturedSlug({ id: moduleId, value }));
       break;
 
+    case name === "limit" && section === "collection":
+      dispatch(setCollectionLimit({ id: moduleId, value }));
+      break;
+
+    case name === "collectionCardAltImage" && section === "collection":
+      dispatch(setCollectionCardAltImage({ moduleId, cardId: subId, value }));
+      break;
+
+    case name === "collectionCardLinkTo" && section === "collection":
+      dispatch(setCollectionCardLinkTo({ moduleId, cardId: subId, value }));
+      break;
+
+    case name === "collectionCardCtaLabel" && section === "collection":
+      dispatch(setCollectionCardCtaLabel({ moduleId, cardId: subId, value }));
+      break;
+
+    case name === "collectionCardDescription" && section === "collection":
+      dispatch(
+        setCollectionCardDescription({ moduleId, cardId: subId, value })
+      );
+      break;
+
     // PAGE EDITOR
 
     case name === "title" && section === "pageMainInformation":
@@ -701,10 +771,6 @@ export function dispatchFields(
 
     case name === "url" && section === "sectionHeader":
       dispatch(setPageModuleHeaderUrl({ id: moduleId, value }));
-      break;
-
-    case name === "limit" && section === "collection":
-      dispatch(setCollectionLimit({ id: moduleId, value }));
       break;
 
     default:

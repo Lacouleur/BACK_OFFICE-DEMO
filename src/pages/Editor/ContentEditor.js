@@ -6,7 +6,6 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {  useParams } from "react-router-dom";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import Footer from "../../components/Navigation/Footer";
 import Header from "../../components/Navigation/Header";
 import PageContainer from "../../styles/styledComponents/global/PageContainer.sc";
 import MainInformation from "../../components/Editor/Sections/MainInformation";
@@ -116,7 +115,7 @@ const ContentEditor = () => {
           </NewBlockButtonBox>
         </FormContainer>
       </Form>
-      <Footer position="fixed" />
+      {/*    <Footer position="fixed" /> */}
     </PageContainer>
   );
 };

@@ -28,6 +28,7 @@ import {
   AddAnswerText,
   Hide,
   ActionIcons,
+  TextComponenVariant,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import {
   setOpinionExplain,
@@ -63,7 +64,6 @@ import {
   setTextHTMLContent,
 } from "../../../../../helper/modulesHelper";
 import SwitchButton from "../../../../Tools/Switch";
-import { TextOpinion } from "../../../../../styles/styledComponents/global/Field.sc";
 
 const OpinionModule = ({
   uuid,
@@ -214,13 +214,15 @@ const OpinionModule = ({
           </FormTitle>
         </SectionTitle>
         {!isOpen && <Gradient />}
+
+        {/* MODULE TYPE SELECTOR */}
         {isReaction === undefined && (
           <>
-            <TextOpinion>
+            <TextComponenVariant>
               What type of opinion do you want to create ?
-            </TextOpinion>
+            </TextComponenVariant>
             <SwitchButton
-              styleVariant="isReaction"
+              styleVariant="selectModuleVariant"
               action={() => {
                 dispatch(setOpinionIsReaction({ id: uuid, value: true }));
               }}
@@ -230,7 +232,7 @@ const OpinionModule = ({
             />
 
             <SwitchButton
-              styleVariant="isReaction"
+              styleVariant="selectModuleVariant"
               action={() => {
                 dispatch(setOpinionIsReaction({ id: uuid, value: false }));
               }}
@@ -240,6 +242,7 @@ const OpinionModule = ({
             />
           </>
         )}
+
         {isReaction !== undefined && (
           <>
             {answers && !isReaction && (
@@ -338,6 +341,7 @@ const OpinionModule = ({
               maxlength="70"
               infos="Maximum 70 characters"
               name="question"
+              displayName="Question"
               section="opinion"
               moduleId={uuid}
               edit={question}
@@ -349,6 +353,7 @@ const OpinionModule = ({
                   placeholder="Emoji Theme"
                   infos="Only one Emoji set for the time being, more soon"
                   name="emojiTheme"
+                  displayName="Emoji Theme"
                   section="opinion"
                   maxlength="5"
                   moduleId={uuid}
@@ -361,6 +366,7 @@ const OpinionModule = ({
                   maxlength="150"
                   infos="Maximum 150 characters"
                   name="description"
+                  displayName="Description"
                   section="opinion"
                   moduleId={uuid}
                   edit={description}
@@ -377,9 +383,10 @@ const OpinionModule = ({
                       maxlength="90"
                       infos="Maximum 90 characters"
                       name="answer"
+                      displayName="Answer"
                       section="opinion"
                       moduleId={uuid}
-                      answerId={answer.uuid}
+                      subId={answer.uuid}
                       edit={answer.text}
                     />
                     <IconBox>
@@ -390,8 +397,7 @@ const OpinionModule = ({
                               moduleId: uuid,
                               answerId: answer.uuid,
                             })
-                          )
-                        }
+                          )}
                         src={
                           answers.length > 2
                             ? trashIconViolet
@@ -410,8 +416,7 @@ const OpinionModule = ({
                               answerId: answer.uuid,
                               value: !answer.right,
                             })
-                          )
-                        }
+                          )}
                         isChecked={!!answer?.right || false}
                         componentId={`switch-${answer.uuid}}`}
                         displayedText="Right answer"
@@ -423,8 +428,7 @@ const OpinionModule = ({
             {answers && !isReaction && (
               <AddAnswerBox
                 onClick={() =>
-                  dispatch(createOpinionNewAnswer({ moduleId: uuid }))
-                }
+                  dispatch(createOpinionNewAnswer({ moduleId: uuid }))}
               >
                 <AddAnswerIcon src={plusIcon} />
                 <AddAnswerText>Add an answer</AddAnswerText>

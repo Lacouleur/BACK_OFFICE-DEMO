@@ -178,6 +178,7 @@ const CtaModule = ({
         <Field
           placeholder="Introduction"
           name="intro"
+          displayName="Introduction"
           section="cta"
           edit={introduction || ""}
           maxlength="90"
@@ -188,6 +189,7 @@ const CtaModule = ({
         <Field
           placeholder="CTA Text"
           name="label"
+          displayName="Label"
           infos="Maximum 80 characters"
           maxlength="80"
           section="cta"
@@ -200,6 +202,7 @@ const CtaModule = ({
             <Field
               placeholder="Cta Type"
               name="ctaType"
+              displayName="Cta Type"
               fieldType="select"
               section="cta"
               moduleId={uuid}
@@ -210,6 +213,7 @@ const CtaModule = ({
               <Field
                 placeholder="CTA Link"
                 name="url"
+                displayName="URL"
                 section="cta"
                 moduleId={uuid}
                 edit={url || ""}
@@ -223,8 +227,7 @@ const CtaModule = ({
                       value: !openNewTab,
                       type: "content",
                     })
-                  )
-                }
+                  )}
                 isChecked={openNewTab}
                 componentId={`cta-switch-${uuid}`}
                 displayedText="Open in new window"
@@ -238,6 +241,7 @@ const CtaModule = ({
             <Field
               placeholder="CTA Link"
               name="link"
+              displayName="Cta Link"
               section="cta"
               moduleId={uuid}
               edit={link || ""}
@@ -251,7 +255,8 @@ const CtaModule = ({
                     value: !openNewTab,
                     type: "page",
                   })
-                )}
+                )
+              }
               isChecked={openNewTab}
               componentId={`cta-switch-${uuid}`}
               displayedText="Open in new window"
@@ -274,6 +279,7 @@ const CtaModule = ({
               <Field
                 placeholder="Navigation Image"
                 name="ctaImage"
+                displayName="Cta Image"
                 section="cta"
                 fieldType="uploader"
                 edit={imageTitle}
@@ -291,6 +297,7 @@ const CtaModule = ({
                 <Field
                   placeholder="Alternative text for the image"
                   name="altImage"
+                  displayName="Alt Cta Image"
                   section="cta"
                   infos="Maximum 120 characters"
                   maxlength="120"

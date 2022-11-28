@@ -44,7 +44,7 @@ const PageEditorCreate = () => {
           <PageMainInformation />
         </FormContainer>
       </Form>
-      <Footer position="fixed" />
+      {/*    <Footer position="fixed" /> */}
     </PageContainer>
   );
 };

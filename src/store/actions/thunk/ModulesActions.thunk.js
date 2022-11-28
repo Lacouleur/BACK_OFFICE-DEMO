@@ -15,6 +15,7 @@ import {
   setImageUuid,
   setModulePosted,
   setFeaturedImageUuid,
+  setCollectionCardImageUuid,
 } from "../moduleActions";
 
 import {
@@ -37,6 +38,7 @@ import {
 } from "../../../services/client/pagesClient";
 import { checkForStringtoArray } from "../../../helper/converters";
 import { setFeedbackResults } from "../mainInformationActions";
+import { manageCardsValues } from "../../../helper/modulesHelper";
 
 // This file is an action file for modules using redux-thunk
 
@@ -108,6 +110,7 @@ export function saveModule(uuid, request = "save") {
               url: module.url,
             };
             switch (module.type) {
+              /* save */
               case "text": {
                 const { type, text, order, isVisible, collapse } = module;
                 values = {
@@ -122,6 +125,8 @@ export function saveModule(uuid, request = "save") {
                 isNewModule = true;
                 break;
               }
+
+              /* save */
               case "image": {
                 const { type, image, order, isVisible } = module;
                 values = {
@@ -139,6 +144,8 @@ export function saveModule(uuid, request = "save") {
 
                 break;
               }
+
+              /* save */
               case "opinion": {
                 const {
                   type,
@@ -170,6 +177,8 @@ export function saveModule(uuid, request = "save") {
 
                 break;
               }
+
+              /* save */
               case "cta-button": {
                 const {
                   type,
@@ -210,6 +219,7 @@ export function saveModule(uuid, request = "save") {
                 break;
               }
 
+              /* save */
               case "collection": {
                 const {
                   order,
@@ -220,6 +230,8 @@ export function saveModule(uuid, request = "save") {
                   paginate,
                   isPined,
                   customIdsList,
+                  isMixed,
+                  cards,
                 } = module;
 
                 values = {
@@ -228,35 +240,44 @@ export function saveModule(uuid, request = "save") {
                   type: "collection",
                   order,
                   isVisible,
-                  resource: "contents",
-                  display,
+                  resource: isMixed ? "mixed" : "contents",
+                  display: isMixed ? "secondary" : display,
                   paginate,
                   format: format || "",
-
-                  criteria: {
-                    limit: criteria?.limit || 6,
-                    page: 1,
-                    sort: "firstPublishedAt",
-                    order: "desc",
-                    fields: "header,slug,category,theme",
-                    lang,
-                    excludeLastContent: criteria?.excludeLastContent,
-                    categories:
-                      checkForStringtoArray(criteria?.categories, "string") ||
-                      undefined,
-                    tags:
-                      checkForStringtoArray(criteria?.tags, "string") ||
-                      undefined,
-                    ids: !isPined && customIdsList ? customIdsList : undefined,
-                    pinnedContents:
-                      isPined && customIdsList ? customIdsList : undefined,
-                  },
+                  cards:
+                    isMixed && cards && cards?.length !== 0
+                      ? manageCardsValues(cards)
+                      : undefined,
+                  criteria: isMixed
+                    ? null
+                    : {
+                        limit: criteria?.limit || 6,
+                        page: 1,
+                        sort: "firstPublishedAt",
+                        order: "desc",
+                        fields: "header,slug,category,theme",
+                        lang,
+                        excludeLastContent: criteria?.excludeLastContent,
+                        categories:
+                          checkForStringtoArray(
+                            criteria?.categories,
+                            "string"
+                          ) || undefined,
+                        tags:
+                          checkForStringtoArray(criteria?.tags, "string") ||
+                          undefined,
+                        ids:
+                          !isPined && customIdsList ? customIdsList : undefined,
+                        pinnedContents:
+                          isPined && customIdsList ? customIdsList : undefined,
+                      },
                 };
                 isNewModule = true;
 
                 break;
               }
 
+              /* save */
               case "feedback": {
                 const { order, isVisible, question } = module;
 
@@ -273,6 +294,7 @@ export function saveModule(uuid, request = "save") {
                 break;
               }
 
+              /* save */
               case "featured": {
                 const {
                   order,
@@ -384,6 +406,7 @@ export function saveModule(uuid, request = "save") {
             };
 
             switch (module.type) {
+              /* update */
               case "text": {
                 const { type, text, order, isVisible, collapse } = module;
                 values = {
@@ -397,6 +420,8 @@ export function saveModule(uuid, request = "save") {
                 isChanged = true;
                 break;
               }
+
+              /* update */
               case "image": {
                 const { type, image, order, isVisible } = module;
                 values = {
@@ -413,6 +438,8 @@ export function saveModule(uuid, request = "save") {
 
                 break;
               }
+
+              /* update */
               case "opinion": {
                 const {
                   type,
@@ -453,6 +480,8 @@ export function saveModule(uuid, request = "save") {
 
                 break;
               }
+
+              /* update */
               case "cta-button": {
                 const {
                   type,
@@ -494,6 +523,8 @@ export function saveModule(uuid, request = "save") {
                 isChanged = true;
                 break;
               }
+
+              /* update */
               case "collection": {
                 const {
                   order,
@@ -504,6 +535,8 @@ export function saveModule(uuid, request = "save") {
                   paginate,
                   isPined,
                   customIdsList,
+                  isMixed,
+                  cards,
                 } = module;
 
                 values = {
@@ -511,34 +544,45 @@ export function saveModule(uuid, request = "save") {
                   type: "collection",
                   order,
                   isVisible,
-                  resource: "contents",
-                  display,
+                  resource: isMixed ? "mixed" : "contents",
+                  display: isMixed ? "secondary" : display,
                   paginate,
-
+                  cards:
+                    isMixed && cards && cards?.length !== 0
+                      ? manageCardsValues(cards)
+                      : undefined,
                   format: format || "carousel",
-                  criteria: {
-                    limit: criteria?.limit,
-                    page: 1,
-                    sort: "firstPublishedAt",
-                    order: "desc",
-                    fields: "header,slug,category,theme",
-                    lang,
-                    excludeLastContent: criteria?.excludeLastContent,
-                    categories:
-                      checkForStringtoArray(criteria?.categories, "string") ||
-                      undefined,
-                    tags:
-                      checkForStringtoArray(criteria?.tags, "string") ||
-                      undefined,
-                    ids: !isPined && customIdsList ? customIdsList : undefined,
-                    pinnedContents:
-                      isPined && customIdsList ? customIdsList : undefined,
-                  },
+                  criteria: isMixed
+                    ? null
+                    : {
+                        limit: criteria?.limit,
+                        page: 1,
+                        sort: "firstPublishedAt",
+                        order: "desc",
+                        fields: "header,slug,category,theme",
+                        lang,
+                        excludeLastContent: criteria?.excludeLastContent,
+                        categories:
+                          checkForStringtoArray(
+                            criteria?.categories,
+                            "string"
+                          ) || undefined,
+                        tags:
+                          checkForStringtoArray(criteria?.tags, "string") ||
+                          undefined,
+                        ids:
+                          !isPined && customIdsList ? customIdsList : undefined,
+                        pinnedContents:
+                          isPined && customIdsList ? customIdsList : undefined,
+                      },
                 };
+
                 isChanged = true;
 
                 break;
               }
+
+              /* update */
               case "feedback": {
                 const { order, isVisible, question } = module;
 
@@ -553,6 +597,8 @@ export function saveModule(uuid, request = "save") {
 
                 break;
               }
+
+              /* update */
               case "featured": {
                 const {
                   order,
@@ -655,7 +701,7 @@ export function saveModule(uuid, request = "save") {
   };
 }
 
-export function saveImage(setFileTitle, name, image, moduleId) {
+export function saveImage(setFileTitle, name, image, moduleId, subId) {
   console.log("%cSAVING IMAGE", `${consoleTitle}`, image.name);
   return async (dispatch) => {
     const tokenIsValid = await isValidToken(dispatch);
@@ -690,6 +736,15 @@ export function saveImage(setFileTitle, name, image, moduleId) {
               setFeaturedImageUuid({ id: moduleId, value: response.data })
             );
           }
+          if (name === "collectionCardImage") {
+            dispatch(
+              setCollectionCardImageUuid({
+                moduleId,
+                value: response.data,
+                cardId: subId,
+              })
+            );
+          }
         }
       } catch (error) {
         if (error?.response?.status === 400) {
@@ -699,8 +754,8 @@ export function saveImage(setFileTitle, name, image, moduleId) {
               message: uploadError(error?.response?.data),
             })
           );
-          ErrorCaseClient(dispatch, error?.response?.data);
         } else {
+          console.error("ERROR", error);
           ErrorCaseClient(dispatch, error?.response?.data);
         }
       }

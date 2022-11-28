@@ -96,6 +96,7 @@ const PageMainInformation = () => {
                   titleError ? "Content need a title." : "Maximum 40 characters"
                 }
                 name="title"
+                displayName="Title"
                 section="pageMainInformation"
                 edit={title}
                 error={titleError}
@@ -116,6 +117,7 @@ const PageMainInformation = () => {
                 placeholder="subtitle"
                 infos="Subtitle to display on this page"
                 name="subtitle"
+                displayName="Subtitle"
                 section="pageMainInformation"
                 edit={subtitle}
               />
@@ -129,6 +131,7 @@ const PageMainInformation = () => {
                   : `${slugMessage(PageMainInformationState)}`
               }
               name="slug"
+              displayName="Slug"
               section="pageMainInformation"
               edit={slug}
               error={regexSlugError || postingError || slugError}
@@ -138,6 +141,7 @@ const PageMainInformation = () => {
             <Field
               placeholder="Language"
               name="lang"
+              displayName="Language"
               fieldType="select"
               section="pageMainInformation"
               edit={lang || "fr"}

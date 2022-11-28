@@ -222,7 +222,6 @@ const ModulesDispatcher = ({
                       style={dndEditorCustomStyles(snapshot, provided)}
                     >
                       <CollectionModule
-                        isPage={isPage}
                         title={isPage ? module.title : undefined}
                         subtitle={isPage ? module.subtitle : undefined}
                         url={
@@ -251,8 +250,12 @@ const ModulesDispatcher = ({
                         currentPage={module.currentPage}
                         nextPage={module.nextPage}
                         lastPage={module.lastPage}
+                        isMixed={module.isMixed}
+                        resource={module.resource}
+                        cardsList={module.cards}
                         customListLoaded={module.customListLoaded}
                         searchedInput={module?.searchedInput}
+                        currentOpennedCard={module?.currentOpennedCard}
                         excludeLastContent={
                           module?.criteria?.excludeLastContent
                         }

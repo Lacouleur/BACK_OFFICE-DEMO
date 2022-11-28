@@ -57,6 +57,19 @@ import {
   SET_MODULE_AUTHORS,
   SET_FEATURED_SLUG,
   SET_COLLECTION_EXCLUDE_LAST_ARTICLE,
+  SET_COLLECTION_IS_MIXED,
+  SET_COLLECTION_RESOURCE_TYPE,
+  SET_COLLECTION_DELETE_CARD,
+  SET_COLLECTION_ADD_CARD,
+  EDIT_COLLECTION_CARDS_LIST,
+  SET_COLLECTION_CARD_IMAGE_UUID,
+  SET_COLLECTION_CARD_ALT_IMAGE,
+  SET_COLLECTION_CARD_LINK_TO,
+  SET_COLLECTION_CARD_LINK_IS_NEW_TAB,
+  SET_COLLECTION_CARD_CTA_LABEL,
+  DELETE_COLLECTION_CARD,
+  SET_COLLECTION_CURRENT_OPENNED_CARD,
+  SET_COLLECTION_CARD_DESCRIPTION,
 } from "../constants";
 
 export const setPageModuleHeaderNewTab = (payload) => ({
@@ -251,6 +264,11 @@ export const setCollectionType = (payload) => ({
   payload,
 });
 
+export const setCollectionResourceType = (payload) => ({
+  type: SET_COLLECTION_RESOURCE_TYPE,
+  payload,
+});
+
 export const setCollectionFormat = (payload) => ({
   type: SET_COLLECTION_FORMAT,
   payload,
@@ -291,8 +309,68 @@ export const setCollectionSearchInput = (payload) => ({
   payload,
 });
 
+export const setCollectionAddCard = (payload) => ({
+  type: SET_COLLECTION_ADD_CARD,
+  payload,
+});
+
+export const editCollectionCardsList = (payload) => ({
+  type: EDIT_COLLECTION_CARDS_LIST,
+  payload,
+});
+
+export const setCollectionCardImageUuid = (payload) => ({
+  type: SET_COLLECTION_CARD_IMAGE_UUID,
+  payload,
+});
+
+export const setCollectionCardDescription = (payload) => ({
+  type: SET_COLLECTION_CARD_DESCRIPTION,
+  payload,
+});
+
+export const setCollectionCardLinkIsNewTab = (payload) => ({
+  type: SET_COLLECTION_CARD_LINK_IS_NEW_TAB,
+  payload,
+});
+
+export const setCollectionCardCtaLabel = (payload) => ({
+  type: SET_COLLECTION_CARD_CTA_LABEL,
+  payload,
+});
+
+export const setCollectionCardAltImage = (payload) => ({
+  type: SET_COLLECTION_CARD_ALT_IMAGE,
+  payload,
+});
+
+export const setCollectionCardLinkTo = (payload) => ({
+  type: SET_COLLECTION_CARD_LINK_TO,
+  payload,
+});
+
+export const setCollectionDeleteCard = (payload) => ({
+  type: SET_COLLECTION_DELETE_CARD,
+  payload,
+});
+
 export const setCollectionExcludeLastArticle = (payload) => ({
   type: SET_COLLECTION_EXCLUDE_LAST_ARTICLE,
+  payload,
+});
+
+export const setCollectionIsMixed = (payload) => ({
+  type: SET_COLLECTION_IS_MIXED,
+  payload,
+});
+
+export const deleteCollectionCard = (payload) => ({
+  type: DELETE_COLLECTION_CARD,
+  payload,
+});
+
+export const setCollectionCurrentOpenedCard = (payload) => ({
+  type: SET_COLLECTION_CURRENT_OPENNED_CARD,
   payload,
 });
 

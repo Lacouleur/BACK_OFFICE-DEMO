@@ -80,6 +80,14 @@ const addNewBlockButtonMixin = css`
   background: ${colors.paleViolet};
 `;
 
+const addNewCollectionCardButtonMixin = css`
+  width: 200px;
+  margin-bottom: 18px;
+  margin-left: auto;
+  margin-right: 0;
+  background: ${colors.paleViolet};
+`;
+
 const loginButtonClickableMixin = css`
   color: ${colors.black};
   background: ${colors.paleViolet};
@@ -186,6 +194,8 @@ const Button = styled.button`
   ${(props) => props.previewArticleButton && previewArticleButtonMixin};
   ${(props) => props.returnButton && returnButtonMixin};
   ${(props) => props.addNewBlockButton && addNewBlockButtonMixin};
+  ${(props) =>
+    props.addNewCollectionCardButton && addNewCollectionCardButtonMixin};
   ${(props) => props.editButton && editButtonMixin};
   &:active {
     background-color: ${colors.paleVioletTransp};

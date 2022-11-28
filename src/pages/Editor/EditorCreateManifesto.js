@@ -62,7 +62,7 @@ const EditorCreateManifesto = () => {
           <MainInformation />
         </FormContainer>
       </Form>
-      <Footer position="fixed" />
+      {/* <Footer position="fixed" /> */}
     </PageContainer>
   );
 };

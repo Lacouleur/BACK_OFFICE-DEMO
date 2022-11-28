@@ -4,12 +4,6 @@ import ReactSelect from "react-select";
 import CreatableSelect from "react-select/async-creatable";
 import colors from "../../core/colors";
 
-export const TextOpinion = styled.p`
-  font-size: 14px;
-  font-weight: bold;
-  color: ${colors.white};
-  margin: 16px 8px;
-`;
 export const FieldTitle = styled.p`
   margin-left: 16px;
   z-index: 21;

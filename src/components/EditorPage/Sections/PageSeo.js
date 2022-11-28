@@ -68,6 +68,7 @@ const PageSeo = () => {
           <Field
             placeholder="Title"
             name="title"
+            displayName="Title"
             section="pageSeo"
             edit={seoTitle || undefined}
           />
@@ -75,6 +76,7 @@ const PageSeo = () => {
             placeholder="Description"
             fieldType="textarea"
             name="description"
+            displayName="Description"
             section="pageSeo"
             maxlength="155"
             infos="Maximum 155 characters & avoid tab or carrige return"

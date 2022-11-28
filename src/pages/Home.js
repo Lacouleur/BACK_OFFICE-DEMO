@@ -14,7 +14,7 @@ const Home = () => {
       <Header position="fixed" />
       <SideBar />
       <ContentList />
-      <Footer position="fixed" />
+      {/* <Footer position="fixed" /> */}
     </PageContainer>
   );
 };

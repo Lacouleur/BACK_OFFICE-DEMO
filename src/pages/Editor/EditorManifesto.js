@@ -122,7 +122,7 @@ const EditorManifesto = () => {
           </NewBlockButtonBox>
         </FormContainer>
       </Form>
-      <Footer position="fixed" />
+      {/*    <Footer position="fixed" /> */}
     </PageContainer>
   );
 };

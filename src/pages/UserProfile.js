@@ -267,7 +267,7 @@ const UserProfile = () => {
           </SectionBox>
         </FormContainer>
       </Form>
-      <Footer position="fixed" />
+      {/* <Footer position="fixed" /> */}
     </PageContainer>
   );
 };

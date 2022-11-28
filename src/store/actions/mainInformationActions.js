@@ -15,6 +15,7 @@ import {
   SET_CONTENT_CAN_MOVE_TO_TOP,
   SET_CONTENT_ORIGINAL_DATE,
   SET_FEEDBACK_RESULTS,
+  SET_AUTHORS,
 } from "../constants";
 
 export const addTitle = (payload) => ({
@@ -64,6 +65,11 @@ export const setUsers = (payload) => ({
 
 export const setAuthorsList = (payload) => ({
   type: SET_AUTHORS_LIST,
+  payload,
+});
+
+export const setAuthors = (payload) => ({
+  type: SET_AUTHORS,
   payload,
 });
 

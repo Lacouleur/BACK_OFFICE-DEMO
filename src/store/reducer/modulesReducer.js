@@ -63,6 +63,18 @@ import {
   SET_MODULE_AUTHORS,
   SET_FEATURED_SLUG,
   SET_COLLECTION_EXCLUDE_LAST_ARTICLE,
+  SET_COLLECTION_IS_MIXED,
+  SET_COLLECTION_RESOURCE_TYPE,
+  SET_COLLECTION_ADD_CARD,
+  EDIT_COLLECTION_CARDS_LIST,
+  SET_COLLECTION_CARD_IMAGE_UUID,
+  SET_COLLECTION_CARD_ALT_IMAGE,
+  SET_COLLECTION_CARD_LINK_TO,
+  SET_COLLECTION_CARD_LINK_IS_NEW_TAB,
+  SET_COLLECTION_CARD_CTA_LABEL,
+  DELETE_COLLECTION_CARD,
+  SET_COLLECTION_CURRENT_OPENNED_CARD,
+  SET_COLLECTION_CARD_DESCRIPTION,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -231,6 +243,7 @@ const modulesReducer = (state = initialState, action = {}) => {
                 isCustom: false,
                 categories: [],
                 tags: [],
+                cards: [],
                 limit: 6,
               },
             ],
@@ -439,6 +452,7 @@ const modulesReducer = (state = initialState, action = {}) => {
 
     case PAGE_LOADED: {
       const { sections } = action.payload;
+
       sections?.map((module) => {
         oldState.modulesList = [
           ...oldState.modulesList,
@@ -455,7 +469,6 @@ const modulesReducer = (state = initialState, action = {}) => {
           },
         ];
       });
-
       return {
         ...oldState,
       };
@@ -1080,6 +1093,24 @@ const modulesReducer = (state = initialState, action = {}) => {
       };
     }
 
+    case SET_COLLECTION_RESOURCE_TYPE: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            resource: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
     case SET_COLLECTION_FORMAT: {
       const { id, value } = action.payload;
       state.modulesList.find((module, index) => {
@@ -1135,7 +1166,6 @@ const modulesReducer = (state = initialState, action = {}) => {
 
     case SET_COLLECTION_CUSTOM_IDS_LIST: {
       const { id, value } = action.payload;
-
       state.modulesList.find((module, index) => {
         if (module?.uuid === id) {
           oldState.modulesList[index] = {
@@ -1146,6 +1176,273 @@ const modulesReducer = (state = initialState, action = {}) => {
         return null;
       });
 
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_COLLECTION_IS_MIXED: {
+      const { id, value, isChanged } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            isMixed: value,
+            isChanged: isChanged !== false,
+          };
+        }
+        return null;
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_COLLECTION_ADD_CARD: {
+      const id = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            cards: [
+              ...module?.cards,
+              {
+                uuid: `${uuidv4()}`,
+                type: "image",
+                order: module.cards.length + 1,
+                title: null,
+                subtitle: null,
+                url: null,
+                description: "",
+                isVisible: true,
+                image: null,
+              },
+            ],
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case EDIT_COLLECTION_CARDS_LIST: {
+      const { id, value } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList[index] = {
+            ...module,
+            cards: value,
+            isChanged: true,
+          };
+        }
+        return null;
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_COLLECTION_CARD_IMAGE_UUID: {
+      const { moduleId, cardId, value } = action.payload;
+      state.modulesList.find((module, moduleIndex) => {
+        if (module?.uuid === moduleId) {
+          oldState.modulesList[moduleIndex] = {
+            ...module,
+            isChanged: true,
+          };
+          module.cards.find((card, cardIndex) => {
+            if (card?.uuid === cardId) {
+              oldState.modulesList[moduleIndex].cards[cardIndex] = {
+                ...card,
+                image: {
+                  ...card.image,
+                  source: "ftv-internal",
+                  uuid: value.uuid,
+                  urls: value.urls,
+                },
+              };
+            }
+          });
+        }
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_COLLECTION_CARD_ALT_IMAGE: {
+      const { moduleId, cardId, value } = action.payload;
+      state.modulesList.find((module, moduleIndex) => {
+        oldState.modulesList[moduleIndex] = {
+          ...module,
+          isChanged: true,
+        };
+        if (module?.uuid === moduleId) {
+          module.cards.find((card, cardIndex) => {
+            if (card?.uuid === cardId) {
+              oldState.modulesList[moduleIndex].cards[cardIndex] = {
+                ...card,
+                image: {
+                  ...card.image,
+                  alt: value,
+                },
+              };
+            }
+          });
+        }
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_COLLECTION_CARD_LINK_TO: {
+      const { moduleId, cardId, value } = action.payload;
+
+      state.modulesList.find((module, moduleIndex) => {
+        oldState.modulesList[moduleIndex] = {
+          ...module,
+          isChanged: true,
+        };
+        if (module?.uuid === moduleId) {
+          module.cards.find((card, cardIndex) => {
+            if (card?.uuid === cardId) {
+              oldState.modulesList[moduleIndex].cards[cardIndex] = {
+                ...card,
+                url: {
+                  ...card.url,
+                  openNewTab: card?.url?.openNewTab || false,
+                  value,
+                },
+              };
+            }
+          });
+        }
+      });
+
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_COLLECTION_CARD_LINK_IS_NEW_TAB: {
+      const { moduleId, cardId, value } = action.payload;
+      state.modulesList.find((module, moduleIndex) => {
+        oldState.modulesList[moduleIndex] = {
+          ...module,
+          isChanged: true,
+        };
+        if (module?.uuid === moduleId) {
+          module.cards.find((card, cardIndex) => {
+            if (card?.uuid === cardId) {
+              oldState.modulesList[moduleIndex].cards[cardIndex] = {
+                ...card,
+                url: {
+                  ...card.url,
+                  openNewTab: value,
+                },
+              };
+            }
+          });
+        }
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_COLLECTION_CARD_CTA_LABEL: {
+      const { moduleId, cardId, value } = action.payload;
+      state.modulesList.find((module, moduleIndex) => {
+        oldState.modulesList[moduleIndex] = {
+          ...module,
+          isChanged: true,
+        };
+        if (module?.uuid === moduleId) {
+          module.cards.find((card, cardIndex) => {
+            if (card?.uuid === cardId) {
+              oldState.modulesList[moduleIndex].cards[cardIndex] = {
+                ...card,
+                url: {
+                  ...card.url,
+                  ctaLabel: value,
+                },
+              };
+            }
+          });
+        }
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_COLLECTION_CARD_DESCRIPTION: {
+      const { moduleId, cardId, value } = action.payload;
+      state.modulesList.find((module, moduleIndex) => {
+        oldState.modulesList[moduleIndex] = {
+          ...module,
+          isChanged: true,
+        };
+        if (module?.uuid === moduleId) {
+          module.cards.find((card, cardIndex) => {
+            if (card?.uuid === cardId) {
+              oldState.modulesList[moduleIndex].cards[cardIndex] = {
+                ...card,
+                description: value,
+              };
+            }
+          });
+        }
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case DELETE_COLLECTION_CARD: {
+      const { moduleId, cardId } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === moduleId) {
+          oldState.modulesList[index] = {
+            ...module,
+            isChanged: true,
+          };
+          if (module.cards.length === 1) {
+            oldState.modulesList[index] = {
+              ...module,
+              cards: [],
+            };
+          }
+          if (module.cards.length > 1) {
+            module.cards.find((card, cardIndex) => {
+              if (card?.uuid === cardId) {
+                oldState.modulesList[index].cards.splice(cardIndex, 1);
+              }
+            });
+          }
+        }
+        return null;
+      });
+      return {
+        ...oldState,
+      };
+    }
+
+    case SET_COLLECTION_CURRENT_OPENNED_CARD: {
+      const { moduleId, cardId } = action.payload;
+      state.modulesList.find((module, index) => {
+        if (module?.uuid === moduleId) {
+          oldState.modulesList[index] = {
+            ...module,
+            currentOpennedCard: cardId,
+          };
+        }
+        return null;
+      });
       return {
         ...oldState,
       };

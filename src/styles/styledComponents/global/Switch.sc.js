@@ -19,7 +19,7 @@ const mixinSwitchCustomListDndLabel = css`
   position: relative;
 `;
 
-const mixinSwitchLabelIsReaction = css`
+const mixinSwitchLabelSelectModuleVariant = css`
   left: 100%;
   margin-left: 8px;
 `;
@@ -42,7 +42,8 @@ export const SwitchLabel = styled.label`
   background: ${colors.lightGrey};
 
   ${(props) =>
-    props.styleVariant === "isReaction" && mixinSwitchLabelIsReaction}
+    props.styleVariant === "selectModuleVariant" &&
+    mixinSwitchLabelSelectModuleVariant}
   ${(props) =>
     props.styleVariant === "publishModal-toTop" &&
     mixinSwitchBoxPublishModalToTopLabel}
@@ -164,7 +165,7 @@ const mixinSwitchBoxCustomListDnd = css`
   margin-top: 0;
 `;
 
-const mixinSwitchBoxIsReaction = css`
+const mixinSwitchBoxSelectModuleVariant = css`
   display: flex;
   line-height: 32px;
   justify-content: space-between;
@@ -191,7 +192,9 @@ export const SwitchBox = styled.label`
   letter-spacing: 1.25px;
   cursor: pointer;
 
-  ${(props) => props.styleVariant === "isReaction" && mixinSwitchBoxIsReaction}
+  ${(props) =>
+    props.styleVariant === "selectModuleVariant" &&
+    mixinSwitchBoxSelectModuleVariant}
   ${(props) => props.tooltip && mixinToolTip}
 
   ${(props) =>

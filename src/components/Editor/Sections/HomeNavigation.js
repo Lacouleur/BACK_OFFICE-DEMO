@@ -161,6 +161,7 @@ const HomeNavigation = () => {
               maxlength="80"
               infos="Maximum 80 characters"
               name="title"
+              displayName="title"
               section="homeNavigation"
               edit={homeTitle || undefined}
             />
@@ -170,6 +171,7 @@ const HomeNavigation = () => {
               maxlength="80"
               infos="Maximum 120 characters"
               name="shortDescription"
+              displayName="short description"
               section="homeNavigation"
               edit={shortDescription || undefined}
             />
@@ -178,6 +180,7 @@ const HomeNavigation = () => {
               <Field
                 placeholder="Reading Time"
                 name="readTime"
+                displayName="Read Time"
                 section="homeNavigation"
                 infos="Average reading time, min 1 minute - max 15 minutes"
                 type="number"
@@ -190,6 +193,7 @@ const HomeNavigation = () => {
                 <Field
                   placeholder="Home Image"
                   name="homeImage"
+                  displayName="Home Image"
                   section="HomeNavigation"
                   fieldType="uploader"
                   edit={homeImgTitle || undefined}
@@ -204,6 +208,7 @@ const HomeNavigation = () => {
               <Field
                 placeholder="Alternative text for home image"
                 name="altHomeImage"
+                displayName="Alt Home Image"
                 infos="Maximum 120 characters"
                 maxlength="120"
                 section="homeNavigation"
@@ -215,6 +220,7 @@ const HomeNavigation = () => {
                 <Field
                   placeholder="Transparent Image"
                   name="transparentImage"
+                  displayName="Transparent Image"
                   section="HomeNavigation"
                   fieldType="uploader"
                   edit={transparentImgTitle || undefined}
@@ -230,6 +236,7 @@ const HomeNavigation = () => {
                   <Field
                     placeholder="Alternative text for transparent image"
                     name="altTransparentImg"
+                    displayName="Alt Transparent Image"
                     infos="Maximum 120 characters"
                     maxlength="120"
                     section="homeNavigation"
@@ -242,6 +249,7 @@ const HomeNavigation = () => {
               <ColorFieldBox>
                 <Field
                   placeholder="Background Color"
+                  displayName="Background Color"
                   name="backgroundColor"
                   section="HomeNavigation"
                   fieldType="select"
@@ -258,6 +266,7 @@ const HomeNavigation = () => {
               <ImageFieldBox>
                 <Field
                   placeholder="Social Network Image"
+                  displayName="Social Image"
                   name="SocialImg"
                   section="HomeNavigation"
                   fieldType="uploader"
@@ -274,6 +283,7 @@ const HomeNavigation = () => {
                   <Field
                     placeholder="Alternative text for Social Network Image"
                     name="altSocialImg"
+                    displayName="Alt Social Image"
                     infos="Maximum 120 characters"
                     maxlength="120"
                     section="homeNavigation"
@@ -287,6 +297,7 @@ const HomeNavigation = () => {
                 <Field
                   placeholder="Navigation Image"
                   name="navImage"
+                  displayName="Nav Image"
                   section="HomeNavigation"
                   fieldType="uploader"
                   edit={navImgTitle || undefined}
@@ -302,6 +313,7 @@ const HomeNavigation = () => {
                   <Field
                     placeholder="Alternative text for navigation image"
                     name="altNavImage"
+                    displayName="Alt Nav Image"
                     infos="Maximum 120 characters"
                     maxlength="120"
                     section="homeNavigation"

@@ -146,18 +146,27 @@ export const Thumbnail = styled.img`
   transform: translateY(-6%);
 `;
 
+const foldedCollectionCardMixin = css`
+  height: 40px;
+  width: 40px;
+  background-color: ${colors.fadedGrey};
+  margin-left: 0px;
+  transform: translateY(0);
+`;
+
 export const RoundThumbnail = styled.img`
   height: 100px;
   width: 100px;
+  border: 0;
   cursor: not-allowed;
   transition: height 0.3s ease;
   z-index: 2;
   margin-left: 25px;
   transform: translateY(-6%);
   border-radius: 50%;
-
   ${(props) => (props.preview ? navPreviewMixin : "")};
   ${(props) => (props.avatar ? avatarMixin : "")};
+  ${(props) => (props.foldedCollectionCard ? foldedCollectionCardMixin : "")};
 `;
 
 export const HideContent = styled.div`

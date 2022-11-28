@@ -27,6 +27,7 @@ const HeaderSectionPage = ({
       <Field
         placeholder="Section Title"
         name="title"
+        displayName="Title"
         section="sectionHeader"
         moduleId={uuid}
         edit={title || ""}
@@ -35,6 +36,7 @@ const HeaderSectionPage = ({
       <Field
         placeholder="Section Subtitle"
         name="subtitle"
+        displayName="Subtitle"
         section="sectionHeader"
         fieldType="textarea"
         moduleId={uuid}
@@ -45,6 +47,7 @@ const HeaderSectionPage = ({
         <Field
           placeholder="Header Link"
           name="url"
+          displayName="URL"
           section="sectionHeader"
           moduleId={uuid}
           edit={url || ""}

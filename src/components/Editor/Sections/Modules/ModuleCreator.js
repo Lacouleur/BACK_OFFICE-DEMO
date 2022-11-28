@@ -98,18 +98,20 @@ const ModuleCreator = ({ setIsOpen }) => {
         <Close src={crossIcon} onClick={() => setIsOpen(false)} />
         <ModulesContainer>
           {DefaultModules &&
-            DefaultModules.map((module) => (
-              <ModuleBox
-                key={keyGenerator(module.type)}
-                onClick={() => {
-                  setIsOpen(false);
-                  dispatch(setNewModule(module));
-                }}
-              >
-                <ModuleIcon src={module.icon} />
-                <ModuleText>{module.name}</ModuleText>
-              </ModuleBox>
-            ))}
+            DefaultModules.map((module) => {
+              return (
+                <ModuleBox
+                  key={keyGenerator(module.type)}
+                  onClick={() => {
+                    setIsOpen(false);
+                    dispatch(setNewModule(module));
+                  }}
+                >
+                  <ModuleIcon src={module.icon} />
+                  <ModuleText>{module.name}</ModuleText>
+                </ModuleBox>
+              );
+            })}
         </ModulesContainer>
       </SectionBox>
     </>

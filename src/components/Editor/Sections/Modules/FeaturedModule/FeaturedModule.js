@@ -77,7 +77,7 @@ const FeaturedModule = ({
     ({ pageMainInformationReducer }) => pageMainInformationReducer
   );
 
-  const { articleId, status } = pageMainInformationState;
+  const { articleId } = pageMainInformationState;
 
   const [isOpen, setIsOpen] = useState(false);
   const [isFeaturedImage, setIsFeaturedImage] = useState(false);
@@ -169,6 +169,7 @@ const FeaturedModule = ({
         <Field
           placeholder="Custom Title"
           name="title"
+          displayName="Custom Title"
           section="featured"
           edit={featuredTitle || ""}
           moduleId={uuid}
@@ -178,6 +179,7 @@ const FeaturedModule = ({
         <Field
           placeholder="Excerpt"
           name="excerpt"
+          displayName="Excerpt"
           section="featured"
           edit={featuredExcerpt || ""}
           moduleId={uuid}
@@ -188,6 +190,7 @@ const FeaturedModule = ({
           <Field
             placeholder="Home Image"
             name="featuredImage"
+            displayName="Featured Image"
             section="featured"
             fieldType="uploader"
             edit={featuredImageTitle || undefined}
@@ -204,6 +207,7 @@ const FeaturedModule = ({
             <Field
               placeholder="Alternative text for Home-Image"
               name="featuredImageAlt"
+              displayName=" Alt Featured Image"
               section="featured"
               edit={featuredImageAlt || ""}
               moduleId={uuid}
@@ -216,6 +220,7 @@ const FeaturedModule = ({
           <Field
             placeholder="Background Color"
             name="featuredBackgroundColor"
+            displayName="Featured Background Color"
             section="featured"
             fieldType="select"
             edit={backgroundColor || undefined}
@@ -230,8 +235,9 @@ const FeaturedModule = ({
 
         {/* STICKERS FIELD */}
         <Field
-          placeholder="Stricker"
+          placeholder="Sticker"
           name="sticker"
+          displayName="Sticker"
           section="featured"
           fieldType="select"
           edit={sticker || "new-article"}
@@ -245,6 +251,7 @@ const FeaturedModule = ({
           <Field
             placeholder="Custom Title"
             name="featuredLinkCta"
+            displayName="Featured Link Cta"
             section="featured"
             edit={featuredLinkCtaValue || ""}
             moduleId={uuid}
@@ -270,6 +277,7 @@ const FeaturedModule = ({
         <Field
           placeholder="Featured Category"
           name="featuredCategory"
+          displayName="Feature Category"
           section="featured"
           edit={featuredCategory}
           moduleId={uuid}
@@ -288,6 +296,7 @@ const FeaturedModule = ({
         <Field
           placeholder="Category to call"
           name="categories"
+          displayName="Categories"
           section="featured"
           fieldType="multi-value"
           moduleId={uuid}
@@ -298,6 +307,7 @@ const FeaturedModule = ({
         <Field
           placeholder="Tags to call"
           name="tags"
+          displayName="Tags"
           section="featured"
           fieldType="multi-value"
           moduleId={uuid}
@@ -308,6 +318,7 @@ const FeaturedModule = ({
         <Field
           placeholder="Authors to call"
           name="authors"
+          displayName="Authors"
           section="featured"
           fieldType="multi-value"
           moduleId={uuid}
@@ -327,6 +338,7 @@ const FeaturedModule = ({
         <Field
           placeholder="article-slug"
           name="slug"
+          displayName="Article Slug"
           section="featured"
           edit={slug}
           moduleId={uuid}

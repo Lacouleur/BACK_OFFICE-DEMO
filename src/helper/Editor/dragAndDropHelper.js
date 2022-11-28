@@ -1,4 +1,5 @@
 import {
+  editCollectionCardsList,
   editModulesList,
   setCollectionCustomIdsList,
   setCollectionIsPined,
@@ -32,6 +33,29 @@ export function onDragEnd(result, List, dispatch) {
     dispatch(editModulesList(orderedList));
     dispatch(setIsChanged(result.draggableId));
     dispatch(saveModule(result.draggableId, "update"));
+  }
+}
+
+// OnDragEnd function for Cardslist in Collection module
+export function onDragEndCollectionCards(result, List, dispatch, moduleId) {
+  if (!result.destination) {
+    console.error("%cD&D : unvalid destination", `${consoleError}`);
+    return;
+  }
+  const { source, destination } = result;
+
+  if (destination) {
+    const copiedModules = [...List];
+    const [removed] = copiedModules.splice(source.index, 1);
+    copiedModules.splice(destination.index, 0, removed);
+
+    const orderedList = copiedModules.map((copiedModule, index) => {
+      const newModule = copiedModule;
+      newModule.order = index + 1;
+      return newModule;
+    });
+
+    dispatch(editCollectionCardsList({ id: moduleId, value: orderedList }));
   }
 }
 

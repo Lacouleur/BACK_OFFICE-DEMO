@@ -117,6 +117,7 @@ const MainInformation = () => {
                 titleError ? "Content need a title." : "Maximum 40 characters"
               }
               name="title"
+              displayName="Title"
               section="mainInformation"
               edit={title}
               error={titleError}
@@ -131,6 +132,7 @@ const MainInformation = () => {
                       : `${slugMessage(mainInformationState)}`
                   }
                   name="slug"
+                  displayName="Slug"
                   section="mainInformation"
                   edit={slug}
                   error={regexSlugError || postingError || slugError}
@@ -140,6 +142,7 @@ const MainInformation = () => {
                 <Field
                   placeholder="Category"
                   name="category"
+                  displayName="Category"
                   fieldType="select"
                   section="mainInformation"
                   edit={category || null}
@@ -148,6 +151,7 @@ const MainInformation = () => {
                 <Field
                   placeholder="Language"
                   name="lang"
+                  displayName="Language"
                   fieldType="select"
                   section="mainInformation"
                   edit={lang || "fr"}
@@ -161,6 +165,7 @@ const MainInformation = () => {
               <Field
                 placeholder="Color Theme"
                 name="colorStyle"
+                displayName="Color Style"
                 fieldType="select"
                 section="mainInformation"
                 edit={colorStyle?.toString() || "1"}
@@ -175,6 +180,7 @@ const MainInformation = () => {
                 <Field
                   placeholder="Partner Caption"
                   name="caption"
+                  displayName="Caption"
                   section="mainInformation"
                   edit={caption || ""}
                   infos="Maximum 100 characters"
@@ -184,6 +190,7 @@ const MainInformation = () => {
                 <Field
                   placeholder="Authors"
                   name="authors"
+                  displayName="Authors"
                   section="mainInformation"
                   edit={authors || ""}
                   fieldType="multi-value"
@@ -192,6 +199,7 @@ const MainInformation = () => {
                 <Field
                   placeholder="Tags"
                   name="tags"
+                  displayName="Tags"
                   section="mainInformation"
                   edit={tags || ""}
                   fieldType="multi-value"

@@ -114,6 +114,7 @@ const ImageModule = ({
         <Field
           placeholder="Navigation Image"
           name="image"
+          displayName="Image"
           section="imageModule"
           fieldType="uploader"
           edit={imageTitle}
@@ -125,6 +126,7 @@ const ImageModule = ({
             <Field
               placeholder="Alternative text for the image"
               name="altImage"
+              displayName="Alt Image"
               infos="Maximum 120 characters"
               maxlength="120"
               section="imageModule"

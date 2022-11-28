@@ -49,7 +49,7 @@ const EditorCreate = () => {
           <MainInformation />
         </FormContainer>
       </Form>
-      <Footer position="fixed" />
+      {/* <Footer position="fixed" /> */}
     </PageContainer>
   );
 };

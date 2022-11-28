@@ -138,6 +138,7 @@ const FeedBackModule = ({
         <Field
           placeholder="What question do you want to ask ?"
           name="question"
+          displayName="Question"
           section="feedback"
           edit={question || ""}
           maxlength="80"

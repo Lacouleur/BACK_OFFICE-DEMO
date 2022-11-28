@@ -105,9 +105,9 @@ export function saveModule(uuid, request = "save") {
         modulesList.find((module) => {
           if (module.uuid === uuid && module.isNewModule) {
             const pageSectoionHeaderValues = {
-              title: module.title,
-              subtitle: module.subtitle,
-              url: module.url,
+              title: module.title || null,
+              subtitle: module.subtitle || null,
+              url: module?.url?.value || null,
             };
             switch (module.type) {
               /* save */
@@ -345,7 +345,7 @@ export function saveModule(uuid, request = "save") {
                       checkForStringtoArray(criteria?.authors, "string") ||
                       undefined,
                   },
-                  sticker: sticker || "new-article",
+                  sticker: sticker || "new",
                   backgroundColor,
                   featuredCategory,
                   order,
@@ -400,8 +400,8 @@ export function saveModule(uuid, request = "save") {
         modulesList.find((module) => {
           if (module.uuid === uuid && module.isChanged) {
             const pageSectoionHeaderValues = {
-              title: module.title,
-              subtitle: module.subtitle,
+              title: module.title || null,
+              subtitle: module.subtitle || null,
               url: module?.url?.value ? module.url : undefined,
             };
 
@@ -649,7 +649,7 @@ export function saveModule(uuid, request = "save") {
                   },
                   backgroundColor,
                   featuredCategory,
-                  sticker: sticker || "new-article",
+                  sticker: sticker || "new",
                   order,
                 };
                 isChanged = true;

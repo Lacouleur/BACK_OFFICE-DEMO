@@ -157,32 +157,38 @@ const CollectionCardImage = ({
               subId={cardId}
               edit={cardLinkTo || ""}
             />
-
-            <SwitchButton
-              action={() =>
-                dispatch(
-                  setCollectionCardLinkIsNewTab({
-                    moduleId,
-                    cardId,
-                    value: !cardLinkOpenNewTab,
-                  })
-                )}
-              isChecked={cardLinkOpenNewTab}
-              componentId={`collection-card-link-${moduleId}-${cardId}`}
-              displayedText="Open in new window"
-            />
+            {cardLinkTo && (
+              <>
+                <SwitchButton
+                  action={() =>
+                    dispatch(
+                      setCollectionCardLinkIsNewTab({
+                        moduleId,
+                        cardId,
+                        value: !cardLinkOpenNewTab,
+                      })
+                    )}
+                  isChecked={cardLinkOpenNewTab}
+                  componentId={`collection-card-link-${moduleId}-${cardId}`}
+                  displayedText="Open in new window"
+                />
+              </>
+            )}
           </FieldAndSwitchContainer>
-
-          {/* LINK LABEL */}
-          <Field
-            placeholder="Link to"
-            name="collectionCardCtaLabel"
-            displayName="Cta Label"
-            section="collection"
-            moduleId={moduleId}
-            subId={cardId}
-            edit={cardCtaLabel || ""}
-          />
+          {cardLinkTo && (
+            <>
+              {/* LINK LABEL */}
+              <Field
+                placeholder="Link to"
+                name="collectionCardCtaLabel"
+                displayName="Cta Label"
+                section="collection"
+                moduleId={moduleId}
+                subId={cardId}
+                edit={cardCtaLabel || ""}
+              />
+            </>
+          )}
         </>
       )}
     </CollectionCardContainer>

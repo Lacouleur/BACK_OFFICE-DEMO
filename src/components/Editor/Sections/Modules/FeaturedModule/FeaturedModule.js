@@ -156,15 +156,6 @@ const FeaturedModule = ({
         </SectionTitle>
         {!isOpen && <Gradient />}
 
-        {/* HEADER FIELDS - TITLE-SUBTITLE-URL */}
-        <HeaderSectionPage
-          uuid={uuid}
-          title={title}
-          subtitle={subtitle}
-          url={url}
-          openNewTabHeader={openNewTabHeader}
-        />
-
         {/* TITLE FIELD */}
         <Field
           placeholder="Custom Title"

@@ -128,16 +128,12 @@ export function manageCardsValues(cards) {
   cards.map((card) => {
     newCards.push({
       ...card,
-      url: {
-        ...card.url,
-        value: card.url.value || undefined,
-        ctaLabel: card.url.ctaLabel || null,
-      },
+      url: !card?.url?.value ? null : card?.url,
       image: {
         ...card.image,
-        uuid: card.image.uuid || null,
+        uuid: card.image.uuid || undefined,
         /* API do not accept urls as it need only UUID */
-        urls: null,
+        urls: undefined,
       },
     });
     return null;

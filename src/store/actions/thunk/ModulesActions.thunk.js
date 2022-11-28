@@ -107,7 +107,12 @@ export function saveModule(uuid, request = "save") {
             const pageSectoionHeaderValues = {
               title: module.title || null,
               subtitle: module.subtitle || null,
-              url: module?.url?.value || null,
+              url: module?.url?.value
+                ? {
+                    ...module.url,
+                    openNewTab: module.url?.openNewTab || false,
+                  }
+                : null,
             };
             switch (module.type) {
               /* save */

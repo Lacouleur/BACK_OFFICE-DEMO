@@ -231,7 +231,7 @@ const FeaturedModule = ({
           displayName="Sticker"
           section="featured"
           fieldType="select"
-          edit={sticker || "new-article"}
+          edit={sticker || "new"}
           moduleId={uuid}
           isClearable={false}
           isDisabled

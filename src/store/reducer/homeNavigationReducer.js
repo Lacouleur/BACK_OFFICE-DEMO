@@ -52,18 +52,19 @@ const homeNavigationReducer = (state = initialState, action = {}) => {
         homeTitle: payload?.header?.title || "",
         shortDescription: payload?.header?.excerpt || "",
         readingTime: payload?.header?.readingTime || undefined,
-        homeImgUuid: payload?.header?.image?.uuid || "",
+        homeImgUuid: payload?.header?.image?.uuid || undefined,
         homeImgAlt: payload?.header?.image?.alt || "",
-        navImgUuid: payload?.thumbnail?.uuid || "",
+        navImgUuid: payload?.thumbnail?.uuid || undefined,
         navImgAlt: payload?.thumbnail?.alt || "",
         homeImgUrls: payload?.header?.image?.urls || undefined,
         navImgUrls: payload?.thumbnail?.urls || undefined,
         backgroundColor: payload?.header?.backgroundColor || undefined,
         transparentImgUrls:
           payload?.header?.transparentImage?.urls || undefined,
-        transparentImgUuid: payload?.header?.transparentImage?.uuid || "",
+        transparentImgUuid:
+          payload?.header?.transparentImage?.uuid || undefined,
         transparentImgAlt: payload?.header?.transparentImage?.alt || "",
-        socialImgUuid: payload?.header?.snImage?.uuid || "",
+        socialImgUuid: payload?.header?.snImage?.uuid || undefined,
         socialImgUrls: payload?.header?.snImage?.urls || undefined,
         socialImgAlt: payload?.header?.snImage?.alt || "",
       };
@@ -103,8 +104,8 @@ const homeNavigationReducer = (state = initialState, action = {}) => {
     case SET_HOME_IMAGE_UUID: {
       return {
         ...oldState,
-        homeImgUuid: action.payload.uuid,
-        homeImgUrls: action.payload.urls,
+        homeImgUuid: action.payload?.uuid || undefined,
+        homeImgUrls: action.payload?.urls || undefined,
         homeNavIsChanged: true,
       };
     }
@@ -120,8 +121,8 @@ const homeNavigationReducer = (state = initialState, action = {}) => {
     case SET_TRANSPARENT_IMAGE_UUID: {
       return {
         ...oldState,
-        transparentImgUuid: action.payload.uuid,
-        transparentImgUrls: action.payload.urls,
+        transparentImgUuid: action.payload?.uuid || undefined,
+        transparentImgUrls: action.payload?.urls || undefined,
         homeNavIsChanged: true,
       };
     }
@@ -145,8 +146,8 @@ const homeNavigationReducer = (state = initialState, action = {}) => {
     case SET_SOCIAL_IMAGE_UUID: {
       return {
         ...oldState,
-        socialImgUuid: action.payload.uuid,
-        socialImgUrls: action.payload.urls,
+        socialImgUuid: action.payload?.uuid || undefined,
+        socialImgUrls: action.payload?.urls || undefined,
         homeNavIsChanged: true,
       };
     }
@@ -154,8 +155,8 @@ const homeNavigationReducer = (state = initialState, action = {}) => {
     case SET_NAV_IMAGE_UUID: {
       return {
         ...oldState,
-        navImgUuid: action.payload.uuid,
-        navImgUrls: action.payload.urls,
+        navImgUuid: action.payload?.uuid || undefined,
+        navImgUrls: action.payload?.urls || undefined,
         homeNavIsChanged: true,
       };
     }

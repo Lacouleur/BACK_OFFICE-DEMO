@@ -538,8 +538,8 @@ const modulesReducer = (state = initialState, action = {}) => {
             image: {
               alt: module.image.alt,
               source: module.image.source,
-              uuid: value.uuid,
-              urls: value.urls,
+              uuid: value?.uuid || undefined,
+              urls: value?.urls || undefined,
             },
             isChanged: true,
           };
@@ -955,8 +955,8 @@ const modulesReducer = (state = initialState, action = {}) => {
             image: {
               ...module.image,
               source: "ftv-internal",
-              uuid: value.uuid,
-              urls: value.urls,
+              uuid: value?.uuid || undefined,
+              urls: value?.urls || undefined,
             },
             isChanged: true,
           };
@@ -1260,8 +1260,8 @@ const modulesReducer = (state = initialState, action = {}) => {
                 image: {
                   ...card.image,
                   source: "ftv-internal",
-                  uuid: value.uuid,
-                  urls: value.urls,
+                  uuid: value?.uuid || undefined,
+                  urls: value?.urls || undefined,
                 },
               };
             }
@@ -1661,8 +1661,8 @@ const modulesReducer = (state = initialState, action = {}) => {
             ...module,
             image: {
               ...module.image,
-              urls: value.urls,
-              uuid: value.uuid,
+              urls: value?.urls || undefined,
+              uuid: value?.uuid || undefined,
             },
             isChanged: true,
           };

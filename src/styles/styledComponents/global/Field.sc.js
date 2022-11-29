@@ -744,3 +744,16 @@ export const FieldStyle = styled.input`
     font-family: Arial;
   }
 `;
+
+export const CancelImageCross = styled.img`
+  width: 15px;
+  position: absolute;
+  right: 91px;
+  top: 21px;
+  opacity: 0.8;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
+`;

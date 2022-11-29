@@ -7,6 +7,10 @@ import {
   setBackgroundColor,
   setSocialImageAlt,
   setTransparentImageAlt,
+  setHomeImageUuid,
+  setNavImageUuid,
+  setTransparentImageUuid,
+  setSocialImgUuid,
 } from "../store/actions/homeNavigationActions";
 import {
   addCategory,
@@ -47,11 +51,16 @@ import {
   setCollectionCardLinkTo,
   setCollectionCardCtaLabel,
   setCollectionCardDescription,
+  setImageUuid,
+  setCtaImageUuid,
+  setFeaturedImageUuid,
+  setCollectionCardImageUuid,
 } from "../store/actions/moduleActions";
 import {
   setDisplayedName,
   setFirstName,
   setLastName,
+  setPicture,
   setPosition,
   setQuote,
 } from "../store/actions/userActions";
@@ -130,7 +139,7 @@ export const backgroundColorsList = [
 export const stickerList = [
   {
     label: "Nouvel Article",
-    value: "new-article",
+    value: "new",
   },
 ];
 
@@ -875,4 +884,57 @@ export function openPreview(language, slug, type = "contents") {
     string = `${PREVIEW_URL}/${lang}/${slug}`;
   }
   window.open(`${string}`, "_blank");
+}
+
+export function deleteImage(dispatch, setFileTitle, name, moduleId, subId) {
+  switch (name) {
+    case "image": {
+      dispatch(setImageUuid({ id: moduleId, value: undefined }));
+      break;
+    }
+
+    case "homeImage": {
+      dispatch(setHomeImageUuid(undefined));
+      break;
+    }
+
+    case "navImage": {
+      dispatch(setNavImageUuid(undefined));
+      break;
+    }
+    case "ctaImage": {
+      dispatch(setCtaImageUuid({ id: moduleId, value: undefined }));
+      break;
+    }
+    case "avatar": {
+      dispatch(setPicture(undefined));
+      break;
+    }
+    case "transparentImage": {
+      dispatch(setTransparentImageUuid(undefined));
+      break;
+    }
+    case "SocialImg": {
+      dispatch(setSocialImgUuid(undefined));
+      break;
+    }
+    case "featuredImage": {
+      dispatch(setFeaturedImageUuid({ id: moduleId, value: undefined }));
+      break;
+    }
+    case "collectionCardImage": {
+      dispatch(
+        setCollectionCardImageUuid({
+          moduleId,
+          value: undefined,
+          cardId: subId,
+        })
+      );
+      break;
+    }
+    default:
+      return null;
+  }
+  setFileTitle("");
+  return null;
 }

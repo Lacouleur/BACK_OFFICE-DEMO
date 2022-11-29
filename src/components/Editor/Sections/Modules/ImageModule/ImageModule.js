@@ -25,6 +25,7 @@ import useClickOutside from "../../../../../helper/cutomHooks/useClickOutside";
 import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.thunk";
 import Field from "../../../Field";
 import { setAModuleIsOpen } from "../../../../../store/actions/actionBarActions";
+import { ImageFieldBox } from "../../../../../styles/styledComponents/global/Field.sc";
 
 const ImageModule = ({
   uuid,
@@ -109,18 +110,21 @@ const ImageModule = ({
           <FormTitle>{`${order}. image`}</FormTitle>
         </SectionTitle>
         {!isOpen && <Gradient />}
-        {thumbnail && <Thumbnail src={thumbnail} />}
 
-        <Field
-          placeholder="Navigation Image"
-          name="image"
-          displayName="Image"
-          section="imageModule"
-          fieldType="uploader"
-          edit={imageTitle}
-          infos="Image size: 320x456 / 320x320 / 320x180 - 500ko maximum"
-          moduleId={uuid}
-        />
+        {/* IMAGE FIELD & ALT */}
+        <ImageFieldBox>
+          <Field
+            placeholder="Navigation Image"
+            name="image"
+            displayName="Image"
+            section="imageModule"
+            fieldType="uploader"
+            edit={imageTitle}
+            infos="Image size: 320x456 / 320x320 / 320x180 - 500ko maximum"
+            moduleId={uuid}
+          />
+          {thumbnail && imageUuid && <Thumbnail src={thumbnail} />}
+        </ImageFieldBox>
         {isImage && (
           <>
             <Field

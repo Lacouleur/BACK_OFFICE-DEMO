@@ -19,6 +19,7 @@ import {
   FieldTitle,
   Line,
   FieldTitleBox,
+  CancelImageCross,
 } from "../../styles/styledComponents/global/Field.sc";
 import colors from "../../styles/core/colors";
 import exclamationIcon from "../../styles/assets/icons/exclamationGrey.svg";
@@ -42,7 +43,10 @@ import {
   valueSelector,
   fuzzyOptions,
   initMultiSelectors,
+  findImageId,
+  deleteImage,
 } from "../../helper/fieldsHelper";
+import crossIcon from "../../styles/assets/icons/cross-purple.svg";
 
 import MultiSelectorFields from "./MultiSelectorsFields";
 
@@ -317,29 +321,44 @@ const Field = ({
 
       {/* uploaders fields */}
       {fieldType && fieldType === "uploader" && (
-        <FieldBox
-          onClick={(e) => {
-            handleClick(e);
-          }}
-        >
-          <FieldStyle
-            uploaderField
-            placeholder={placeholder}
-            defaultValue={fileTitle}
-            type="text"
-            maxLength={maxlength}
-            disabled
-          />
-          <input
-            type="file"
-            ref={hiddenFileInput}
-            onChange={(event) =>
-              checkImage(event, dispatch, setFileTitle, name, moduleId, subId)
-            }
-            style={{ display: "none" }}
-          />
-          <FieldButton>UPLOAD</FieldButton>
-        </FieldBox>
+        <>
+          <FieldBox
+            onClick={(e) => {
+              handleClick(e);
+            }}
+          >
+            <FieldStyle
+              uploaderField
+              placeholder={placeholder}
+              defaultValue={fileTitle}
+              type="text"
+              maxLength={maxlength}
+              disabled
+            />
+            <input
+              type="file"
+              ref={hiddenFileInput}
+              onChange={(event) =>
+                checkImage(event, dispatch, setFileTitle, name, moduleId, subId)
+              }
+              style={{ display: "none" }}
+            />
+
+            <FieldButton>UPLOAD</FieldButton>
+          </FieldBox>
+          {fileTitle && (
+            <>
+              <CancelImageCross
+                field
+                src={crossIcon}
+                onClick={() =>
+                  // when adding new image field you have to add it in the delete function below
+                  deleteImage(dispatch, setFileTitle, name, moduleId, subId)
+                }
+              />
+            </>
+          )}
+        </>
       )}
 
       {/* regular fields */}

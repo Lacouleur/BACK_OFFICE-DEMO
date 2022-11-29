@@ -324,7 +324,7 @@ export function saveModule(uuid, request = "save") {
                   link: link?.value
                     ? {
                         value: link.value,
-                        openNewTab: link.openNewTab,
+                        openNewTab: link?.openNewTab || false,
                       }
                     : undefined,
                   image: featuredImageUuid
@@ -626,7 +626,7 @@ export function saveModule(uuid, request = "save") {
                   link: link?.value
                     ? {
                         value: link.value,
-                        openNewTab: link.openNewTab,
+                        openNewTab: link?.openNewTab || false,
                       }
                     : undefined,
                   image: image?.uuid

@@ -137,13 +137,17 @@ const avatarMixin = css`
 `;
 
 export const Thumbnail = styled.img`
-  height: 100px;
-  width: 100px;
+  max-height: 120px;
   cursor: not-allowed;
   transition: height 0.3s ease;
   z-index: 2;
   margin-left: 25px;
   transform: translateY(-6%);
+  transition: max-height 0.3s ease;
+
+  &:hover {
+    max-height: 200px;
+  }
 `;
 
 const foldedCollectionCardMixin = css`

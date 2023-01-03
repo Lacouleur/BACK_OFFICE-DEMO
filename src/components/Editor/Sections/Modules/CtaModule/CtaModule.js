@@ -227,7 +227,8 @@ const CtaModule = ({
                       value: !openNewTab,
                       type: "content",
                     })
-                  )}
+                  )
+                }
                 isChecked={openNewTab}
                 componentId={`cta-switch-${uuid}`}
                 displayedText="Open in new window"
@@ -255,8 +256,7 @@ const CtaModule = ({
                     value: !openNewTab,
                     type: "page",
                   })
-                )
-              }
+                )}
               isChecked={openNewTab}
               componentId={`cta-switch-${uuid}`}
               displayedText="Open in new window"

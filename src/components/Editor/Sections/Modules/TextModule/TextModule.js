@@ -16,9 +16,11 @@ import {
   ModuleContainer,
   Delete,
   ActionIcons,
+  DuplicateModuleIcon,
 } from "../../../../../styles/styledComponents/editor/modules/Modules.sc";
 import {
   closeModule,
+  duplicateModule,
   setCollapseTextModule,
   showCloseModal,
 } from "../../../../../store/actions/moduleActions";
@@ -33,6 +35,7 @@ import {
 import TextEditor from "../TextEditor";
 import HeaderSectionPage from "../HeaderSectionPage";
 import SwitchButton from "../../../../Tools/Switch";
+import copy from "../../../../../styles/assets/icons/copy.svg";
 
 const TextModule = ({
   isPage,
@@ -109,6 +112,15 @@ const TextModule = ({
           moduleId={uuid}
           moduleRef={textModuleRef}
           articleId={articleId || pageId}
+        />
+      )}
+
+      {!isOpen && (
+        <DuplicateModuleIcon
+          src={copy}
+          onClick={() => {
+            dispatch(duplicateModule({ id: uuid, dispatch }));
+          }}
         />
       )}
 

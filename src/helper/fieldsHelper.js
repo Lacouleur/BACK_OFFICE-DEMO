@@ -383,8 +383,14 @@ export function valueSelector(
     case "sticker":
       return selectedSticker;
 
-    case "category":
-      return editCategory;
+    case "category": {
+      return editCategory && editCategory.label.substring(0, 2) === "- "
+        ? {
+            value: editCategory.value,
+            label: `${editCategory.mainCat} ${editCategory.label}`,
+          }
+        : editCategory || undefined;
+    }
 
     case "lang":
       return selectedLang;

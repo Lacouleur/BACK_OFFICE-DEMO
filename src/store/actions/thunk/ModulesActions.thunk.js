@@ -38,7 +38,10 @@ import {
 } from "../../../services/client/pagesClient";
 import { checkForStringtoArray } from "../../../helper/converters";
 import { setFeedbackResults } from "../mainInformationActions";
-import { manageCardsValues } from "../../../helper/modulesHelper";
+import {
+  manageCardsValues,
+  cleanUrlTextComponent,
+} from "../../../helper/modulesHelper";
 
 // This file is an action file for modules using redux-thunk
 
@@ -122,7 +125,7 @@ export function saveModule(uuid, request = "save") {
                   ...(isPage && pageSectoionHeaderValues),
                   uuid,
                   type,
-                  text,
+                  text: cleanUrlTextComponent(text),
                   collapse,
                   order,
                   isVisible,
@@ -414,10 +417,11 @@ export function saveModule(uuid, request = "save") {
               /* update */
               case "text": {
                 const { type, text, order, isVisible, collapse } = module;
+
                 values = {
                   ...(isPage && pageSectoionHeaderValues),
                   type,
-                  text,
+                  text: cleanUrlTextComponent(text),
                   order,
                   isVisible,
                   collapse,

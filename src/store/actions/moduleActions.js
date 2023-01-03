@@ -70,6 +70,7 @@ import {
   DELETE_COLLECTION_CARD,
   SET_COLLECTION_CURRENT_OPENNED_CARD,
   SET_COLLECTION_CARD_DESCRIPTION,
+  DUPLICATE_MODULE,
 } from "../constants";
 
 export const setPageModuleHeaderNewTab = (payload) => ({
@@ -109,6 +110,11 @@ export const setCollapseTextModule = (payload) => ({
 
 export const showCloseModal = (payload) => ({
   type: SHOW_CLOSE_MODAL,
+  payload,
+});
+
+export const duplicateModule = (payload) => ({
+  type: DUPLICATE_MODULE,
   payload,
 });
 

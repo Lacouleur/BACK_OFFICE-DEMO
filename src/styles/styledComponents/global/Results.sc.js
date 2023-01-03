@@ -301,7 +301,7 @@ export const FeedBackUserText = styled.p`
   -webkit-box-orient: vertical;
   font-size: 14px;
   line-height: 20px;
-  overflow: hidden;
+  overflow: auto;
 `;
 
 export const FeedBackCopy = styled.button`

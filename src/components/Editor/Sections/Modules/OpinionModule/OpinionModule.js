@@ -338,8 +338,8 @@ const OpinionModule = ({
 
             <Field
               placeholder="Question"
-              maxlength="70"
-              infos="Maximum 70 characters"
+              maxlength="110"
+              infos="Maximum 110 characters"
               name="question"
               displayName="Question"
               section="opinion"

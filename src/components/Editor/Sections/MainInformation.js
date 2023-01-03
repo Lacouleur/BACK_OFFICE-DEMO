@@ -147,7 +147,6 @@ const MainInformation = () => {
                   section="mainInformation"
                   edit={category || null}
                 />
-
                 <Field
                   placeholder="Language"
                   name="lang"
@@ -186,25 +185,27 @@ const MainInformation = () => {
                   infos="Maximum 100 characters"
                   maxlength="100"
                 />
-
-                <Field
-                  placeholder="Authors"
-                  name="authors"
-                  displayName="Authors"
-                  section="mainInformation"
-                  edit={authors || ""}
-                  fieldType="multi-value"
-                />
-
-                <Field
-                  placeholder="Tags"
-                  name="tags"
-                  displayName="Tags"
-                  section="mainInformation"
-                  edit={tags || ""}
-                  fieldType="multi-value"
-                  lang={lang}
-                />
+                {authors && (
+                  <Field
+                    placeholder="Authors"
+                    name="authors"
+                    displayName="Authors"
+                    section="mainInformation"
+                    edit={authors || ""}
+                    fieldType="multi-value"
+                  />
+                )}
+                {tags && (
+                  <Field
+                    placeholder="Tags"
+                    name="tags"
+                    displayName="Tags"
+                    section="mainInformation"
+                    edit={tags || ""}
+                    fieldType="multi-value"
+                    lang={lang}
+                  />
+                )}
               </>
             )}
           </>

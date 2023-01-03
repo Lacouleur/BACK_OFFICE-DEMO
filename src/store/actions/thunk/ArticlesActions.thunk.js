@@ -117,6 +117,7 @@ export function checkAndSend(type = "save", articleId = null) {
       if (typeof colorStyle === "string") {
         theme = parseInt(colorStyle, 10);
       }
+
       // UPDATE ARTICLE
       if (type === "update") {
         values = {

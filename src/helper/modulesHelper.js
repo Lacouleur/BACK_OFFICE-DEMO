@@ -140,3 +140,25 @@ export function manageCardsValues(cards) {
   });
   return newCards;
 }
+
+export function cleanUrlTextComponent(text) {
+  let newText = text;
+
+  const exludeList = [
+    "http://localhost:3001",
+    "https://bo-phoenix.ftvg-preprod.fr",
+    "https://bo-phoenix.francetelevisions.tv",
+    "http://localhost:3000",
+    "http://localhost:3002",
+    "https://www.preprod.phoenix.ftven.fr",
+    "https://preview.preprod.phoenix.ftven.fr",
+    "https://www.nowuproject.eu",
+    "https://preview.nowuproject.eu",
+  ];
+
+  exludeList.forEach((element) => {
+    newText = newText.replace(element, "");
+  });
+
+  return newText;
+}

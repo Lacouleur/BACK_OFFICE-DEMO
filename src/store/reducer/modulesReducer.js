@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable array-callback-return */
 import { v4 as uuidv4 } from "uuid";
+import { saveModule } from "../actions/thunk/ModulesActions.thunk";
 import {
   SET_NEW_MODULE,
   CLOSE_MODULE,
@@ -75,6 +76,7 @@ import {
   DELETE_COLLECTION_CARD,
   SET_COLLECTION_CURRENT_OPENNED_CARD,
   SET_COLLECTION_CARD_DESCRIPTION,
+  DUPLICATE_MODULE,
 } from "../constants";
 
 // isNewModule stand for control auto scroll to module on creation but not on load.
@@ -486,6 +488,40 @@ const modulesReducer = (state = initialState, action = {}) => {
         return null;
       });
 
+      return {
+        ...oldState,
+      };
+    }
+
+    case DUPLICATE_MODULE: {
+      const { id, dispatch } = action.payload;
+      const newModuleUuid = `${uuidv4()}`;
+      state.modulesList.map((module, index) => {
+        if (module?.uuid === id) {
+          oldState.modulesList.splice(index + 1, 0, {
+            ...module,
+            uuid: newModuleUuid,
+            isNewModule: true,
+            order: index + 1,
+          });
+        }
+        return null;
+      });
+      const newModuleList = oldState.modulesList;
+
+      if (newModuleList !== oldState.modulesList) {
+        oldState.modulesList.map((module, index) => {
+          if (newModuleUuid !== module.uuid) {
+            oldState.modulesList[index] = {
+              ...module,
+              order: index + 1,
+              isChanged: false,
+            };
+          }
+          return null;
+        });
+      }
+      dispatch(saveModule(newModuleUuid));
       return {
         ...oldState,
       };

@@ -141,8 +141,8 @@ const FeedBackModule = ({
           displayName="Question"
           section="feedback"
           edit={question || ""}
-          maxlength="80"
-          infos="Maximum 80 characters"
+          maxlength="110"
+          infos="Maximum 110 characters"
           moduleId={uuid}
         />
       </SectionBox>

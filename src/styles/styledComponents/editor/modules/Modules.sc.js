@@ -473,3 +473,12 @@ export const RoundThumbnailPlaceholder = styled.div`
   width: 40px;
   border-radius: 50%;
 `;
+
+export const DuplicateModuleIcon = styled.img`
+  width: 29px;
+  right: 30px;
+  top: 90px;
+  z-index: 3;
+  cursor: pointer;
+  position: absolute;
+`;

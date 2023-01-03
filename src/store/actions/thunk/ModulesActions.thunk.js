@@ -212,7 +212,7 @@ export function saveModule(uuid, request = "save") {
                   label,
                   description,
                   url,
-                  openNewTab: isPage ? openNewTab : undefined,
+                  openNewTab: isPage ? undefined : openNewTab || false,
                   link: isPage ? link : undefined,
                   image: isPage
                     ? {
@@ -353,7 +353,7 @@ export function saveModule(uuid, request = "save") {
                       checkForStringtoArray(criteria?.authors, "string") ||
                       undefined,
                   },
-                  sticker: sticker || "new",
+                  sticker: sticker || "new-article",
                   backgroundColor,
                   featuredCategory,
                   order,
@@ -517,7 +517,7 @@ export function saveModule(uuid, request = "save") {
                   label,
                   description,
                   url: !isPage ? url : pageurl,
-                  openNewTab: !isPage ? openNewTab : undefined,
+                  openNewTab: isPage ? undefined : openNewTab || false,
                   link: isPage ? link : undefined,
                   image:
                     isPage && image?.uuid
@@ -658,7 +658,7 @@ export function saveModule(uuid, request = "save") {
                   },
                   backgroundColor,
                   featuredCategory,
-                  sticker: sticker || "new",
+                  sticker: sticker || "new-article",
                   order,
                 };
                 isChanged = true;

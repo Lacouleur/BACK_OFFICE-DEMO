@@ -262,6 +262,7 @@ const CollectionModule = ({
               edit={collectionType && !isMixed ? collectionType : "primary"}
               infos="Primary is only for Main Page"
             />
+
             {/* REGULAR COLLECTIONS */}
             {isMixed === false && (
               <>

@@ -180,6 +180,15 @@ const pageMainInformationReducer = (state = initialState, action = {}) => {
       // eslint-disable-next-line no-unused-vars
       Object.entries(action.payload).map(([key, value]) => {
         list.push({ label: value.label, value: value._id });
+        if (value?.subCategories) {
+          Object.entries(value.subCategories).map(([key, subValue]) => {
+            list.push({
+              label: `- ${subValue.label}`,
+              mainCat: `${value.label}`,
+              value: subValue._id,
+            });
+          });
+        }
         return null;
       });
       return { ...oldState, categoriesList: list };

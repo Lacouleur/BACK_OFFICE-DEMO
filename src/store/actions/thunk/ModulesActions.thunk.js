@@ -353,7 +353,7 @@ export function saveModule(uuid, request = "save") {
                       checkForStringtoArray(criteria?.authors, "string") ||
                       undefined,
                   },
-                  sticker: sticker || "new-article",
+                  sticker: "new-article",
                   backgroundColor,
                   featuredCategory,
                   order,
@@ -616,7 +616,6 @@ export function saveModule(uuid, request = "save") {
                   image,
                   link,
                   backgroundColor,
-                  sticker,
                   featuredCategory,
                   criteria,
                 } = module;
@@ -658,7 +657,7 @@ export function saveModule(uuid, request = "save") {
                   },
                   backgroundColor,
                   featuredCategory,
-                  sticker: sticker || "new-article",
+                  sticker: "new-article",
                   order,
                 };
                 isChanged = true;

@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import makeAnimated from "react-select/animated";
@@ -28,6 +28,7 @@ import {
 } from "../../store/actions/mainInformationActions";
 import { createTag } from "../../store/actions/thunk/ArticlesActions.thunk";
 import {
+  buildCatSubcatLabels,
   dispatchElementsId,
   dispatchElementsValue,
   loadOptions,
@@ -192,13 +193,13 @@ const MultiSelectorFields = ({
             closeMenuOnSelect={false}
             placeholder={placeholder}
             defaultValue={selectedCategories}
-            value={selectedCategories}
+            value={buildCatSubcatLabels(selectedCategories)}
             getOptionValue={(option) => `${option.label}`}
             fuzzyOptions={fuzzyOptions}
             autoCorrect="off"
             spellCheck="off"
-            defaultOptions={categoriesList}
-            options={categoriesList}
+            defaultOptions={buildCatSubcatLabels(categoriesList)}
+            options={buildCatSubcatLabels(categoriesList)}
             loadOptions={(value) => loadOptions(value, fuse)}
             onChange={(event) => {
               if (!event) {
@@ -216,6 +217,15 @@ const MultiSelectorFields = ({
           />
         </>
       )}
+      {/* value selector  */}
+      {/* case "category": {
+      return editCategory && editCategory.label.substring(0, 2) === "- "
+        ? {
+            value: editCategory.value,
+            label: `${editCategory.mainCat} ${editCategory.label}`,
+          }
+        : editCategory || undefined;
+    } */}
 
       {/* Tag selector without creation */}
       {name === "tags" && (section === "collection" || section === "featured") && (
@@ -264,6 +274,9 @@ MultiSelectorFields.defaultProps = {
   selectedTagsCollection: null,
   selectedCategories: null,
   moduleId: null,
+  tagsList: [],
+  authorsList: [],
+  categoriesList: [],
 };
 
 MultiSelectorFields.propTypes = {
@@ -275,14 +288,14 @@ MultiSelectorFields.propTypes = {
   selectedTags: PropTypes.arrayOf(PropTypes.shape({})),
   placeholder: PropTypes.string.isRequired,
   fuzzyOptions: PropTypes.shape({}).isRequired,
-  tagsList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  tagsList: PropTypes.arrayOf(PropTypes.shape({})),
   fuse: PropTypes.shape({}),
   selectedAuthors: PropTypes.arrayOf(PropTypes.shape({})),
   setSelectedAuthors: PropTypes.func.isRequired,
-  authorsList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  authorsList: PropTypes.arrayOf(PropTypes.shape({})),
   moduleId: PropTypes.string,
   selectedCategories: PropTypes.arrayOf(PropTypes.shape({})),
-  categoriesList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  categoriesList: PropTypes.arrayOf(PropTypes.shape({})),
   setSelectedCategories: PropTypes.func.isRequired,
   selectedTagsCollection: PropTypes.arrayOf(PropTypes.shape({})),
   setSelectedTagsCollection: PropTypes.func.isRequired,

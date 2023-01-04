@@ -139,7 +139,7 @@ export const backgroundColorsList = [
 export const stickerList = [
   {
     label: "Nouvel Article",
-    value: "new",
+    value: "new-article",
   },
 ];
 
@@ -943,4 +943,22 @@ export function deleteImage(dispatch, setFileTitle, name, moduleId, subId) {
   }
   setFileTitle("");
   return null;
+}
+
+export function buildCatSubcatLabels(selectedCategories) {
+  const buildedSelectedCategories = [];
+  if (selectedCategories && selectedCategories.length !== 0) {
+    selectedCategories.map((categorie) =>
+      buildedSelectedCategories.push(
+        categorie.label?.substring(0, 2) === "- "
+          ? {
+              value: categorie.value,
+              label: `${categorie.mainCat} ${categorie.label}`,
+            }
+          : categorie
+      )
+    );
+  }
+
+  return buildedSelectedCategories;
 }

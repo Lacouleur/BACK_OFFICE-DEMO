@@ -43,7 +43,6 @@ import {
   valueSelector,
   fuzzyOptions,
   initMultiSelectors,
-  findImageId,
   deleteImage,
 } from "../../helper/fieldsHelper";
 import crossIcon from "../../styles/assets/icons/cross-purple.svg";
@@ -120,9 +119,15 @@ const Field = ({
 
   const { isPage } = PageMainInformationState;
 
-  const { categoriesList, status, authorsList, tagsList, newTag, lang } = isPage
-    ? PageMainInformationState
-    : MainInformationState;
+  const {
+    categoriesList,
+    originalCategoriesList,
+    status,
+    authorsList,
+    tagsList,
+    newTag,
+    lang,
+  } = isPage ? PageMainInformationState : MainInformationState;
 
   // Fuse search -> dynamic tag search field
   useEffect(() => {
@@ -301,6 +306,7 @@ const Field = ({
           moduleId={moduleId}
           selectedCategories={selectedCategories}
           categoriesList={categoriesList}
+          originalCategoriesList={originalCategoriesList}
           setSelectedCategories={setSelectedCategories}
           selectedTagsCollection={selectedTagsCollection}
           setSelectedTagsCollection={setSelectedTagsCollection}

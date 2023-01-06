@@ -962,3 +962,45 @@ export function buildCatSubcatLabels(selectedCategories) {
 
   return buildedSelectedCategories;
 }
+
+// This function removes selected subcategories if parentCategorie has been selected
+export function removeSubcatIfNeeded(categoriesList, selectedList) {
+  let newSelectedList = selectedList;
+
+  // Check if selected (last element) is a parent one
+  let parentCat = categoriesList.find(
+    (cat) => cat._id === selectedList[selectedList.length - 1].value
+  );
+
+  // if it's a parent, we filter to get element that are not child of previously found parentCat
+  if (parentCat) {
+    parentCat.subCategories.map((subCat) => {
+      newSelectedList = newSelectedList.filter(
+        (selected) => subCat._id !== selected.value
+      );
+    });
+  } else {
+    // if it's not a parent, it's a child. So we get it's parentCat from categorieList
+    parentCat = categoriesList.find((cat) => {
+      // loop on parent looking for child cat = selected.
+      const index = cat.subCategories.findIndex(
+        (subCat) =>
+          subCat._id === newSelectedList[newSelectedList.length - 1].value
+      );
+      // if at list one is found, return true
+      return index >= 0;
+    });
+
+    // We check if the parent of selected subCategory is alrady selected..
+    const isSelected = newSelectedList.find(
+      (selected) => parentCat._id === selected.value
+    );
+
+    // ..and delete it if true. (pop() == remove last element of an array)
+    if (isSelected) {
+      newSelectedList.pop();
+    }
+  }
+
+  return newSelectedList;
+}

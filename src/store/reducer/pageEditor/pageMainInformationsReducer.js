@@ -191,7 +191,11 @@ const pageMainInformationReducer = (state = initialState, action = {}) => {
         }
         return null;
       });
-      return { ...oldState, categoriesList: list };
+      return {
+        ...oldState,
+        categoriesList: list,
+        originalCategoriesList: action.payload,
+      };
     }
 
     case SET_TAGS_LIST: {

@@ -33,6 +33,7 @@ import {
   dispatchElementsValue,
   loadOptions,
   optionSelector,
+  removeSubcatIfNeeded,
 } from "../../helper/fieldsHelper";
 
 const MultiSelectorFields = ({
@@ -52,6 +53,7 @@ const MultiSelectorFields = ({
   moduleId,
   selectedCategories,
   categoriesList,
+  originalCategoriesList,
   setSelectedCategories,
   selectedTagsCollection,
   setSelectedTagsCollection,
@@ -205,7 +207,9 @@ const MultiSelectorFields = ({
               if (!event) {
                 setSelectedCategories([]);
               } else {
-                setSelectedCategories(event);
+                setSelectedCategories(
+                  removeSubcatIfNeeded(originalCategoriesList, event)
+                );
               }
               dispatch(
                 setModuleCategories({
@@ -217,15 +221,6 @@ const MultiSelectorFields = ({
           />
         </>
       )}
-      {/* value selector  */}
-      {/* case "category": {
-      return editCategory && editCategory.label.substring(0, 2) === "- "
-        ? {
-            value: editCategory.value,
-            label: `${editCategory.mainCat} ${editCategory.label}`,
-          }
-        : editCategory || undefined;
-    } */}
 
       {/* Tag selector without creation */}
       {name === "tags" && (section === "collection" || section === "featured") && (
@@ -277,6 +272,7 @@ MultiSelectorFields.defaultProps = {
   tagsList: [],
   authorsList: [],
   categoriesList: [],
+  originalCategoriesList: [],
 };
 
 MultiSelectorFields.propTypes = {
@@ -296,6 +292,7 @@ MultiSelectorFields.propTypes = {
   moduleId: PropTypes.string,
   selectedCategories: PropTypes.arrayOf(PropTypes.shape({})),
   categoriesList: PropTypes.arrayOf(PropTypes.shape({})),
+  originalCategoriesList: PropTypes.arrayOf(PropTypes.shape({})),
   setSelectedCategories: PropTypes.func.isRequired,
   selectedTagsCollection: PropTypes.arrayOf(PropTypes.shape({})),
   setSelectedTagsCollection: PropTypes.func.isRequired,

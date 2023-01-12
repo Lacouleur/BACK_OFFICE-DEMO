@@ -494,19 +494,16 @@ export function fetchAuthorsList(lang = "fr") {
 export function fetchUsers() {
   console.log("%cFETCH USERS", `${consoleTitle}`);
   return async (dispatch) => {
-    const tokenIsValid = await isValidToken(dispatch);
-    if (tokenIsValid) {
-      try {
-        const response = await getUsers();
-        if (response.status < 300 && response.status > 199) {
-          console.log("%cFetched Users =>", `${consoleInfo}`, response.data);
-          dispatch(setUsers(response.data));
-        }
-        return null;
-      } catch (error) {
-        console.error("%cError =>", `${consoleError}`, error?.response?.data);
-        return null;
+    try {
+      const response = await getUsers();
+      if (response.status < 300 && response.status > 199) {
+        console.log("%cFetched Users =>", `${consoleInfo}`, response.data);
+        dispatch(setUsers(response.data));
       }
+      return null;
+    } catch (error) {
+      console.error("%cError =>", `${consoleError}`, error?.response?.data);
+      return null;
     }
     return null;
   };

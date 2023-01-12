@@ -6,7 +6,6 @@ import lockIcon from "../styles/assets/icons/lock.svg";
 import AuthField from "../components/Auth/AuthField";
 import { Form, AuthBox } from "../styles/styledComponents/auth/Auth.sc";
 import Header from "../components/Navigation/Header";
-import Footer from "../components/Navigation/Footer";
 import {
   FormTitle,
   GreenText,

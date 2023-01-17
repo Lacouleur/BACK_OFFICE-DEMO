@@ -66,6 +66,7 @@ const PublishModal = ({ actionName, id, articleStatus }) => {
 
         {articleStatus &&
           articleStatus !== "DRAFT" &&
+          actionName !== "CANCEL" &&
           actionName !== "UNPUBLISH" && (
             <>
               <SwitchButton

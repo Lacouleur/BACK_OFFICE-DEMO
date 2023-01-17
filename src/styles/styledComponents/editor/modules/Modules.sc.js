@@ -86,6 +86,10 @@ export const ActionIcons = styled.div`
   justify-content: space-between;
   right: 30px;
   top: 30px;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const IsVisibleIcon = styled.img`
@@ -94,6 +98,9 @@ export const IsVisibleIcon = styled.img`
   z-index: 21;
   width: 31px;
   height: 31px;
+  &:hover {
+    width: 33px;
+  }
 `;
 
 export const Hide = styled.img`
@@ -101,16 +108,18 @@ export const Hide = styled.img`
   width: 31px;
   height: 31px;
   cursor: pointer;
+  &:hover {
+    width: 33px;
+  }
 `;
 
 export const Delete = styled.img`
   z-index: 21;
   width: 31px;
-  height: 31px;
   transition: 0.3s;
 
   &:hover {
-    transform: rotate(90deg);
+    width: 33px;
     cursor: pointer;
   }
 `;
@@ -475,10 +484,11 @@ export const RoundThumbnailPlaceholder = styled.div`
 `;
 
 export const DuplicateModuleIcon = styled.img`
-  width: 29px;
-  right: 30px;
-  top: 90px;
-  z-index: 3;
+  width: 31px;
+  z-index: 30;
   cursor: pointer;
-  position: absolute;
+
+  &:hover {
+    width: 33px;
+  }
 `;

@@ -113,6 +113,7 @@ export function saveModule(uuid, request = "save") {
               url: module?.url?.value
                 ? {
                     ...module.url,
+                    value: module.url?.value,
                     openNewTab: module.url?.openNewTab || false,
                   }
                 : null,

@@ -115,15 +115,6 @@ const TextModule = ({
         />
       )}
 
-      {!isOpen && (
-        <DuplicateModuleIcon
-          src={copy}
-          onClick={() => {
-            dispatch(duplicateModule({ id: uuid, dispatch }));
-          }}
-        />
-      )}
-
       {!isOpen && <Gradient />}
 
       <SectionBox isOpen={isOpen} onClick={() => setIsOpen(true)}>
@@ -139,6 +130,15 @@ const TextModule = ({
               }
             }}
           />
+
+          {!isOpen && (
+            <DuplicateModuleIcon
+              src={copy}
+              onClick={() => {
+                dispatch(duplicateModule({ id: uuid, dispatch }));
+              }}
+            />
+          )}
         </ActionIcons>
 
         <SectionTitle>

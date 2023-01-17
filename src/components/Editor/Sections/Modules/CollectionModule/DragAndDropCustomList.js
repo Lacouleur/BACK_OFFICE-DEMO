@@ -231,7 +231,9 @@ const DragAndDropCustomList = ({
           <LoadMoreCustomList
             onClick={() => {
               if (cumulatedContentsList.length > 0) {
-                dispatch(fetchContentsList(nextPage, uuid, "title", lang, 100));
+                dispatch(
+                  fetchContentsList(currentPage + 1, uuid, "title", lang, 100)
+                );
               }
             }}
           >

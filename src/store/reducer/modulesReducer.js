@@ -495,32 +495,31 @@ const modulesReducer = (state = initialState, action = {}) => {
 
     case DUPLICATE_MODULE: {
       const { id, dispatch } = action.payload;
+      let newModuleOrder = 1;
       const newModuleUuid = `${uuidv4()}`;
       state.modulesList.map((module, index) => {
         if (module?.uuid === id) {
+          newModuleOrder = index + 2;
           oldState.modulesList.splice(index + 1, 0, {
             ...module,
             uuid: newModuleUuid,
             isNewModule: true,
-            order: index + 1,
+            order: index + 2,
           });
+        }
+      });
+
+      oldState.modulesList.map((module, index) => {
+        if (module.uuid !== newModuleUuid && module.order >= newModuleOrder) {
+          oldState.modulesList[index] = {
+            ...module,
+            order: index + 1,
+            isChanged: false,
+          };
         }
         return null;
       });
-      const newModuleList = oldState.modulesList;
 
-      if (newModuleList !== oldState.modulesList) {
-        oldState.modulesList.map((module, index) => {
-          if (newModuleUuid !== module.uuid) {
-            oldState.modulesList[index] = {
-              ...module,
-              order: index + 1,
-              isChanged: false,
-            };
-          }
-          return null;
-        });
-      }
       dispatch(saveModule(newModuleUuid));
       return {
         ...oldState,

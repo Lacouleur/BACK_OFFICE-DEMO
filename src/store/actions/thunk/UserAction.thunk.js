@@ -8,7 +8,6 @@ import {
   postUser,
   uploadImage,
 } from "../../../services/client/contentClient";
-import { refreshMyToken } from "../../../services/client/refreshToken";
 import { deleteToken } from "../../../services/client/tokenStuff";
 import { showErrorModal } from "../actionBarActions";
 import { setPicture, setUserIsChanged } from "../userActions";
@@ -52,7 +51,6 @@ export function updateUser(userId) {
 
       if (response.status < 300 && response.status > 199) {
         console.log(`%cUser infos updated=>`, `${consoleSucces}`, response);
-        await refreshMyToken(dispatch);
         dispatch(setUserIsChanged(false));
       }
     } catch (error) {

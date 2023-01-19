@@ -177,7 +177,7 @@ export function updateContent(values, articleId, lang) {
 }
 
 export async function getCategories(lang) {
-  return axiosConfig.get(`/categories?lang=${lang}`, {
+  return axiosConfig.get(`/categories?lang=${lang || "fr"}`, {
     headers: {
       Authorization: `Bearer ${getToken()}`,
     },

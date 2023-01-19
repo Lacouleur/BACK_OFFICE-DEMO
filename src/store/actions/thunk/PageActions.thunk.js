@@ -35,6 +35,7 @@ import {
   updatePage,
 } from "../../../services/client/pagesClient";
 import { fetchPages } from "./PagesHubActions.thunk";
+import { deleteToken } from "../../../services/client/tokenStuff";
 
 // eslint-disable-next-line import/prefer-default-export
 export function pageCheckAndSend(type = "save", pageId = null) {

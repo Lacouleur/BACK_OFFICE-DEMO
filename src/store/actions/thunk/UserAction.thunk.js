@@ -9,6 +9,7 @@ import {
   uploadImage,
 } from "../../../services/client/contentClient";
 import { refreshMyToken } from "../../../services/client/refreshToken";
+import { deleteToken } from "../../../services/client/tokenStuff";
 import { showErrorModal } from "../actionBarActions";
 import { setPicture, setUserIsChanged } from "../userActions";
 

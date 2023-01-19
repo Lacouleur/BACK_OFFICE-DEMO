@@ -42,6 +42,7 @@ import {
   manageCardsValues,
   cleanUrlTextComponent,
 } from "../../../helper/modulesHelper";
+import { deleteToken } from "../../../services/client/tokenStuff";
 
 // This file is an action file for modules using redux-thunk
 

@@ -3,6 +3,7 @@ import { consoleSucces } from "../../../helper/consoleStyles";
 import ErrorCaseClient from "../../../helper/ErrorCaseClient";
 
 import { getPagesList } from "../../../services/client/pagesClient";
+import { deleteToken } from "../../../services/client/tokenStuff";
 import { setPagesList } from "../pagesHubActions";
 
 export function fetchPages(id) {

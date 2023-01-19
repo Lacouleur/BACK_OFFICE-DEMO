@@ -200,7 +200,7 @@ export const FeedBackTitleBox = styled.div`
 
 export const FeedBackTitle = styled.p`
   text-transform: uppercase;
-  margin: auto 0;
+  margin: auto;
   font-weight: 700;
   width: 90%;
 `;
@@ -247,6 +247,8 @@ export const FeedBackListBox = styled.div`
   overflow-y: ${(props) => (props.needScroll ? "scroll" : "hidden")};
   overflow-x: hidden;
   ${(props) => props.isOpen && ListBoxOpenMixin};
+  display: flex;
+  flex-direction: column;
 
   /* Scrollbar */
   /* width */
@@ -275,33 +277,24 @@ export const FeedBackListBox = styled.div`
   }
 `;
 
-const oddLineMixin = css`
-  background-color: ${colors.mediumGrey};
-`;
-
-export const FeedBackLine = styled.div`
-  width: 100%;
-  height: 54px;
-  display: flex;
-  ${(props) => props.odd && oddLineMixin};
-`;
-
-export const FeedbackLineNumber = styled.span`
-  width: 3%;
-  margin: auto 16px;
-`;
-
 export const FeedBackUserText = styled.p`
   width: 67%;
-  height: 38px;
-  margin: auto 16px;
-  padding-right: 32px;
+  margin: 16px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   font-size: 14px;
   line-height: 20px;
+  display: ${(props) => (props.lineIsOpen ? "block" : "flex")};
   overflow: auto;
+  word-break: break-word;
+  text-align: justify;
+  text-align-last: left;
+`;
+
+export const FeedbackLineNumber = styled.span`
+  width: 3%;
+  margin: auto;
 `;
 
 export const FeedBackCopy = styled.button`
@@ -313,18 +306,18 @@ export const FeedBackCopy = styled.button`
 
 export const FeedBackTime = styled.span`
   width: 20%;
-  line-height: 38px;
+  line-height: 20px;
+  padding: 3px 0 0 0;
   text-align: right;
-  margin: auto 0;
+  margin: auto;
   padding-right: 8px;
   font-size: 14px;
-  line-height: 14px;
 `;
 
 export const FeedbackCopyBox = styled.div`
   width: 20%;
   height: 38px;
-  margin: auto 16px;
+  margin: auto;
   display: flex;
   justify-content: center;
   background-color: transparent;
@@ -356,4 +349,36 @@ export const NoElement = styled.p`
   margin: 10% auto;
   border-radius: 5px;
   color: ${colors.paleViolet};
+`;
+
+const oddLineMixin = css`
+  background-color: ${colors.mediumGrey};
+`;
+
+const openLineMixin = css`
+  height: auto;
+
+  ${FeedbackCopyBox} {
+    margin: 16px auto;
+  }
+
+  ${FeedBackTime} {
+    margin: 16px auto;
+  }
+
+  ${FeedbackLineNumber} {
+    margin: 16px auto;
+  }
+  ${FeedBackTitle} {
+    margin: 16px auto;
+  }
+`;
+
+export const FeedBackLine = styled.div`
+  width: 100%;
+  display: flex;
+  height: 80px;
+  cursor: pointer;
+  ${(props) => props.odd && oddLineMixin};
+  ${(props) => props.lineIsOpen && openLineMixin};
 `;

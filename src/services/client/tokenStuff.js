@@ -9,8 +9,7 @@ export const getToken = () => localStorage.getItem("token");
 
 export const getRefreshToken = () => localStorage.getItem("refreshToken");
 
-export const deleteToken = (dispatch) => {
-  dispatch(cleanAuthState());
+export const deleteToken = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("refreshToken");
   window.location.assign("/");

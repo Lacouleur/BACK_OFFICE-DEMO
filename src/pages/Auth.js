@@ -24,6 +24,7 @@ import {
   ErrorNotificationIcon,
   ErrorNotificationText,
 } from "../styles/styledComponents/global/Errors.sc";
+import { cleanAuthState } from "../store/actions/authActions";
 
 // Simple authentication system for the BO
 
@@ -43,6 +44,7 @@ const Auth = () => {
 
   useEffect(() => {
     console.log("%cPAGE: AUTH", `${consolePage}`);
+    dispatch(cleanAuthState());
     if (getToken() && getRefreshToken()) {
       history.push("/dashboard");
     }

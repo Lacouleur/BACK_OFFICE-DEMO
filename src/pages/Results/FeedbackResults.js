@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import {
   FeedBackResultContainer,
@@ -24,9 +24,118 @@ import eyeIcon from "../../styles/assets/icons/eye-white.svg";
 import copyIcon from "../../styles/assets/icons/copy-white.svg";
 import eyeIconDisabled from "../../styles/assets/icons/eye-white-disabled.svg";
 import buildDate from "../../helper/buildDate";
+import useClickOutside from "../../helper/cutomHooks/useClickOutside";
 
-const FeedBackResults = ({ feedbacks, question, isVisible }) => {
+const FeedBackResults = ({ feedbacksOLF, question, isVisible }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [lineIsOpen, setLineIsOpen] = useState("");
+  const listBoxRef = useRef();
+  const feedbacks = [
+    {
+      pseudonym: "Anonymous",
+      text:
+        "L'article est très intéressant mais, j'aurais aimé avoir plus de détail sur certaines partie, comme la fonte de glaces 5. Duis euismod bibendum eros vitae tempus. Suspendisse semper aliquet hendrerit. Suspendisse in nibh lobortis, egestas odio eget, efficitur nisi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean elementum aliquam nibh ac tempus. Integer sagittis accumsan eros ac imperdiet. Proin a nibh orci. Mauris sit amet dolor ultricies, bibendum libero ut, hendrerit eros. Proin id velit molestie, pretium arcu ac, lacinia ipsum. Fusce et dolor sed mi sollicitudin finibus. Suspendisse non turpis vitae leo gravida maximus quis sit amet dui. Suspendisse massa massa, pellentesque ut velit vitae, imperdiet dapibus sapien. ",
+      date: "2022-09-12T08:35:06.585Z",
+    },
+    {
+      pseudonym: "Anonymous",
+      text: "L'article est très intéressant",
+      date: "2022-09-12T08:35:06.585Z",
+    },
+    {
+      pseudonym: "Anonymous",
+      text:
+        "Duis euismod bibendum eros vitae tempus. Suspendisse semper aliquet hendrerit. Suspendisse in nibh lobortis, egestas odio eget, efficitur nisi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean elementum aliquam nibh ac tempus. Integer sagittis accumsan eros ac imperdiet. Proin a nibh orci. Mauris sit amet dolor ultricies, bibendum libero ut, hendrerit eros. Proin id velit molestie, pretium arcu ac, lacinia ipsum. Fusce et dolor sed mi sollicitudin finibus. Suspendisse non turpis vitae leo gravida maximus quis sit amet dui. Suspendisse massa massa, pellentesque ut velit vitae, imperdiet dapibus sapien. Duis euismod bibendum eros vitae tempus. Suspendisse semper aliquet hendrerit. Suspendisse in nibh lobortis, egestas odio eget, efficitur nisi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean elementum aliquam nibh ac tempus. Integer sagittis accumsan eros ac imperdiet. Proin a nibh orci. Mauris sit amet dolor ultricies, bibendum libero ut, hendrerit eros. Proin id velit molestie, pretium arcu ac, lacinia ipsum. Fusce et dolor sed mi sollicitudin finibus. Suspendisse non turpis vitae leo gravida maximus quis sit amet dui. Suspendisse massa massa, pellentesque ut velit vitae, imperdiet dapibus sapien. L'article est très intéressant mais, j'aurais aimé avoir plus de détail sur certaines partie, comme la fonte de glaces 5",
+      date: "2022-09-12T08:35:06.585Z",
+    },
+    {
+      pseudonym: "Anonymous",
+      text: "L'article",
+      date: "2022-09-12T08:35:06.585Z",
+    },
+    {
+      pseudonym: "Anonymous",
+      text: "L'article est très intéressant mais, j'aurais aimé avoir ",
+      date: "2022-09-12T08:35:06.585Z",
+    },
+    {
+      pseudonym: "Anonymous",
+      text:
+        "L'article est très intéressant mais, j'aurais aimé avoir plus de détail sur certaines partie, comme la fonte de glaces 5",
+      date: "2022-09-12T08:35:06.585Z",
+    },
+    {
+      pseudonym: "Anonymous",
+      text:
+        "L'article est très intéressant mais, j'aurais aimé avoir plus de détail sur certaines partie, comme la fonte de glaces 5. Duis euismod bibendum eros vitae tempus. Suspendisse semper aliquet hendrerit. Suspendisse in nibh lobortis, egestas odio eget, efficitur nisi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean elementum aliquam nibh ac tempus. Integer sagittis accumsan eros ac imperdiet. Proin a nibh orci. Mauris sit amet dolor ultricies, bibendum libero ut, hendrerit eros. Proin id velit molestie, pretium arcu ac, lacinia ipsum. Fusce et dolor sed mi sollicitudin finibus. Suspendisse non turpis vitae leo gravida maximus quis sit amet dui. Suspendisse massa massa, pellentesque ut velit vitae, imperdiet dapibus sapien. ",
+      date: "2022-09-12T08:35:06.585Z",
+    },
+    {
+      pseudonym: "Anonymous",
+      text: "L'article est très intéressant",
+      date: "2022-09-12T08:35:06.585Z",
+    },
+    {
+      pseudonym: "Anonymous",
+      text:
+        "Duis euismod bibendum eros vitae tempus. Suspendisse semper aliquet hendrerit. Suspendisse in nibh lobortis, egestas odio eget, efficitur nisi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean elementum aliquam nibh ac tempus. Integer sagittis accumsan eros ac imperdiet. Proin a nibh orci. Mauris sit amet dolor ultricies, bibendum libero ut, hendrerit eros. Proin id velit molestie, pretium arcu ac, lacinia ipsum. Fusce et dolor sed mi sollicitudin finibus. Suspendisse non turpis vitae leo gravida maximus quis sit amet dui. Suspendisse massa massa, pellentesque ut velit vitae, imperdiet dapibus sapien. Duis euismod bibendum eros vitae tempus. Suspendisse semper aliquet hendrerit. Suspendisse in nibh lobortis, egestas odio eget, efficitur nisi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean elementum aliquam nibh ac tempus. Integer sagittis accumsan eros ac imperdiet. Proin a nibh orci. Mauris sit amet dolor ultricies, bibendum libero ut, hendrerit eros. Proin id velit molestie, pretium arcu ac, lacinia ipsum. Fusce et dolor sed mi sollicitudin finibus. Suspendisse non turpis vitae leo gravida maximus quis sit amet dui. Suspendisse massa massa, pellentesque ut velit vitae, imperdiet dapibus sapien. L'article est très intéressant mais, j'aurais aimé avoir plus de détail sur certaines partie, comme la fonte de glaces 5",
+      date: "2022-09-12T08:35:06.585Z",
+    },
+    {
+      pseudonym: "Anonymous",
+      text: "L'article",
+      date: "2022-09-12T08:35:06.585Z",
+    },
+    {
+      pseudonym: "Anonymous",
+      text: "L'article est très intéressant mais, j'aurais aimé avoir ",
+      date: "2022-09-12T08:35:06.585Z",
+    },
+    {
+      pseudonym: "Anonymous",
+      text:
+        "L'article est très intéressant mais, j'aurais aimé avoir plus de détail sur certaines partie, comme la fonte de glaces 5",
+      date: "2022-09-12T08:35:06.585Z",
+    },
+    {
+      pseudonym: "Anonymous",
+      text:
+        "L'article est très intéressant mais, j'aurais aimé avoir plus de détail sur certaines partie, comme la fonte de glaces 5. Duis euismod bibendum eros vitae tempus. Suspendisse semper aliquet hendrerit. Suspendisse in nibh lobortis, egestas odio eget, efficitur nisi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean elementum aliquam nibh ac tempus. Integer sagittis accumsan eros ac imperdiet. Proin a nibh orci. Mauris sit amet dolor ultricies, bibendum libero ut, hendrerit eros. Proin id velit molestie, pretium arcu ac, lacinia ipsum. Fusce et dolor sed mi sollicitudin finibus. Suspendisse non turpis vitae leo gravida maximus quis sit amet dui. Suspendisse massa massa, pellentesque ut velit vitae, imperdiet dapibus sapien. ",
+      date: "2022-09-12T08:35:06.585Z",
+    },
+    {
+      pseudonym: "Anonymous",
+      text: "L'article est très intéressant",
+      date: "2022-09-12T08:35:06.585Z",
+    },
+    {
+      pseudonym: "Anonymous",
+      text:
+        "Duis euismod bibendum eros vitae tempus. Suspendisse semper aliquet hendrerit. Suspendisse in nibh lobortis, egestas odio eget, efficitur nisi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean elementum aliquam nibh ac tempus. Integer sagittis accumsan eros ac imperdiet. Proin a nibh orci. Mauris sit amet dolor ultricies, bibendum libero ut, hendrerit eros. Proin id velit molestie, pretium arcu ac, lacinia ipsum. Fusce et dolor sed mi sollicitudin finibus. Suspendisse non turpis vitae leo gravida maximus quis sit amet dui. Suspendisse massa massa, pellentesque ut velit vitae, imperdiet dapibus sapien. Duis euismod bibendum eros vitae tempus. Suspendisse semper aliquet hendrerit. Suspendisse in nibh lobortis, egestas odio eget, efficitur nisi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean elementum aliquam nibh ac tempus. Integer sagittis accumsan eros ac imperdiet. Proin a nibh orci. Mauris sit amet dolor ultricies, bibendum libero ut, hendrerit eros. Proin id velit molestie, pretium arcu ac, lacinia ipsum. Fusce et dolor sed mi sollicitudin finibus. Suspendisse non turpis vitae leo gravida maximus quis sit amet dui. Suspendisse massa massa, pellentesque ut velit vitae, imperdiet dapibus sapien. L'article est très intéressant mais, j'aurais aimé avoir plus de détail sur certaines partie, comme la fonte de glaces 5",
+      date: "2022-09-12T08:35:06.585Z",
+    },
+    {
+      pseudonym: "Anonymous",
+      text: "L'article",
+      date: "2022-09-12T08:35:06.585Z",
+    },
+    {
+      pseudonym: "Anonymous",
+      text: "L'article est très intéressant mais, j'aurais aimé avoir ",
+      date: "2022-09-12T08:35:06.585Z",
+    },
+    {
+      pseudonym: "Anonymous",
+      text:
+        "L'article est très intéressant mais, j'aurais aimé avoir plus de détail sur certaines partie, comme la fonte de glaces 5",
+      date: "2022-09-12T08:35:06.585Z",
+    },
+  ];
+
+  function onClickOutside() {
+    setLineIsOpen("false");
+  }
+  useClickOutside(listBoxRef, onClickOutside);
 
   return (
     <FeedBackResultContainer>
@@ -46,15 +155,22 @@ const FeedBackResults = ({ feedbacks, question, isVisible }) => {
           <FeedBackColumnName>feedback</FeedBackColumnName>
           <FeedBackColumnName>date</FeedBackColumnName>
         </FeedBackListInfos>
-        <FeedBackListBox isOpen={isOpen} needScroll={feedbacks.length > 15}>
+        <FeedBackListBox
+          ref={listBoxRef}
+          isOpen={isOpen}
+          needScroll={feedbacks.length > 15}
+        >
           {feedbacks.map((feedback, index) => {
             return (
               <FeedBackLine
+                onClick={() => setLineIsOpen(`${index + feedback.text}`)}
+                lineIsOpen={lineIsOpen === `${index + feedback.text}`}
                 odd={index % 2 === 0}
                 key={keyGenerator(`${feedback.date}${feedback.text}${index}`)}
               >
                 <FeedbackLineNumber>{`#${index}`}</FeedbackLineNumber>
                 <FeedBackUserText>{feedback.text}</FeedBackUserText>
+
                 <FeedbackCopyBox
                   onClick={() => {
                     navigator.clipboard.writeText(feedback.text);

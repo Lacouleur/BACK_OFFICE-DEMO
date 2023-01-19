@@ -11,7 +11,7 @@ import buildDate from "./buildDate";
 export function watchOpinionModules(modulesList) {
   const opinionModules = [];
   modulesList.map((module) => {
-    if (module.type === "opinion") {
+    if (module.type === "opinion" || module.type === "feedback") {
       opinionModules.push(module);
     }
   });

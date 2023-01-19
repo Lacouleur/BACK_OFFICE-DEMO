@@ -1,5 +1,5 @@
-import { setToken } from "../../../services/client/tokenStuff";
-import { isValidToken } from "../../../services/client/refreshToken";
+import { deleteToken, setToken } from "../../../services/client/tokenStuff";
+
 import {
   sendAuth,
   publishManager,
@@ -54,6 +54,9 @@ export function logUser(redirectTo) {
       dispatch(setErrorAuth(true));
       return false;
     } catch (error) {
+      if (error?.response?.data === "Invalid token") {
+        deleteToken();
+      }
       dispatch(setErrorAuth(true));
       console.log("%cerror =>", `${consoleError}`, error?.response?.data);
       return false;
@@ -64,64 +67,65 @@ export function logUser(redirectTo) {
 export function publishAction(id, mode) {
   console.log("%cPUBLISHING", `${consoleTitle}`, id);
   return async (dispatch, getState) => {
-    const tokenIsValid = await isValidToken(dispatch);
-    if (tokenIsValid) {
-      const {
-        manifestoReducer,
-        pageMainInformationReducer,
-        mainInformationReducer,
-      } = getState();
-      const { isManifesto, manifestoId } = manifestoReducer;
-      const { isPage } = pageMainInformationReducer;
-      const {
-        isMovedToTop,
-        canUndoMoveToTop,
-        undoMoveToTop,
-      } = mainInformationReducer;
-      let actionName = "";
-      if (mode === "UPDATE") {
-        actionName = "PUBLISH";
-      } else {
-        actionName = mode;
-      }
+    const {
+      manifestoReducer,
+      pageMainInformationReducer,
+      mainInformationReducer,
+    } = getState();
+    const { isManifesto, manifestoId } = manifestoReducer;
+    const { isPage } = pageMainInformationReducer;
+    const {
+      isMovedToTop,
+      canUndoMoveToTop,
+      undoMoveToTop,
+    } = mainInformationReducer;
+    let actionName = "";
+    if (mode === "UPDATE") {
+      actionName = "PUBLISH";
+    } else {
+      actionName = mode;
+    }
 
-      try {
-        const response = !isPage
-          ? await publishManager(
-              isManifesto ? manifestoId : id,
-              actionName,
-              isManifesto,
-              isMovedToTop,
-              canUndoMoveToTop,
-              undoMoveToTop
-            )
-          : await publishPage(id, actionName);
+    try {
+      const response = !isPage
+        ? await publishManager(
+            isManifesto ? manifestoId : id,
+            actionName,
+            isManifesto,
+            isMovedToTop,
+            canUndoMoveToTop,
+            undoMoveToTop
+          )
+        : await publishPage(id, actionName);
 
-        if (response.status < 300 && response.status > 199) {
-          console.log(`%c${actionName}ED`, `${consoleSucces}`);
-          dispatch(setPublishScheduleFailed(false));
-          dispatch(setPublishScheduleFailData(null));
-          dispatch(setIsScheduled(false));
-          if (!isManifesto) {
-            if (actionName === "PUBLISH") {
-              dispatch(setStatus("PUBLISHED"));
-              dispatch(setModified(false));
-            }
-            if (actionName === "UNPUBLISH") {
-              dispatch(setStatus("UNPUBLISHED"));
-            }
+      if (response.status < 300 && response.status > 199) {
+        console.log(`%c${actionName}ED`, `${consoleSucces}`);
+        dispatch(setPublishScheduleFailed(false));
+        dispatch(setPublishScheduleFailData(null));
+        dispatch(setIsScheduled(false));
+        if (!isManifesto) {
+          if (actionName === "PUBLISH") {
+            dispatch(setStatus("PUBLISHED"));
+            dispatch(setModified(false));
           }
-          if (isManifesto) {
-            if (actionName === "PUBLISH") {
-              dispatch(setManifestoStatus("PUBLISHED"));
-              dispatch(setModified(false));
-            }
+          if (actionName === "UNPUBLISH") {
+            dispatch(setStatus("UNPUBLISHED"));
           }
         }
-      } catch (error) {
-        ErrorCaseClient(dispatch, error?.response?.data);
+        if (isManifesto) {
+          if (actionName === "PUBLISH") {
+            dispatch(setManifestoStatus("PUBLISHED"));
+            dispatch(setModified(false));
+          }
+        }
       }
+    } catch (error) {
+      if (error?.response?.data === "Invalid token") {
+        deleteToken();
+      }
+      ErrorCaseClient(dispatch, error?.response?.data);
     }
+
     return null;
   };
 }
@@ -133,22 +137,23 @@ export function schedulePublication(id, date) {
     const { pageMainInformationReducer } = getState();
     const { isPage } = pageMainInformationReducer;
 
-    const tokenIsValid = await isValidToken(dispatch);
-    if (tokenIsValid) {
-      try {
-        const response = !isPage
-          ? await scheduleContentPublication(id, date)
-          : await schedulePagePublication(id, date);
+    try {
+      const response = !isPage
+        ? await scheduleContentPublication(id, date)
+        : await schedulePagePublication(id, date);
 
-        if (response.status < 300 && response.status > 199) {
-          console.log(`%cSCHEDULED`, `${consoleSucces}`, date);
-          dispatch(setIsScheduled(date));
-          dispatch(setStatus("SCHEDULED"));
-        }
-      } catch (error) {
-        ErrorCaseClient(dispatch, error?.response?.data);
+      if (response.status < 300 && response.status > 199) {
+        console.log(`%cSCHEDULED`, `${consoleSucces}`, date);
+        dispatch(setIsScheduled(date));
+        dispatch(setStatus("SCHEDULED"));
       }
+    } catch (error) {
+      if (error?.response?.data === "Invalid token") {
+        deleteToken();
+      }
+      ErrorCaseClient(dispatch, error?.response?.data);
     }
+
     return null;
   };
 }
@@ -156,26 +161,27 @@ export function schedulePublication(id, date) {
 export function cancelScheduledPublication(id) {
   console.log("%cPUBLISHING", `${consoleTitle}`, id);
   return async (dispatch, getState) => {
-    const tokenIsValid = await isValidToken(dispatch);
-    if (tokenIsValid) {
-      const { manifestoReducer } = getState();
-      const { status } = manifestoReducer;
-      const { pageMainInformationReducer } = getState();
-      const { isPage } = pageMainInformationReducer;
+    const { manifestoReducer } = getState();
+    const { status } = manifestoReducer;
+    const { pageMainInformationReducer } = getState();
+    const { isPage } = pageMainInformationReducer;
 
-      try {
-        const response = isPage
-          ? await cancelPagePublication(id)
-          : await cancelContentPublication(id);
-        if (response.status < 300 && response.status > 199) {
-          console.log(`%cSCHEDULE CANCELED`, `${consoleSucces}`);
-          dispatch(setIsScheduled(""));
-          dispatch(setStatus(status));
-        }
-      } catch (error) {
-        ErrorCaseClient(dispatch, error?.response?.data);
+    try {
+      const response = isPage
+        ? await cancelPagePublication(id)
+        : await cancelContentPublication(id);
+      if (response.status < 300 && response.status > 199) {
+        console.log(`%cSCHEDULE CANCELED`, `${consoleSucces}`);
+        dispatch(setIsScheduled(""));
+        dispatch(setStatus(status));
       }
+    } catch (error) {
+      if (error?.response?.data === "Invalid token") {
+        deleteToken();
+      }
+      ErrorCaseClient(dispatch, error?.response?.data);
     }
+
     return null;
   };
 }
@@ -183,71 +189,67 @@ export function cancelScheduledPublication(id) {
 export function duplicateElement(id, type) {
   console.log("%cDUPLICATION", `${consoleTitle}`, id);
   return async (dispatch) => {
-    const tokenIsValid = await isValidToken(dispatch);
-    if (tokenIsValid) {
-      try {
-        const response =
-          type === "content"
-            ? await duplicateContent(id)
-            : await duplicatePage(id);
-        if (response.status < 300 && response.status > 199) {
-          if (type === "content") {
-            dispatch(fetchContentsList());
-          }
-          if (type === "page") {
-            dispatch(fetchPages());
-          }
-          console.log("%cContent Duplicated", `${consoleSucces}`);
+    try {
+      const response =
+        type === "content"
+          ? await duplicateContent(id)
+          : await duplicatePage(id);
+      if (response.status < 300 && response.status > 199) {
+        if (type === "content") {
+          dispatch(fetchContentsList());
         }
-      } catch (error) {
-        ErrorCaseClient(dispatch, error?.response?.data);
+        if (type === "page") {
+          dispatch(fetchPages());
+        }
+        console.log("%cContent Duplicated", `${consoleSucces}`);
       }
-      return null;
+    } catch (error) {
+      if (error?.response?.data === "Invalid token") {
+        deleteToken();
+      }
+      ErrorCaseClient(dispatch, error?.response?.data);
     }
-    return null;
   };
 }
 
 export function translateArticle(id, lang, history, type) {
   console.log("%cTRANSLATING ARTICLE", `${consoleTitle}`, id);
   return async (dispatch) => {
-    const tokenIsValid = await isValidToken(dispatch);
-    if (tokenIsValid) {
-      try {
-        const response =
-          type === "content"
-            ? await translateContent(id, lang)
-            : await translatePage(id, lang);
-        if (response.status < 300 && response.status > 199) {
-          console.log(
-            "%cContent Duplicated for translation",
-            `${consoleSucces}`
-          );
-          if (type === "content") {
-            dispatch(fetchContentsList());
-          }
-          if (type === "page") {
-            dispatch(fetchPages());
-          }
+    try {
+      const response =
+        type === "content"
+          ? await translateContent(id, lang)
+          : await translatePage(id, lang);
+      if (response.status < 300 && response.status > 199) {
+        console.log("%cContent Duplicated for translation", `${consoleSucces}`);
+        if (type === "content") {
+          dispatch(fetchContentsList());
         }
-      } catch (error) {
-        console.error("%cError =>", `${consoleError}`, error?.response?.data);
-        if (error?.response?.status === 409) {
-          dispatch(
-            showErrorModal({
-              value: true,
-              message: alreadyTranslated(
-                error?.response?.data,
-                id,
-                history,
-                dispatch,
-                type
-              ),
-            })
-          );
+        if (type === "page") {
+          dispatch(fetchPages());
         }
       }
+    } catch (error) {
+      if (error?.response?.data === "Invalid token") {
+        deleteToken();
+      }
+      console.error("%cError =>", `${consoleError}`, error?.response?.data);
+      if (error?.response?.status === 409) {
+        dispatch(
+          showErrorModal({
+            value: true,
+            message: alreadyTranslated(
+              error?.response?.data,
+              id,
+              history,
+              dispatch,
+              type
+            ),
+          })
+        );
+      }
     }
+
     return null;
   };
 }

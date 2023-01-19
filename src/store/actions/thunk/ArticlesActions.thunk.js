@@ -450,7 +450,7 @@ export function archiveContent(articleId, redirectTo, fromList = false) {
   };
 }
 
-export function fetchCategoriesList(lang) {
+export function fetchCategoriesList(lang = "fr") {
   return async (dispatch) => {
     try {
       const response = await getCategories(lang);

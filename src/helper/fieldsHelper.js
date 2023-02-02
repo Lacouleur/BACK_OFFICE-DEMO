@@ -13,6 +13,17 @@ import {
   setSocialImgUuid,
 } from "../store/actions/homeNavigationActions";
 import {
+  addHeaderTitle,
+  addHeaderSubtitle,
+  setHeaderImageUuid,
+  setHeaderImageAlt,
+  setHeaderLargeImageUuid,
+  setHeaderLargeImageAlt,
+  setImageDescription,
+  setHeaderURL,
+  setHeaderCTALabel,
+} from "../store/actions/pageHeaderActions";
+import {
   addCategory,
   addLang,
   addSlug,
@@ -386,9 +397,9 @@ export function valueSelector(
     case "category": {
       return editCategory && editCategory.label.substring(0, 2) === "- "
         ? {
-            value: editCategory.value,
-            label: `${editCategory.mainCat} ${editCategory.label}`,
-          }
+          value: editCategory.value,
+          label: `${editCategory.mainCat} ${editCategory.label}`,
+        }
         : editCategory || undefined;
     }
 
@@ -630,6 +641,35 @@ export function dispatchFields(
 
     case name === "altTransparentImg" && section === "homeNavigation":
       dispatch(setTransparentImageAlt(value));
+      break;
+
+    // PAGE HEADER
+    case name === "title" && section === "pageHeader":
+      dispatch(addHeaderTitle(value));
+      break;
+
+    case name === "subtitle" && section === "pageHeader":
+      dispatch(addHeaderSubtitle(value));
+      break;
+
+    case name === "imageDescription" && section === "pageHeader":
+      dispatch(setImageDescription(value));
+      break;
+
+    case name === "altHeaderImage" && section === "pageHeader":
+      dispatch(setHeaderImageAlt(value));
+      break;
+
+    case name === "altHeaderLargeImg" && section === "pageHeader":
+      dispatch(setHeaderLargeImageAlt(value));
+      break;
+
+    case name === "url" && section === "pageHeader":
+      dispatch(setHeaderURL(value));
+      break;
+
+    case name === "label" && section === "pageHeader":
+      dispatch(setHeaderCTALabel(value));
       break;
 
     // MODULES
@@ -938,6 +978,16 @@ export function deleteImage(dispatch, setFileTitle, name, moduleId, subId) {
       );
       break;
     }
+
+    case "headerImage": {
+      dispatch(setHeaderImageUuid(undefined));
+      break;
+    }
+
+    case "headerLargeImage": {
+      dispatch(setHeaderLargeImageUuid(undefined));
+      break;
+    }
     default:
       return null;
   }
@@ -952,9 +1002,9 @@ export function buildCatSubcatLabels(selectedCategories) {
       buildedSelectedCategories.push(
         categorie.label?.substring(0, 2) === "- "
           ? {
-              value: categorie.value,
-              label: `${categorie.mainCat} ${categorie.label}`,
-            }
+            value: categorie.value,
+            label: `${categorie.mainCat} ${categorie.label}`,
+          }
           : categorie
       )
     );

@@ -32,6 +32,7 @@ import { pageSetId, setIsPage } from "../../store/actions/pageEditor/pageMainInf
 import PageMainInformation from "../../components/EditorPage/Sections/PageMainInformation";
 import { fetchPage } from "../../store/actions/thunk/PageActions.thunk";
 import PageSeo from "../../components/EditorPage/Sections/PageSeo";
+import PageHeader from "../../components/EditorPage/Sections/PageHeader";
 
 // This files is the main editor for Pages - it work similarly as article editor : ContentEditor.js
 
@@ -67,6 +68,7 @@ const PageEditor = () => {
           {isOpenCloseModal?.value && <HideContent />}
           <PageMainInformation />
           <PageSeo />
+          <PageHeader />
           {modulesList?.length > 0 && (<Separator />)}
 
           <DragDropContext

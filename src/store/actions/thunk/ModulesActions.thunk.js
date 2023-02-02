@@ -29,6 +29,10 @@ import {
   setNavImageUuid,
   setSocialImgUuid,
 } from "../homeNavigationActions";
+import {
+  setHeaderImageUuid,
+  setHeaderLargeImageUuid
+} from "../pageHeaderActions";
 import { uploadError } from "../../../helper/errorMessages";
 import ErrorCaseClient from "../../../helper/ErrorCaseClient";
 import {
@@ -752,6 +756,12 @@ export function saveImage(setFileTitle, name, image, moduleId, subId) {
               cardId: subId,
             })
           );
+        }
+        if (name === "headerImage") {
+          dispatch(setHeaderImageUuid(response.data));
+        }
+        if (name === "headerLargeImage") {
+          dispatch(setHeaderLargeImageUuid(response.data));
         }
       }
     } catch (error) {

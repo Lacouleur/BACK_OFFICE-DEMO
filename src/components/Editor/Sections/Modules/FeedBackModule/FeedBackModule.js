@@ -46,7 +46,7 @@ const FeedBackModule = ({
     ({ mainInformationReducer }) => mainInformationReducer
   );
 
-  const { articleId, status } = MainInformationState;
+  const { articleId } = MainInformationState;
 
   const actionBarState = useSelector(
     ({ actionBarReducer }) => actionBarReducer
@@ -101,19 +101,17 @@ const FeedBackModule = ({
 
       <SectionBox onClick={() => setIsOpen(true)} isOpen={isOpen}>
         <ActionIcons>
-          {status === "DRAFT" && (
-            <Delete
-              src={trashIcon}
-              onClick={() => {
-                if (isNewModule) {
-                  dispatch(closeModule(uuid));
-                }
-                if (!isNewModule) {
-                  dispatch(showCloseModal({ value: true, id: uuid }));
-                }
-              }}
-            />
-          )}
+          <Delete
+            src={trashIcon}
+            onClick={() => {
+              if (isNewModule) {
+                dispatch(closeModule(uuid));
+              }
+              if (!isNewModule) {
+                dispatch(showCloseModal({ value: true, id: uuid }));
+              }
+            }}
+          />
           <Hide
             src={isVisible ? eyeIcon : eyeUnabled}
             onClick={() => {

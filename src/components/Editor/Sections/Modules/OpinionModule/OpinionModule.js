@@ -93,7 +93,7 @@ const OpinionModule = ({
     ({ mainInformationReducer }) => mainInformationReducer
   );
 
-  const { articleId, status } = mainInformationState;
+  const { articleId } = mainInformationState;
   const { hideModal } = actionBarState;
   const [description, setDescription] = useState("");
 
@@ -177,21 +177,17 @@ const OpinionModule = ({
 
       <SectionBox onClick={() => setIsOpen(true)} isOpen={isOpen}>
         <ActionIcons>
-          {status === "DRAFT" && (
-            <>
-              <Delete
-                src={trashIcon}
-                onClick={() => {
-                  if (isNewModule) {
-                    dispatch(closeModule(uuid));
-                  }
-                  if (!isNewModule) {
-                    dispatch(showCloseModal({ value: true, id: uuid }));
-                  }
-                }}
-              />
-            </>
-          )}
+          <Delete
+            src={trashIcon}
+            onClick={() => {
+              if (isNewModule) {
+                dispatch(closeModule(uuid));
+              }
+              if (!isNewModule) {
+                dispatch(showCloseModal({ value: true, id: uuid }));
+              }
+            }}
+          />
           <Hide
             src={isVisible ? eyeIcon : eyeUnabled}
             onClick={() => {

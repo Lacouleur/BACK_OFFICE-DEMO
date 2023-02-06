@@ -213,9 +213,6 @@ export function fetchPage(id) {
         dispatch(
           setPublishScheduleFailData(response.data.publishScheduleFailData)
         );
-        if (response.data.header) {
-          dispatch(switchOnOffPageHeader(true));
-        }
       }
 
       return null;

@@ -57,6 +57,7 @@ const PageHeader = () => {
 
   function onClickOutside() {
     setIsOpen(false);
+    console.log("###### PageHeader onClickOutside", pageHeaderIsChanged);
     if (pageHeaderIsChanged) {
       dispatch(pageCheckAndSend("update", pageId));
     }
@@ -72,6 +73,7 @@ const PageHeader = () => {
   }, [pageId]);
 
   useEffect(() => {
+    console.log("###### useEffect PageHeader", pageHeaderIsChanged);
     getTitleAndSplit(
       headerImgUuid,
       setHeaderImgTitle,
@@ -108,8 +110,7 @@ const PageHeader = () => {
           <>
             <SwitchButton
               action={() =>
-                dispatch(switchOnOffPageHeader(!isPageHeaderActive))
-              }
+                dispatch(switchOnOffPageHeader(!isPageHeaderActive))}
               isChecked={isPageHeaderActive}
               displayedText="Activate Header Section?"
               componentId="activate-page-header-section"

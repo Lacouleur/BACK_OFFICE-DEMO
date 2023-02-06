@@ -54,6 +54,7 @@ import {
 import ScheduleModal from "../../Modals/ScheduleModal";
 import {
   cleanContentState,
+  cleanPageState,
   setStatus,
 } from "../../../store/actions/commonsActions";
 import { openPreview } from "../../../helper/fieldsHelper";
@@ -76,11 +77,16 @@ const ActionBar = () => {
     ({ homeNavigationReducer }) => homeNavigationReducer
   );
 
+  const pageHeaderState = useSelector(
+    ({ pageHeaderReducer }) => pageHeaderReducer
+  );
+
   const manifestoState = useSelector(
     ({ manifestoReducer }) => manifestoReducer
   );
 
   const { homeNavIsChanged } = homeNavigationState;
+  const { pageHeaderIsChanged } = pageHeaderState;
 
   const {
     isManifesto,
@@ -141,14 +147,22 @@ const ActionBar = () => {
   const opinionLink = React.useRef(null);
 
   useEffect(() => {
+    console.log('#### ActionBar useEffect contentIsChanged:', contentIsChanged, id)
     ModifiedModulesWatcher(
       modulesList,
       seoChanged,
       MainInformationChanged,
       homeNavIsChanged,
+      pageHeaderIsChanged,
       setContentIsChanged
     );
-  }, [seoChanged, MainInformationChanged, modulesState, homeNavIsChanged]);
+  }, [
+    seoChanged,
+    MainInformationChanged,
+    modulesState,
+    homeNavIsChanged,
+    pageHeaderIsChanged,
+  ]);
 
   useEffect(() => {
     FieldsErrorWatcher(
@@ -176,6 +190,7 @@ const ActionBar = () => {
   }, [updatedAt, isScheduled, publishedAt]);
 
   useEffect(() => {
+    console.log("#### ActionBar useEffect MainInformationState, publicationFailed, status", status, modified);
     if (isOpenPublishModal === false) {
       setButtonContent(
         status,
@@ -187,7 +202,7 @@ const ActionBar = () => {
         actionBarState
       );
     }
-  }, [MainInformationState, publicationFailed, status]);
+  }, [MainInformationState, publicationFailed, status, modified]);
 
   useEffect(() => {
     if (isOpenPublishModal === false) {
@@ -343,7 +358,7 @@ const ActionBar = () => {
 
           {!isManifesto && isPage && (
             <Link
-              onClick={() => dispatch(cleanContentState())}
+              onClick={() => dispatch(cleanPageState())}
               ref={opinionLink}
               to={`/page-results/${id}`}
               style={{ display: "none" }}

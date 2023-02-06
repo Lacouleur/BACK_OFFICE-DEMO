@@ -52,6 +52,7 @@ const pageHeaderReducer = (state = initialState, action = {}) => {
         headerURL: payload?.header?.url?.value || "",
         headerCTALabel: payload?.header?.url?.ctaLabel || "",
         headerCTAOpenNewTab: payload?.header?.url?.openNewTab || false,
+        isPageHeaderActive: !!payload?.header,
       };
     }
 

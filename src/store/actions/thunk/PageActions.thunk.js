@@ -36,11 +36,16 @@ import {
 } from "../../../services/client/pagesClient";
 import { fetchPages } from "./PagesHubActions.thunk";
 import { deleteToken } from "../../../services/client/tokenStuff";
+import { switchOnOffPageHeader } from "../pageHeaderActions";
 
 // eslint-disable-next-line import/prefer-default-export
 export function pageCheckAndSend(type = "save", pageId = null) {
   return async (dispatch, getState) => {
-    const { pageMainInformationReducer, pageSeoReducer } = getState();
+    const {
+      pageMainInformationReducer,
+      pageSeoReducer,
+      pageHeaderReducer,
+    } = getState();
     const {
       title: mainTitle,
       slug,
@@ -49,6 +54,19 @@ export function pageCheckAndSend(type = "save", pageId = null) {
       displayTitle,
     } = pageMainInformationReducer;
     const { title: seoTitle, description } = pageSeoReducer;
+    const {
+      headerTitle,
+      headerSubtitle,
+      headerImgUuid,
+      headerImgAlt,
+      imageDescription,
+      headerLargeImgUuid,
+      headerLargeImgAlt,
+      headerURL,
+      headerCTALabel,
+      headerCTAOpenNewTab,
+      isPageHeaderActive,
+    } = pageHeaderReducer;
 
     const slugError = !slug;
     const titleError = !mainTitle;
@@ -73,6 +91,35 @@ export function pageCheckAndSend(type = "save", pageId = null) {
       subtitle: subtitle || undefined,
       displayTitle,
       slug,
+      ...(isPageHeaderActive) && {
+        header: {
+          title: headerTitle || undefined,
+          subtitle: headerSubtitle || undefined,
+          type: "header",
+          ...(headerImgUuid) && {
+            image: {
+              uuid: headerImgUuid,
+              alt: headerImgAlt,
+              source: "FTV-internal",
+            },
+          },
+          ...(headerLargeImgUuid) && {
+            largeImage: {
+              uuid: headerLargeImgUuid,
+              alt: headerLargeImgAlt,
+              source: "FTV-internal",
+            },
+          },
+          ...(headerURL) && {
+            url: {
+              value: headerURL,
+              ctaLabel: headerCTALabel,
+              openNewTab: headerCTAOpenNewTab,
+            },
+          },
+          imageDescription,
+        },
+      },
     };
 
     if (seoTitle || description) {

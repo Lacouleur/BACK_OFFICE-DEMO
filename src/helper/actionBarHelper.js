@@ -27,6 +27,7 @@ export function ModifiedModulesWatcher(
   seoChanged,
   MainInformationChanged,
   homeNavIsChanged,
+  pageHeaderIsChanged,
   setContentIsChanged
 ) {
   const modifiedModules = [];
@@ -42,6 +43,7 @@ export function ModifiedModulesWatcher(
     seoChanged ||
     MainInformationChanged ||
     homeNavIsChanged ||
+    pageHeaderIsChanged ||
     modifiedModules.length > 0
   ) {
     setContentIsChanged(true);

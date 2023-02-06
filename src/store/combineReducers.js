@@ -11,6 +11,7 @@ import pagesHubReducer from "./reducer/pagesHubReducer";
 import userReducer from "./reducer/userReducer";
 import pageMainInformationReducer from "./reducer/pageEditor/pageMainInformationsReducer";
 import pageSeoReducer from "./reducer/pageSeoReducer";
+import pageHeaderReducer from "./reducer/pageHeaderReducer";
 
 export default combineReducers({
   mainInformationReducer,
@@ -25,4 +26,5 @@ export default combineReducers({
   pagesHubReducer,
   pageMainInformationReducer,
   pageSeoReducer,
+  pageHeaderReducer,
 });

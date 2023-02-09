@@ -865,7 +865,7 @@ const modulesReducer = (state = initialState, action = {}) => {
           oldState.modulesList[index] = {
             ...module,
             link: {
-              ...oldState.modulesList[index].url,
+              ...oldState.modulesList[index].openNewTab,
               value,
             },
             isChanged: true,
@@ -958,7 +958,7 @@ const modulesReducer = (state = initialState, action = {}) => {
             oldState.modulesList[index] = {
               ...module,
               link: {
-                ...oldState.modulesList[index].url,
+                ...oldState.modulesList[index].link,
                 openNewTab: value,
               },
               isChanged: true,

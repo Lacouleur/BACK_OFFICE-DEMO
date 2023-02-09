@@ -64,8 +64,14 @@ import {
   setTextHTMLContent,
 } from "../../../../../helper/modulesHelper";
 import SwitchButton from "../../../../Tools/Switch";
+import HeaderSectionPage from "../HeaderSectionPage";
 
 const OpinionModule = ({
+  isPage,
+  title,
+  subtitle,
+  url,
+  openNewTabHeader,
   uuid,
   isChanged,
   isOpenCloseModal,
@@ -210,6 +216,19 @@ const OpinionModule = ({
           </FormTitle>
         </SectionTitle>
         {!isOpen && <Gradient />}
+
+        {isPage && (
+          <>
+            {/* HEADER FIELDS - TITLE-SUBTITLE-URL */}
+            <HeaderSectionPage
+              uuid={uuid}
+              title={title}
+              subtitle={subtitle}
+              url={url}
+              openNewTabHeader={openNewTabHeader}
+            />
+          </>
+        )}
 
         {/* MODULE TYPE SELECTOR */}
         {isReaction === undefined && (
@@ -450,9 +469,19 @@ OpinionModule.defaultProps = {
   explanation: null,
   isVisible: true,
   isReaction: undefined,
+  title: "",
+  subtitle: "",
+  url: "",
+  openNewTabHeader: false,
+  isPage: undefined,
 };
 
 OpinionModule.propTypes = {
+  isPage: PropTypes.bool,
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
+  url: PropTypes.string,
+  openNewTabHeader: PropTypes.bool,
   uuid: PropTypes.string.isRequired,
   isChanged: PropTypes.bool.isRequired,
   isOpenCloseModal: PropTypes.bool.isRequired,

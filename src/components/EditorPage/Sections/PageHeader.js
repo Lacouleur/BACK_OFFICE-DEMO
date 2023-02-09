@@ -57,7 +57,6 @@ const PageHeader = () => {
 
   function onClickOutside() {
     setIsOpen(false);
-    console.log("###### PageHeader onClickOutside", pageHeaderIsChanged);
     if (pageHeaderIsChanged) {
       dispatch(pageCheckAndSend("update", pageId));
     }
@@ -73,7 +72,6 @@ const PageHeader = () => {
   }, [pageId]);
 
   useEffect(() => {
-    console.log("###### useEffect PageHeader", pageHeaderIsChanged);
     getTitleAndSplit(
       headerImgUuid,
       setHeaderImgTitle,

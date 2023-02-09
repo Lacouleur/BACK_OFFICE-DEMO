@@ -147,7 +147,6 @@ const ActionBar = () => {
   const opinionLink = React.useRef(null);
 
   useEffect(() => {
-    console.log('#### ActionBar useEffect contentIsChanged:', contentIsChanged, id)
     ModifiedModulesWatcher(
       modulesList,
       seoChanged,
@@ -190,7 +189,6 @@ const ActionBar = () => {
   }, [updatedAt, isScheduled, publishedAt]);
 
   useEffect(() => {
-    console.log("#### ActionBar useEffect MainInformationState, publicationFailed, status", status, modified);
     if (isOpenPublishModal === false) {
       setButtonContent(
         status,

@@ -30,8 +30,14 @@ import { saveModule } from "../../../../../store/actions/thunk/ModulesActions.th
 import eyeIcon from "../../../../../styles/assets/icons/eye-circle-green.svg";
 import eyeUnabled from "../../../../../styles/assets/icons/eye-circle-green-unabled.svg";
 import HideModal from "../../../../Modals/HideModal";
+import HeaderSectionPage from "../HeaderSectionPage";
 
 const FeedBackModule = ({
+  isPage,
+  title,
+  subtitle,
+  url,
+  openNewTabHeader,
   uuid,
   order,
   isOpenCloseModal,
@@ -133,6 +139,19 @@ const FeedBackModule = ({
         </SectionTitle>
         {!isOpen && <Gradient />}
 
+        {isPage && (
+          <>
+            {/* HEADER FIELDS - TITLE-SUBTITLE-URL */}
+            <HeaderSectionPage
+              uuid={uuid}
+              title={title}
+              subtitle={subtitle}
+              url={url}
+              openNewTabHeader={openNewTabHeader}
+            />
+          </>
+        )}
+
         <Field
           placeholder="What question do you want to ask ?"
           name="question"
@@ -151,9 +170,19 @@ const FeedBackModule = ({
 FeedBackModule.defaultProps = {
   question: undefined,
   isVisible: true,
+  title: "",
+  subtitle: "",
+  url: "",
+  openNewTabHeader: false,
+  isPage: undefined,
 };
 
 FeedBackModule.propTypes = {
+  isPage: PropTypes.bool,
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
+  url: PropTypes.string,
+  openNewTabHeader: PropTypes.bool,
   uuid: PropTypes.string.isRequired,
   order: PropTypes.number.isRequired,
   isOpenCloseModal: PropTypes.bool.isRequired,

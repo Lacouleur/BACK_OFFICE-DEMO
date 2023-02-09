@@ -125,6 +125,13 @@ const ModulesDispatcher = ({
                       style={dndEditorCustomStyles(snapshot, provided)}
                     >
                       <OpinionModule
+                        isPage={isPage}
+                        title={isPage ? module.title : undefined}
+                        subtitle={isPage ? module.subtitle : undefined}
+                        url={isPage ? module.url?.value : undefined}
+                        openNewTabHeader={
+                          isPage ? module.url?.openNewTab : undefined
+                        }
                         key={module.uuid}
                         uuid={module.uuid}
                         order={module.order}
@@ -262,17 +269,17 @@ const ModulesDispatcher = ({
                         categories={
                           module?.criteria?.categories
                             ? checkForStringtoArray(
-                                module?.criteria?.categories,
-                                "array"
-                              )
+                              module?.criteria?.categories,
+                              "array"
+                            )
                             : undefined
                         }
                         tags={
                           module?.criteria?.tags
                             ? checkForStringtoArray(
-                                module?.criteria?.tags,
-                                "array"
-                              )
+                              module?.criteria?.tags,
+                              "array"
+                            )
                             : undefined
                         }
                         limit={
@@ -304,6 +311,13 @@ const ModulesDispatcher = ({
                       style={dndEditorCustomStyles(snapshot, provided)}
                     >
                       <FeedBackModule
+                        isPage={isPage}
+                        title={isPage ? module.title : undefined}
+                        subtitle={isPage ? module.subtitle : undefined}
+                        url={isPage ? module.url?.value : undefined}
+                        openNewTabHeader={
+                          isPage ? module.url?.openNewTab : undefined
+                        }
                         key={module.uuid}
                         uuid={module.uuid}
                         order={module.order}
@@ -362,25 +376,25 @@ const ModulesDispatcher = ({
                         tags={
                           module?.criteria?.tags
                             ? checkForStringtoArray(
-                                module?.criteria?.tags,
-                                "array"
-                              )
+                              module?.criteria?.tags,
+                              "array"
+                            )
                             : undefined
                         }
                         categories={
                           module?.criteria?.categories
                             ? checkForStringtoArray(
-                                module?.criteria?.categories,
-                                "array"
-                              )
+                              module?.criteria?.categories,
+                              "array"
+                            )
                             : undefined
                         }
                         authors={
                           module?.criteria?.authors
                             ? checkForStringtoArray(
-                                module?.criteria?.authors,
-                                "array"
-                              )
+                              module?.criteria?.authors,
+                              "array"
+                            )
                             : undefined
                         }
                         slug={module?.criteria?.slug}

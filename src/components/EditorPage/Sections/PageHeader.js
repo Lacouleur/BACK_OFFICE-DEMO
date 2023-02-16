@@ -128,7 +128,7 @@ const PageHeader = () => {
 
                 <Field
                   placeholder="Subtitle"
-                  maxlength="80"
+                  maxlength="120"
                   infos="Maximum 120 characters"
                   name="subtitle"
                   displayName="Subtitle"

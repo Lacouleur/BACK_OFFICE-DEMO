@@ -136,17 +136,21 @@ export function checkAndSend(type = "save", articleId = null) {
                     source: "FTV-internal",
                   }
                 : undefined,
-              transparentImage: {
-                uuid: transparentImgUuid || undefined,
-                alt: transparentImgAlt || undefined,
-                source: "FTV-internal",
-              },
+              transparentImage: transparentImgUuid
+                ? {
+                    uuid: transparentImgUuid || undefined,
+                    alt: transparentImgAlt || undefined,
+                    source: "FTV-internal",
+                  }
+                : undefined,
               backgroundColor,
-              snImage: {
-                uuid: socialImgUuid || undefined,
-                alt: socialImgAlt || undefined,
-                source: "FTV-internal",
-              },
+              snImage: socialImgUuid
+                ? {
+                    uuid: socialImgUuid || undefined,
+                    alt: socialImgAlt || undefined,
+                    source: "FTV-internal",
+                  }
+                : undefined,
             }
           : undefined,
         thumbnail: navImgUuid

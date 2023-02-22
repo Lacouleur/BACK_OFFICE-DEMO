@@ -157,7 +157,6 @@ const CtaModule = ({
             }}
           />
         </ActionIcons>
-
         <SectionTitle>
           <FormTitle>{`${order}. CTA`}</FormTitle>
         </SectionTitle>
@@ -174,7 +173,6 @@ const CtaModule = ({
             />
           </>
         )}
-
         <Field
           placeholder="Introduction"
           name="intro"
@@ -185,7 +183,6 @@ const CtaModule = ({
           infos="Maximum 90 characters"
           moduleId={uuid}
         />
-
         <Field
           placeholder="CTA Text"
           name="label"
@@ -196,7 +193,6 @@ const CtaModule = ({
           moduleId={uuid}
           edit={label || ""}
         />
-
         {!isPage && (
           <>
             <Field
@@ -227,8 +223,7 @@ const CtaModule = ({
                       value: !openNewTab,
                       type: "content",
                     })
-                  )
-                }
+                  )}
                 isChecked={openNewTab}
                 componentId={`cta-switch-${uuid}`}
                 displayedText="Open in new window"
@@ -237,6 +232,7 @@ const CtaModule = ({
           </>
         )}
 
+        {/* CTA URL and button */}
         {isPage && (
           <FieldAndSwitchContainer>
             <Field
@@ -256,7 +252,8 @@ const CtaModule = ({
                     value: !openNewTab,
                     type: "page",
                   })
-                )}
+                )
+              }
               isChecked={openNewTab}
               componentId={`cta-switch-${uuid}`}
               displayedText="Open in new window"
@@ -264,6 +261,7 @@ const CtaModule = ({
           </FieldAndSwitchContainer>
         )}
 
+        {/* CTA descripotion */}
         {editorState && (
           <>
             <TextEditor

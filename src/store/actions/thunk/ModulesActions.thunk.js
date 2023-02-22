@@ -31,7 +31,7 @@ import {
 } from "../homeNavigationActions";
 import {
   setHeaderImageUuid,
-  setHeaderLargeImageUuid
+  setHeaderLargeImageUuid,
 } from "../pageHeaderActions";
 import { uploadError } from "../../../helper/errorMessages";
 import ErrorCaseClient from "../../../helper/ErrorCaseClient";
@@ -116,10 +116,10 @@ export function saveModule(uuid, request = "save") {
             subtitle: module.subtitle || null,
             url: module?.url?.value
               ? {
-                ...module.url,
-                value: module.url?.value,
-                openNewTab: module.url?.openNewTab || false,
-              }
+                  ...module.url,
+                  value: module.url?.value,
+                  openNewTab: module.url?.openNewTab || false,
+                }
               : null,
           };
           switch (module.type) {
@@ -177,7 +177,9 @@ export function saveModule(uuid, request = "save") {
                 ...(isPage && pageSectionHeaderValues),
                 uuid,
                 type,
-                explanation: explanation || null,
+                explanation: explanation
+                  ? cleanUrlTextComponent(explanation)
+                  : null,
                 question,
                 showPercentage,
                 showResponse,
@@ -216,16 +218,16 @@ export function saveModule(uuid, request = "save") {
                 isVisible,
                 introduction,
                 label,
-                description,
+                description: cleanUrlTextComponent(description),
                 url,
                 openNewTab: isPage ? undefined : openNewTab || false,
                 link: isPage ? link : undefined,
                 image: isPage
                   ? {
-                    alt: image?.alt || undefined,
-                    source: "FTV-internal",
-                    uuid: image.uuid,
-                  }
+                      alt: image?.alt || undefined,
+                      source: "FTV-internal",
+                      uuid: image.uuid,
+                    }
                   : undefined,
                 display: display || undefined,
               };
@@ -265,24 +267,24 @@ export function saveModule(uuid, request = "save") {
                 criteria: isMixed
                   ? null
                   : {
-                    limit: criteria?.limit || 6,
-                    page: 1,
-                    sort: "firstPublishedAt",
-                    order: "desc",
-                    fields: "header,slug,category,theme",
-                    lang,
-                    excludeLastContent: criteria?.excludeLastContent,
-                    categories:
-                      checkForStringtoArray(criteria?.categories, "string") ||
-                      undefined,
-                    tags:
-                      checkForStringtoArray(criteria?.tags, "string") ||
-                      undefined,
-                    ids:
-                      !isPined && customIdsList ? customIdsList : undefined,
-                    pinnedContents:
-                      isPined && customIdsList ? customIdsList : undefined,
-                  },
+                      limit: criteria?.limit || 6,
+                      page: 1,
+                      sort: "firstPublishedAt",
+                      order: "desc",
+                      fields: "header,slug,category,theme",
+                      lang,
+                      excludeLastContent: criteria?.excludeLastContent,
+                      categories:
+                        checkForStringtoArray(criteria?.categories, "string") ||
+                        undefined,
+                      tags:
+                        checkForStringtoArray(criteria?.tags, "string") ||
+                        undefined,
+                      ids:
+                        !isPined && customIdsList ? customIdsList : undefined,
+                      pinnedContents:
+                        isPined && customIdsList ? customIdsList : undefined,
+                    },
               };
               isNewModule = true;
 
@@ -331,16 +333,16 @@ export function saveModule(uuid, request = "save") {
                 featuredExcerpt: featuredExcerpt || undefined,
                 link: link?.value
                   ? {
-                    value: link.value,
-                    openNewTab: link?.openNewTab || false,
-                  }
+                      value: link.value,
+                      openNewTab: link?.openNewTab || false,
+                    }
                   : undefined,
                 image: featuredImageUuid
                   ? {
-                    uuid: featuredImageUuid || undefined,
-                    alt: featuredImageAlt || undefined,
-                    source: "FTV-internal",
-                  }
+                      uuid: featuredImageUuid || undefined,
+                      alt: featuredImageAlt || undefined,
+                      source: "FTV-internal",
+                    }
                   : undefined,
                 criteria: {
                   ...criteria,
@@ -484,7 +486,9 @@ export function saveModule(uuid, request = "save") {
               values = {
                 ...(isPage && pageSectionHeaderValues),
                 type,
-                explanation: explanation || null,
+                explanation: explanation
+                  ? cleanUrlTextComponent(explanation)
+                  : null,
                 question,
                 showPercentage,
                 showResponse,
@@ -524,17 +528,17 @@ export function saveModule(uuid, request = "save") {
                 isVisible,
                 introduction,
                 label,
-                description,
+                description: cleanUrlTextComponent(description),
                 url: !isPage ? url : pageurl,
                 openNewTab: isPage ? undefined : openNewTab || false,
                 link: isPage ? link : undefined,
                 image:
                   isPage && image?.uuid
                     ? {
-                      alt: image?.alt || undefined,
-                      source: "FTV-internal",
-                      uuid: image.uuid,
-                    }
+                        alt: image?.alt || undefined,
+                        source: "FTV-internal",
+                        uuid: image.uuid,
+                      }
                     : undefined,
                 display: display || undefined,
               };
@@ -573,24 +577,24 @@ export function saveModule(uuid, request = "save") {
                 criteria: isMixed
                   ? null
                   : {
-                    limit: criteria?.limit,
-                    page: 1,
-                    sort: "firstPublishedAt",
-                    order: "desc",
-                    fields: "header,slug,category,theme",
-                    lang,
-                    excludeLastContent: criteria?.excludeLastContent,
-                    categories:
-                      checkForStringtoArray(criteria?.categories, "string") ||
-                      undefined,
-                    tags:
-                      checkForStringtoArray(criteria?.tags, "string") ||
-                      undefined,
-                    ids:
-                      !isPined && customIdsList ? customIdsList : undefined,
-                    pinnedContents:
-                      isPined && customIdsList ? customIdsList : undefined,
-                  },
+                      limit: criteria?.limit,
+                      page: 1,
+                      sort: "firstPublishedAt",
+                      order: "desc",
+                      fields: "header,slug,category,theme",
+                      lang,
+                      excludeLastContent: criteria?.excludeLastContent,
+                      categories:
+                        checkForStringtoArray(criteria?.categories, "string") ||
+                        undefined,
+                      tags:
+                        checkForStringtoArray(criteria?.tags, "string") ||
+                        undefined,
+                      ids:
+                        !isPined && customIdsList ? customIdsList : undefined,
+                      pinnedContents:
+                        isPined && customIdsList ? customIdsList : undefined,
+                    },
               };
 
               isChanged = true;
@@ -636,16 +640,16 @@ export function saveModule(uuid, request = "save") {
                 featuredExcerpt: featuredExcerpt || undefined,
                 link: link?.value
                   ? {
-                    value: link.value,
-                    openNewTab: link?.openNewTab || false,
-                  }
+                      value: link.value,
+                      openNewTab: link?.openNewTab || false,
+                    }
                   : undefined,
                 image: image?.uuid
                   ? {
-                    uuid: image.uuid,
-                    alt: image.alt || undefined,
-                    source: "FTV-internal",
-                  }
+                      uuid: image.uuid,
+                      alt: image.alt || undefined,
+                      source: "FTV-internal",
+                    }
                   : undefined,
                 criteria: {
                   ...criteria,

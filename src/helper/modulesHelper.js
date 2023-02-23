@@ -145,15 +145,15 @@ export function cleanUrlTextComponent(text) {
   let newText = text;
 
   const exludeList = [
-    "http://localhost:3001",
-    "https://bo-phoenix.ftvg-preprod.fr",
-    "https://bo-phoenix.francetelevisions.tv",
-    "http://localhost:3000",
-    "http://localhost:3002",
-    "https://www.preprod.phoenix.ftven.fr",
-    "https://preview.preprod.phoenix.ftven.fr",
-    "https://www.nowuproject.eu",
-    "https://preview.nowuproject.eu",
+    /https:\/\/bo-phoenix.ftvg-preprod.fr/gi,
+    /https:\/\/bo-phoenix.francetelevisions.tv/gi,
+    /http:\/\/localhost:3000/gi,
+    /http:\/\/localhost:3001/gi,
+    /http:\/\/localhost:3002/gi,
+    /https:\/\/www.preprod.phoenix.ftven.fr/gi,
+    /https:\/\/preview.preprod.phoenix.ftven.fr/gi,
+    /https:\/\/www.nowuproject.eu/gi,
+    /https:\/\/preview.nowuproject.eu/gi,
   ];
 
   exludeList.forEach((element) => {

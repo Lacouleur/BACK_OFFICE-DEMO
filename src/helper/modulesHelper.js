@@ -157,7 +157,7 @@ export function cleanUrlTextComponent(text) {
   ];
 
   exludeList.forEach((element) => {
-    newText = newText.replace(`/${element}/gi`, "");
+    newText = newText.replace(element, "");
   });
 
   return newText;
